@@ -1,4 +1,4 @@
-#' adaptr: adaptive trial simulator
+#' adaptr: Adaptive Trial Simulator
 #'
 #' @docType package
 #' @name adaptr-package

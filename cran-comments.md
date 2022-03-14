@@ -1,3 +1,11 @@
+## Resubmission
+
+This is a resubmission. In this version we have made these requested changes:
+
+* Removed " + file LICENSE" from the DESCRIPTION file
+
+* Removed the file LICENCE (LICENCE.md remains)
+
 ## R CMD check results
 
 There were no ERRORs, WARNINGs or NOTEs.

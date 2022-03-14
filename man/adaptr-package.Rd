@@ -4,7 +4,7 @@
 \name{adaptr-package}
 \alias{adaptr-package}
 \alias{adaptr}
-\title{adaptr: adaptive trial simulator}
+\title{adaptr: Adaptive Trial Simulator}
 \description{
 \if{html}{\figure{adaptr.png}{options: align="right" width="120" alt="logo"}}
 
