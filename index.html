@@ -8,7 +8,7 @@
 <meta name="description" content='Package that simulates adaptive clinical trials using adaptive
     stopping, adaptive arm dropping, and/or adaptive randomisation.
     Developed as part of the INCEPT (Intensive Care Platform Trial) project
-    (&lt;www.incept.dk&gt;), which is primarily supported by a grant
+    (&lt;https://incept.dk/&gt;), which is primarily supported by a grant
     from Sygeforsikringen "danmark" (&lt;https://www.sygeforsikring.dk/&gt;).'>
 <title>Adaptive Trial Simulator • adaptr</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -19,7 +19,7 @@
 <meta property="og:description" content='Package that simulates adaptive clinical trials using adaptive
     stopping, adaptive arm dropping, and/or adaptive randomisation.
     Developed as part of the INCEPT (Intensive Care Platform Trial) project
-    (&lt;www.incept.dk&gt;), which is primarily supported by a grant
+    (&lt;https://incept.dk/&gt;), which is primarily supported by a grant
     from Sygeforsikringen "danmark" (&lt;https://www.sygeforsikring.dk/&gt;).'>
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -82,8 +82,8 @@
 <!-- badges: start -->
 
 <p>The <code>adaptr</code> package simulates adaptive clinical trials using adaptive stopping, adaptive arm dropping and/or response-adaptive randomisation.</p>
-<p>The package has been developed as part of the <a href="https://www.incept.dk" class="external-link">INCEPT (Intensive Care Platform Trial) project</a>, which is primarily supported by a grant from <a href="https://www.sygeforsikring.dk/" class="external-link">Sygeforsikringen “danmark”</a>.</p>
-<p>The full package documentation is available as a stand-alone website at <a href="https://inceptdk.github.io/adaptr" class="uri">https://inceptdk.github.io/adaptr</a>.</p>
+<p>The package has been developed as part of the <a href="https://incept.dk/" class="external-link">INCEPT (Intensive Care Platform Trial) project</a>, which is primarily supported by a grant from <a href="https://www.sygeforsikring.dk/" class="external-link">Sygeforsikringen “danmark”</a>.</p>
+<p>The full package documentation is available as a stand-alone website at <a href="https://inceptdk.github.io/adaptr/" class="uri">https://inceptdk.github.io/adaptr/</a>.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -98,7 +98,7 @@
 <p>The basic functionality of <code>adaptr</code> is illustrated below.</p>
 <p>First, load the library and setup a trial specification using the general <code><a href="reference/setup_trial.html">setup_trial()</a></code> function, or one of the special case functions, <code><a href="reference/setup_trial_binom.html">setup_trial_binom()</a></code> (used in the example) or <code><a href="reference/setup_trial_norm.html">setup_trial_norm()</a></code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://www.incept.dk" class="external-link">adaptr</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://incept.dk/" class="external-link">adaptr</a></span><span class="op">)</span>
 <span class="co">#&gt; Loading adaptr package (version 1.0.0).</span>
 <span class="co">#&gt; See 'help("adaptr")' or 'vignette("Overview", "adaptr")' for help.</span>
 <span class="co">#&gt; Further information available on https://github.com/INCEPTdk/adaptr/.</span>
@@ -218,7 +218,7 @@
 <span class="co">#&gt; * Ideal design percentage: 100.0%</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Simulation details:</span>
-<span class="co">#&gt; * Simulation time: 0.37 secs</span>
+<span class="co">#&gt; * Simulation time: 0.347 secs</span>
 <span class="co">#&gt; * Base random seed: 67890</span>
 <span class="co">#&gt; * Credible interval width: 95%</span>
 <span class="co">#&gt; * Number of posterior draws: 5000</span>
@@ -269,17 +269,19 @@
 <span class="co">#&gt; To cite package 'adaptr' in publications use:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;   Anders Granholm and Benjamin Skov Kaas-Hansen (2022). adaptr:</span>
-<span class="co">#&gt;   adaptive trial simulator. https://www.incept.dk,</span>
-<span class="co">#&gt;   https://github.com/INCEPTdk/adaptr.</span>
+<span class="co">#&gt;   Adaptive Trial Simulator. https://incept.dk/,</span>
+<span class="co">#&gt;   https://github.com/INCEPTdk/adaptr/,</span>
+<span class="co">#&gt;   https://inceptdk.github.io/adaptr/.</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; A BibTeX entry for LaTeX users is</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;   @Manual{,</span>
-<span class="co">#&gt;     title = {adaptr: adaptive trial simulator},</span>
+<span class="co">#&gt;     title = {adaptr: Adaptive Trial Simulator},</span>
 <span class="co">#&gt;     author = {Anders Granholm and Benjamin Skov Kaas-Hansen},</span>
 <span class="co">#&gt;     year = {2022},</span>
-<span class="co">#&gt;     note = {https://www.incept.dk,</span>
-<span class="co">#&gt; https://github.com/INCEPTdk/adaptr},</span>
+<span class="co">#&gt;     note = {https://incept.dk/,</span>
+<span class="co">#&gt; https://github.com/INCEPTdk/adaptr/,</span>
+<span class="co">#&gt; https://inceptdk.github.io/adaptr/},</span>
 <span class="co">#&gt;   }</span></code></pre></div>
 </div>
 </div>
@@ -287,7 +289,7 @@
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
 <li><a href="https://github.com/INCEPTdk/adaptr/" class="external-link">Browse source code</a></li>
-<li><a href="https://github.com/INCEPTdk/adaptr/issues" class="external-link">Report a bug</a></li>
+<li><a href="https://github.com/INCEPTdk/adaptr/issues/" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 
@@ -319,8 +321,8 @@
 <div class="dev-status">
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/INCEPTdk/adaptr/actions" class="external-link"><img src="https://github.com/INCEPTdk/adaptr/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
-<li><a href="https://codecov.io/gh/INCEPTdk/adaptr" class="external-link"><img src="https://codecov.io/gh/INCEPTdk/adaptr/branch/main/graph/badge.svg" alt="codecov"></a></li>
+<li><a href="https://github.com/INCEPTdk/adaptr/actions/" class="external-link"><img src="https://github.com/INCEPTdk/adaptr/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://app.codecov.io/gh/INCEPTdk/adaptr/" class="external-link"><img src="https://codecov.io/gh/INCEPTdk/adaptr/branch/main/graph/badge.svg" alt="codecov"></a></li>
 </ul>
 </div>
 

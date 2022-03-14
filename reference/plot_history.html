@@ -149,9 +149,6 @@ showing the inter-quartile ranges.</p></dd>
 <span class="r-in">  <span class="co"># Run a single simulation with a fixed random seed</span></span>
 <span class="r-in">  <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="run_trial.html">run_trial</a></span><span class="op">(</span><span class="va">binom_trial</span>, seed <span class="op">=</span> <span class="fl">12345</span><span class="op">)</span></span>
 <span class="r-in"></span>
-<span class="r-in">  <span class="co"># Plot allocation probabilities at each look</span></span>
-<span class="r-in">  <span class="fu">plot_history</span><span class="op">(</span><span class="va">res</span>, x_value <span class="op">=</span> <span class="st">"look"</span>, y_value <span class="op">=</span> <span class="st">"prob"</span><span class="op">)</span></span>
-<span class="r-in"></span>
 <span class="r-in">  <span class="co"># Plot total allocations to each arm according to overall total allocations</span></span>
 <span class="r-in">  <span class="fu">plot_history</span><span class="op">(</span><span class="va">res</span>, x_value <span class="op">=</span> <span class="st">"total n"</span>, y_value <span class="op">=</span> <span class="st">"n"</span><span class="op">)</span></span>
 <span class="r-in"></span>
@@ -159,7 +156,7 @@ showing the inter-quartile ranges.</p></dd>
 <span class="r-in"></span>
 <span class="r-in">  <span class="co"># Run multiple simulation with a fixed random base seed</span></span>
 <span class="r-in">  <span class="co"># Notice that sparse = FALSE is required</span></span>
-<span class="r-in">  <span class="va">res_mult</span> <span class="op">&lt;-</span> <span class="fu"><a href="run_trials.html">run_trials</a></span><span class="op">(</span><span class="va">binom_trial</span>, n_rep <span class="op">=</span> <span class="fl">25</span>, base_seed <span class="op">=</span> <span class="fl">12345</span>, sparse <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span class="r-in">  <span class="va">res_mult</span> <span class="op">&lt;-</span> <span class="fu"><a href="run_trials.html">run_trials</a></span><span class="op">(</span><span class="va">binom_trial</span>, n_rep <span class="op">=</span> <span class="fl">15</span>, base_seed <span class="op">=</span> <span class="fl">12345</span>, sparse <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in">  <span class="co"># Plot allocation probabilities at each look</span></span>
 <span class="r-in">  <span class="fu">plot_history</span><span class="op">(</span><span class="va">res_mult</span>, x_value <span class="op">=</span> <span class="st">"look"</span>, y_value <span class="op">=</span> <span class="st">"prob"</span><span class="op">)</span></span>
