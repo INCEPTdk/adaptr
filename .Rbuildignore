@@ -4,3 +4,6 @@
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
+^LICENSE\.md$
+^README\.Rmd$
+^cran-comments\.md$
