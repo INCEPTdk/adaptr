@@ -7,6 +7,8 @@
 
 [![R-CMD-check](https://github.com/INCEPTdk/adaptr/workflows/R-CMD-check/badge.svg)](https://github.com/INCEPTdk/adaptr/actions)
 [![codecov](https://codecov.io/gh/INCEPTdk/adaptr/branch/main/graph/badge.svg)](https://codecov.io/gh/INCEPTdk/adaptr)
+![CRAN
+status](https://img.shields.io/badge/CRAN-submitted-blueviolet.svg)
 <!-- badges: end -->
 
 The `adaptr` package simulates adaptive clinical trials using adaptive
@@ -165,7 +167,7 @@ print(res_sum, digits = 1)
 #> * Ideal design percentage: 100.0%
 #> 
 #> Simulation details:
-#> * Simulation time: 0.341 secs
+#> * Simulation time: 0.42 secs
 #> * Base random seed: 67890
 #> * Credible interval width: 95%
 #> * Number of posterior draws: 5000
