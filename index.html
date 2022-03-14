@@ -83,10 +83,11 @@
 
 <p>The <code>adaptr</code> package simulates adaptive clinical trials using adaptive stopping, adaptive arm dropping and/or response-adaptive randomisation.</p>
 <p>The package has been developed as part of the <a href="https://www.incept.dk" class="external-link">INCEPT (Intensive Care Platform Trial) project</a>, which is primarily supported by a grant from <a href="https://www.sygeforsikring.dk/" class="external-link">Sygeforsikringen “danmark”</a>.</p>
+<p>The full package documentation is available as a stand-alone website at <a href="https://inceptdk.github.io/adaptr" class="uri">https://inceptdk.github.io/adaptr</a>.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p><code>adaptr</code> is not yet on <a href="https://cran.r-project.org/" class="external-link">CRAN</a> (but should be shortly), but you can install the package directly from <a href="https://github.com/INCEPTdk/adaptr/" class="external-link">GitHub</a> using the <code>remotes</code> package (install it with <code>install.packages("remotes")</code> if you do not already have it):</p>
+<p><code>adaptr</code> is not yet on <a href="https://cran.r-project.org/" class="external-link">CRAN</a> (it should be shortly, though), but you can install the package directly from <a href="https://github.com/INCEPTdk/adaptr/" class="external-link">GitHub</a> using the <code>remotes</code> package (install it with <code>install.packages("remotes")</code> if you do not already have it):</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># install.packages("remotes")</span>
 <span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"INCEPTdk/adaptr"</span><span class="op">)</span></code></pre></div>
@@ -217,7 +218,7 @@
 <span class="co">#&gt; * Ideal design percentage: 100.0%</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Simulation details:</span>
-<span class="co">#&gt; * Simulation time: 0.42 secs</span>
+<span class="co">#&gt; * Simulation time: 0.37 secs</span>
 <span class="co">#&gt; * Base random seed: 67890</span>
 <span class="co">#&gt; * Credible interval width: 95%</span>
 <span class="co">#&gt; * Number of posterior draws: 5000</span>
@@ -251,9 +252,10 @@
 <ul>
 <li>
 <a href="https://docs.github.com/en/get-started/quickstart/fork-a-repo" class="external-link">Fork</a> the repository</li>
-<li>Make a branch with an appropriate name in your fork</li>
+<li>
+<a href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-and-deleting-branches-within-your-repository" class="external-link">Make a branch</a> with an appropriate name in your fork</li>
 <li>Implement changes in your fork, make sure it passes R CMD check (with neither errors, warnings, nor notes) and add a bullet at the top of NEWS.md with a short description of the change, your GitHub handle and the id of the pull request implementing the change (check the <code>NEWS.md</code> file to see the formatting)</li>
-<li>Make a pull request into the <code>main</code> branch of <code>adaptr</code>
+<li>Create a <a href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork" class="external-link">pull request</a> into the <code>main</code> branch of <code>adaptr</code>
 </li>
 </ul>
 </div>
