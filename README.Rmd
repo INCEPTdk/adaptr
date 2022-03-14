@@ -17,6 +17,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/INCEPTdk/adaptr/workflows/R-CMD-check/badge.svg)](https://github.com/INCEPTdk/adaptr/actions)
+[![codecov](https://codecov.io/gh/INCEPTdk/adaptr/branch/main/graph/badge.svg)](https://codecov.io/gh/INCEPTdk/adaptr)
 <!-- badges: end -->
 
 The `adaptr` package simulates adaptive clinical trials using adaptive
