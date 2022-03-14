@@ -5,8 +5,7 @@
 
 <!-- badges: start -->
 
-[![R build
-status](https://github.com/INCEPTdk/adaptr//workflows/R-CMD-check/badge.svg)](https://github.com/INCEPTdk/adaptr//actions)
+[![R-CMD-check](https://github.com/INCEPTdk/adaptr/workflows/R-CMD-check/badge.svg)](https://github.com/INCEPTdk/adaptr/actions)
 <!-- badges: end -->
 
 The `adaptr` package simulates adaptive clinical trials using adaptive
@@ -165,7 +164,7 @@ print(res_sum, digits = 1)
 #> * Ideal design percentage: 100.0%
 #> 
 #> Simulation details:
-#> * Simulation time: 0.438 secs
+#> * Simulation time: 0.342 secs
 #> * Base random seed: 67890
 #> * Credible interval width: 95%
 #> * Number of posterior draws: 5000
