@@ -148,7 +148,7 @@ without summarising.
 }
 \details{
 The ideal design percentage (IDP) returned (described below) is based on
-\emph{Viele et al, 2020} \url{https://doi.org/10.1177/1740774519877836} and
+\emph{Viele et al, 2020} \doi{10.1177/1740774519877836} and
 has been adapted to work for trials with both desirable/undesirable outcomes
 and non-binary outcomes. Briefly, the expected outcome is calculated as the
 sum of the true outcomes in each arm multiplied by the corresponding

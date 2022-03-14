@@ -325,7 +325,7 @@ allocation probabilities. These are defined as:\cr
 \verb{square root of number of non-control arms to 1-ratio for other arms}\cr
 scaled to sum to 1, which will generally increase power for comparisons
 against the common control, as discussed in, e.g., \emph{Park et al, 2020}
-\url{https://doi.org/10.1016/j.jclinepi.2020.04.025}.\cr
+\doi{10.1016/j.jclinepi.2020.04.025}.\cr
 If \code{"sqrt-based"}, square-root-transformation-based allocation probabilities
 will also be used for new controls when arms are dropped. If
 \code{"sqrt-based start"}, the control arm will be fixed to this allocation
