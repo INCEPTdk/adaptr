@@ -5,6 +5,7 @@
 
 <!-- badges: start -->
 
+![Version](https://img.shields.io/badge/version-1.0.0.9000-informational.svg)
 [![R-CMD-check](https://github.com/INCEPTdk/adaptr/workflows/R-CMD-check/badge.svg)](https://github.com/INCEPTdk/adaptr/actions)
 [![codecov](https://codecov.io/gh/INCEPTdk/adaptr/branch/main/graph/badge.svg)](https://codecov.io/gh/INCEPTdk/adaptr)
 ![CRAN
