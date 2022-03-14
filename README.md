@@ -5,7 +5,7 @@
 
 <!-- badges: start -->
 
-![Version](https://img.shields.io/badge/version-1.0.0.9000-informational.svg)
+![Version](https://img.shields.io/badge/version-1.0.0-informational.svg)
 [![R-CMD-check](https://github.com/INCEPTdk/adaptr/workflows/R-CMD-check/badge.svg)](https://github.com/INCEPTdk/adaptr/actions)
 [![codecov](https://codecov.io/gh/INCEPTdk/adaptr/branch/main/graph/badge.svg)](https://codecov.io/gh/INCEPTdk/adaptr)
 ![CRAN
@@ -20,10 +20,13 @@ Platform Trial) project](https://www.incept.dk), which is primarily
 supported by a grant from [Sygeforsikringen
 “danmark”](https://www.sygeforsikring.dk/).
 
+The full package documentation is available as a stand-alone website at
+<https://inceptdk.github.io/adaptr>.
+
 ## Installation
 
-`adaptr` is not yet on [CRAN](https://cran.r-project.org/) (but should
-be shortly), but you can install the package directly from
+`adaptr` is not yet on [CRAN](https://cran.r-project.org/) (it should be
+shortly, though), but you can install the package directly from
 [GitHub](https://github.com/INCEPTdk/adaptr/) using the `remotes`
 package (install it with `install.packages("remotes")` if you do not
 already have it):
@@ -168,7 +171,7 @@ print(res_sum, digits = 1)
 #> * Ideal design percentage: 100.0%
 #> 
 #> Simulation details:
-#> * Simulation time: 0.42 secs
+#> * Simulation time: 0.37 secs
 #> * Base random seed: 67890
 #> * Credible interval width: 95%
 #> * Number of posterior draws: 5000
@@ -215,13 +218,17 @@ Changes to the code base should follow these steps:
 
 -   [Fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo)
     the repository
--   Make a branch with an appropriate name in your fork
+-   [Make a
+    branch](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-and-deleting-branches-within-your-repository)
+    with an appropriate name in your fork
 -   Implement changes in your fork, make sure it passes R CMD check
     (with neither errors, warnings, nor notes) and add a bullet at the
     top of NEWS.md with a short description of the change, your GitHub
     handle and the id of the pull request implementing the change (check
     the `NEWS.md` file to see the formatting)
--   Make a pull request into the `main` branch of `adaptr`
+-   Create a [pull
+    request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork)
+    into the `main` branch of `adaptr`
 
 ## Citation
 
