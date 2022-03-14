@@ -24,7 +24,7 @@ Description: Package that simulates adaptive clinical trials using adaptive
     Developed as part of the INCEPT (Intensive Care Platform Trial) project
     (<www.incept.dk>), which is primarily supported by a grant
     from Sygeforsikringen "danmark" (<https://www.sygeforsikring.dk/>).
-License: GPL (>= 3)
+License: GPL (>= 3) + file LICENSE
 Imports:
     stats,
     parallel,
