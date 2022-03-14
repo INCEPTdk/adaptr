@@ -1,0 +1,183 @@
+---
+title: "Overview"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Overview}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.align = "center",
+  fig.width = 6
+)
+```
+
+The `adaptr` package simulates adaptive clinical trials using adaptive
+stopping, adaptive arm dropping and/or response-adaptive randomisation.
+
+The package has been developed as part of the
+[INCEPT (Intensive Care Platform Trial) project](https://www.incept.dk), funded
+primarily by a grant from
+[Sygeforsikringen "danmark"](https://www.sygeforsikring.dk/).
+
+## Basic example
+First, load the package:
+
+```{r}
+library(adaptr)
+```
+
+### Set up trial
+Then, setup a trial with the desired specifications. `adaptr` offers the
+general purpose function `setup_trial()`, but here we use the built-in
+`setup_trial_binom()` for a trial with a binary, binomially distributed,
+undesirable outcome such as mortality (`adaptr` also includes
+`setup_trial_norm()` for continuous, normally distributed outcomes).
+The example trial specification has three characteristics:
+
+- The allocation probability to each arm cannot be lower than 15% (`min_probs`).
+- Equivalence stopping rule: if the simulation yields a 90% probability
+(`equivalence_prob`) of treatment differences being < 5 %-points
+(`equivalence_diff`), the trial is stopped.
+- We soften allocation ratios (`soften_power`) by a constant factor.
+
+```{r}
+binom_trial <- setup_trial_binom(
+  arms = c("Arm A", "Arm B", "Arm C"),
+  true_ys = c(0.25, 0.20, 0.30),
+  min_probs = rep(0.15, 3), 
+  data_looks = seq(from = 300, to = 2000, by = 100),
+  equivalence_prob = 0.9,
+  equivalence_diff = 0.05,
+  soften_power = 0.5 
+) 
+```
+
+See `?setup_trial()` for more details on these arguments or
+`vignette("Basic-examples", "adaptr")` for basic example trial
+specifications and a thorough review of the general settings, and
+`vignette("Advanced-example", "adaptr")` for an **advanced** example including
+details on how to specify user-written functions for generating outcomes and
+posterior draws.
+
+We can print an overview of the trial specification by simply running:
+
+```{r}
+binom_trial
+```
+
+By default, probabilities are shown with 3 decimals. This can be changed by
+explicitly `print`ing the specification with the `prob_digits` arguments, for
+example:
+
+```{r}
+
+print(binom_trial, prob_digits = 2)
+```
+
+### Simulate a single trial
+Remember to define the `seed` to ensure reproducible results. The final trial
+results are wrapped here, but when used interactively, you can widen the console
+for non-wrapped output:
+
+```{r}
+trial_res <- run_trial(binom_trial, seed = 12345)
+
+trial_res
+```
+
+Again, we can choose the number of decimals with `print`:
+
+```{r}
+print(trial_res, prob_digits = 2)
+```
+
+### Simulate multiple trials
+Generally, we want to run many simulations using the same trial specification to
+assess and compare performance metrics of different trial designs. This is the
+job of `run_trials()` (note the final ***s***); again, note the use of a
+`base_seed` for reproducible results. Here we run 25 simulations (for tolerable
+run-time when producing this example), but in practice you will probably want to
+run more simulations.
+
+```{r}
+trial_res_mult <- run_trials(binom_trial, n_rep = 25, base_seed = 67890)
+
+trial_res_mult
+```
+
+`run_trials()` can run simulations on several CPU cores concurrently: set the
+`cores` argument to some number greater than `1` (which is the default value,
+resulting in serial/non-parallel processing). As an aside, you can see the
+number of available CPU cores by calling `parallel::detectCores()`.
+
+### Get the results of multiple trials
+Just printing the resulting object (as the last line above) is not necessarily
+what you want. `adaptr` has two convenience functions to get the results of
+multiple simulations of the same trial specification, `extract_results()` and
+`summary()`; see their documentation for details, e.g. on arm selection in
+trials not ending with superiority. The `extract_results()` function yields a
+tidy `data.frame` with one simulation per row:
+
+```{r}
+extr_res <- extract_results(trial_res_mult)
+
+nrow(extr_res)
+
+head(extr_res)
+```
+
+`summary()` (as expected and known from, e.g., regression models in `R`)
+summarises the results in a human-friendly manner. Individual key results can be
+extracted from the resulting object or printed:
+
+```{r}
+res_sum <- summary(trial_res_mult)
+
+print(res_sum, digits = 1)
+```
+
+### Visualise trial results
+We need non-sparse results for `plot_history` (but *not* for `plot_status`), so
+first we re-run `run_trials()`:
+
+```{r}
+trial_res_mult <- run_trials(binom_trial, n_rep = 25, base_seed = 67890,
+                             sparse = FALSE)
+```
+
+Note that the `adaptr` plotting functions require the `ggplot2` package. First,
+we plot the overall trial statuses according to the total number of patients
+randomised (this does *not* require `sparse = FALSE`):
+
+```{r}
+plot_status(trial_res_mult, x_value = "total n")
+```
+
+We can also plot the statuses for specific arms. In this example, *Arm A* is
+increasingly dropped for inferiority as simulations progress:
+
+```{r}
+plot_status(trial_res_mult, x_value = "total n", arm = "Arm A")
+```
+
+Next, we plot the history of allocation probabilities at each adaptive
+analysis look. Intervals cover the inter-quartile range by default
+(`interval_width = 0.5`):
+
+```{r}
+plot_history(trial_res_mult)
+```
+
+Plotting other summary metrics is possible; see `plot_history()`.
+
+## Citation
+If using the package, please consider citing:
+
+```{r}
+citation(package = "adaptr")
+```

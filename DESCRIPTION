@@ -1,0 +1,48 @@
+Package: adaptr
+Title: adaptive trial simulator
+Version: 1.0.0
+Date: 2022-03-14
+Authors@R: 
+    c(person("Anders", "Granholm",
+             email = "andersgran@gmail.com",
+             role = c("aut", "cre"),
+             comment = c(ORCID = "0000-0001-5799-7655")),
+      person("Benjamin Skov", "Kaas-Hansen",
+             email = "epiben@hey.com",
+             role = "aut",
+             comment = c(ORCID = "0000-0003-1023-0371")),
+      person("Aksel Karl Georg", "Jensen",
+             email = "akje@sund.ku.dk",
+             role = "ctb",
+             comment = c(ORCID = "0000-0002-1459-0465")),
+      person("Theis", "Lange",
+             email = "thlan@sund.ku.dk",
+             role = "ctb",
+             comment = c(ORCID = "0000-0001-6807-8347")))
+Description: Package that simulates adaptive clinical trials using adaptive
+    stopping, adaptive arm dropping, and/or adaptive randomisation.
+    Developed as part of the INCEPT (Intensive Care Platform Trial) project
+    ([www.incept.dk]), which is primarily supported by a grant
+    from [Sygeforsikringen "danmark"](https://www.sygeforsikring.dk/).
+License: GPL (>= 3)
+Imports:
+    stats,
+    parallel,
+    utils
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+NeedsCompilation: no
+URL: https://www.incept.dk,
+    https://github.com/INCEPTdk/adaptr
+BugReports: https://github.com/INCEPTdk/adaptr/issues
+RoxygenNote: 7.1.2
+Suggests: 
+    covr,
+    ggplot2,
+    rmarkdown,
+    knitr,
+    testthat,
+    vdiffr
+VignetteBuilder: knitr
+Config/testthat/edition: 3 
+

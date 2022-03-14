@@ -1,0 +1,141 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# adaptr <img src="man/figures/adaptr.png" align="right" width="120" />
+
+<!-- badges: start -->
+[![R build status](https://github.com/INCEPTdk/adaptr//workflows/R-CMD-check/badge.svg)](https://github.com/INCEPTdk/adaptr//actions)
+<!-- badges: end -->
+
+The `adaptr` package simulates adaptive clinical trials using adaptive
+stopping, adaptive arm dropping and/or response-adaptive randomisation.
+
+The package has been developed as part of the
+[INCEPT (Intensive Care Platform Trial) project](https://www.incept.dk), which
+is primarily supported by a grant from
+[Sygeforsikringen "danmark"](https://www.sygeforsikring.dk/).
+
+## Installation
+
+`adaptr` is not yet on [CRAN](https://cran.r-project.org/) (but should be
+shortly), but you can install the package directly from
+[GitHub](https://github.com/INCEPTdk/adaptr/) using the
+`remotes` package (install it with `install.packages("remotes")` if you do not
+already have it):
+
+```{r eval = FALSE}
+# install.packages("remotes")
+remotes::install_github("INCEPTdk/adaptr")
+```
+
+## Example
+
+The basic functionality of `adaptr` is illustrated below.
+
+First, load the library and setup a trial specification using the general
+`setup_trial()` function, or one of the special case functions,
+`setup_trial_binom()` (used in the example) or `setup_trial_norm()`.
+
+```{r}
+library(adaptr)
+
+# Setup a trial using a binary, binomially distributed, undesirable outcome
+binom_trial <- setup_trial_binom(
+  arms = c("Arm A", "Arm B", "Arm C"),
+  true_ys = c(0.25, 0.20, 0.30),
+  min_probs = rep(0.15, 3), # Minimum allocation of 15% in all arms
+  data_looks = seq(from = 300, to = 2000, by = 100),
+  # Stop for equivalence at > 90% probability of differences < 5 %-points
+  equivalence_prob = 0.9,
+  equivalence_diff = 0.05,
+  soften_power = 0.5 # Soften allocation ratios
+)
+
+# Print trial specification
+print(binom_trial, prob_digits = 3)
+```
+
+Simulate a single trial using a reproducible random seed:
+
+```{r}
+trial_res <- run_trial(binom_trial, seed = 12345)
+print(trial_res, digits = 3)
+```
+
+Simulate multiple trials using a reproducible random seed:
+
+```{r}
+# Simulate multiple trials - only 10 simulations for speed in the example
+trial_res_mult <- run_trials(binom_trial, n_rep = 10, base_seed = 67890)
+
+# Extract results in a tidy data.frame (1 simulation per row)
+# See function documentation for details, including on arm selection in trials
+# not ending with a superior arm
+extr_res <- extract_results(trial_res_mult)
+head(extr_res)
+
+# Summarise trial results
+# See function documentation for details, including on arm selection in trials
+# not ending with a superior arm
+res_sum <- summary(trial_res_mult)
+print(res_sum, digits = 1)
+```
+
+Plot trial statuses or history of trial metrics over time:
+
+```{r plot, fig.align="center", fig.width=6, fig.height=3}
+# Simulate multiple trials - 25 simulations only for speed
+# sparse = FALSE is required for plot_history (but not plot_status)
+trial_res_mult <- run_trials(binom_trial, n_rep = 25, base_seed = 67890, sparse = FALSE)
+
+# Plot overall trial statuses according to the total number
+# of patients randomised
+plot_status(trial_res_mult, x_value = "total n")
+
+# Plot allocation probabilities at each adaptive look (requires sparse = FALSE)
+plot_history(trial_res_mult)
+```
+
+Plotting statuses for individual trial arms and other summary metrics is
+possible, too.
+
+## Issues and enhancements
+
+We use the [GitHub issue tracker](https://github.com/INCEPTdk/adaptr/issues) for
+all bug/issue reports and proposals for enhancements. 
+
+## Contributing
+
+We welcome contributions directly to the code to improve performance as well
+as new functionality. For the latter, please first explain and motivate it in an
+[issue](https://github.com/INCEPTdk/adaptr/issues).
+
+Changes to the code base should follow these steps:
+
+- [Fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) the repository
+- Make a branch with an appropriate name in your fork
+- Implement changes in your fork, make sure it passes R CMD check (with neither
+errors, warnings, nor notes) and add a bullet at the top of NEWS.md with a short
+description of the change, your GitHub handle and the id of the pull request
+implementing the change (check the `NEWS.md` file to see the formatting)
+- Make a pull request into the `main` branch of `adaptr`
+
+## Citation
+
+If using the package, please consider citing it:
+
+```{r}
+citation(package = "adaptr")
+```
