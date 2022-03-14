@@ -203,7 +203,7 @@ distributed outcome and validates all inputs. Uses normally distributed
 posterior distributions for the mean values in each
 trial arm; technically, no priors are used (as using \emph{normal-normal}
 conjugate prior models with extremely wide or uniform priors gives similar
-resultsfor these simple, unadjusted estimates). Technically, this thus
+results for these simple, unadjusted estimates). Technically, this thus
 corresponds to using improper, flat priors, although not explicitly specified
 as such. Use \link{run_trial} or \link{run_trials} to conduct single/multiple
 simulations of the specified trial, respectively.\cr

@@ -69,7 +69,7 @@ prog_breaks <- function(progress, n_rep_new, cores) {
 #' Simulate single trial after setting seed
 #'
 #' Helper function to dispatch the running of several trials to [lapply] or
-#' [parallel::parLapply]. Used internally incalls by the [run_trials]
+#' [parallel::parLapply]. Used internally in calls by the [run_trials]
 #' function.
 #'
 #' @param i single integer, the simulation number.

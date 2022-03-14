@@ -20,7 +20,7 @@ The `adaptr` package simulates adaptive clinical trials using adaptive
 stopping, adaptive arm dropping and/or response-adaptive randomisation.
 
 The package has been developed as part of the
-[INCEPT (Intensive Care Platform Trial) project](https://www.incept.dk), funded
+[INCEPT (Intensive Care Platform Trial) project](https://incept.dk/), funded
 primarily by a grant from
 [Sygeforsikringen "danmark"](https://www.sygeforsikring.dk/).
 

@@ -11,7 +11,7 @@
 The \code{adaptr} package simulates adaptive (multi-arm) trials using adaptive
 stopping, adaptive arm dropping and/or response-adaptive randomisation.
 The package is developed as part of the
-\href{https://www.incept.dk}{INCEPT (Intensive Care Platform Trial) project},
+\href{https://incept.dk/}{INCEPT (Intensive Care Platform Trial) project},
 funded primarily by a grant from
 \href{https://www.sygeforsikring.dk/}{Sygeforsikringen "danmark"}.
 }
@@ -30,7 +30,7 @@ as described in #1.
 extract or summarise the results of multiple trial simulations.
 \item The \link{plot_status} and \link{plot_history} functions are used to plot the
 overall trial/arm statuses for multiple simulated trials or the history of
-trial metrics over time for sinlge/multiple simulated trials, respectively.
+trial metrics over time for single/multiple simulated trials, respectively.
 }
 
 For further information see the function documentation or the \strong{Overview}
@@ -46,7 +46,7 @@ If using the package, please consider citing it using
 \code{citation(package = "adaptr")}.
 }
 \references{
-\href{https://github.com/INCEPTdk/adaptr}{GitHub repository}
+\href{https://github.com/INCEPTdk/adaptr/}{GitHub repository}
 }
 \seealso{
 \link{setup_trial}, \link{setup_trial_binom}, \link{setup_trial_norm}, \link{run_trial},

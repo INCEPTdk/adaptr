@@ -44,9 +44,6 @@
 #'   # Run a single simulation with a fixed random seed
 #'   res <- run_trial(binom_trial, seed = 12345)
 #'
-#'   # Plot allocation probabilities at each look
-#'   plot_history(res, x_value = "look", y_value = "prob")
-#'
 #'   # Plot total allocations to each arm according to overall total allocations
 #'   plot_history(res, x_value = "total n", y_value = "n")
 #'
@@ -54,7 +51,7 @@
 #'
 #'   # Run multiple simulation with a fixed random base seed
 #'   # Notice that sparse = FALSE is required
-#'   res_mult <- run_trials(binom_trial, n_rep = 25, base_seed = 12345, sparse = FALSE)
+#'   res_mult <- run_trials(binom_trial, n_rep = 15, base_seed = 12345, sparse = FALSE)
 #'
 #'   # Plot allocation probabilities at each look
 #'   plot_history(res_mult, x_value = "look", y_value = "prob")

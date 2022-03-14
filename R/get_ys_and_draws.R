@@ -1,6 +1,6 @@
 #' Generic documentation for get_draws_* functions
 #'
-#' Used internally. See the [setup_trial] funciton documentation for additional
+#' Used internally. See the [setup_trial] function documentation for additional
 #' details on how to specify functions to generate posterior draws.
 #'
 #' @param arms character vector, **currently active** `arms` as specified in

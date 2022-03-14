@@ -6,8 +6,8 @@
 <!-- badges: start -->
 
 ![Version](https://img.shields.io/badge/version-1.0.0-informational.svg)
-[![R-CMD-check](https://github.com/INCEPTdk/adaptr/workflows/R-CMD-check/badge.svg)](https://github.com/INCEPTdk/adaptr/actions)
-[![codecov](https://codecov.io/gh/INCEPTdk/adaptr/branch/main/graph/badge.svg)](https://codecov.io/gh/INCEPTdk/adaptr)
+[![R-CMD-check](https://github.com/INCEPTdk/adaptr/workflows/R-CMD-check/badge.svg)](https://github.com/INCEPTdk/adaptr/actions/)
+[![codecov](https://codecov.io/gh/INCEPTdk/adaptr/branch/main/graph/badge.svg)](https://app.codecov.io/gh/INCEPTdk/adaptr/)
 ![CRAN
 status](https://img.shields.io/badge/CRAN-submitted-blueviolet.svg)
 <!-- badges: end -->
@@ -16,12 +16,12 @@ The `adaptr` package simulates adaptive clinical trials using adaptive
 stopping, adaptive arm dropping and/or response-adaptive randomisation.
 
 The package has been developed as part of the [INCEPT (Intensive Care
-Platform Trial) project](https://www.incept.dk), which is primarily
+Platform Trial) project](https://incept.dk/), which is primarily
 supported by a grant from [Sygeforsikringen
 “danmark”](https://www.sygeforsikring.dk/).
 
 The full package documentation is available as a stand-alone website at
-<https://inceptdk.github.io/adaptr>.
+<https://inceptdk.github.io/adaptr/>.
 
 ## Installation
 
@@ -171,7 +171,7 @@ print(res_sum, digits = 1)
 #> * Ideal design percentage: 100.0%
 #> 
 #> Simulation details:
-#> * Simulation time: 0.37 secs
+#> * Simulation time: 0.347 secs
 #> * Base random seed: 67890
 #> * Credible interval width: 95%
 #> * Number of posterior draws: 5000
@@ -240,16 +240,18 @@ citation(package = "adaptr")
 #> To cite package 'adaptr' in publications use:
 #> 
 #>   Anders Granholm and Benjamin Skov Kaas-Hansen (2022). adaptr:
-#>   adaptive trial simulator. https://www.incept.dk,
-#>   https://github.com/INCEPTdk/adaptr.
+#>   Adaptive Trial Simulator. https://incept.dk/,
+#>   https://github.com/INCEPTdk/adaptr/,
+#>   https://inceptdk.github.io/adaptr/.
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 
 #>   @Manual{,
-#>     title = {adaptr: adaptive trial simulator},
+#>     title = {adaptr: Adaptive Trial Simulator},
 #>     author = {Anders Granholm and Benjamin Skov Kaas-Hansen},
 #>     year = {2022},
-#>     note = {https://www.incept.dk,
-#> https://github.com/INCEPTdk/adaptr},
+#>     note = {https://incept.dk/,
+#> https://github.com/INCEPTdk/adaptr/,
+#> https://inceptdk.github.io/adaptr/},
 #>   }
 ```

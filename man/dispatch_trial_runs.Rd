@@ -34,7 +34,7 @@ Single trial simulation object, as described in \link{run_trial}.
 }
 \description{
 Helper function to dispatch the running of several trials to \link{lapply} or
-\link[parallel:clusterApply]{parallel::parLapply}. Used internally incalls by the \link{run_trials}
+\link[parallel:clusterApply]{parallel::parLapply}. Used internally in calls by the \link{run_trials}
 function.
 }
 \keyword{internal}

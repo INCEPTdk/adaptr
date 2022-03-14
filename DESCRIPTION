@@ -22,7 +22,7 @@ Authors@R:
 Description: Package that simulates adaptive clinical trials using adaptive
     stopping, adaptive arm dropping, and/or adaptive randomisation.
     Developed as part of the INCEPT (Intensive Care Platform Trial) project
-    (<www.incept.dk>), which is primarily supported by a grant
+    (<https://incept.dk/>), which is primarily supported by a grant
     from Sygeforsikringen "danmark" (<https://www.sygeforsikring.dk/>).
 License: GPL (>= 3) + file LICENSE
 Imports:
@@ -32,10 +32,10 @@ Imports:
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 NeedsCompilation: no
-URL: https://www.incept.dk,
-    https://github.com/INCEPTdk/adaptr,
+URL: https://incept.dk/,
+    https://github.com/INCEPTdk/adaptr/,
     https://inceptdk.github.io/adaptr/
-BugReports: https://github.com/INCEPTdk/adaptr/issues
+BugReports: https://github.com/INCEPTdk/adaptr/issues/
 RoxygenNote: 7.1.2
 Suggests: 
     covr,

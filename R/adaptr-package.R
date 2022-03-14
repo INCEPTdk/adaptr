@@ -10,7 +10,7 @@
 #' The `adaptr` package simulates adaptive (multi-arm) trials using adaptive
 #' stopping, adaptive arm dropping and/or response-adaptive randomisation.
 #' The package is developed as part of the
-#' [INCEPT (Intensive Care Platform Trial) project](https://www.incept.dk),
+#' [INCEPT (Intensive Care Platform Trial) project](https://incept.dk/),
 #' funded primarily by a grant from
 #' [Sygeforsikringen "danmark"](https://www.sygeforsikring.dk/).
 #'
@@ -29,7 +29,7 @@
 #' extract or summarise the results of multiple trial simulations.
 #' 4. The [plot_status] and [plot_history] functions are used to plot the
 #' overall trial/arm statuses for multiple simulated trials or the history of
-#' trial metrics over time for sinlge/multiple simulated trials, respectively.
+#' trial metrics over time for single/multiple simulated trials, respectively.
 #'
 #' For further information see the function documentation or the **Overview**
 #' vignette (`vignette("Overview", package = "adaptr")`) for an example of how
@@ -44,7 +44,7 @@
 #' `citation(package = "adaptr")`.
 #'
 #' @references
-#' [GitHub repository](https://github.com/INCEPTdk/adaptr)
+#' [GitHub repository](https://github.com/INCEPTdk/adaptr/)
 #'
 #' @seealso
 #' [setup_trial], [setup_trial_binom], [setup_trial_norm], [run_trial],

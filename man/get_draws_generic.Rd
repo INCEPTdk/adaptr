@@ -26,7 +26,7 @@ A \code{matrix} (with numeric values) with \code{length(arms)} columns and
 \code{n_draws} rows, with \code{arms} as column names.
 }
 \description{
-Used internally. See the \link{setup_trial} funciton documentation for additional
+Used internally. See the \link{setup_trial} function documentation for additional
 details on how to specify functions to generate posterior draws.
 }
 \keyword{internal}

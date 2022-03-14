@@ -913,7 +913,7 @@ setup_trial_binom <- function(arms, true_ys, start_probs = NULL,
 #' posterior distributions for the mean values in each
 #' trial arm; technically, no priors are used (as using *normal-normal*
 #' conjugate prior models with extremely wide or uniform priors gives similar
-#' resultsfor these simple, unadjusted estimates). Technically, this thus
+#' results for these simple, unadjusted estimates). Technically, this thus
 #' corresponds to using improper, flat priors, although not explicitly specified
 #' as such. Use [run_trial] or [run_trials] to conduct single/multiple
 #' simulations of the specified trial, respectively.\cr

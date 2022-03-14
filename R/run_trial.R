@@ -44,11 +44,11 @@
 #'       `"futility"`, or `"max"`.
 #'     \item `final_n`: the total number of patients randomised.
 #'     \item `max_n`: the pre-specified maximum sample size.
-#'     \item `looks`: numreic vector, the total number of patients at each
+#'     \item `looks`: numeric vector, the total number of patients at each
 #'       conducted adaptive analysis.
 #'     \item `planned_looks`: numeric vector, the cumulated number of patients
 #'       planned to be randomised at each adaptive analysis, even those not
-#'       conducted if the simulaiton is stopped before the maximum sample size.
+#'       conducted if the simulation is stopped before the maximum sample size.
 #'     \item `start_control`: character, initial common control arm (if
 #'       specified).
 #'     \item `final_control`: character, final common control arm (if relevant).

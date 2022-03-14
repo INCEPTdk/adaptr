@@ -32,11 +32,11 @@ A \code{trial_result} object containing everything listed below if
 \code{"futility"}, or \code{"max"}.
 \item \code{final_n}: the total number of patients randomised.
 \item \code{max_n}: the pre-specified maximum sample size.
-\item \code{looks}: numreic vector, the total number of patients at each
+\item \code{looks}: numeric vector, the total number of patients at each
 conducted adaptive analysis.
 \item \code{planned_looks}: numeric vector, the cumulated number of patients
 planned to be randomised at each adaptive analysis, even those not
-conducted if the simulaiton is stopped before the maximum sample size.
+conducted if the simulation is stopped before the maximum sample size.
 \item \code{start_control}: character, initial common control arm (if
 specified).
 \item \code{final_control}: character, final common control arm (if relevant).
