@@ -16,10 +16,9 @@ knitr::opts_chunk$set(
 # adaptr <img src="man/figures/adaptr.png" align="right" width="120" />
 
 <!-- badges: start -->
-![Version](https://img.shields.io/badge/version-1.0.0-informational.svg)
+[![CRAN status](https://www.r-pkg.org/badges/version/adaptr)](https://cran.r-project.org/package=adaptr)
 [![R-CMD-check](https://github.com/INCEPTdk/adaptr/workflows/R-CMD-check/badge.svg)](https://github.com/INCEPTdk/adaptr/actions/)
 [![codecov](https://codecov.io/gh/INCEPTdk/adaptr/branch/main/graph/badge.svg)](https://app.codecov.io/gh/INCEPTdk/adaptr/)
-![CRAN status](https://img.shields.io/badge/CRAN-submitted-blueviolet.svg)
 <!-- badges: end -->
 
 The `adaptr` package simulates adaptive clinical trials using adaptive
@@ -30,18 +29,16 @@ The package has been developed as part of the
 is primarily supported by a grant from
 [Sygeforsikringen "danmark"](https://www.sygeforsikring.dk/).
 
-The full package documentation is available as a stand-alone website at https://inceptdk.github.io/adaptr/.
+The full package documentation is available as a stand-alone website at [inceptdk.github.io/adaptr](https://inceptdk.github.io/adaptr/).
 
 ## Installation
 
-`adaptr` is not yet on [CRAN](https://cran.r-project.org/) (it should be
-shortly, though), but you can install the package directly from
-[GitHub](https://github.com/INCEPTdk/adaptr/) using the
-`remotes` package (install it with `install.packages("remotes")` if you do not
-already have it):
-
 ```{r eval = FALSE}
-# install.packages("remotes")
+# The easiest way is to install from CRAN directly
+install.packages("adaptr")
+
+# But you can also get the newest version from GitHub (requires the remotes package)
+# install.packages("remotes") 
 remotes::install_github("INCEPTdk/adaptr")
 ```
 

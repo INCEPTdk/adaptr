@@ -5,11 +5,10 @@
 
 <!-- badges: start -->
 
-![Version](https://img.shields.io/badge/version-1.0.0-informational.svg)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/adaptr)](https://cran.r-project.org/package=adaptr)
 [![R-CMD-check](https://github.com/INCEPTdk/adaptr/workflows/R-CMD-check/badge.svg)](https://github.com/INCEPTdk/adaptr/actions/)
 [![codecov](https://codecov.io/gh/INCEPTdk/adaptr/branch/main/graph/badge.svg)](https://app.codecov.io/gh/INCEPTdk/adaptr/)
-![CRAN
-status](https://img.shields.io/badge/CRAN-submitted-blueviolet.svg)
 <!-- badges: end -->
 
 The `adaptr` package simulates adaptive clinical trials using adaptive
@@ -21,18 +20,16 @@ supported by a grant from [Sygeforsikringen
 “danmark”](https://www.sygeforsikring.dk/).
 
 The full package documentation is available as a stand-alone website at
-<https://inceptdk.github.io/adaptr/>.
+[inceptdk.github.io/adaptr](https://inceptdk.github.io/adaptr/).
 
 ## Installation
 
-`adaptr` is not yet on [CRAN](https://cran.r-project.org/) (it should be
-shortly, though), but you can install the package directly from
-[GitHub](https://github.com/INCEPTdk/adaptr/) using the `remotes`
-package (install it with `install.packages("remotes")` if you do not
-already have it):
-
 ``` r
-# install.packages("remotes")
+# The easiest way is to install from CRAN directly
+install.packages("adaptr")
+
+# But you can also get the newest version from GitHub (requires the remotes package)
+# install.packages("remotes") 
 remotes::install_github("INCEPTdk/adaptr")
 ```
 
@@ -171,7 +168,7 @@ print(res_sum, digits = 1)
 #> * Ideal design percentage: 100.0%
 #> 
 #> Simulation details:
-#> * Simulation time: 0.347 secs
+#> * Simulation time: 0.376 secs
 #> * Base random seed: 67890
 #> * Credible interval width: 95%
 #> * Number of posterior draws: 5000
@@ -240,9 +237,8 @@ citation(package = "adaptr")
 #> To cite package 'adaptr' in publications use:
 #> 
 #>   Anders Granholm and Benjamin Skov Kaas-Hansen (2022). adaptr:
-#>   Adaptive Trial Simulator. https://incept.dk/,
-#>   https://github.com/INCEPTdk/adaptr/,
-#>   https://inceptdk.github.io/adaptr/.
+#>   Adaptive Trial Simulator. R package version 1.0.0.
+#>   https://CRAN.R-project.org/package=adaptr
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 
@@ -250,8 +246,7 @@ citation(package = "adaptr")
 #>     title = {adaptr: Adaptive Trial Simulator},
 #>     author = {Anders Granholm and Benjamin Skov Kaas-Hansen},
 #>     year = {2022},
-#>     note = {https://incept.dk/,
-#> https://github.com/INCEPTdk/adaptr/,
-#> https://inceptdk.github.io/adaptr/},
+#>     note = {R package version 1.0.0},
+#>     url = {https://CRAN.R-project.org/package=adaptr},
 #>   }
 ```
