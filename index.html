@@ -34,7 +34,7 @@
     
     <a class="navbar-brand me-2" href="index.html">adaptr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -83,13 +83,16 @@
 
 <p>The <code>adaptr</code> package simulates adaptive clinical trials using adaptive stopping, adaptive arm dropping and/or response-adaptive randomisation.</p>
 <p>The package has been developed as part of the <a href="https://incept.dk/" class="external-link">INCEPT (Intensive Care Platform Trial) project</a>, which is primarily supported by a grant from <a href="https://www.sygeforsikring.dk/" class="external-link">Sygeforsikringen “danmark”</a>.</p>
-<p>The full package documentation is available as a stand-alone website at <a href="https://inceptdk.github.io/adaptr/" class="uri">https://inceptdk.github.io/adaptr/</a>.</p>
+<p>The full package documentation is available as a stand-alone website at <a href="https://inceptdk.github.io/adaptr/">inceptdk.github.io/adaptr</a>.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p><code>adaptr</code> is not yet on <a href="https://cran.r-project.org/" class="external-link">CRAN</a> (it should be shortly, though), but you can install the package directly from <a href="https://github.com/INCEPTdk/adaptr/" class="external-link">GitHub</a> using the <code>remotes</code> package (install it with <code>install.packages("remotes")</code> if you do not already have it):</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># install.packages("remotes")</span>
+<code class="sourceCode R"><span class="co"># The easiest way is to install from CRAN directly</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"adaptr"</span><span class="op">)</span>
+
+<span class="co"># But you can also get the newest version from GitHub (requires the remotes package)</span>
+<span class="co"># install.packages("remotes") </span>
 <span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"INCEPTdk/adaptr"</span><span class="op">)</span></code></pre></div>
 </div>
 <div class="section level2">
@@ -218,7 +221,7 @@
 <span class="co">#&gt; * Ideal design percentage: 100.0%</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Simulation details:</span>
-<span class="co">#&gt; * Simulation time: 0.347 secs</span>
+<span class="co">#&gt; * Simulation time: 0.376 secs</span>
 <span class="co">#&gt; * Base random seed: 67890</span>
 <span class="co">#&gt; * Credible interval width: 95%</span>
 <span class="co">#&gt; * Number of posterior draws: 5000</span>
@@ -269,9 +272,8 @@
 <span class="co">#&gt; To cite package 'adaptr' in publications use:</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;   Anders Granholm and Benjamin Skov Kaas-Hansen (2022). adaptr:</span>
-<span class="co">#&gt;   Adaptive Trial Simulator. https://incept.dk/,</span>
-<span class="co">#&gt;   https://github.com/INCEPTdk/adaptr/,</span>
-<span class="co">#&gt;   https://inceptdk.github.io/adaptr/.</span>
+<span class="co">#&gt;   Adaptive Trial Simulator. R package version 1.0.0.</span>
+<span class="co">#&gt;   https://CRAN.R-project.org/package=adaptr</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; A BibTeX entry for LaTeX users is</span>
 <span class="co">#&gt; </span>
@@ -279,15 +281,15 @@
 <span class="co">#&gt;     title = {adaptr: Adaptive Trial Simulator},</span>
 <span class="co">#&gt;     author = {Anders Granholm and Benjamin Skov Kaas-Hansen},</span>
 <span class="co">#&gt;     year = {2022},</span>
-<span class="co">#&gt;     note = {https://incept.dk/,</span>
-<span class="co">#&gt; https://github.com/INCEPTdk/adaptr/,</span>
-<span class="co">#&gt; https://inceptdk.github.io/adaptr/},</span>
+<span class="co">#&gt;     note = {R package version 1.0.0},</span>
+<span class="co">#&gt;     url = {https://CRAN.R-project.org/package=adaptr},</span>
 <span class="co">#&gt;   }</span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
+<li><a href="https://cloud.r-project.org/package=adaptr" class="external-link">View on CRAN</a></li>
 <li><a href="https://github.com/INCEPTdk/adaptr/" class="external-link">Browse source code</a></li>
 <li><a href="https://github.com/INCEPTdk/adaptr/issues/" class="external-link">Report a bug</a></li>
 </ul>
@@ -321,6 +323,7 @@
 <div class="dev-status">
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
+<li><a href="https://cran.r-project.org/package=adaptr" class="external-link"><img src="https://www.r-pkg.org/badges/version/adaptr" alt="CRAN status"></a></li>
 <li><a href="https://github.com/INCEPTdk/adaptr/actions/" class="external-link"><img src="https://github.com/INCEPTdk/adaptr/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
 <li><a href="https://app.codecov.io/gh/INCEPTdk/adaptr/" class="external-link"><img src="https://codecov.io/gh/INCEPTdk/adaptr/branch/main/graph/badge.svg" alt="codecov"></a></li>
 </ul>
