@@ -44,6 +44,8 @@
 #' `citation(package = "adaptr")`.
 #'
 #' @references
+#' [Website/manual](https://inceptdk.github.io/adaptr/)
+#'
 #' [GitHub repository](https://github.com/INCEPTdk/adaptr/)
 #'
 #' @seealso

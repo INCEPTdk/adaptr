@@ -13,7 +13,7 @@
 .onAttach <- function(libname, pkgname) {
   packageStartupMessage("Loading adaptr package (version ", packageVersion("adaptr"), ").\n",
                         "See 'help(\"adaptr\")' or 'vignette(\"Overview\", \"adaptr\")' for help.\n",
-                        "Further information available on https://github.com/INCEPTdk/adaptr/.")
+                        "Further information available on https://inceptdk.github.io/adaptr/.")
 }
 
 

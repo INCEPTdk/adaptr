@@ -46,6 +46,8 @@ If using the package, please consider citing it using
 \code{citation(package = "adaptr")}.
 }
 \references{
+\href{https://inceptdk.github.io/adaptr/}{Website/manual}
+
 \href{https://github.com/INCEPTdk/adaptr/}{GitHub repository}
 }
 \seealso{
