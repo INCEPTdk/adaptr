@@ -2,6 +2,8 @@ on:
   push:
     branches: joss-paper
 
+name: JOSS compile to PDF
+
 jobs:
   paper:
     runs-on: ubuntu-latest
