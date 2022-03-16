@@ -415,7 +415,7 @@ each adaptive analysis using:
 plot_status(sims)
 ```
 
-<img src="images/image1.png" style="display: block; margin: auto;" />
+![Status plot](images/image1.png)
 
 The overall allocation probabilities in each arm (y axis) against the total
 number of patients included in the trial (x axis) are plotted using:
@@ -426,7 +426,7 @@ number of patients included in the trial (x axis) are plotted using:
 plot_history(sims, x_value = "total n", y_value = "prob")
 ```
 
-<img src="images/image2.png" style="display: block; margin: auto;" />
+![History plot](images/image2.png)
 
 Arm-specific statuses and additional metrics over time may be plotted as well.
 
