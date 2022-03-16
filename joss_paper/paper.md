@@ -35,12 +35,12 @@ bibliography: paper.bib
 
 The `adaptr` **R** package facilitates simulation and comparison of adaptive
 clinical trial designs using Bayesian statistical methods. The package supports
-a flexible number of arms, use of a common control, pre-specified and
-user-defined outcome- and posterior-generating functions, fixed- and
-response-adaptive randomisation (RAR), various adaptation rules for arm dropping
-and stopping, calculation of trial design performance metrics, and visualisation
-of results. Simulations are relatively fast, can run in parallel, and can be
-reloaded from previous sessions.
+a flexible number of arms, use of a common control arm, pre-specified and
+user-defined outcome- and posterior probability distribution-generating
+functions, fixed- and response-adaptive randomisation (RAR), various adaptation
+rules for arm dropping and stopping, calculation of trial design performance
+metrics, and visualisation of results. Simulations are relatively fast, can
+run in parallel, and can be reloaded from previous sessions.
 
 # Statement of need
 
@@ -50,9 +50,9 @@ allocation ratios [@pallmann2018]. Because more efficient trials may be
 preferable for economic, logistic and ethical reasons, the interest in adaptive
 clinical trials is growing [@granholm2021]. Planning adaptive trials and
 comparing adaptive trials designs is complex, however, and require statistical
-simulation because simple, closed-form sample size calculations are impractical
+simulation because simple, closed-form sample size calculations are infeasible.
 Existing software is either closed source/commercial, has limited features or
-flexibility, or based on graphical user interfaces that may hamper
+flexibility, or is based on graphical user interfaces that may hamper
 reproducibility (unlike scripting-based tools) [@meyer2021].
 
 # Overview and features
@@ -60,8 +60,8 @@ reproducibility (unlike scripting-based tools) [@meyer2021].
 The `adaptr` R package [@rcore] focuses on multi-arm adaptive clinical trials
 using adaptive stopping, arm dropping and/or response-adaptive randomisation
 [@pallmann2018; @viele2020a]. Many realistic trial designs are supported by the
-built-in functions and more advanced designs can be simulated with user-defined
-functions.
+built-in functions and more advanced trial designs can be simulated with
+user-defined functions.
 
 **Table 1** gives an overview of the functionality of `adaptr`:
 
@@ -81,7 +81,7 @@ functions.
 |                   |                                                           |
 |                   | For more flexibility, user-defined functions for          |
 |                   | generating outcomes and sampling from posterior           |
-|                   | distributions are supported, and may use more complex     |
+|                   | distributions are supported; these may use more complex   |
 |                   | functions provided by other packages (e.g., Markov chain  |
 |                   | Monte Carlo or variational inference).                    |
 +-------------------+-----------------------------------------------------------+
@@ -94,8 +94,8 @@ functions.
 |                   |                                                           |
 |                   | Supports minimum/maximum allocation limits and            |
 |                   | *softening* non-fixed allocation probabilities by raising |
-|                   | them to a power [@ryan2020] (may vary throughout the      |
-|                   | trial) and normalising probabilities to sum to 100%.      |
+|                   | them to a power [@ryan2020] (which may vary throughout    |
+|                   | the trial) and normalising probabilities to sum to 100%.  |
 +-------------------+-----------------------------------------------------------+
 | **Adaptation**    | Supports probabilistic trial-stopping/arm-dropping rules  |
 | **rules**         | for superiority, inferiority, and practical equivalence   |
@@ -119,12 +119,12 @@ functions.
 | **Visualisation** | Offers graphical summaries of the overall or arm-specific |
 |                   | statuses over time across multiple simulations (such as   |
 |                   | still *recruting* or *trial stopped/arm dropped* for      |
-|                   | various reasons), and relevant arm-specific metrics (e.g. |
-|                   | allocation probabilities) over time across                |
+|                   | various reasons), and relevant arm-specific metrics       |
+|                   | (e.g., allocation probabilities) over time across         |
 |                   | single/multiple trial simulations.                        |
 +-------------------+-----------------------------------------------------------+
-| **Technical**     | Supports parallel execution on multiple using **R**'s     |
-|                   | built-in `parallel` package.                              |
+| **Technical**     | Supports parallel execution on multiple cores using       |
+|                   | **R**'s built-in `parallel` package.                      |
 |                   |                                                           |
 |                   | Allows reproducible results with seeding.                 |
 |                   |                                                           |
@@ -138,7 +138,7 @@ functions.
 
 : Overview of functionality in the `adaptr` package.
 
-Adaptive analyses are conducted at specified recruitment numbers, with random
+Adaptive analyses are conducted at specified recruitment numbers, after random
 allocation of simulated patients to currently active arms. Both fixed and
 response-adaptive randomisation (RAR) as well as combinations (including several
 restrictions of RAR) are supported [@pallmann2018; @apt2019; @park2020;
@@ -146,7 +146,7 @@ restrictions of RAR) are supported [@pallmann2018; @apt2019; @park2020;
 posterior distributions; the packages comes with built-in functions for
 generating outcomes and posteriors using fast models with conjugate, flat priors
 [@ryan2019], but more advanced estimation are allowed using user-defined
-functions..
+functions.
 
 Posterior draws are used to calculate probabilities for (i) enforcing adaptive
 trial-stopping/arm-dropping rules with respect to superiority, inferiority,
@@ -198,7 +198,7 @@ An overview of the principal functions in `adaptr` is given in **Table 2**:
 |                       | strategy for simulations not ending in superiority.  |
 +-----------------------+------------------------------------------------------+
 | **`plot_status`**     | Plots the overall statuses or arm-specific statuses  |
-|                       | over multiple simulations over the course of         |
+|                       | for multiple simulations over the course of the      |
 |                       | simulated trials.                                    |
 +-----------------------+------------------------------------------------------+
 | **`plot_history`**    | Plots the history of relevant metrics in each arm    |
@@ -212,7 +212,7 @@ An overview of the principal functions in `adaptr` is given in **Table 2**:
 : Overview of user-facing functions in `adaptr`.
 
 `adaptr` is available on [CRAN](https://CRAN.R-project.org/package=adaptr) and
-[GitHub](https://github.com/INCEPTdk/adaptr), where a
+[GitHub](https://github.com/INCEPTdk/adaptr/), where a
 [stand-alone website](https://inceptdk.github.io/adaptr/) with the package
 documentation is also available. `adaptr` can be installed using one
 of the following commands:
@@ -222,7 +222,7 @@ of the following commands:
 install.packages("adaptr") # CRAN
 
 # install.packages("remotes")
-remotes::install_github("INCEPTdk/adaptr") # GitHub, development version
+remotes::install_github("INCEPTdk/adaptr") # GitHub
 ```
 
 Once installed, as any other R package, it is loaded with:
@@ -236,40 +236,40 @@ library(adaptr)
 ```
 
 An adaptive trial design is specified with the generic `setup_trial` function
-(requires used-defined functions to generate/compare outcomes), or one of the
+(requires user-defined functions to generate/compare outcomes), or one of the
 helper functions `setup_trial_binom` or `setup_trial_norm` (wrappers around
 `setup_trial` with appropriate functions for generating outcomes and sampling
-from posterior distributions). For example, a simple trial with a binary,
-binomially distributed outcome can be specified with:
+from posterior distributions). For example, a simple four-arm trial with a
+binary, binomially distributed outcome can be specified with:
 
 
 ```r
 binom_trial <- setup_trial_binom(
    # Treatment arms
    arms = c("Control", "Experimental A", "Experimental B", "Experimental C"),
-   
+
    # True event rates
    true_ys = c(0.25, 0.30, 0.22, 0.19),
-   
+
    # Time of adaptive analyses
    # - first analysis when 400 patients are included, then after every 100
    data_looks = seq(from = 400, to = 2000, by = 100),
-   
+
    # Name of the common control (leave undefined if no common control is desired)
    control = "Control",
-   
-   # Use square-root-ratio-based allocation (sqrt(number of non-control arms):1 
+
+   # Use square-root-ratio-based allocation (sqrt(number of non-control arms):1
    # for each non-control arm), with fixed control group allocation and RAR in
    # the non-control arms
    control_prob_fixed = "sqrt-based",
-   
+
    # Define stopping rules
-   superiority = 0.99,
-   inferiority = 0.01,
+   superiority = 0.99, # Superiority probability threshold
+   inferiority = 0.01, # Inferiority probability threshold
    equivalence_prob = 0.85, # Equivalence probability threshold
    equivalence_diff = 0.05, # Equivalence difference
    equivalence_only_first = TRUE, # Only assess equivalence for first control
-   
+
    # Restrict non-fixed allocation ratios (limit extreme RAR)
    soften_power = 0.5
 )
@@ -277,24 +277,26 @@ binom_trial <- setup_trial_binom(
 print(binom_trial)
 #> Trial specification: generic binomially distributed outcome trial
 #> * Undesirable outcome
-#> * Common control arm: Control 
-#> * Control arm probability fixed at 0.366 (for 4 arms), 0.414 (for 3 arms), 0.5 (for 2 arms)
+#> * Common control arm: Control
+#> * Control arm probability fixed at 0.366 (for 4 arms), 0.414 (for 3 arms),
+#> 0.5 (for 2 arms)
 #> * Best arm: Experimental C
-#> 
-#> Arms, true outcomes, starting allocation probabilities 
+#>
+#> Arms, true outcomes, starting allocation probabilities
 #> and allocation probability limits:
 #>            arms true_ys start_probs fixed_probs min_probs max_probs
 #>         Control    0.25       0.366       0.366        NA        NA
 #>  Experimental A    0.30       0.211          NA        NA        NA
 #>  Experimental B    0.22       0.211          NA        NA        NA
 #>  Experimental C    0.19       0.211          NA        NA        NA
-#> 
-#> Maximum sample size: 2000 
+#>
+#> Maximum sample size: 2000
 #> Maximum number of data looks: 17
-#> Planned data looks after:  400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000 patients
-#> 
-#> Superiority threshold: 0.99 
-#> Inferiority threshold: 0.01 
+#> Planned data looks after:  400, 500, 600, 700, 800, 900, 1000, 1100,
+#> 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000 patients
+#>
+#> Superiority threshold: 0.99
+#> Inferiority threshold: 0.01
 #> Equivalence threshold: 0.85 (only checked for first control)
 #> Absolute equivalence difference: 0.05
 #> No futility threshold
@@ -309,10 +311,10 @@ run_trial(binom_trial, seed = 202203) # Fixed random seed
 #> Single simulation result: generic binomially distributed outcome trial
 #> * Undesirable outcome
 #> * Initial/final common control arms: Control/Experimental C
-#> 
+#>
 #> Final status: inconclusive, stopped at maximum sample size
 #> Final/maximum allowed sample sizes: 2000/2000 (100.0%)
-#> 
+#>
 #> Final trial results:
 #>            arms true_ys sum_ys  ns raw_ests post_ests post_errs lo_cri hi_cri
 #>         Control    0.25     42 145    0.290     0.293    0.0375  0.223  0.366
@@ -324,7 +326,7 @@ run_trial(binom_trial, seed = 202203) # Fixed random seed
 #>      inferior         400       0.0036       0.211
 #>        active          NA           NA       0.500
 #>       control          NA           NA       0.500
-#> 
+#>
 #> Simulation details:
 #> * Random seed: 202203
 #> * Credible interval width: 95%
@@ -339,14 +341,14 @@ keeps all intermediate simulation results; this is required for `plot_history`
 
 
 ```r
-sims <- run_trials(trial_spec = binom_trial, n_rep = 1000, cores = 4, 
+sims <- run_trials(trial_spec = binom_trial, n_rep = 1000, cores = 4,
                    base_seed = 202204, sparse = FALSE)
 ```
 
 ## Numerical results
 
-We summarise the results, assuming the control arm would be used practice in
-case of inconclusive trials (unless the control group is dropped early):
+We summarise the results, assuming the control arm would be used in clinical
+practice in case of inconclusive trials (unless dropped early):
 
 
 ```r
@@ -358,21 +360,25 @@ summary(sims, select_strategy = "control")
 #> * Common control arm: Control
 #> * Selection strategy: first control if available (otherwise no selection)
 #> * Treatment effect compared to: no comparison
-#> 
+#>
 #> Performance metrics (using posterior estimates):
-#> * Sample sizes: mean 1708.3 (SD: 438.0) | median 2000.0 (IQR: 1500.0 to 2000.0)
-#> * Total summarised outcomes: mean 382.5 (SD: 96.4) | median 422.0 (IQR: 338.8 to 449.0)
-#> * Total summarised outcome rates: mean 0.225 (SD: 0.014) | median 0.225 (IQR: 0.216 to 0.234)
+#> * Sample sizes: mean 1708.3 (SD: 438.0) | median 2000.0 (IQR: 1500.0 to
+#> 2000.0)
+#> * Total summarised outcomes: mean 382.5 (SD: 96.4) | median 422.0 (IQR:
+#> 338.8 to 449.0)
+#> * Total summarised outcome rates: mean 0.225 (SD: 0.014) | median 0.225
+#> (IQR: 0.216 to 0.234)
 #> * Conclusive: 45.2%
 #> * Superiority: 39.0%
 #> * Equivalence: 6.2%
 #> * Futility: 0.0% [not assessed]
 #> * Inconclusive at max sample size: 54.8%
-#> * Selection probabilities: Control: 24.0% | Experimental A: 0.0% | Experimental B: 1.3% | Experimental C: 33.1% | None: 41.6%
+#> * Selection probabilities: Control: 24.0% | Experimental A: 0.0% |
+#> Experimental B: 1.3% | Experimental C: 33.1% | None: 41.6%
 #> * RMSE: 0.02742
 #> * RMSE treatment effect: 0.04741
 #> * Ideal design percentage: 77.0%
-#> 
+#>
 #> Simulation details:
 #> * Simulation time: 19.9 secs
 #> * Base random seed: 202204
@@ -388,7 +394,7 @@ using the same selection strategy as above:
 ```r
 extr_res <- extract_results(sims, select_strategy = "control")
 
-head(extr_res)
+head(extr_res) # Print results for first six simulations
 #>   sim final_n sum_ys  ratio_ys final_status   superior_arm   selected_arm
 #> 1   1    2000    436 0.2180000          max           <NA>           <NA>
 #> 2   2    2000    452 0.2260000          max           <NA>           <NA>
@@ -407,8 +413,7 @@ head(extr_res)
 
 ## Visual summaries
 
-Here we plot the overall trial statuses (reasons for stopping each trial) at
-each adaptive analysis using:
+We can plot the overall trial statuses at each adaptive analysis using:
 
 
 ```r
@@ -426,7 +431,7 @@ number of patients included in the trial (x axis) are plotted using:
 plot_history(sims, x_value = "total n", y_value = "prob")
 ```
 
-![History plot](images/image2.png)
+![Allocation probabilities history plot](images/image2.png)
 
 Arm-specific statuses and additional metrics over time may be plotted as well.
 
@@ -443,16 +448,16 @@ outcome types, more complex models are supported but may increase simulation
 time substantially and require (highly) parallel execution on multiple cores
 locally and/or remotely using cloud computing.
 
-While relatively feature rich, the package currently has some limitations. These
+While relatively feature-rich, the package currently has some limitations. These
 primarily include the lack of a 'flooring' option (stopping allocation to arms
 when their probabilities of being the best fall below a certain threshold,
 possibly with subsequent resumption of allocation [@viele2020a]), inability to
 add arms during the conduct (as done in adaptive platform trials [@apt2019];
-this is complex and generally not supported in other software [@meyer2021]) and
+this is complex and not supported in most other software [@meyer2021]) and
 the lack of separate stopping rules/allocation ratios in subgroups or enrichment
-(similarly complex [@apt2019]). Finally, the package uses Bayesian statistical
-methods as these are well-suited for adaptive trials and easily extended;
-frequentist statistical methods are not supported.
+(which is similarly complex [@apt2019]). Finally, the package uses Bayesian
+statistical methods as these are well-suited for adaptive trials and easily
+extended; frequentist statistical methods are not supported.
 
 In conclusion, the `adaptr` **R** package provides a feature-rich and extensible
 open-source, scripting-based solution for planning, simulating and comparing
@@ -460,8 +465,9 @@ adaptive clinical trials.
 
 # Acknowledgement
 
-`adaptr` has been developed as part of the [Intensive Care Platform Trial
-programme](https://www.incept.dk), which has primarily been funded by a grant
-from [Sygeforsikringen "danmark"](https://www.sygeforsikring.dk).
+`adaptr` has been developed as part of the
+[Intensive Care Platform Trial](https://www.incept.dk) programme, which has
+primarily been funded by a grant from
+[Sygeforsikringen "danmark"](https://www.sygeforsikring.dk).
 
 # References
