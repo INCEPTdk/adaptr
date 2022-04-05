@@ -9,6 +9,7 @@
 status](https://www.r-pkg.org/badges/version/adaptr)](https://cran.r-project.org/package=adaptr)
 [![R-CMD-check](https://github.com/INCEPTdk/adaptr/workflows/R-CMD-check/badge.svg)](https://github.com/INCEPTdk/adaptr/actions/)
 [![codecov](https://codecov.io/gh/INCEPTdk/adaptr/branch/main/graph/badge.svg)](https://app.codecov.io/gh/INCEPTdk/adaptr/)
+[![status](https://joss.theoj.org/papers/e070045b6998360d93eed06c95ba44a7/status.svg)](https://joss.theoj.org/papers/e070045b6998360d93eed06c95ba44a7)
 <!-- badges: end -->
 
 The `adaptr` package simulates adaptive clinical trials using adaptive
