@@ -448,6 +448,14 @@ outcome types, more complex models are supported but may increase simulation
 time substantially and require (highly) parallel execution on multiple cores
 locally and/or remotely using cloud computing.
 
+Compared to other open-source solutions [@meyer2021], `adaptr` comprises
+a completely functional and well-documented **R** package with support for
+multiple complex randomisation strategies, different stopping rules with
+detailed control, full support for user-defined outcome-/posterior-generating
+functions, parallel computation, easy calculation of various trial design
+performance metrics according to different arm selection strategies for trials
+not ending in superiority, and  visualisation of relevant metrics across single
+or multiple simulations.
 While relatively feature-rich, the package currently has some limitations. These
 primarily include the lack of a 'flooring' option (stopping allocation to arms
 when their probabilities of being the best fall below a certain threshold,
