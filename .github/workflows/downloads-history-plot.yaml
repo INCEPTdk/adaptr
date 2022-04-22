@@ -2,7 +2,7 @@
 
 on:
   schedule:
-  - cron: "0 22 * * 1,5" # run Mondays and Fridays at 22 o'clock
+  - cron: "0 22 * * 1" # run Mondays at 22 o'clock
   workflow_dispatch:
 
 
