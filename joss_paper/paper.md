@@ -49,7 +49,7 @@ conventional randomised clinical trials (RCTs) with fixed sample sizes and
 allocation ratios [@pallmann2018]. Because more efficient trials may be
 preferable for economic, logistic and ethical reasons, the interest in adaptive
 clinical trials is growing [@granholm2021]. Planning adaptive trials and
-comparing adaptive trials designs is complex, however, and require statistical
+comparing adaptive trials designs is complex, however, and requires statistical
 simulation because simple, closed-form sample size calculations are infeasible.
 Existing software is either closed source/commercial, has limited features or
 flexibility, or is based on graphical user interfaces that may hamper
