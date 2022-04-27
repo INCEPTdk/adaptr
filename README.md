@@ -46,7 +46,7 @@ general `setup_trial()` function, or one of the special case functions,
 library(adaptr)
 #> Loading adaptr package (version 1.0.0).
 #> See 'help("adaptr")' or 'vignette("Overview", "adaptr")' for help.
-#> Further information available on https://github.com/INCEPTdk/adaptr/.
+#> Further information available on https://inceptdk.github.io/adaptr/.
 
 # Setup a trial using a binary, binomially distributed, undesirable outcome
 binom_trial <- setup_trial_binom(
@@ -169,7 +169,7 @@ print(res_sum, digits = 1)
 #> * Ideal design percentage: 100.0%
 #> 
 #> Simulation details:
-#> * Simulation time: 0.376 secs
+#> * Simulation time: 0.368 secs
 #> * Base random seed: 67890
 #> * Credible interval width: 95%
 #> * Number of posterior draws: 5000
@@ -235,19 +235,24 @@ If using the package, please consider citing it:
 ``` r
 citation(package = "adaptr")
 #> 
-#> To cite package 'adaptr' in publications use:
+#> To cite adaptr in publications use:
 #> 
-#>   Anders Granholm and Benjamin Skov Kaas-Hansen (2022). adaptr:
-#>   Adaptive Trial Simulator. R package version 1.0.0.
-#>   https://CRAN.R-project.org/package=adaptr
+#>   Granholm A, Jensen AKG, Lange T, Kaas-Hansen BS (2022). adaptr: an R
+#>   package for simulating and comparing adaptive clinical trials.
+#>   Journal of Open Source Software, 7(72), 4284. URL
+#>   https://doi.org/10.21105/joss.04284.
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 
-#>   @Manual{,
-#>     title = {adaptr: Adaptive Trial Simulator},
-#>     author = {Anders Granholm and Benjamin Skov Kaas-Hansen},
+#>   @Article{,
+#>     title = {{adaptr}: an R package for simulating and comparing adaptive clinical trials},
+#>     author = {Anders Granholm and Aksel Karl Georg Jensen and Theis Lange and Benjamin Skov Kaas-Hansen},
+#>     journal = {Journal of Open Source Software},
 #>     year = {2022},
-#>     note = {R package version 1.0.0},
-#>     url = {https://CRAN.R-project.org/package=adaptr},
+#>     volume = {7},
+#>     number = {72},
+#>     pages = {4284},
+#>     url = {https://doi.org/10.21105/joss.04284},
+#>     doi = {10.21105/joss.04284},
 #>   }
 ```
