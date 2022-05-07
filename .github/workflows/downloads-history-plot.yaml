@@ -21,26 +21,23 @@ jobs:
         with:
           use-public-rspm: true
 
-      - name: Install packages
-        run: install.packages(c("ggplot2", "cranlogs"))
-        shell: Rscript {0}
-
       - name: Draw history
         run: |
-          library(ggplot2)
-          library(cranlogs)
+          install.packages("cranlogs")
 
-          df <- cran_downloads("adaptr", from = "2022-03-14", to = Sys.Date() - 1) # today's stats won't be available
-          ggplot(df, aes(date, count)) +
-            geom_line(size = 0.5) +
-            geom_point() +
-            theme_minimal() +
-            theme(axis.title = element_blank()) +
-            labs(title = "Downloads per day since release",
-                 subtitle = paste("Total downloads:", scales::comma(sum(df$count)))) # ggplot2 brings scales along
+          df <- cranlogs::cran_downloads("adaptr", from = "2022-03-14", to = Sys.Date() - 1)
+            # today's stats won't be available
 
-          ggsave(".github/workflows/downloads-history.pdf", units = "cm",
-                 width = 15, height = 10)
+          pdf(file = ".github/workflows/downloads-history.pdf", width = 20/2.54, height = 12/2.54)
+            # convert to inches
+          plot(df$date, df$count,
+               xlab = "Dashed line: mean per day",
+               ylab = "No. downloads", type = "o", pch = 16, cex = 0.75, lwd = 0.2,
+               main = paste("Downloads per day since release\n",
+                            "Total downloads:",
+                            format(sum(df$count), big.mark = ",", scientific = FALSE)))
+          abline(a = mean(df[-1, "count"]), b = 0, lty = 2, col = "dodgerblue")
+          dev.off()
         shell: Rscript {0}
 
       - name: Archive plot as artefact
