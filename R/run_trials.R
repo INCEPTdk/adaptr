@@ -152,6 +152,26 @@ dispatch_trial_runs <- function(X, trial_spec, base_seed, sparse, cores, cl = NU
 #' @param compress passed to [saveRDS] when saving simulations, defaults to
 #'   `TRUE` (as in [saveRDS]), see [saveRDS] for other options. Ignored if
 #'   simulations are not saved.
+#' @param export character vector of names of objects to export to each
+#'   parallel core if `cores > 1`; passed as the `varlist` argument to
+#'   [parallel::clusterExport()]. Defaults to `NULL` (no objects exported),
+#'   ignored if `cores == 1`. See **Details** below.
+#' @param export_envir `environment` where to look for the objects defined
+#'   in `export` if `cores > 1` and `export` is not `NULL`. Defaults to the
+#'   environment from where [run_trials] is called.
+#'
+#' @details
+#'
+#' \strong{Exporting objects when using multiple cores}
+#'
+#' If [setup_trial] is used to define a trial specification with custom
+#' functions (in the `fun_y_gen`, `fun_draws`, and `fun_raw_est` arguments) and
+#' [run_trials] is run with `cores > 1`, it is necessary to export additional
+#' user-defined functions used by the functions provided in the [setup_trial]
+#' arguments. Similarly, functions from external packages loaded using [library]
+#' or [require] will need to be exported or called prefixed with the namespace,
+#' i.e., `package::function`. The `export` and `export_envir` arguments are used
+#' to export objects calling the [parallel::clusterExport()]-function.
 #'
 #' @return A list of a special class `"trial_results"`, which contains the
 #'   `trial_results` (results from all simulations), `trial_spec` (the trial
@@ -180,7 +200,8 @@ dispatch_trial_runs <- function(X, trial_spec, base_seed, sparse, cores, cl = NU
 run_trials <- function(trial_spec, n_rep, path = NULL, overwrite = FALSE,
                        grow = FALSE, cores = 1, base_seed = NULL,
                        sparse = TRUE, progress = NULL,
-                       version = NULL, compress = TRUE) {
+                       version = NULL, compress = TRUE,
+                       export = NULL, export_envir = parent.frame()) {
 
   # Log starting time and validate inputs
   tic <- Sys.time()
@@ -281,6 +302,7 @@ run_trials <- function(trial_spec, n_rep, path = NULL, overwrite = FALSE,
     if (cores > 1) {
       cl <- makeCluster(cores)
       on.exit(stopCluster(cl), add = TRUE, after = FALSE)
+      if (!is.null(export)) clusterExport(cl = cl, varlist = export, envir = export_envir)
     }
 
     # Run simulations
