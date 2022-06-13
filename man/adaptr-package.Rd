@@ -46,6 +46,10 @@ If using the package, please consider citing it using
 \code{citation(package = "adaptr")}.
 }
 \references{
+Granholm A, Jensen AKG, Lange T, Kaas-Hansen BS (2022). adaptr: an R package
+for simulating and comparing adaptive clinical trials. Journal of Open Source
+Software, 7(72), 4284. \doi{10.21105/joss.04284}
+
 \href{https://inceptdk.github.io/adaptr/}{Website/manual}
 
 \href{https://github.com/INCEPTdk/adaptr/}{GitHub repository}

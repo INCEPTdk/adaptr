@@ -15,7 +15,9 @@ run_trials(
   sparse = TRUE,
   progress = NULL,
   version = NULL,
-  compress = TRUE
+  compress = TRUE,
+  export = NULL,
+  export_envir = parent.frame()
 )
 }
 \arguments{
@@ -74,6 +76,15 @@ used. Ignored if simulations are not saved.}
 \item{compress}{passed to \link{saveRDS} when saving simulations, defaults to
 \code{TRUE} (as in \link{saveRDS}), see \link{saveRDS} for other options. Ignored if
 simulations are not saved.}
+
+\item{export}{character vector of names of objects to export to each
+parallel core if \code{cores > 1}; passed as the \code{varlist} argument to
+\code{\link[parallel:clusterApply]{parallel::clusterExport()}}. Defaults to \code{NULL} (no objects exported),
+ignored if \code{cores == 1}. See \strong{Details} below.}
+
+\item{export_envir}{\code{environment} where to look for the objects defined
+in \code{export} if \code{cores > 1} and \code{export} is not \code{NULL}. Defaults to the
+environment from where \link{run_trials} is called.}
 }
 \value{
 A list of a special class \code{"trial_results"}, which contains the
@@ -94,6 +105,18 @@ that function's description. This function allows simulating trials in
 parallel using multiple cores, automatically saving and re-loading saved
 objects, and "growing" already saved simulation files (i.e., appending
 additional simulations to the same file).
+}
+\details{
+\strong{Exporting objects when using multiple cores}
+
+If \link{setup_trial} is used to define a trial specification with custom
+functions (in the \code{fun_y_gen}, \code{fun_draws}, and \code{fun_raw_est} arguments) and
+\link{run_trials} is run with \code{cores > 1}, it is necessary to export additional
+user-defined functions used by the functions provided in the \link{setup_trial}
+arguments. Similarly, functions from external packages loaded using \link{library}
+or \link{require} will need to be exported or called prefixed with the namespace,
+i.e., \verb{package::function}. The \code{export} and \code{export_envir} arguments are used
+to export objects calling the \code{\link[parallel:clusterApply]{parallel::clusterExport()}}-function.
 }
 \examples{
 # Setup a trial specification

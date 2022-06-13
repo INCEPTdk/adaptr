@@ -270,8 +270,7 @@ scale: if they are estimated as, e.g., the \emph{log(odds)}, these estimates mus
 be transformed to probabilities and similarly for other measures.\cr
 Important: the \code{matrix} cannot contain \code{NA}s, even if no patients have been
 randomised to an arm yet. See the provided example for one way to alleviate
-this.
-\cr
+this.\cr
 See the \strong{Examples} vignette (\code{vignette("Examples", "adaptr")}) for an
 example with further details.
 
@@ -296,6 +295,13 @@ estimates) may be nonsensical if relative effect measures are used
 \code{rmse_te} and \code{idp}) may be equally nonsensical when calculated on the
 relative scale.
 }
+
+\strong{Using additional custom or functions from loaded packages in the
+custom functions}
+If the \code{fun_y_gen}, \code{fun_draws}, or \code{fun_raw_est} functions calls other
+user-specified functions or functions from external packages and simulations
+are conducted on multiple cores, these functions must be exported or prefixed
+with their namespace, respectively, as  described in \link{run_trials}.
 
 \strong{More information on arguments}
 \itemize{
