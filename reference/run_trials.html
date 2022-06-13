@@ -206,13 +206,14 @@ ending in superiority and other summary choices.</p>
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p><strong>Exporting objects when using multiple cores</strong></p>
 <p>If <a href="setup_trial.html">setup_trial</a> is used to define a trial specification with custom
-functions (in the <code>fun_y_gen</code>, <code>fun_draws</code>, and <code>fun_raw_est</code> arguments) and
-run_trials is run with <code>cores &gt; 1</code>, it is necessary to export additional
-user-defined functions used by the functions provided in the <a href="setup_trial.html">setup_trial</a>
-arguments. Similarly, functions from external packages loaded using <a href="https://rdrr.io/r/base/library.html" class="external-link">library</a>
-or <a href="https://rdrr.io/r/base/library.html" class="external-link">require</a> will need to be exported or called prefixed with the namespace,
-i.e., <code>package::function</code>. The <code>export</code> and <code>export_envir</code> arguments are used
-to export objects calling the <code><a href="https://rdrr.io/r/parallel/clusterApply.html" class="external-link">parallel::clusterExport()</a></code>-function.</p>
+functions (in the <code>fun_y_gen</code>, <code>fun_draws</code>, and <code>fun_raw_est</code> arguments of
+<a href="setup_trial.html">setup_trial</a>) and run_trials is run with <code>cores &gt; 1</code>, it is necessary to
+export additional functions or objects used by these functions and defined by
+the user outside the function definitions provided. Similarly, functions
+from external packages loaded using <a href="https://rdrr.io/r/base/library.html" class="external-link">library</a> or <a href="https://rdrr.io/r/base/library.html" class="external-link">require</a> must be exported
+or called prefixed with the namespace, i.e., <code>package::function</code>. The
+<code>export</code> and <code>export_envir</code> arguments are used to export objects calling the
+s<code><a href="https://rdrr.io/r/parallel/clusterApply.html" class="external-link">parallel::clusterExport()</a></code>-function.</p>
     </div>
 
     <div class="section level2">

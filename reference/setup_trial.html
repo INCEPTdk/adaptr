@@ -414,9 +414,11 @@ relative scale.</p></li>
 </ul><p><strong>Using additional custom or functions from loaded packages in the
 custom functions</strong>
 If the <code>fun_y_gen</code>, <code>fun_draws</code>, or <code>fun_raw_est</code> functions calls other
-user-specified functions or functions from external packages and simulations
-are conducted on multiple cores, these functions must be exported or prefixed
-with their namespace, respectively, as  described in <a href="run_trials.html">run_trials</a>.</p>
+user-specified functions (or uses objects defined by the user outside these
+functions or the <code>setup_trial</code>-call) or functions from external packages and
+simulations are conducted on multiple cores, these objects or functions must
+be exported or prefixed with their namespaces, respectively, as  described in
+<a href="run_trials.html">run_trials</a>.</p>
 <p><strong>More information on arguments</strong></p><ul><li><p><code>control</code>: if one or more treatment arms are superior to the control arm
 (i.e., passes the superiority threshold as defined above), this arm will
 become the new control (if multiple arms are superior, the one with the

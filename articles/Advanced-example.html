@@ -346,7 +346,7 @@
 <span class="co">#&gt; Soften power for all analyses: 1 (no softening)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Additional info: Trial using beta-binomial conjugate prior models and beta(15, 45) priors in each arm.</span></code></pre></div>
-<p>As <code><a href="../reference/setup_trial.html">setup_trial()</a></code> runs with no errors or warnings, the custom trial has been successfully specified and may be run by <code><a href="../reference/run_trial.html">run_trial()</a></code> or <code><a href="../reference/run_trials.html">run_trials()</a></code>.</p>
+<p>As <code><a href="../reference/setup_trial.html">setup_trial()</a></code> runs with no errors or warnings, the custom trial has been successfully specified and may be run by <code><a href="../reference/run_trial.html">run_trial()</a></code> or <code><a href="../reference/run_trials.html">run_trials()</a></code>. If the custom functions provided to <code><a href="../reference/setup_trial.html">setup_trial()</a></code> calls other custom functions (or uses objects defined by the user outside these functions) or if functions loaded from non-base R packages are used, please be aware that exporting these objects/functions or prefixing them with their namespace is necessary if simulations are conducted using multiple cores. See <code><a href="../reference/run_trial.html">run_trial()</a></code> for additional details. func</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
