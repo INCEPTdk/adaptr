@@ -44,9 +44,15 @@
 #' `citation(package = "adaptr")`.
 #'
 #' @references
+#'
+#' Granholm A, Jensen AKG, Lange T, Kaas-Hansen BS (2022). adaptr: an R package
+#' for simulating and comparing adaptive clinical trials. Journal of Open Source
+#' Software, 7(72), 4284. \doi{10.21105/joss.04284}
+#'
 #' [Website/manual](https://inceptdk.github.io/adaptr/)
 #'
 #' [GitHub repository](https://github.com/INCEPTdk/adaptr/)
+#'
 #'
 #' @seealso
 #' [setup_trial], [setup_trial_binom], [setup_trial_norm], [run_trial],
