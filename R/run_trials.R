@@ -165,13 +165,14 @@ dispatch_trial_runs <- function(X, trial_spec, base_seed, sparse, cores, cl = NU
 #' \strong{Exporting objects when using multiple cores}
 #'
 #' If [setup_trial] is used to define a trial specification with custom
-#' functions (in the `fun_y_gen`, `fun_draws`, and `fun_raw_est` arguments) and
-#' [run_trials] is run with `cores > 1`, it is necessary to export additional
-#' user-defined functions used by the functions provided in the [setup_trial]
-#' arguments. Similarly, functions from external packages loaded using [library]
-#' or [require] will need to be exported or called prefixed with the namespace,
-#' i.e., `package::function`. The `export` and `export_envir` arguments are used
-#' to export objects calling the [parallel::clusterExport()]-function.
+#' functions (in the `fun_y_gen`, `fun_draws`, and `fun_raw_est` arguments of
+#' [setup_trial]) and [run_trials] is run with `cores > 1`, it is necessary to
+#' export additional functions or objects used by these functions and defined by
+#' the user outside the function definitions provided. Similarly, functions
+#' from external packages loaded using [library] or [require] must be exported
+#' or called prefixed with the namespace, i.e., `package::function`. The
+#' `export` and `export_envir` arguments are used to export objects calling the
+#' s[parallel::clusterExport()]-function.
 #'
 #' @return A list of a special class `"trial_results"`, which contains the
 #'   `trial_results` (results from all simulations), `trial_spec` (the trial

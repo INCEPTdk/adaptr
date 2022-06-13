@@ -110,13 +110,14 @@ additional simulations to the same file).
 \strong{Exporting objects when using multiple cores}
 
 If \link{setup_trial} is used to define a trial specification with custom
-functions (in the \code{fun_y_gen}, \code{fun_draws}, and \code{fun_raw_est} arguments) and
-\link{run_trials} is run with \code{cores > 1}, it is necessary to export additional
-user-defined functions used by the functions provided in the \link{setup_trial}
-arguments. Similarly, functions from external packages loaded using \link{library}
-or \link{require} will need to be exported or called prefixed with the namespace,
-i.e., \verb{package::function}. The \code{export} and \code{export_envir} arguments are used
-to export objects calling the \code{\link[parallel:clusterApply]{parallel::clusterExport()}}-function.
+functions (in the \code{fun_y_gen}, \code{fun_draws}, and \code{fun_raw_est} arguments of
+\link{setup_trial}) and \link{run_trials} is run with \code{cores > 1}, it is necessary to
+export additional functions or objects used by these functions and defined by
+the user outside the function definitions provided. Similarly, functions
+from external packages loaded using \link{library} or \link{require} must be exported
+or called prefixed with the namespace, i.e., \verb{package::function}. The
+\code{export} and \code{export_envir} arguments are used to export objects calling the
+s\code{\link[parallel:clusterApply]{parallel::clusterExport()}}-function.
 }
 \examples{
 # Setup a trial specification

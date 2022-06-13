@@ -299,9 +299,11 @@ relative scale.
 \strong{Using additional custom or functions from loaded packages in the
 custom functions}
 If the \code{fun_y_gen}, \code{fun_draws}, or \code{fun_raw_est} functions calls other
-user-specified functions or functions from external packages and simulations
-are conducted on multiple cores, these functions must be exported or prefixed
-with their namespace, respectively, as  described in \link{run_trials}.
+user-specified functions (or uses objects defined by the user outside these
+functions or the \code{setup_trial}-call) or functions from external packages and
+simulations are conducted on multiple cores, these objects or functions must
+be exported or prefixed with their namespaces, respectively, as  described in
+\link{run_trials}.
 
 \strong{More information on arguments}
 \itemize{
