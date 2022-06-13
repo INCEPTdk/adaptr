@@ -390,8 +390,7 @@ scale: if they are estimated as, e.g., the <em>log(odds)</em>, these estimates m
 be transformed to probabilities and similarly for other measures.<br>
 Important: the <code>matrix</code> cannot contain <code>NA</code>s, even if no patients have been
 randomised to an arm yet. See the provided example for one way to alleviate
-this.
-<br>
+this.<br>
 See the <strong>Examples</strong> vignette (<code>vignette("Examples", "adaptr")</code>) for an
 example with further details.</p>
 <p><em>Notes</em></p><ul><li><p>Different estimation methods and prior distributions may be used;
@@ -412,7 +411,13 @@ estimates) may be nonsensical if relative effect measures are used
 <code>sq_err_te</code>), and <a href="summary.html">summary</a> (<code>sum_ys_mean/sd/median/q25/q75</code>, <code>rmse</code>,
 <code>rmse_te</code> and <code>idp</code>) may be equally nonsensical when calculated on the
 relative scale.</p></li>
-</ul><p><strong>More information on arguments</strong></p><ul><li><p><code>control</code>: if one or more treatment arms are superior to the control arm
+</ul><p><strong>Using additional custom or functions from loaded packages in the
+custom functions</strong>
+If the <code>fun_y_gen</code>, <code>fun_draws</code>, or <code>fun_raw_est</code> functions calls other
+user-specified functions or functions from external packages and simulations
+are conducted on multiple cores, these functions must be exported or prefixed
+with their namespace, respectively, as  described in <a href="run_trials.html">run_trials</a>.</p>
+<p><strong>More information on arguments</strong></p><ul><li><p><code>control</code>: if one or more treatment arms are superior to the control arm
 (i.e., passes the superiority threshold as defined above), this arm will
 become the new control (if multiple arms are superior, the one with the
 highest probability of being the overall best will become the new control),

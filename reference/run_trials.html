@@ -91,7 +91,9 @@ additional simulations to the same file).</p>
   sparse <span class="op">=</span> <span class="cn">TRUE</span>,
   progress <span class="op">=</span> <span class="cn">NULL</span>,
   version <span class="op">=</span> <span class="cn">NULL</span>,
-  compress <span class="op">=</span> <span class="cn">TRUE</span>
+  compress <span class="op">=</span> <span class="cn">TRUE</span>,
+  export <span class="op">=</span> <span class="cn">NULL</span>,
+  export_envir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame</a></span><span class="op">(</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
     </div>
 
@@ -173,6 +175,19 @@ used. Ignored if simulations are not saved.</p></dd>
 <code>TRUE</code> (as in <a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS</a>), see <a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS</a> for other options. Ignored if
 simulations are not saved.</p></dd>
 
+
+<dt>export</dt>
+<dd><p>character vector of names of objects to export to each
+parallel core if <code>cores &gt; 1</code>; passed as the <code>varlist</code> argument to
+<code><a href="https://rdrr.io/r/parallel/clusterApply.html" class="external-link">parallel::clusterExport()</a></code>. Defaults to <code>NULL</code> (no objects exported),
+ignored if <code>cores == 1</code>. See <strong>Details</strong> below.</p></dd>
+
+
+<dt>export_envir</dt>
+<dd><p><code>environment</code> where to look for the objects defined
+in <code>export</code> if <code>cores &gt; 1</code> and <code>export</code> is not <code>NULL</code>. Defaults to the
+environment from where run_trials is called.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -186,6 +201,18 @@ using the <a href="extract_results.html">extract_results</a> function and summar
 print (<a href="print.html">print.trial_results</a>) functions; see function documentation for
 details on additional arguments used to select arms in simulations not
 ending in superiority and other summary choices.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p><strong>Exporting objects when using multiple cores</strong></p>
+<p>If <a href="setup_trial.html">setup_trial</a> is used to define a trial specification with custom
+functions (in the <code>fun_y_gen</code>, <code>fun_draws</code>, and <code>fun_raw_est</code> arguments) and
+run_trials is run with <code>cores &gt; 1</code>, it is necessary to export additional
+user-defined functions used by the functions provided in the <a href="setup_trial.html">setup_trial</a>
+arguments. Similarly, functions from external packages loaded using <a href="https://rdrr.io/r/base/library.html" class="external-link">library</a>
+or <a href="https://rdrr.io/r/base/library.html" class="external-link">require</a> will need to be exported or called prefixed with the namespace,
+i.e., <code>package::function</code>. The <code>export</code> and <code>export_envir</code> arguments are used
+to export objects calling the <code><a href="https://rdrr.io/r/parallel/clusterApply.html" class="external-link">parallel::clusterExport()</a></code>-function.</p>
     </div>
 
     <div class="section level2">
