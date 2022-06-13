@@ -69,18 +69,25 @@ arm from multiple trial simulations. Works with sparse results."><!-- mathjax --
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>object</dt>
 <dd><p><code>trial_results</code> object from <a href="run_trials.html">run_trials</a>.</p></dd>
+
+
 <dt>x_value</dt>
 <dd><p>single character string, determining whether the number of
 adaptive analysis looks (<code>"look"</code>, default) or the total cumulated number of
 patients allocated (<code>"total n"</code>) are plotted on the x-axis.</p></dd>
+
+
 <dt>arm</dt>
 <dd><p>single character string or <code>NULL</code> (default); can be set to a valid
 trial <code>arm</code>. If <code>NULL</code>, the overall trial statuses are plotted, otherwise
 the statuses for a single, specific trial arm are plotted.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A tidy <code>data.frame</code> (one row possible status per look) containing the
+    
+
+<p>A tidy <code>data.frame</code> (one row possible status per look) containing the
 following columns:</p><ul><li><p><code>x</code>: the look numbers or total number of patients at each look,
 as specified in <code>x_value</code>.</p></li>
 <li><p><code>status</code>: each possible status (<code>"Recruiting"</code>, <code>"Inferiority"</code>
@@ -100,7 +107,7 @@ value of <code>x</code>.</p></li>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
     </footer></div>

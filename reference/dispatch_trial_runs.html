@@ -73,11 +73,15 @@ function.</p>
     <dl><dt>trial_spec</dt>
 <dd><p>trial specification as provided by <a href="setup_trial.html">setup_trial</a>,
 <a href="setup_trial_binom.html">setup_trial_binom</a> or <a href="setup_trial_norm.html">setup_trial_norm</a>.</p></dd>
+
+
 <dt>base_seed</dt>
 <dd><p>single integer; a random seed used as the basis for
 simulations; each simulation will set the random seed to a value based on
 this (+ the trial number), without affecting the global random seed after
 the function has been run.</p></dd>
+
+
 <dt>sparse</dt>
 <dd><p>single logical, as described in <a href="run_trial.html">run_trial</a>; defaults to
 <code>TRUE</code> when running multiple simulations, in which case only the data
@@ -85,17 +89,24 @@ necessary to summarise all simulations are saved for each simulation.
 If <code>FALSE</code>, more detailed data for each simulation is saved, allowing more
 detailed printing of individual trial results and plotting using
 <a href="plot_history.html">plot_history</a> (<a href="plot_status.html">plot_status</a> does not require non-sparse results).</p></dd>
+
+
 <dt>cores</dt>
 <dd><p>single integer; the number of cores to run the simulations on
 using the <span class="pkg">parallel</span> library. Defaults to <code>1</code>; may be increased to run
 multiple simulations in parallel. <code><a href="https://rdrr.io/r/parallel/detectCores.html" class="external-link">parallel::detectCores()</a></code> may be used to
 find the number of available cores.</p></dd>
+
+
 <dt>i</dt>
 <dd><p>single integer, the simulation number.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>Single trial simulation object, as described in <a href="run_trial.html">run_trial</a>.</p>
+    
+
+<p>Single trial simulation object, as described in <a href="run_trial.html">run_trial</a>.</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -107,7 +118,7 @@ find the number of available cores.</p></dd>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
     </footer></div>

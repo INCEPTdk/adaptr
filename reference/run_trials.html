@@ -100,32 +100,46 @@ additional simulations to the same file).</p>
     <dl><dt>trial_spec</dt>
 <dd><p><code>trial_spec</code> object, generated and validated by the
 <a href="setup_trial.html">setup_trial</a>, <a href="setup_trial_binom.html">setup_trial_binom</a> or <a href="setup_trial_norm.html">setup_trial_norm</a> function.</p></dd>
+
+
 <dt>n_rep</dt>
 <dd><p>single integer; the number of simulations to run.</p></dd>
+
+
 <dt>path</dt>
 <dd><p>single character; if specified (defaults to <code>NULL</code>), files will
 be written to and  loaded from this path using the <a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS</a> / <a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a>
 functions.</p></dd>
+
+
 <dt>overwrite</dt>
 <dd><p>single logical; defaults to <code>FALSE</code>, in which case previous
 simulations saved in the same <code>path</code> will be re-loaded (if the same trial
 specification was used). If <code>TRUE</code>, the previous file is overwritten. If
 <code>grow</code> is <code>TRUE</code>, this argument must be set to <code>FALSE</code>.</p></dd>
+
+
 <dt>grow</dt>
 <dd><p>single logical; defaults to <code>FALSE</code>. If <code>TRUE</code> and a valid <code>path</code>
 to a valid previous file containing less simulations than <code>n_rep</code>, the
 additional number of simulations will be run (appropriately re-using the
 same <code>base_seed</code>, if specified) and appended to the same file.</p></dd>
+
+
 <dt>cores</dt>
 <dd><p>single integer; the number of cores to run the simulations on
 using the <span class="pkg">parallel</span> library. Defaults to <code>1</code>; may be increased to run
 multiple simulations in parallel. <code><a href="https://rdrr.io/r/parallel/detectCores.html" class="external-link">parallel::detectCores()</a></code> may be used to
 find the number of available cores.</p></dd>
+
+
 <dt>base_seed</dt>
 <dd><p>single integer; a random seed used as the basis for
 simulations; each simulation will set the random seed to a value based on
 this (+ the trial number), without affecting the global random seed after
 the function has been run.</p></dd>
+
+
 <dt>sparse</dt>
 <dd><p>single logical, as described in <a href="run_trial.html">run_trial</a>; defaults to
 <code>TRUE</code> when running multiple simulations, in which case only the data
@@ -133,6 +147,8 @@ necessary to summarise all simulations are saved for each simulation.
 If <code>FALSE</code>, more detailed data for each simulation is saved, allowing more
 detailed printing of individual trial results and plotting using
 <a href="plot_history.html">plot_history</a> (<a href="plot_status.html">plot_status</a> does not require non-sparse results).</p></dd>
+
+
 <dt>progress</dt>
 <dd><p>single numeric <code>&gt; 0</code> and <code>&lt;= 1</code> or <code>NULL</code>. If <code>NULL</code>
 (default), no progress is printed to the console. Otherwise, progress
@@ -144,18 +160,25 @@ finish running their current assigned batches before the other cores may
 proceed with the next batch. If there is substantial differences in the
 simulation speeds across cores, using <code>progress</code> may thus increase total
 simulation times.</p></dd>
+
+
 <dt>version</dt>
 <dd><p>passed to <a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS</a> when saving simulations, defaults to
 <code>NULL</code> (as in <a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS</a>), which means that the current default version is
 used. Ignored if simulations are not saved.</p></dd>
+
+
 <dt>compress</dt>
 <dd><p>passed to <a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS</a> when saving simulations, defaults to
 <code>TRUE</code> (as in <a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS</a>), see <a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS</a> for other options. Ignored if
 simulations are not saved.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A list of a special class <code>"trial_results"</code>, which contains the
+    
+
+<p>A list of a special class <code>"trial_results"</code>, which contains the
 <code>trial_results</code> (results from all simulations), <code>trial_spec</code> (the trial
 specification), <code>n_rep</code>, <code>base_seed</code>, <code>elapsed_time</code> (the total simulation
 run time) and <code>sparse</code> (as described above). These results may be extracted
@@ -188,7 +211,7 @@ ending in superiority and other summary choices.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
     </footer></div>

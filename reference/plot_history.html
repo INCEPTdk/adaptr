@@ -100,10 +100,14 @@ installed.</p>
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>object</dt>
 <dd><p><code>trial_results</code> object, output from the <a href="run_trials.html">run_trials</a> function.</p></dd>
+
+
 <dt>x_value</dt>
 <dd><p>single character string, determining whether the number of
 adaptive analysis looks (<code>"look"</code>, default) or the total cumulated number of
 patients allocated (<code>"total n"</code>) are plotted on the x-axis.</p></dd>
+
+
 <dt>y_value</dt>
 <dd><p>single character string, determining which values are plotted
 on the y-axis. The following options are available: allocation
@@ -113,20 +117,29 @@ the total number of patients randomised (<code>"pct"</code>), the sum of all out
 in each arm (<code>"sum ys"</code>), the ratio of outcomes (<code>"ratio ys"</code>, the sum of
 outcomes in each arm divided by the number of patients allocated to that
 arm).</p></dd>
+
+
 <dt>line</dt>
 <dd><p>list styling the lines as per <span class="pkg">ggplot2</span> conventions (e.g.,
 <code>linetype</code>, <code>size</code>).</p></dd>
+
+
 <dt>...</dt>
 <dd><p>additional arguments, not used.</p></dd>
+
+
 <dt>ribbon</dt>
 <dd><p>list, as <code>line</code> but only appropriate for <code>trial_results</code>
 objects (i.e., when multiple simulations are run). Also allows to specify
 the <code>width</code> of the interval: must be between 0 and 1, with <code>0.5</code> (default)
 showing the inter-quartile ranges.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A <code>ggplot2</code> plot object.</p>
+    
+
+<p>A <code>ggplot2</code> plot object.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -178,7 +191,7 @@ showing the inter-quartile ranges.</p></dd>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
     </footer></div>
