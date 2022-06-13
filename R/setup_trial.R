@@ -589,8 +589,7 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' be transformed to probabilities and similarly for other measures.\cr
 #' Important: the `matrix` cannot contain `NA`s, even if no patients have been
 #' randomised to an arm yet. See the provided example for one way to alleviate
-#' this.
-#' \cr
+#' this.\cr
 #' See the **Examples** vignette (`vignette("Examples", "adaptr")`) for an
 #' example with further details.
 #'
@@ -613,6 +612,14 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' `sq_err_te`), and [summary] (`sum_ys_mean/sd/median/q25/q75`, `rmse`,
 #' `rmse_te` and `idp`) may be equally nonsensical when calculated on the
 #' relative scale.
+#'
+#' \strong{Using additional custom or functions from loaded packages in the
+#' custom functions}
+#' If the `fun_y_gen`, `fun_draws`, or `fun_raw_est` functions calls other
+#' user-specified functions or functions from external packages and simulations
+#' are conducted on multiple cores, these functions must be exported or prefixed
+#' with their namespace, respectively, as  described in [run_trials].
+#'
 #'
 #' \strong{More information on arguments}
 #' - `control`: if one or more treatment arms are superior to the control arm
