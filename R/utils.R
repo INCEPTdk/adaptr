@@ -121,10 +121,11 @@ cat0 <- function(...) cat(..., sep = "")
 #' @keywords internal
 #'
 verify_int <- function(x, min_value = -Inf, max_value = Inf, open = "no") {
-  is_int <- !is.null(x) && length(x) == 1 && !is.na(x) && is.numeric(x) && floor(x) == x
+  if (is.null(x)) return(FALSE)
+  is_int <- length(x) == 1 & all(!is.na(x)) & all(is.numeric(x)) & all(floor(x) == x)
   is_above_min <- if (open %in% c("left", "yes")) min_value < x else min_value <= x
   is_below_max <- if (open %in% c("right", "yes")) x < max_value else x <= max_value
-  is_int && is_above_min && is_below_max
+  all(is_int) & all(is_above_min) & all(is_below_max)
 }
 
 
