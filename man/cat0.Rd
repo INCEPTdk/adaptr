@@ -10,7 +10,7 @@ cat0(...)
 \item{...}{strings to be concatenated and printed.}
 }
 \description{
-Used internally. Passes everything on to \link{cat} but enforces \code{sep = ""}.
-Relates to \link{cat} as \link{paste0} relates to \link{paste}.
+Used internally. Passes everything on to \code{\link[=cat]{cat()}} but enforces \code{sep = ""}.
+Relates to \code{\link[=cat]{cat()}} as \code{\link[=paste0]{paste0()}} relates to \code{\link[=paste]{paste()}}.
 }
 \keyword{internal}

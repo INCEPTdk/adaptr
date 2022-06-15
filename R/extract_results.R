@@ -2,9 +2,10 @@
 #'
 #' This function extracts relevant information from multiple simulations of the
 #' same trial specification in a tidy `data.frame` (1 simulation per row).
-#' See also the [summary] function.
+#' See also the [summary()] function.
 #'
-#' @param object `trial_results` object, output from the [run_trials] function.
+#' @param object `trial_results` object, output from the [run_trials()]
+#'   function.
 #' @param select_strategy single character string. For trials not stopped
 #'   due to superiority (or with only 1 arm remaining, if `select_last_arm` is
 #'   set to `TRUE` in trial designs with a common `control` arm; see below),
@@ -56,26 +57,26 @@
 #'   effect comparing the selected arm to the comparator arm, as described
 #'   below).
 #' @param raw_ests single logical. If `FALSE` (default), the
-#'   posterior estimates (`post_ests`, see [setup_trial] and
-#'   [run_trial]) will be used to calculate `sq_err` (the squared error of the
+#'   posterior estimates (`post_ests`, see [setup_trial()] and
+#'   [run_trial()]) will be used to calculate `sq_err` (the squared error of the
 #'   estimated compared to the specified effect in the selected arm) and
 #'   `sq_err_te` (the squared error of the treatment effect comparing the
 #'   selected arm to the comparator arm, as described for `te_comp` and below).
-#'   If `TRUE`, the raw estimates (`raw_ests`, see [setup_trial] and
-#'   [run_trial]) will be used instead of the posterior estimates.
+#'   If `TRUE`, the raw estimates (`raw_ests`, see [setup_trial()] and
+#'   [run_trial()]) will be used instead of the posterior estimates.
 #'
 #' @return A `data.frame` containing the following columns:
 #'   \itemize{
 #'     \item `sim`: the simulation number (from 1 to the number of simulations).
 #'     \item `final_n`: the final sample size in each simulation.
 #'     \item `sum_ys`: the sum of the total counts in all arms, e.g., the total
-#'       number of events in trials with a binary outcome ([setup_trial_binom])
-#'       or the sum of the arm totals in trials with a continuous outcome
-#'       ([setup_trial_norm]).
+#'       number of events in trials with a binary outcome
+#'       ([setup_trial_binom()]) or the sum of the arm totals in trials with a
+#'       continuous outcome ([setup_trial_norm()]).
 #'     \item `ratio_ys`: calculated as `sum_ys/final_n`.
 #'     \item `final_status`: the final trial status for each simulation, either
 #'       `"superiority"`, `"equivalence"`, `"futility"`, or `"max"`, as
-#'       described in [run_trial].
+#'       described in [run_trial()].
 #'     \item `superior_arm`: the final superior arm in simulations stopped for
 #'       superiority, will be `NA` in simulations not stopped for superiority.
 #'     \item `selected_arm`: the final selected arm (as described above), will

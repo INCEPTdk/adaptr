@@ -5,7 +5,7 @@
 \title{Generic documentation for get_draws_* functions}
 \arguments{
 \item{arms}{character vector, \strong{currently active} \code{arms} as specified in
-\link{setup_trial}/\link{setup_trial_binom}/\link{setup_trial_norm}.}
+\code{\link[=setup_trial]{setup_trial()}}/\code{\link[=setup_trial_binom]{setup_trial_binom()}}/\code{\link[=setup_trial_norm]{setup_trial_norm()}}.}
 
 \item{allocs}{character vector, allocations of all patients (including
 allocations to \strong{currently inactive} \code{arms}).}
@@ -15,8 +15,8 @@ as \code{alloc} (including outcomes of patients in \strong{currently inactive}
 \code{arms}).}
 
 \item{control}{unused argument in the built-in functions for
-\link{setup_trial_binom} and \link{setup_trial_norm}, but required as this
-argument is supplied by the \link{run_trial} function, and may be used in
+\code{\link[=setup_trial_binom]{setup_trial_binom()}} and \link{setup_trial_norm}, but required as this
+argument is supplied by the \code{\link[=run_trial]{run_trial()}} function, and may be used in
 user-defined functions used to generate posterior draws.}
 
 \item{n_draws}{single integer, number of posterior draws.}
@@ -26,7 +26,7 @@ A \code{matrix} (with numeric values) with \code{length(arms)} columns and
 \code{n_draws} rows, with \code{arms} as column names.
 }
 \description{
-Used internally. See the \link{setup_trial} function documentation for additional
-details on how to specify functions to generate posterior draws.
+Used internally. See the \code{\link[=setup_trial]{setup_trial()}} function documentation for
+additional details on how to specify functions to generate posterior draws.
 }
 \keyword{internal}

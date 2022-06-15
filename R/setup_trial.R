@@ -1,7 +1,7 @@
 #' Validate trial specification
 #'
 #' Used internally. Validates the inputs common to all trial specifications, as
-#' specified in [setup_trial], [setup_trial_binom] and [setup_trial_norm].
+#' specified in [setup_trial()], [setup_trial_binom()] and [setup_trial_norm()].
 #'
 #' @inheritParams setup_trial
 #'
@@ -394,9 +394,9 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' Setup a generic trial specification
 #'
 #' Specifies the design of an adaptive trial with any type of outcome and
-#' validates all inputs. Use [run_trial] or [run_trials] to conduct
+#' validates all inputs. Use [run_trial()] or [run_trials()] to conduct
 #' single/multiple simulations of the specified trial, respectively.\cr
-#' See [setup_trial_binom] and [setup_trial_norm] for simplified setup of
+#' See [setup_trial_binom()] and [setup_trial_norm()] for simplified setup of
 #' trial designs common outcome types. For additional trial specification
 #' examples, see the the **Basic examples** vignette
 #' (`vignette("Basic-examples", package = "adaptr")`) and the
@@ -407,11 +407,12 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' @param arms character vector with unique names for the trial arms.
 #' @param true_ys numeric vector specifying true outcomes (e.g., event
 #'   probabilities, mean values, etc.) for all trial `arms`.
-#' @param fun_y_gen function, generates outcomes. See [setup_trial] **Details**
+#' @param fun_y_gen function, generates outcomes. See [setup_trial()]
+#'   **Details**
 #'   for information on how to specify this function.\cr
 #'   **Note:** this function is called once during setup to validate the output
 #'   structure.
-#' @param fun_draws function, generates posterior draws. See [setup_trial]
+#' @param fun_draws function, generates posterior draws. See [setup_trial()]
 #'   **Details** for information on how to specify this function.\cr
 #'   **Note:** this function is called up to three times during setup to
 #'   validate the output structure.
@@ -449,7 +450,7 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #'   (default). If specified, this arm will serve as a common control arm, to
 #'   which all other arms will be compared and the
 #'   inferiority/superiority/equivalence thresholds (see below) will be for
-#'   those comparisons. See [setup_trial] **Details** below for information on
+#'   those comparisons. See [setup_trial()] **Details** below for information on
 #'   behaviour with respect to these comparisons.
 #' @param control_prob_fixed if a common `control` arm is specified, this must
 #'   be set to either `NULL` (the default), in which case the control arm
@@ -458,7 +459,7 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #'   `fixed_probs`) Otherwise a vector of probabilities of either length `1` or
 #'   `number of arms - 1` can be provided, or one of the special arguments
 #'   `"sqrt-based"`, `"sqrt-based start"`, `"sqrt-based fixed"` or `"match"`.
-#'   See [setup_trial] **Details** below for details in behaviour.
+#'   See [setup_trial()] **Details** below for details in behaviour.
 #' @param inferiority single numeric (`> 0` and `<1`, default is `0.01`)
 #'   specifying the inferiority threshold. An arm will be considered inferior
 #'   and dropped if the probability that it is best (when comparing all arms) or
@@ -525,8 +526,8 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #'   and/or `max_probs`. If `1`, then no *softening* is applied.
 #' @param fun_raw_est function that takes a numeric vector and returns a
 #'   single numeric value, used to calculate a raw summary estimate of the
-#'   outcomes in each `arm`. Defaults to [mean], which is always used in the
-#'   [setup_trial_binom] and [setup_trial_norm] functions.\cr
+#'   outcomes in each `arm`. Defaults to [mean()], which is always used in the
+#'   [setup_trial_binom()] and [setup_trial_norm()] functions.\cr
 #'   **Note:** the function is called one time per arm during setup to validate
 #'   the output structure.
 #' @param cri_width single numeric `>= 0` and `< 1`, the width of the
@@ -578,7 +579,7 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' when called.
 #' - `control`: single character, the current `control arm`, will be `NULL` for
 #' designs without a common control arm, but required regardless as the argument
-#' is supplied by [run_trial].
+#' is supplied by [run_trial()]/[run_trials()].
 #' - `n_draws`: single integer, the number of posterior draws for each arm.
 #'
 #' The function must return a `matrix` (with numeric values) with `arms` columns
@@ -597,7 +598,7 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' - Different estimation methods and prior distributions may be used;
 #' complex functions will lead to slower simulations compared to simpler
 #' methods for obtaining posterior draws, including those specified using the
-#' [setup_trial_binom] and [setup_trial_norm] functions.
+#' [setup_trial_binom()] and [setup_trial_norm()] functions.
 #' - Technically, using log relative effect measures — e.g. log(odds ratio) or
 #' log(risk ratios) - or differences compared to a reference arm (e.g., mean
 #' differences or absolute risk differences) instead of absolute values in each
@@ -605,11 +606,11 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' - Stopping for superiority/inferiority/max sample sizes will work.
 #' - Stopping for equivalence/futility may be used with relative effect
 #' measures on the log scale.
-#' - Several summary statistics from [run_trial] (`sum_ys` and posterior
+#' - Several summary statistics from [run_trial()] (`sum_ys` and posterior
 #' estimates) may be nonsensical if relative effect measures are used
 #' (depending on calculation method).
-#' - In the same vein, [extract_results] (`sum_ys`, `sq_err`, and
-#' `sq_err_te`), and [summary] (`sum_ys_mean/sd/median/q25/q75`, `rmse`,
+#' - In the same vein, [extract_results()] (`sum_ys`, `sq_err`, and
+#' `sq_err_te`), and [summary()] (`sum_ys_mean/sd/median/q25/q75`, `rmse`,
 #' `rmse_te` and `idp`) may be equally nonsensical when calculated on the
 #' relative scale.
 #'
@@ -617,10 +618,10 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' custom functions}
 #' If the `fun_y_gen`, `fun_draws`, or `fun_raw_est` functions calls other
 #' user-specified functions (or uses objects defined by the user outside these
-#' functions or the `setup_trial`-call) or functions from external packages and
-#' simulations are conducted on multiple cores, these objects or functions must
+#' functions or the [setup_trial()]-call) or functions from external packages
+#' and simulations are conducted on multiple cores, these objects or functions must
 #' be exported or prefixed with their namespaces, respectively, as  described in
-#' [run_trials].
+#' [run_trials()].
 #'
 #'
 #' \strong{More information on arguments}
@@ -703,9 +704,9 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' specified - see above). Arms will thus be dropped for equivalence before
 #' futility.
 #'
-#' @return A `trial_spec` object used to run simulations by [run_trial] or
-#'   [run_trials]. The output is essentially a list containing the input values
-#'   (some combined in a `data.frame` called `trial_arms`), but its class
+#' @return A `trial_spec` object used to run simulations by [run_trial()] or
+#'   [run_trials()]. The output is essentially a list containing the input
+#'   values (some combined in a `data.frame` called `trial_arms`), but its class
 #'   signals that these inputs have been validated and inappropriate
 #'   combinations and settings have been ruled out. Also contains `best_arm`
 #'   holding the arm(s) with the best value(s) in `true_ys`. Use `str()` to
@@ -716,7 +717,7 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' # distributed continuous outcomes (higher values are worse)
 #'
 #' # Define the function that will generate the outcomes in each arm
-#' # Notice: contents should match arms/true_ys in the setup_trial call below
+#' # Notice: contents should match arms/true_ys in the setup_trial() call below
 #' get_ys_lognorm <- function(allocs) {
 #'   y <- numeric(length(allocs))
 #'   # arms (names and order) and values (except for exponentiation) should match
@@ -821,11 +822,11 @@ setup_trial <- function(arms, true_ys, fun_y_gen = NULL, fun_draws = NULL,
 #' distributed outcome and validates all inputs. Uses *beta-binomial*
 #' conjugate models with `beta(1, 1)` prior distributions, corresponding to a
 #' uniform prior (or the addition of 2 patients, 1 with an event and 1 without)
-#' to the trial. Use [run_trial] or [run_trials] to conduct single/multiple
+#' to the trial. Use [run_trial()] or [run_trials()] to conduct single/multiple
 #' simulations of the specified trial, respectively.\cr
-#' **Note:** `add_info` as specified in [setup_trial] is set to `NULL` for trial
-#' specifications setup by this function.\cr
-#' **Further details:** please see [setup_trial]. See [setup_trial_norm] for
+#' **Note:** `add_info` as specified in [setup_trial()] is set to `NULL` for
+#' trial specifications setup by this function.\cr
+#' **Further details:** please see [setup_trial()]. See [setup_trial_norm()] for
 #' simplified setup of trials with normally distributed continuous outcomes.\cr
 #' For additional trial specification examples, see the the **Basic examples**
 #' vignette (`vignette("Basic-examples", package = "adaptr")`) and the
@@ -837,7 +838,7 @@ setup_trial <- function(arms, true_ys, fun_y_gen = NULL, fun_draws = NULL,
 #'   outcomes in all trial `arms`.
 #' @param description character string, default is
 #'   `"generic binomially distributed outcome trial"`. See arguments of
-#'   [setup_trial].
+#'   [setup_trial()].
 #'
 #' @inherit setup_trial return
 #'
@@ -924,14 +925,16 @@ setup_trial_binom <- function(arms, true_ys, start_probs = NULL,
 #' conjugate prior models with extremely wide or uniform priors gives similar
 #' results for these simple, unadjusted estimates). Technically, this thus
 #' corresponds to using improper, flat priors, although not explicitly specified
-#' as such. Use [run_trial] or [run_trials] to conduct single/multiple
+#' as such. Use [run_trial()] or [run_trials()] to conduct single/multiple
 #' simulations of the specified trial, respectively.\cr
-#' **Note:** `add_info` as specified in [setup_trial] is set to the arms and
+#' **Note:** `add_info` as specified in [setup_trial()] is set to the arms and
 #' standard deviations used for trials specified using this function.\cr
-#' **Further details:** please see [setup_trial]. See [setup_trial_binom] for
-#' simplified setup of trials with binomially distributed binary outcomes.\cr
-#' For additional trial specification examples, see the the **Basic examples**
-#' vignette (`vignette("Basic-examples", package = "adaptr")`) and the
+#' **Further details:** please see [setup_trial()]. See [setup_trial_binom()]
+#' for simplified setup of trials with binomially distributed binary outcomes.
+#' \cr
+#' For additional trial specification examples, see the the
+#' **Basic examples** vignette
+#' (`vignette("Basic-examples", package = "adaptr")`) and the
 #' **Advanced example** vignette
 #' (`vignette("Advanced-example", package = "adaptr")`).
 #'
@@ -942,7 +945,7 @@ setup_trial_binom <- function(arms, true_ys, start_probs = NULL,
 #'   outcome in all trial `arms`.
 #' @param description character string, default is
 #' `"generic normally distributed outcome trial"`. See arguments of
-#' [setup_trial].
+#' [setup_trial()].
 #'
 #' @inherit setup_trial return
 #'

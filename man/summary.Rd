@@ -17,7 +17,8 @@
 )
 }
 \arguments{
-\item{object}{\code{trial_results} object, output from the \link{run_trials} function.}
+\item{object}{\code{trial_results} object, output from the \code{\link[=run_trials]{run_trials()}}
+function.}
 
 \item{select_strategy}{single character string. For trials not stopped
 due to superiority (or with only 1 arm remaining, if \code{select_last_arm} is
@@ -74,13 +75,13 @@ effect comparing the selected arm to the comparator arm, as described
 below).}
 
 \item{raw_ests}{single logical. If \code{FALSE} (default), the
-posterior estimates (\code{post_ests}, see \link{setup_trial} and
-\link{run_trial}) will be used to calculate \code{sq_err} (the squared error of the
+posterior estimates (\code{post_ests}, see \code{\link[=setup_trial]{setup_trial()}} and
+\code{\link[=run_trial]{run_trial()}}) will be used to calculate \code{sq_err} (the squared error of the
 estimated compared to the specified effect in the selected arm) and
 \code{sq_err_te} (the squared error of the treatment effect comparing the
 selected arm to the comparator arm, as described for \code{te_comp} and below).
-If \code{TRUE}, the raw estimates (\code{raw_ests}, see \link{setup_trial} and
-\link{run_trial}) will be used instead of the posterior estimates.}
+If \code{TRUE}, the raw estimates (\code{raw_ests}, see \code{\link[=setup_trial]{setup_trial()}} and
+\code{\link[=run_trial]{run_trial()}}) will be used instead of the posterior estimates.}
 
 \item{restrict}{single character string or \code{NULL}. If \code{NULL} (default),
 results are summarised for all simulations; if \verb{"superior}, results are
@@ -99,7 +100,7 @@ A \code{"trial_results_summary"} object containing the following:
 \itemize{
 \item \code{n_rep}: the number of simulations.
 \item \code{n_summarised}: the number of simulations summarised.
-\item \code{highest_is_best}: as specified in \link{setup_trial}.
+\item \code{highest_is_best}: as specified in \code{\link[=setup_trial]{setup_trial()}}.
 \item \code{elapsed_time}: the total simulation time.
 \item \code{size_mean}, \code{size_sd}, \code{size_median}, \code{size_p25}, \code{size_p75}: the
 mean, standard deviation, median as well as 25- and 75-percentiles of the
@@ -127,23 +128,24 @@ element per \code{arm}, named as \verb{prob_select_arm_<arm name>} and
 \code{prob_select_none} for the probability of selecting no arm.
 \item \code{rmse}, \code{rmse_te}: the root mean squared error of the estimates for
 the selected arm and for the treatment effect, as described further in
-\link{extract_results}.
+\code{\link[=extract_results]{extract_results()}}.
 \item \code{idp}: the ideal design percentage (IDP; 0-100\%), see \strong{Details}.
 \item \code{select_strategy}, \code{select_last_arm}, \code{select_preferences},
 \code{te_comp}, \code{raw_ests},\code{restrict}: as specified above.
-\item \code{control}: the control arm specified by \link{setup_trial},
-\link{setup_trial_binom} or \link{setup_trial_norm}; \code{NULL} if no control.
+\item \code{control}: the control arm specified by \code{\link[=setup_trial]{setup_trial()}},
+\code{\link[=setup_trial_binom]{setup_trial_binom()}} or \code{\link[=setup_trial_norm]{setup_trial_norm()}}; \code{NULL} if no control.
 \item \code{equivalence_assessed}, \code{futility_assessed}: single logicals,
 specifies whether the trial design specification includes assessments of
 equivalence and/or futility.
-\item \code{base_seed}: as specified in \link{run_trials}.
+\item \code{base_seed}: as specified in \code{\link[=run_trials]{run_trials()}}.
 \item \code{cri_width}, \code{n_draws}, \code{robust}, \code{description}, \code{add_info}: as
-specified in \link{setup_trial}, \link{setup_trial_binom} or \link{setup_trial_norm}.
+specified in \code{\link[=setup_trial]{setup_trial()}}, \code{\link[=setup_trial_binom]{setup_trial_binom()}} or
+\code{\link[=setup_trial_norm]{setup_trial_norm()}}.
 }
 }
 \description{
-Summarises simulation results from the \link{run_trials} function. Uses
-\link{extract_results}, which may be used directly to extract key trial results
+Summarises simulation results from the \code{\link[=run_trials]{run_trials()}} function. Uses
+\code{\link[=extract_results]{extract_results()}}, which may be used directly to extract key trial results
 without summarising.
 }
 \details{

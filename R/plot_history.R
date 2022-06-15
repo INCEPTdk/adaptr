@@ -6,7 +6,7 @@
 #' contribute to the summary statistics at later adaptive looks. Data from
 #' individual arms in a trial contribute until the complete trial is stopped.\cr
 #' These history plots require non-sparse results (`sparse` set to
-#' `FALSE`; see [run_trial] and [run_trials]) and the `ggplot2` package
+#' `FALSE`; see [run_trial()] and [run_trials()]) and the `ggplot2` package
 #' installed.
 #'
 #' @inheritParams extract_results
@@ -63,7 +63,7 @@
 #' }
 #'
 #' @seealso
-#' [plot_status].
+#' [plot_status()].
 #'
 #'
 plot_history <- function(object, x_value = "look", y_value = "prob", line = NULL, ...) {
@@ -172,7 +172,7 @@ plot_history.trial_results <- function(object,
 #' Used internally. Extracts relevant parameters at each conducted adaptive
 #' analysis from a single trial.
 #'
-#' @param object single `trial_result` from [run_trial], only works if run
+#' @param object single `trial_result` from [run_trial()], only works if run
 #'   with argument `sparse = FALSE`.
 #' @param metric either `"prob"` (default), in which case allocation
 #'   probabilities at each adaptive analysis are returned; `"n"`, in which

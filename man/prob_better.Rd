@@ -48,15 +48,15 @@ specified). All columns will contain \code{NA} for the control arm.
 }
 \description{
 Used internally. This function takes a \code{matrix} as calculated by the
-\link{get_draws_binom}, \link{get_draws_norm} or a corresponding custom function (as
-specified using the \code{fun_draws} argument in \link{setup_trial}; see
-\link{get_draws_generic}) and a single character specifying the \code{control} arm, and
-calculates the probabilities of each arm being better than a common \code{control}
-(defined as either higher or lower than the \code{control}, as specified by the
-\code{highest_is_best} argument in \link{setup_trial}, \link{setup_trial_binom} or
-\link{setup_trial_norm}). This function also calculates equivalence and futility
-probabilities compared to the common \code{control} arm, as specified in
-\link{setup_trial}, \link{setup_trial_binom} or \link{setup_trial_norm}, unless
+\code{\link[=get_draws_binom]{get_draws_binom()}}, \code{\link[=get_draws_norm]{get_draws_norm()}} or a corresponding custom function
+(as specified using the \code{fun_draws} argument in \code{\link[=setup_trial]{setup_trial()}}; see
+\code{\link[=get_draws_generic]{get_draws_generic()}}) and a single character specifying the \code{control} arm,
+and calculates the probabilities of each arm being better than a common
+\code{control} (defined as either higher or lower than the \code{control}, as specified
+by the \code{highest_is_best} argument in \code{\link[=setup_trial]{setup_trial()}}, \code{\link[=setup_trial_binom]{setup_trial_binom()}}
+or \code{\link[=setup_trial_norm]{setup_trial_norm()}}). This function also calculates equivalence and
+futility probabilities compared to the common \code{control} arm, as specified in
+\code{\link[=setup_trial]{setup_trial()}}, \code{\link[=setup_trial_binom]{setup_trial_binom()}} or \code{\link[=setup_trial_norm]{setup_trial_norm()}}, unless
 \code{equivalence_diff} or \code{futility_diff}, respectively, are set to \code{NULL}
 (the default).
 }

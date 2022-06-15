@@ -1,7 +1,8 @@
 #' Simulate a single trial
 #'
 #' This function conducts a single trial simulation using a trial specification
-#' as specified by [setup_trial], [setup_trial_binom] or [setup_trial_norm].
+#' as specified by [setup_trial()], [setup_trial_binom()] or
+#' [setup_trial_norm()].
 #' During simulation, the function randomises "patients", randomly generates
 #' outcomes, calculates the probabilities that each `arm` is the best (and
 #' better than the control, if any). This is followed by checking inferiority,
@@ -23,18 +24,18 @@
 #' been reached.
 #'
 #' @param trial_spec `trial_spec` object, generated and validated by the
-#'   [setup_trial], [setup_trial_binom] or [setup_trial_norm] function.
+#'   [setup_trial()], [setup_trial_binom()] or [setup_trial_norm()] function.
 #' @param seed single integer or `NULL` (default), if a value is provided, this
 #'   value will be used as the random seed when running (the global random seed
 #'   will be restored after the function has run, so it is not affected).
 #' @param sparse single logical; if `FALSE` (default) everything listed below is
 #'   included in the returned object. If `TRUE`, only a limited amount of data
 #'   is included in the returned object. This can be practical when running many
-#'   simulations and saving the results using the [run_trials] function (which
+#'   simulations and saving the results using the [run_trials()] function (which
 #'   relies on this function), as the output file will thus be substantially
 #'   smaller. However, printing of individual trial results will be
 #'   substantially less detailed for sparse results and non-sparse results are
-#'   required by [plot_history].
+#'   required by [plot_history()].
 #'
 #' @return A `trial_result` object containing everything listed below if
 #'   `sparse` (as described above) is `FALSE`. Otherwise only `final_status`,
@@ -53,22 +54,22 @@
 #'       specified).
 #'     \item `final_control`: character, final common control arm (if relevant).
 #'     \item `control_prob_fixed`: fixed common control arm probabilities (if
-#'       specified; see [setup_trial]).
+#'       specified; see [setup_trial()]).
 #'     \item `inferiority`, `superiority`, `equivalence_prob`,
 #'       `equivalence_diff`, `equivalence_only_first`, `futility_prob`,
 #'       `futility_diff`, `futility_only_first`, `highest_is_best`, and
-#'       `soften_power`: as specified in [setup_trial].
-#'     \item `best_arm`: the best arm(s), as described in [setup_trial].
+#'       `soften_power`: as specified in [setup_trial()].
+#'     \item `best_arm`: the best arm(s), as described in [setup_trial()].
 #'     \item `trial_res`: a `data.frame` containing most of the information
-#'       specified for each arm in [setup_trial] including `true_ys` (true
-#'       outcomes as specified in [setup_trial]) and for each arm the sum of the
-#'       outcomes (`sum_ys`; i.e., the total number of events for binary
+#'       specified for each arm in [setup_trial()] including `true_ys` (true
+#'       outcomes as specified in [setup_trial()]) and for each arm the sum of
+#'       the outcomes (`sum_ys`; i.e., the total number of events for binary
 #'       outcomes or the totals of continuous outcomes) and patients randomised
 #'       (`ns`), summary statistics for the raw outcome data (`raw_ests`,
-#'       calculated as specified in [setup_trial], defaults to mean values,
+#'       calculated as specified in [setup_trial()], defaults to mean values,
 #'       i.e., event rates for binary outcomes or means for continuous outcomes)
 #'       and posterior estimates (`post_ests`, `post_errs`, `lo_cri`, and
-#'       `hi_cri`, as specified in [setup_trial]), `final_status` of each arm
+#'       `hi_cri`, as specified in [setup_trial()]), `final_status` of each arm
 #'       (`"inferior"`, `"superior"`, `"equivalence"`, `"futile"`, `"active"`,
 #'       or `"control"` (currently active control arm, including if the current
 #'       control when stopped for equivalence)),
@@ -110,7 +111,8 @@
 #'       the order of randomization (`0` or `1` for binary outcomes).
 #'     \item `seed`: the random seed used, if specified.
 #'     \item `description`, `add_info`, `cri_width`, `n_draws`, `robust`: as
-#'       specified in [setup_trial], [setup_trial_binom] or [setup_trial_norm].
+#'       specified in [setup_trial()], [setup_trial_binom()] or
+#'       [setup_trial_norm()].
 #'     \item `sparse`: single logical, corresponding to the `sparse` input.
 #'    }
 #'

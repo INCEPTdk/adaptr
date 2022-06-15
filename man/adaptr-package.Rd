@@ -18,17 +18,17 @@ funded primarily by a grant from
 \details{
 The \code{adaptr} package contains the following primary functions:
 \enumerate{
-\item \link{setup_trial} is the general function that sets up a trial specification.
-The simpler, special-case functions \link{setup_trial_binom} and
-\link{setup_trial_norm} may be used for easier specification of trial designs
+\item \code{\link[=setup_trial]{setup_trial()}} is the general function that sets up a trial
+specification. The simpler, special-case functions \code{\link[=setup_trial_binom]{setup_trial_binom()}} and
+\code{\link[=setup_trial_norm]{setup_trial_norm()}} may be used for easier specification of trial designs
 using binary, binomially distributed or continuous, normally distributed
 outcomes, respectively, with some limitations in flexibility.
-\item The \link{run_trial} and \link{run_trials} functions are used to conduct single or
-multiple simulations, respectively, according to a trial specification setup
-as described in #1.
-\item The \link{extract_results} and \link{summary} functions are used to
+\item The \code{\link[=run_trial]{run_trial()}} and \code{\link[=run_trials]{run_trials()}} functions are used to conduct single
+or multiple simulations, respectively, according to a trial specification
+setup as described in #1.
+\item The \code{\link[=extract_results]{extract_results()}} and \code{\link[=summary]{summary()}} functions are used to
 extract or summarise the results of multiple trial simulations.
-\item The \link{plot_status} and \link{plot_history} functions are used to plot the
+\item The \code{\link[=plot_status]{plot_status()}} and \code{\link[=plot_history]{plot_history()}} functions are used to plot the
 overall trial/arm statuses for multiple simulated trials or the history of
 trial metrics over time for single/multiple simulated trials, respectively.
 }
@@ -55,7 +55,7 @@ Software, 7(72), 4284. \doi{10.21105/joss.04284}
 \href{https://github.com/INCEPTdk/adaptr/}{GitHub repository}
 }
 \seealso{
-\link{setup_trial}, \link{setup_trial_binom}, \link{setup_trial_norm}, \link{run_trial},
-\link{run_trials}, \link{extract_results}, \link{summary}, \link{print}, \link{plot_status} and
-\link{plot_history}.
+\code{\link[=setup_trial]{setup_trial()}}, \code{\link[=setup_trial_binom]{setup_trial_binom()}}, \code{\link[=setup_trial_norm]{setup_trial_norm()}}, \code{\link[=run_trial]{run_trial()}},
+\code{\link[=run_trials]{run_trials()}}, \code{\link[=extract_results]{extract_results()}}, \code{\link[=summary]{summary()}}, \code{\link[=print]{print()}}, \code{\link[=plot_status]{plot_status()}}
+and \code{\link[=plot_history]{plot_history()}}.
 }

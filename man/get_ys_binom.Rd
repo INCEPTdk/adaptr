@@ -7,10 +7,10 @@
 get_ys_binom(arms, event_probs)
 }
 \arguments{
-\item{arms}{character vector of \code{arms} as specified in \link{setup_trial_binom}.}
+\item{arms}{character vector of \code{arms} as specified in \code{\link[=setup_trial_binom]{setup_trial_binom()}}.}
 
 \item{event_probs}{numeric vector of true event probabilities in all \code{arms}
-as specified in \link{setup_trial_binom}.}
+as specified in \code{\link[=setup_trial_binom]{setup_trial_binom()}}.}
 }
 \value{
 A function which takes the argument \code{allocs} (a character vector

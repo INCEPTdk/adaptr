@@ -7,13 +7,13 @@
 get_ys_norm(arms, means, sds)
 }
 \arguments{
-\item{arms}{character vector, \code{arms} as specified in \link{setup_trial_norm}.}
+\item{arms}{character vector, \code{arms} as specified in \code{\link[=setup_trial_norm]{setup_trial_norm()}}.}
 
 \item{means}{numeric vector, true \code{means} in all \code{arms} as specified in
-\link{setup_trial_norm}.}
+\code{\link[=setup_trial_norm]{setup_trial_norm()}}.}
 
 \item{sds}{numeric vector, true standard deviations (\code{sds}) in all \code{arms} as
-specified in \link{setup_trial_norm}.}
+specified in \code{\link[=setup_trial_norm]{setup_trial_norm()}}.}
 }
 \value{
 A function which takes the argument \code{allocs} (a character vector

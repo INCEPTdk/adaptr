@@ -91,8 +91,8 @@ summarise_dist <- function(x, robust = TRUE, interval_width = 0.95) {
 
 #' cat() with sep = ""
 #'
-#' Used internally. Passes everything on to [cat] but enforces `sep = ""`.
-#' Relates to [cat] as [paste0] relates to [paste].
+#' Used internally. Passes everything on to [cat()] but enforces `sep = ""`.
+#' Relates to [cat()] as [paste0()] relates to [paste()].
 #'
 #' @param ... strings to be concatenated and printed.
 #'

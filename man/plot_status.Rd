@@ -10,7 +10,8 @@ plot_status(object, x_value = "look", arm = NULL, area = list(alpha = 0.5))
 \method{plot_status}{trial_results}(object, x_value = "look", arm = NULL, area = list(alpha = 0.5))
 }
 \arguments{
-\item{object}{\code{trial_results} object, output from the \link{run_trials} function.}
+\item{object}{\code{trial_results} object, output from the \code{\link[=run_trials]{run_trials()}}
+function.}
 
 \item{x_value}{single character string, determining whether the number of
 adaptive analysis looks (\code{"look"}, default) or the total cumulated number of
@@ -53,5 +54,5 @@ if (requireNamespace("ggplot2", quietly = TRUE)){
 
 }
 \seealso{
-\link{plot_history}.
+\code{\link[=plot_history]{plot_history()}}.
 }

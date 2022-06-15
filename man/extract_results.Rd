@@ -14,7 +14,8 @@ extract_results(
 )
 }
 \arguments{
-\item{object}{\code{trial_results} object, output from the \link{run_trials} function.}
+\item{object}{\code{trial_results} object, output from the \code{\link[=run_trials]{run_trials()}}
+function.}
 
 \item{select_strategy}{single character string. For trials not stopped
 due to superiority (or with only 1 arm remaining, if \code{select_last_arm} is
@@ -71,13 +72,13 @@ effect comparing the selected arm to the comparator arm, as described
 below).}
 
 \item{raw_ests}{single logical. If \code{FALSE} (default), the
-posterior estimates (\code{post_ests}, see \link{setup_trial} and
-\link{run_trial}) will be used to calculate \code{sq_err} (the squared error of the
+posterior estimates (\code{post_ests}, see \code{\link[=setup_trial]{setup_trial()}} and
+\code{\link[=run_trial]{run_trial()}}) will be used to calculate \code{sq_err} (the squared error of the
 estimated compared to the specified effect in the selected arm) and
 \code{sq_err_te} (the squared error of the treatment effect comparing the
 selected arm to the comparator arm, as described for \code{te_comp} and below).
-If \code{TRUE}, the raw estimates (\code{raw_ests}, see \link{setup_trial} and
-\link{run_trial}) will be used instead of the posterior estimates.}
+If \code{TRUE}, the raw estimates (\code{raw_ests}, see \code{\link[=setup_trial]{setup_trial()}} and
+\code{\link[=run_trial]{run_trial()}}) will be used instead of the posterior estimates.}
 }
 \value{
 A \code{data.frame} containing the following columns:
@@ -85,13 +86,13 @@ A \code{data.frame} containing the following columns:
 \item \code{sim}: the simulation number (from 1 to the number of simulations).
 \item \code{final_n}: the final sample size in each simulation.
 \item \code{sum_ys}: the sum of the total counts in all arms, e.g., the total
-number of events in trials with a binary outcome (\link{setup_trial_binom})
-or the sum of the arm totals in trials with a continuous outcome
-(\link{setup_trial_norm}).
+number of events in trials with a binary outcome
+(\code{\link[=setup_trial_binom]{setup_trial_binom()}}) or the sum of the arm totals in trials with a
+continuous outcome (\code{\link[=setup_trial_norm]{setup_trial_norm()}}).
 \item \code{ratio_ys}: calculated as \code{sum_ys/final_n}.
 \item \code{final_status}: the final trial status for each simulation, either
 \code{"superiority"}, \code{"equivalence"}, \code{"futility"}, or \code{"max"}, as
-described in \link{run_trial}.
+described in \code{\link[=run_trial]{run_trial()}}.
 \item \code{superior_arm}: the final superior arm in simulations stopped for
 superiority, will be \code{NA} in simulations not stopped for superiority.
 \item \code{selected_arm}: the final selected arm (as described above), will
@@ -112,7 +113,7 @@ comparator specified (see \code{te_comp} above).
 \description{
 This function extracts relevant information from multiple simulations of the
 same trial specification in a tidy \code{data.frame} (1 simulation per row).
-See also the \link{summary} function.
+See also the \code{\link[=summary]{summary()}} function.
 }
 \examples{
 # Setup a trial specification

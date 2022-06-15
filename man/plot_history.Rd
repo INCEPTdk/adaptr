@@ -20,7 +20,8 @@ plot_history(object, x_value = "look", y_value = "prob", line = NULL, ...)
 )
 }
 \arguments{
-\item{object}{\code{trial_results} object, output from the \link{run_trials} function.}
+\item{object}{\code{trial_results} object, output from the \code{\link[=run_trials]{run_trials()}}
+function.}
 
 \item{x_value}{single character string, determining whether the number of
 adaptive analysis looks (\code{"look"}, default) or the total cumulated number of
@@ -55,7 +56,7 @@ stopped, i.e., if some trials are stopped earlier than others, they will not
 contribute to the summary statistics at later adaptive looks. Data from
 individual arms in a trial contribute until the complete trial is stopped.\cr
 These history plots require non-sparse results (\code{sparse} set to
-\code{FALSE}; see \link{run_trial} and \link{run_trials}) and the \code{ggplot2} package
+\code{FALSE}; see \code{\link[=run_trial]{run_trial()}} and \code{\link[=run_trials]{run_trials()}}) and the \code{ggplot2} package
 installed.
 }
 \examples{
@@ -93,5 +94,5 @@ if (requireNamespace("ggplot2", quietly = TRUE)){
 
 }
 \seealso{
-\link{plot_status}.
+\code{\link[=plot_status]{plot_status()}}.
 }

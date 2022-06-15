@@ -22,13 +22,13 @@ run_trials(
 }
 \arguments{
 \item{trial_spec}{\code{trial_spec} object, generated and validated by the
-\link{setup_trial}, \link{setup_trial_binom} or \link{setup_trial_norm} function.}
+\code{\link[=setup_trial]{setup_trial()}}, \code{\link[=setup_trial_binom]{setup_trial_binom()}} or \code{\link[=setup_trial_norm]{setup_trial_norm()}} function.}
 
 \item{n_rep}{single integer; the number of simulations to run.}
 
 \item{path}{single character; if specified (defaults to \code{NULL}), files will
-be written to and  loaded from this path using the \link{saveRDS} / \link{readRDS}
-functions.}
+be written to and  loaded from this path using the \code{\link[=saveRDS]{saveRDS()}} /
+\code{\link[=readRDS]{readRDS()}} functions.}
 
 \item{overwrite}{single logical; defaults to \code{FALSE}, in which case previous
 simulations saved in the same \code{path} will be re-loaded (if the same trial
@@ -50,12 +50,12 @@ simulations; each simulation will set the random seed to a value based on
 this (+ the trial number), without affecting the global random seed after
 the function has been run.}
 
-\item{sparse}{single logical, as described in \link{run_trial}; defaults to
+\item{sparse}{single logical, as described in \code{\link[=run_trial]{run_trial()}}; defaults to
 \code{TRUE} when running multiple simulations, in which case only the data
 necessary to summarise all simulations are saved for each simulation.
 If \code{FALSE}, more detailed data for each simulation is saved, allowing more
 detailed printing of individual trial results and plotting using
-\link{plot_history} (\link{plot_status} does not require non-sparse results).}
+\code{\link[=plot_history]{plot_history()}} (\code{\link[=plot_status]{plot_status()}} does not require non-sparse results).}
 
 \item{progress}{single numeric \verb{> 0} and \verb{<= 1} or \code{NULL}. If \code{NULL}
 (default), no progress is printed to the console. Otherwise, progress
@@ -69,12 +69,12 @@ proceed with the next batch. If there is substantial differences in the
 simulation speeds across cores, using \code{progress} may thus increase total
 simulation times.}
 
-\item{version}{passed to \link{saveRDS} when saving simulations, defaults to
-\code{NULL} (as in \link{saveRDS}), which means that the current default version is
+\item{version}{passed to \code{\link[=saveRDS]{saveRDS()}} when saving simulations, defaults to
+\code{NULL} (as in \code{\link[=saveRDS]{saveRDS()}}), which means that the current default version is
 used. Ignored if simulations are not saved.}
 
-\item{compress}{passed to \link{saveRDS} when saving simulations, defaults to
-\code{TRUE} (as in \link{saveRDS}), see \link{saveRDS} for other options. Ignored if
+\item{compress}{passed to \code{\link[=saveRDS]{saveRDS()}} when saving simulations, defaults to
+\code{TRUE} (as in \code{\link[=saveRDS]{saveRDS()}}), see \code{\link[=saveRDS]{saveRDS()}} for other options. Ignored if
 simulations are not saved.}
 
 \item{export}{character vector of names of objects to export to each
@@ -84,40 +84,40 @@ ignored if \code{cores == 1}. See \strong{Details} below.}
 
 \item{export_envir}{\code{environment} where to look for the objects defined
 in \code{export} if \code{cores > 1} and \code{export} is not \code{NULL}. Defaults to the
-environment from where \link{run_trials} is called.}
+environment from where \code{\link[=run_trials]{run_trials()}} is called.}
 }
 \value{
 A list of a special class \code{"trial_results"}, which contains the
 \code{trial_results} (results from all simulations), \code{trial_spec} (the trial
 specification), \code{n_rep}, \code{base_seed}, \code{elapsed_time} (the total simulation
 run time) and \code{sparse} (as described above). These results may be extracted
-using the \link{extract_results} function and summarised using the \link{summary} or
-print (\link{print.trial_results}) functions; see function documentation for
-details on additional arguments used to select arms in simulations not
+using the \code{\link[=extract_results]{extract_results()}} function and summarised using the \code{\link[=summary]{summary()}}
+or print (\code{\link[=print.trial_results]{print.trial_results()}}) functions; see function documentation
+for details on additional arguments used to select arms in simulations not
 ending in superiority and other summary choices.
 }
 \description{
 This function conducts multiple simulations using a trial specification as
-specified by \link{setup_trial}, \link{setup_trial_binom} or \link{setup_trial_norm}. This
-function essentially manages random seeds and runs multiple simulation using
-\link{run_trial} - additional details on individual simulations are provided in
-that function's description. This function allows simulating trials in
-parallel using multiple cores, automatically saving and re-loading saved
-objects, and "growing" already saved simulation files (i.e., appending
+specified by \code{\link[=setup_trial]{setup_trial()}}, \code{\link[=setup_trial_binom]{setup_trial_binom()}} or \code{\link[=setup_trial_norm]{setup_trial_norm()}}.
+This function essentially manages random seeds and runs multiple simulation
+using \code{\link[=run_trial]{run_trial()}} - additional details on individual simulations are
+provided in that function's description. This function allows simulating
+trials in parallel using multiple cores, automatically saving and re-loading
+saved objects, and "growing" already saved simulation files (i.e., appending
 additional simulations to the same file).
 }
 \details{
 \strong{Exporting objects when using multiple cores}
 
-If \link{setup_trial} is used to define a trial specification with custom
+If \code{\link[=setup_trial]{setup_trial()}} is used to define a trial specification with custom
 functions (in the \code{fun_y_gen}, \code{fun_draws}, and \code{fun_raw_est} arguments of
-\link{setup_trial}) and \link{run_trials} is run with \code{cores > 1}, it is necessary to
-export additional functions or objects used by these functions and defined by
-the user outside the function definitions provided. Similarly, functions
-from external packages loaded using \link{library} or \link{require} must be exported
-or called prefixed with the namespace, i.e., \verb{package::function}. The
-\code{export} and \code{export_envir} arguments are used to export objects calling the
-s\code{\link[parallel:clusterApply]{parallel::clusterExport()}}-function.
+\code{\link[=setup_trial]{setup_trial()}}) and \code{\link[=run_trials]{run_trials()}} is run with \code{cores > 1}, it is necessary
+to export additional functions or objects used by these functions and defined
+by the user outside the function definitions provided. Similarly, functions
+from external packages loaded using \code{\link[=library]{library()}} or \code{\link[=require]{require()}} must be
+exported or called prefixed with the namespace, i.e., \verb{package::function}.
+The \code{export} and \code{export_envir} arguments are used to export objects calling
+the \code{\link[parallel:clusterApply]{parallel::clusterExport()}}-function.
 }
 \examples{
 # Setup a trial specification

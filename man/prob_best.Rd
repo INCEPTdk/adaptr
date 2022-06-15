@@ -21,11 +21,11 @@ A named numeric vector of probabilities (names corresponding to
 }
 \description{
 Used internally. This function takes a \code{matrix} as calculated by the
-\link{get_draws_binom}, \link{get_draws_norm} or a corresponding custom function (as
-specified using the \code{fun_draws} argument in \link{setup_trial}; see
-\link{get_draws_generic}) and calculates the probabilities of each arm being the
+\code{\link[=get_draws_binom]{get_draws_binom()}}, \code{\link[=get_draws_norm]{get_draws_norm()}} or a corresponding custom function
+(as specified using the \code{fun_draws} argument in \code{\link[=setup_trial]{setup_trial()}}; see
+\code{\link[=get_draws_generic]{get_draws_generic()}}) and calculates the probabilities of each arm being the
 best (defined as either the highest or the lowest value, as specified by the
-\code{highest_is_best} argument in \link{setup_trial}, \link{setup_trial_binom} or
-\link{setup_trial_norm}).
+\code{highest_is_best} argument in \code{\link[=setup_trial]{setup_trial()}}, \code{\link[=setup_trial_binom]{setup_trial_binom()}} or
+\code{\link[=setup_trial_norm]{setup_trial_norm()}}).
 }
 \keyword{internal}

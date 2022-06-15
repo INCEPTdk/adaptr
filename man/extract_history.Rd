@@ -7,7 +7,7 @@
 extract_history(object, metric = "prob")
 }
 \arguments{
-\item{object}{single \code{trial_result} from \link{run_trial}, only works if run
+\item{object}{single \code{trial_result} from \code{\link[=run_trial]{run_trial()}}, only works if run
 with argument \code{sparse = FALSE}.}
 
 \item{metric}{either \code{"prob"} (default), in which case allocation

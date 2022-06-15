@@ -14,7 +14,7 @@ reallocate_probs(
 )
 }
 \arguments{
-\item{probs_best}{a resulting named vector from the \link{prob_best} function.}
+\item{probs_best}{a resulting named vector from the \code{\link[=prob_best]{prob_best()}} function.}
 
 \item{fixed_probs}{numeric vector, fixed allocation probabilities for each
 arm - must be either a numeric vector with \code{NA} for arms without fixed
@@ -50,8 +50,8 @@ allocation probabilities.
 }
 \description{
 Used internally. This function calculates new allocation probabilities for
-each arm, based on the information specified in \link{setup_trial},
-\link{setup_trial_binom} or \link{setup_trial_norm} and the calculated probabilities of
-each arm being the best by \link{prob_best}.
+each arm, based on the information specified in \code{\link[=setup_trial]{setup_trial()}},
+\code{\link[=setup_trial_binom]{setup_trial_binom()}} or \code{\link[=setup_trial_norm]{setup_trial_norm()}} and the calculated
+probabilities of each arm being the best by \code{\link[=prob_best]{prob_best()}}.
 }
 \keyword{internal}

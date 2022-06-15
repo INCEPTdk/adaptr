@@ -79,7 +79,7 @@ specified, \code{data_looks} must be \code{NULL} (as default).}
 (default). If specified, this arm will serve as a common control arm, to
 which all other arms will be compared and the
 inferiority/superiority/equivalence thresholds (see below) will be for
-those comparisons. See \link{setup_trial} \strong{Details} below for information on
+those comparisons. See \code{\link[=setup_trial]{setup_trial()}} \strong{Details} below for information on
 behaviour with respect to these comparisons.}
 
 \item{control_prob_fixed}{if a common \code{control} arm is specified, this must
@@ -89,7 +89,7 @@ allocation probability to the first control arm may still be fixed using
 \code{fixed_probs}) Otherwise a vector of probabilities of either length \code{1} or
 \verb{number of arms - 1} can be provided, or one of the special arguments
 \code{"sqrt-based"}, \code{"sqrt-based start"}, \code{"sqrt-based fixed"} or \code{"match"}.
-See \link{setup_trial} \strong{Details} below for details in behaviour.}
+See \code{\link[=setup_trial]{setup_trial()}} \strong{Details} below for details in behaviour.}
 
 \item{inferiority}{single numeric (\verb{> 0} and \verb{<1}, default is \code{0.01})
 specifying the inferiority threshold. An arm will be considered inferior
@@ -182,12 +182,12 @@ on the natural scale).}
 
 \item{description}{character string, default is
 \code{"generic binomially distributed outcome trial"}. See arguments of
-\link{setup_trial}.}
+\code{\link[=setup_trial]{setup_trial()}}.}
 }
 \value{
-A \code{trial_spec} object used to run simulations by \link{run_trial} or
-\link{run_trials}. The output is essentially a list containing the input values
-(some combined in a \code{data.frame} called \code{trial_arms}), but its class
+A \code{trial_spec} object used to run simulations by \code{\link[=run_trial]{run_trial()}} or
+\code{\link[=run_trials]{run_trials()}}. The output is essentially a list containing the input
+values (some combined in a \code{data.frame} called \code{trial_arms}), but its class
 signals that these inputs have been validated and inappropriate
 combinations and settings have been ruled out. Also contains \code{best_arm}
 holding the arm(s) with the best value(s) in \code{true_ys}. Use \code{str()} to
@@ -198,11 +198,11 @@ Specifies the design of an adaptive trial with a binary, binomially
 distributed outcome and validates all inputs. Uses \emph{beta-binomial}
 conjugate models with \code{beta(1, 1)} prior distributions, corresponding to a
 uniform prior (or the addition of 2 patients, 1 with an event and 1 without)
-to the trial. Use \link{run_trial} or \link{run_trials} to conduct single/multiple
+to the trial. Use \code{\link[=run_trial]{run_trial()}} or \code{\link[=run_trials]{run_trials()}} to conduct single/multiple
 simulations of the specified trial, respectively.\cr
-\strong{Note:} \code{add_info} as specified in \link{setup_trial} is set to \code{NULL} for trial
-specifications setup by this function.\cr
-\strong{Further details:} please see \link{setup_trial}. See \link{setup_trial_norm} for
+\strong{Note:} \code{add_info} as specified in \code{\link[=setup_trial]{setup_trial()}} is set to \code{NULL} for
+trial specifications setup by this function.\cr
+\strong{Further details:} please see \code{\link[=setup_trial]{setup_trial()}}. See \code{\link[=setup_trial_norm]{setup_trial_norm()}} for
 simplified setup of trials with normally distributed continuous outcomes.\cr
 For additional trial specification examples, see the the \strong{Basic examples}
 vignette (\code{vignette("Basic-examples", package = "adaptr")}) and the

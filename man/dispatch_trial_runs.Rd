@@ -7,20 +7,20 @@
 dispatch_trial_runs(X, trial_spec, base_seed, sparse, cores, cl = NULL)
 }
 \arguments{
-\item{trial_spec}{trial specification as provided by \link{setup_trial},
-\link{setup_trial_binom} or \link{setup_trial_norm}.}
+\item{trial_spec}{trial specification as provided by \code{\link[=setup_trial]{setup_trial()}},
+\code{\link[=setup_trial_binom]{setup_trial_binom()}} or \code{\link[=setup_trial_norm]{setup_trial_norm()}}.}
 
 \item{base_seed}{single integer; a random seed used as the basis for
 simulations; each simulation will set the random seed to a value based on
 this (+ the trial number), without affecting the global random seed after
 the function has been run.}
 
-\item{sparse}{single logical, as described in \link{run_trial}; defaults to
+\item{sparse}{single logical, as described in \code{\link[=run_trial]{run_trial()}}; defaults to
 \code{TRUE} when running multiple simulations, in which case only the data
 necessary to summarise all simulations are saved for each simulation.
 If \code{FALSE}, more detailed data for each simulation is saved, allowing more
 detailed printing of individual trial results and plotting using
-\link{plot_history} (\link{plot_status} does not require non-sparse results).}
+\code{\link[=plot_history]{plot_history()}} (\code{\link[=plot_status]{plot_status()}} does not require non-sparse results).}
 
 \item{cores}{single integer; the number of cores to run the simulations on
 using the \pkg{parallel} library. Defaults to \code{1}; may be increased to run
@@ -30,11 +30,11 @@ find the number of available cores.}
 \item{i}{single integer, the simulation number.}
 }
 \value{
-Single trial simulation object, as described in \link{run_trial}.
+Single trial simulation object, as described in \code{\link[=run_trial]{run_trial()}}.
 }
 \description{
-Helper function to dispatch the running of several trials to \link{lapply} or
-\link[parallel:clusterApply]{parallel::parLapply}. Used internally in calls by the \link{run_trials}
+Helper function to dispatch the running of several trials to \code{\link[=lapply]{lapply()}} or
+\code{\link[parallel:clusterApply]{parallel::parLapply()}}. Used internally in calls by the \code{\link[=run_trials]{run_trials()}}
 function.
 }
 \keyword{internal}

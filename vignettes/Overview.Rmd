@@ -71,11 +71,10 @@ binom_trial
 ```
 
 By default, probabilities are shown with 3 decimals. This can be changed by
-explicitly `print`ing the specification with the `prob_digits` arguments, for
+explicitly `print()`ing the specification with the `prob_digits` arguments, for
 example:
 
 ```{r}
-
 print(binom_trial, prob_digits = 2)
 ```
 
@@ -90,7 +89,7 @@ trial_res <- run_trial(binom_trial, seed = 12345)
 trial_res
 ```
 
-Again, we can choose the number of decimals with `print`:
+Again, we can choose the number of decimals with `print()`:
 
 ```{r}
 print(trial_res, prob_digits = 2)
@@ -142,8 +141,8 @@ print(res_sum, digits = 1)
 ```
 
 ### Visualise trial results
-We need non-sparse results for `plot_history` (but *not* for `plot_status`), so
-first we re-run `run_trials()`:
+We need non-sparse results for `plot_history()` (but *not* for `plot_status()`),
+so first we re-run `run_trials()`:
 
 ```{r}
 trial_res_mult <- run_trials(binom_trial, n_rep = 25, base_seed = 67890,

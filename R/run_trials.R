@@ -1,16 +1,16 @@
 #' Generate breakpoints and other values for printing progress
 #'
 #' Used internally. Generates breakpoints, messages, and 'batches' of trial
-#' numbers to simulate when using [run_trials] with the `progress` argument in
+#' numbers to simulate when using [run_trials()] with the `progress` argument in
 #' use. Breaks will be multiples of the number of `cores`, and repeated use of
 #' the same values for breaks is avoided (if, e.g., the number of breaks times
 #' the number of cores is not possible if few new trials are to be run). Inputs
-#' are validated by [run_trials].
+#' are validated by [run_trials()].
 #'
 #' @inheritParams run_trials
 #' @param n_rep_new single integers, number of new simulations to run (i.e.,
-#'   `n_rep` as supplied to [run_trials] minus the number of previously run
-#'   simulations if `grow` is used in [run_trials]).
+#'   `n_rep` as supplied to [run_trials()] minus the number of previously run
+#'   simulations if `grow` is used in [run_trials()]).
 #'
 #' @return List containing `breaks` (the number of patients at each break),
 #'   `start_mess` and `prog_mess` (the first and subsequent progress messages'
@@ -68,16 +68,16 @@ prog_breaks <- function(progress, n_rep_new, cores) {
 
 #' Simulate single trial after setting seed
 #'
-#' Helper function to dispatch the running of several trials to [lapply] or
-#' [parallel::parLapply]. Used internally in calls by the [run_trials]
+#' Helper function to dispatch the running of several trials to [lapply()] or
+#' [parallel::parLapply()]. Used internally in calls by the [run_trials()]
 #' function.
 #'
 #' @param i single integer, the simulation number.
-#' @param trial_spec trial specification as provided by [setup_trial],
-#'   [setup_trial_binom] or [setup_trial_norm].
+#' @param trial_spec trial specification as provided by [setup_trial()],
+#'   [setup_trial_binom()] or [setup_trial_norm()].
 #' @inheritParams run_trials
 #'
-#' @return Single trial simulation object, as described in [run_trial].
+#' @return Single trial simulation object, as described in [run_trial()].
 #'
 #' @keywords internal
 #'
@@ -100,19 +100,19 @@ dispatch_trial_runs <- function(X, trial_spec, base_seed, sparse, cores, cl = NU
 #' Simulate multiple trials
 #'
 #' This function conducts multiple simulations using a trial specification as
-#' specified by [setup_trial], [setup_trial_binom] or [setup_trial_norm]. This
-#' function essentially manages random seeds and runs multiple simulation using
-#' [run_trial] - additional details on individual simulations are provided in
-#' that function's description. This function allows simulating trials in
-#' parallel using multiple cores, automatically saving and re-loading saved
-#' objects, and "growing" already saved simulation files (i.e., appending
+#' specified by [setup_trial()], [setup_trial_binom()] or [setup_trial_norm()].
+#' This function essentially manages random seeds and runs multiple simulation
+#' using [run_trial()] - additional details on individual simulations are
+#' provided in that function's description. This function allows simulating
+#' trials in parallel using multiple cores, automatically saving and re-loading
+#' saved objects, and "growing" already saved simulation files (i.e., appending
 #' additional simulations to the same file).
 #'
 #' @inheritParams run_trial
 #' @param n_rep single integer; the number of simulations to run.
 #' @param path single character; if specified (defaults to `NULL`), files will
-#'   be written to and  loaded from this path using the [saveRDS] / [readRDS]
-#'   functions.
+#'   be written to and  loaded from this path using the [saveRDS()] /
+#'   [readRDS()] functions.
 #' @param overwrite single logical; defaults to `FALSE`, in which case previous
 #'   simulations saved in the same `path` will be re-loaded (if the same trial
 #'   specification was used). If `TRUE`, the previous file is overwritten. If
@@ -129,12 +129,12 @@ dispatch_trial_runs <- function(X, trial_spec, base_seed, sparse, cores, cl = NU
 #'   simulations; each simulation will set the random seed to a value based on
 #'   this (+ the trial number), without affecting the global random seed after
 #'   the function has been run.
-#' @param sparse single logical, as described in [run_trial]; defaults to
+#' @param sparse single logical, as described in [run_trial()]; defaults to
 #'   `TRUE` when running multiple simulations, in which case only the data
 #'   necessary to summarise all simulations are saved for each simulation.
 #'   If `FALSE`, more detailed data for each simulation is saved, allowing more
 #'   detailed printing of individual trial results and plotting using
-#'   [plot_history] ([plot_status] does not require non-sparse results).
+#'   [plot_history()] ([plot_status()] does not require non-sparse results).
 #' @param progress single numeric `> 0` and `<= 1` or `NULL`. If `NULL`
 #'   (default), no progress is printed to the console. Otherwise, progress
 #'   messages are printed to the control at intervals proportional to the value
@@ -146,11 +146,11 @@ dispatch_trial_runs <- function(X, trial_spec, base_seed, sparse, cores, cl = NU
 #'   proceed with the next batch. If there is substantial differences in the
 #'   simulation speeds across cores, using `progress` may thus increase total
 #'   simulation times.
-#' @param version passed to [saveRDS] when saving simulations, defaults to
-#'   `NULL` (as in [saveRDS]), which means that the current default version is
+#' @param version passed to [saveRDS()] when saving simulations, defaults to
+#'   `NULL` (as in [saveRDS()]), which means that the current default version is
 #'   used. Ignored if simulations are not saved.
-#' @param compress passed to [saveRDS] when saving simulations, defaults to
-#'   `TRUE` (as in [saveRDS]), see [saveRDS] for other options. Ignored if
+#' @param compress passed to [saveRDS()] when saving simulations, defaults to
+#'   `TRUE` (as in [saveRDS()]), see [saveRDS()] for other options. Ignored if
 #'   simulations are not saved.
 #' @param export character vector of names of objects to export to each
 #'   parallel core if `cores > 1`; passed as the `varlist` argument to
@@ -158,29 +158,29 @@ dispatch_trial_runs <- function(X, trial_spec, base_seed, sparse, cores, cl = NU
 #'   ignored if `cores == 1`. See **Details** below.
 #' @param export_envir `environment` where to look for the objects defined
 #'   in `export` if `cores > 1` and `export` is not `NULL`. Defaults to the
-#'   environment from where [run_trials] is called.
+#'   environment from where [run_trials()] is called.
 #'
 #' @details
 #'
 #' \strong{Exporting objects when using multiple cores}
 #'
-#' If [setup_trial] is used to define a trial specification with custom
+#' If [setup_trial()] is used to define a trial specification with custom
 #' functions (in the `fun_y_gen`, `fun_draws`, and `fun_raw_est` arguments of
-#' [setup_trial]) and [run_trials] is run with `cores > 1`, it is necessary to
-#' export additional functions or objects used by these functions and defined by
-#' the user outside the function definitions provided. Similarly, functions
-#' from external packages loaded using [library] or [require] must be exported
-#' or called prefixed with the namespace, i.e., `package::function`. The
-#' `export` and `export_envir` arguments are used to export objects calling the
-#' s[parallel::clusterExport()]-function.
+#' [setup_trial()]) and [run_trials()] is run with `cores > 1`, it is necessary
+#' to export additional functions or objects used by these functions and defined
+#' by the user outside the function definitions provided. Similarly, functions
+#' from external packages loaded using [library()] or [require()] must be
+#' exported or called prefixed with the namespace, i.e., `package::function`.
+#' The `export` and `export_envir` arguments are used to export objects calling
+#' the [parallel::clusterExport()]-function.
 #'
 #' @return A list of a special class `"trial_results"`, which contains the
 #'   `trial_results` (results from all simulations), `trial_spec` (the trial
 #'   specification), `n_rep`, `base_seed`, `elapsed_time` (the total simulation
 #'   run time) and `sparse` (as described above). These results may be extracted
-#'   using the [extract_results] function and summarised using the [summary] or
-#'   print ([print.trial_results]) functions; see function documentation for
-#'   details on additional arguments used to select arms in simulations not
+#'   using the [extract_results()] function and summarised using the [summary()]
+#'   or print ([print.trial_results()]) functions; see function documentation
+#'   for details on additional arguments used to select arms in simulations not
 #'   ending in superiority and other summary choices.
 #'
 #' @export

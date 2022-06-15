@@ -1,12 +1,12 @@
 #' Calculate the probabilities of each arm being the best
 #'
 #' Used internally. This function takes a `matrix` as calculated by the
-#' [get_draws_binom], [get_draws_norm] or a corresponding custom function (as
-#' specified using the `fun_draws` argument in [setup_trial]; see
-#' [get_draws_generic]) and calculates the probabilities of each arm being the
+#' [get_draws_binom()], [get_draws_norm()] or a corresponding custom function
+#' (as specified using the `fun_draws` argument in [setup_trial()]; see
+#' [get_draws_generic()]) and calculates the probabilities of each arm being the
 #' best (defined as either the highest or the lowest value, as specified by the
-#' `highest_is_best` argument in [setup_trial], [setup_trial_binom] or
-#' [setup_trial_norm]).
+#' `highest_is_best` argument in [setup_trial()], [setup_trial_binom()] or
+#' [setup_trial_norm()]).
 #'
 #' @param m a matrix with one column per trial arm (named as the `arms`) and one
 #'   row for each draw from the posterior distributions.
@@ -32,15 +32,15 @@ prob_best <- function(m, highest_is_best = FALSE) {
 #' Calculate the probabilities that each arm is better than a common control
 #'
 #' Used internally. This function takes a `matrix` as calculated by the
-#' [get_draws_binom], [get_draws_norm] or a corresponding custom function (as
-#' specified using the `fun_draws` argument in [setup_trial]; see
-#' [get_draws_generic]) and a single character specifying the `control` arm, and
-#' calculates the probabilities of each arm being better than a common `control`
-#' (defined as either higher or lower than the `control`, as specified by the
-#' `highest_is_best` argument in [setup_trial], [setup_trial_binom] or
-#' [setup_trial_norm]). This function also calculates equivalence and futility
-#' probabilities compared to the common `control` arm, as specified in
-#' [setup_trial], [setup_trial_binom] or [setup_trial_norm], unless
+#' [get_draws_binom()], [get_draws_norm()] or a corresponding custom function
+#' (as specified using the `fun_draws` argument in [setup_trial()]; see
+#' [get_draws_generic()]) and a single character specifying the `control` arm,
+#' and calculates the probabilities of each arm being better than a common
+#' `control` (defined as either higher or lower than the `control`, as specified
+#' by the `highest_is_best` argument in [setup_trial()], [setup_trial_binom()]
+#' or [setup_trial_norm()]). This function also calculates equivalence and
+#' futility probabilities compared to the common `control` arm, as specified in
+#' [setup_trial()], [setup_trial_binom()] or [setup_trial_norm()], unless
 #' `equivalence_diff` or `futility_diff`, respectively, are set to `NULL`
 #' (the default).
 #'
@@ -90,9 +90,9 @@ prob_better <- function(m, control = NULL, highest_is_best = FALSE,
 #' Calculate the probability that all arms are practically equivalent
 #'
 #' Used internally. This function takes a `matrix` as calculated by the
-#' [get_draws_binom], [get_draws_norm] or a corresponding custom function
-#' (specified using the `fun_draws` argument in [setup_trial]; see
-#' [get_draws_generic]), and an equivalence difference, and calculates the
+#' [get_draws_binom()], [get_draws_norm()] or a corresponding custom function
+#' (specified using the `fun_draws` argument in [setup_trial()]; see
+#' [get_draws_generic()]), and an equivalence difference, and calculates the
 #' probability of all arms being equivalent (absolute differences between
 #' highest and lowest value in the same set of posterior draws being less than
 #' the difference considered equivalent).
@@ -115,11 +115,11 @@ prob_all_equi <- function(m, equivalence_diff = NULL) {
 #' Update allocation probabilities
 #'
 #' Used internally. This function calculates new allocation probabilities for
-#' each arm, based on the information specified in [setup_trial],
-#' [setup_trial_binom] or [setup_trial_norm] and the calculated probabilities of
-#' each arm being the best by [prob_best].
+#' each arm, based on the information specified in [setup_trial()],
+#' [setup_trial_binom()] or [setup_trial_norm()] and the calculated
+#' probabilities of each arm being the best by [prob_best()].
 #'
-#' @param probs_best a resulting named vector from the [prob_best] function.
+#' @param probs_best a resulting named vector from the [prob_best()] function.
 #' @param match_arm index of the `control` arm. If not `NULL` (default), the
 #'   control arm allocation probability will be similar to that of the best
 #'   non-control arm. Must be `NULL` in designs without a common control arm.

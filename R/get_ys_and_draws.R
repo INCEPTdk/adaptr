@@ -1,18 +1,18 @@
 #' Generic documentation for get_draws_* functions
 #'
-#' Used internally. See the [setup_trial] function documentation for additional
-#' details on how to specify functions to generate posterior draws.
+#' Used internally. See the [setup_trial()] function documentation for
+#' additional details on how to specify functions to generate posterior draws.
 #'
 #' @param arms character vector, **currently active** `arms` as specified in
-#'   [setup_trial]/[setup_trial_binom]/[setup_trial_norm].
+#'   [setup_trial()]/[setup_trial_binom()]/[setup_trial_norm()].
 #' @param allocs character vector, allocations of all patients (including
 #'   allocations to **currently inactive** `arms`).
 #' @param ys numeric vector, outcomes of all patients in the same order
 #'   as `alloc` (including outcomes of patients in **currently inactive**
 #'   `arms`).
 #' @param control unused argument in the built-in functions for
-#'   [setup_trial_binom] and [setup_trial_norm], but required as this
-#'   argument is supplied by the [run_trial] function, and may be used in
+#'   [setup_trial_binom()] and [setup_trial_norm], but required as this
+#'   argument is supplied by the [run_trial()] function, and may be used in
 #'   user-defined functions used to generate posterior draws.
 #' @param n_draws single integer, number of posterior draws.
 #'
@@ -31,9 +31,9 @@ NULL
 #' Used internally. Function factory used to generate a function that generates
 #' binary outcomes from binomial distributions.
 #'
-#' @param arms character vector of `arms` as specified in [setup_trial_binom].
+#' @param arms character vector of `arms` as specified in [setup_trial_binom()].
 #' @param event_probs numeric vector of true event probabilities in all `arms`
-#'   as specified in [setup_trial_binom].
+#'   as specified in [setup_trial_binom()].
 #'
 #' @return A function which takes the argument `allocs` (a character vector
 #'   with the allocations) and returns a numeric vector of similar length with
@@ -87,11 +87,11 @@ get_draws_binom <- function(arms, allocs, ys, control, n_draws) {
 #' Used internally. Function factory used to generate a function that generates
 #' outcomes from normal distributions.
 #'
-#' @param arms character vector, `arms` as specified in [setup_trial_norm].
+#' @param arms character vector, `arms` as specified in [setup_trial_norm()].
 #' @param means numeric vector, true `means` in all `arms` as specified in
-#'   [setup_trial_norm].
+#'   [setup_trial_norm()].
 #' @param sds numeric vector, true standard deviations (`sds`) in all `arms` as
-#'   specified in [setup_trial_norm].
+#'   specified in [setup_trial_norm()].
 #'
 #' @return A function which takes the argument `allocs` (a character vector
 #'   with the allocations) and returns a numeric vector of the same length with

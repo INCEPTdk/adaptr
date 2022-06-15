@@ -1,7 +1,7 @@
 #' Summary of simulated trial results
 #'
-#' Summarises simulation results from the [run_trials] function. Uses
-#' [extract_results], which may be used directly to extract key trial results
+#' Summarises simulation results from the [run_trials()] function. Uses
+#' [extract_results()], which may be used directly to extract key trial results
 #' without summarising.
 #'
 #' @inheritParams extract_results
@@ -20,7 +20,7 @@
 #' \itemize{
 #'   \item `n_rep`: the number of simulations.
 #'   \item `n_summarised`: the number of simulations summarised.
-#'   \item `highest_is_best`: as specified in [setup_trial].
+#'   \item `highest_is_best`: as specified in [setup_trial()].
 #'   \item `elapsed_time`: the total simulation time.
 #'   \item `size_mean`, `size_sd`, `size_median`, `size_p25`, `size_p75`: the
 #'     mean, standard deviation, median as well as 25- and 75-percentiles of the
@@ -48,18 +48,19 @@
 #'     `prob_select_none` for the probability of selecting no arm.
 #'   \item `rmse`, `rmse_te`: the root mean squared error of the estimates for
 #'     the selected arm and for the treatment effect, as described further in
-#'     [extract_results].
+#'     [extract_results()].
 #'   \item `idp`: the ideal design percentage (IDP; 0-100%), see **Details**.
 #'   \item `select_strategy`, `select_last_arm`, `select_preferences`,
 #'     `te_comp`, `raw_ests`,`restrict`: as specified above.
-#'   \item `control`: the control arm specified by [setup_trial],
-#'     [setup_trial_binom] or [setup_trial_norm]; `NULL` if no control.
+#'   \item `control`: the control arm specified by [setup_trial()],
+#'     [setup_trial_binom()] or [setup_trial_norm()]; `NULL` if no control.
 #'   \item `equivalence_assessed`, `futility_assessed`: single logicals,
 #'     specifies whether the trial design specification includes assessments of
 #'     equivalence and/or futility.
-#'   \item `base_seed`: as specified in [run_trials].
+#'   \item `base_seed`: as specified in [run_trials()].
 #'   \item `cri_width`, `n_draws`, `robust`, `description`, `add_info`: as
-#'     specified in [setup_trial], [setup_trial_binom] or [setup_trial_norm].
+#'     specified in [setup_trial()], [setup_trial_binom()] or
+#'     [setup_trial_norm()].
 #'   }
 #'
 #' @details

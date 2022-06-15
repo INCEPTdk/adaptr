@@ -7,7 +7,7 @@
 extract_statuses(object, x_value, arm = NULL)
 }
 \arguments{
-\item{object}{\code{trial_results} object from \link{run_trials}.}
+\item{object}{\code{trial_results} object from \code{\link[=run_trials]{run_trials()}}.}
 
 \item{x_value}{single character string, determining whether the number of
 adaptive analysis looks (\code{"look"}, default) or the total cumulated number of

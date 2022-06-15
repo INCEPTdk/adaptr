@@ -42,12 +42,13 @@ setup_trial(
 \item{true_ys}{numeric vector specifying true outcomes (e.g., event
 probabilities, mean values, etc.) for all trial \code{arms}.}
 
-\item{fun_y_gen}{function, generates outcomes. See \link{setup_trial} \strong{Details}
+\item{fun_y_gen}{function, generates outcomes. See \code{\link[=setup_trial]{setup_trial()}}
+\strong{Details}
 for information on how to specify this function.\cr
 \strong{Note:} this function is called once during setup to validate the output
 structure.}
 
-\item{fun_draws}{function, generates posterior draws. See \link{setup_trial}
+\item{fun_draws}{function, generates posterior draws. See \code{\link[=setup_trial]{setup_trial()}}
 \strong{Details} for information on how to specify this function.\cr
 \strong{Note:} this function is called up to three times during setup to
 validate the output structure.}
@@ -93,7 +94,7 @@ specified, \code{data_looks} must be \code{NULL} (as default).}
 (default). If specified, this arm will serve as a common control arm, to
 which all other arms will be compared and the
 inferiority/superiority/equivalence thresholds (see below) will be for
-those comparisons. See \link{setup_trial} \strong{Details} below for information on
+those comparisons. See \code{\link[=setup_trial]{setup_trial()}} \strong{Details} below for information on
 behaviour with respect to these comparisons.}
 
 \item{control_prob_fixed}{if a common \code{control} arm is specified, this must
@@ -103,7 +104,7 @@ allocation probability to the first control arm may still be fixed using
 \code{fixed_probs}) Otherwise a vector of probabilities of either length \code{1} or
 \verb{number of arms - 1} can be provided, or one of the special arguments
 \code{"sqrt-based"}, \code{"sqrt-based start"}, \code{"sqrt-based fixed"} or \code{"match"}.
-See \link{setup_trial} \strong{Details} below for details in behaviour.}
+See \code{\link[=setup_trial]{setup_trial()}} \strong{Details} below for details in behaviour.}
 
 \item{inferiority}{single numeric (\verb{> 0} and \verb{<1}, default is \code{0.01})
 specifying the inferiority threshold. An arm will be considered inferior
@@ -178,8 +179,8 @@ and/or \code{max_probs}. If \code{1}, then no \emph{softening} is applied.}
 
 \item{fun_raw_est}{function that takes a numeric vector and returns a
 single numeric value, used to calculate a raw summary estimate of the
-outcomes in each \code{arm}. Defaults to \link{mean}, which is always used in the
-\link{setup_trial_binom} and \link{setup_trial_norm} functions.\cr
+outcomes in each \code{arm}. Defaults to \code{\link[=mean]{mean()}}, which is always used in the
+\code{\link[=setup_trial_binom]{setup_trial_binom()}} and \code{\link[=setup_trial_norm]{setup_trial_norm()}} functions.\cr
 \strong{Note:} the function is called one time per arm during setup to validate
 the output structure.}
 
@@ -209,9 +210,9 @@ regarding the trial design or specifications, will only be used in print
 functions if not \code{NULL} (the default).}
 }
 \value{
-A \code{trial_spec} object used to run simulations by \link{run_trial} or
-\link{run_trials}. The output is essentially a list containing the input values
-(some combined in a \code{data.frame} called \code{trial_arms}), but its class
+A \code{trial_spec} object used to run simulations by \code{\link[=run_trial]{run_trial()}} or
+\code{\link[=run_trials]{run_trials()}}. The output is essentially a list containing the input
+values (some combined in a \code{data.frame} called \code{trial_arms}), but its class
 signals that these inputs have been validated and inappropriate
 combinations and settings have been ruled out. Also contains \code{best_arm}
 holding the arm(s) with the best value(s) in \code{true_ys}. Use \code{str()} to
@@ -219,9 +220,9 @@ peruse the actual content of the returned object
 }
 \description{
 Specifies the design of an adaptive trial with any type of outcome and
-validates all inputs. Use \link{run_trial} or \link{run_trials} to conduct
+validates all inputs. Use \code{\link[=run_trial]{run_trial()}} or \code{\link[=run_trials]{run_trials()}} to conduct
 single/multiple simulations of the specified trial, respectively.\cr
-See \link{setup_trial_binom} and \link{setup_trial_norm} for simplified setup of
+See \code{\link[=setup_trial_binom]{setup_trial_binom()}} and \code{\link[=setup_trial_norm]{setup_trial_norm()}} for simplified setup of
 trial designs common outcome types. For additional trial specification
 examples, see the the \strong{Basic examples} vignette
 (\code{vignette("Basic-examples", package = "adaptr")}) and the
@@ -258,7 +259,7 @@ including outcomes for patients allocated to \strong{currently inactive} \code{a
 when called.
 \item \code{control}: single character, the current \verb{control arm}, will be \code{NULL} for
 designs without a common control arm, but required regardless as the argument
-is supplied by \link{run_trial}.
+is supplied by \code{\link[=run_trial]{run_trial()}}/\code{\link[=run_trials]{run_trials()}}.
 \item \code{n_draws}: single integer, the number of posterior draws for each arm.
 }
 
@@ -279,7 +280,7 @@ example with further details.
 \item Different estimation methods and prior distributions may be used;
 complex functions will lead to slower simulations compared to simpler
 methods for obtaining posterior draws, including those specified using the
-\link{setup_trial_binom} and \link{setup_trial_norm} functions.
+\code{\link[=setup_trial_binom]{setup_trial_binom()}} and \code{\link[=setup_trial_norm]{setup_trial_norm()}} functions.
 \item Technically, using log relative effect measures — e.g. log(odds ratio) or
 log(risk ratios) - or differences compared to a reference arm (e.g., mean
 differences or absolute risk differences) instead of absolute values in each
@@ -287,11 +288,11 @@ arm will work to some extent (\strong{be cautious!}):
 \item Stopping for superiority/inferiority/max sample sizes will work.
 \item Stopping for equivalence/futility may be used with relative effect
 measures on the log scale.
-\item Several summary statistics from \link{run_trial} (\code{sum_ys} and posterior
+\item Several summary statistics from \code{\link[=run_trial]{run_trial()}} (\code{sum_ys} and posterior
 estimates) may be nonsensical if relative effect measures are used
 (depending on calculation method).
-\item In the same vein, \link{extract_results} (\code{sum_ys}, \code{sq_err}, and
-\code{sq_err_te}), and \link{summary} (\code{sum_ys_mean/sd/median/q25/q75}, \code{rmse},
+\item In the same vein, \code{\link[=extract_results]{extract_results()}} (\code{sum_ys}, \code{sq_err}, and
+\code{sq_err_te}), and \code{\link[=summary]{summary()}} (\code{sum_ys_mean/sd/median/q25/q75}, \code{rmse},
 \code{rmse_te} and \code{idp}) may be equally nonsensical when calculated on the
 relative scale.
 }
@@ -300,10 +301,10 @@ relative scale.
 custom functions}
 If the \code{fun_y_gen}, \code{fun_draws}, or \code{fun_raw_est} functions calls other
 user-specified functions (or uses objects defined by the user outside these
-functions or the \code{setup_trial}-call) or functions from external packages and
-simulations are conducted on multiple cores, these objects or functions must
+functions or the \code{\link[=setup_trial]{setup_trial()}}-call) or functions from external packages
+and simulations are conducted on multiple cores, these objects or functions must
 be exported or prefixed with their namespaces, respectively, as  described in
-\link{run_trials}.
+\code{\link[=run_trials]{run_trials()}}.
 
 \strong{More information on arguments}
 \itemize{
@@ -392,7 +393,7 @@ futility.
 # distributed continuous outcomes (higher values are worse)
 
 # Define the function that will generate the outcomes in each arm
-# Notice: contents should match arms/true_ys in the setup_trial call below
+# Notice: contents should match arms/true_ys in the setup_trial() call below
 get_ys_lognorm <- function(allocs) {
   y <- numeric(length(allocs))
   # arms (names and order) and values (except for exponentiation) should match

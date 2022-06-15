@@ -137,7 +137,8 @@ The `setup_trial_binom()` function uses *beta-binomial conjugate prior models*
 in each arm, with `beta(1, 1)` priors. These priors are uniform (≈
 "non-informative") on the probability scale and corresponds to the same amount
 of information as provided by 2 patients (1 with and 1 without an event),
-described in greater detail by, e.g., *Ryan et al, 2019* ([10.1136/bmjopen-2018-024256](https://doi.org/10.1136/bmjopen-2018-024256)).
+described in greater detail by, e.g., *Ryan et al, 2019*
+([10.1136/bmjopen-2018-024256](https://doi.org/10.1136/bmjopen-2018-024256)).
 
 Our custom function for generating posterior draws also uses beta-binomial
 conjugate prior models, but with informative priors. Informative

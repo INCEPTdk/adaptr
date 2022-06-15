@@ -8,7 +8,7 @@ run_trial(trial_spec, seed = NULL, sparse = FALSE)
 }
 \arguments{
 \item{trial_spec}{\code{trial_spec} object, generated and validated by the
-\link{setup_trial}, \link{setup_trial_binom} or \link{setup_trial_norm} function.}
+\code{\link[=setup_trial]{setup_trial()}}, \code{\link[=setup_trial_binom]{setup_trial_binom()}} or \code{\link[=setup_trial_norm]{setup_trial_norm()}} function.}
 
 \item{seed}{single integer or \code{NULL} (default), if a value is provided, this
 value will be used as the random seed when running (the global random seed
@@ -17,11 +17,11 @@ will be restored after the function has run, so it is not affected).}
 \item{sparse}{single logical; if \code{FALSE} (default) everything listed below is
 included in the returned object. If \code{TRUE}, only a limited amount of data
 is included in the returned object. This can be practical when running many
-simulations and saving the results using the \link{run_trials} function (which
+simulations and saving the results using the \code{\link[=run_trials]{run_trials()}} function (which
 relies on this function), as the output file will thus be substantially
 smaller. However, printing of individual trial results will be
 substantially less detailed for sparse results and non-sparse results are
-required by \link{plot_history}.}
+required by \code{\link[=plot_history]{plot_history()}}.}
 }
 \value{
 A \code{trial_result} object containing everything listed below if
@@ -41,22 +41,22 @@ conducted if the simulation is stopped before the maximum sample size.
 specified).
 \item \code{final_control}: character, final common control arm (if relevant).
 \item \code{control_prob_fixed}: fixed common control arm probabilities (if
-specified; see \link{setup_trial}).
+specified; see \code{\link[=setup_trial]{setup_trial()}}).
 \item \code{inferiority}, \code{superiority}, \code{equivalence_prob},
 \code{equivalence_diff}, \code{equivalence_only_first}, \code{futility_prob},
 \code{futility_diff}, \code{futility_only_first}, \code{highest_is_best}, and
-\code{soften_power}: as specified in \link{setup_trial}.
-\item \code{best_arm}: the best arm(s), as described in \link{setup_trial}.
+\code{soften_power}: as specified in \code{\link[=setup_trial]{setup_trial()}}.
+\item \code{best_arm}: the best arm(s), as described in \code{\link[=setup_trial]{setup_trial()}}.
 \item \code{trial_res}: a \code{data.frame} containing most of the information
-specified for each arm in \link{setup_trial} including \code{true_ys} (true
-outcomes as specified in \link{setup_trial}) and for each arm the sum of the
-outcomes (\code{sum_ys}; i.e., the total number of events for binary
+specified for each arm in \code{\link[=setup_trial]{setup_trial()}} including \code{true_ys} (true
+outcomes as specified in \code{\link[=setup_trial]{setup_trial()}}) and for each arm the sum of
+the outcomes (\code{sum_ys}; i.e., the total number of events for binary
 outcomes or the totals of continuous outcomes) and patients randomised
 (\code{ns}), summary statistics for the raw outcome data (\code{raw_ests},
-calculated as specified in \link{setup_trial}, defaults to mean values,
+calculated as specified in \code{\link[=setup_trial]{setup_trial()}}, defaults to mean values,
 i.e., event rates for binary outcomes or means for continuous outcomes)
 and posterior estimates (\code{post_ests}, \code{post_errs}, \code{lo_cri}, and
-\code{hi_cri}, as specified in \link{setup_trial}), \code{final_status} of each arm
+\code{hi_cri}, as specified in \code{\link[=setup_trial]{setup_trial()}}), \code{final_status} of each arm
 (\code{"inferior"}, \code{"superior"}, \code{"equivalence"}, \code{"futile"}, \code{"active"},
 or \code{"control"} (currently active control arm, including if the current
 control when stopped for equivalence)),
@@ -98,13 +98,15 @@ patients in the order of randomization.
 the order of randomization (\code{0} or \code{1} for binary outcomes).
 \item \code{seed}: the random seed used, if specified.
 \item \code{description}, \code{add_info}, \code{cri_width}, \code{n_draws}, \code{robust}: as
-specified in \link{setup_trial}, \link{setup_trial_binom} or \link{setup_trial_norm}.
+specified in \code{\link[=setup_trial]{setup_trial()}}, \code{\link[=setup_trial_binom]{setup_trial_binom()}} or
+\code{\link[=setup_trial_norm]{setup_trial_norm()}}.
 \item \code{sparse}: single logical, corresponding to the \code{sparse} input.
 }
 }
 \description{
 This function conducts a single trial simulation using a trial specification
-as specified by \link{setup_trial}, \link{setup_trial_binom} or \link{setup_trial_norm}.
+as specified by \code{\link[=setup_trial]{setup_trial()}}, \code{\link[=setup_trial_binom]{setup_trial_binom()}} or
+\code{\link[=setup_trial_norm]{setup_trial_norm()}}.
 During simulation, the function randomises "patients", randomly generates
 outcomes, calculates the probabilities that each \code{arm} is the best (and
 better than the control, if any). This is followed by checking inferiority,

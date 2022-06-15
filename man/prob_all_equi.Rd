@@ -25,9 +25,9 @@ being practically equivalent.
 }
 \description{
 Used internally. This function takes a \code{matrix} as calculated by the
-\link{get_draws_binom}, \link{get_draws_norm} or a corresponding custom function
-(specified using the \code{fun_draws} argument in \link{setup_trial}; see
-\link{get_draws_generic}), and an equivalence difference, and calculates the
+\code{\link[=get_draws_binom]{get_draws_binom()}}, \code{\link[=get_draws_norm]{get_draws_norm()}} or a corresponding custom function
+(specified using the \code{fun_draws} argument in \code{\link[=setup_trial]{setup_trial()}}; see
+\code{\link[=get_draws_generic]{get_draws_generic()}}), and an equivalence difference, and calculates the
 probability of all arms being equivalent (absolute differences between
 highest and lowest value in the same set of posterior draws being less than
 the difference considered equivalent).

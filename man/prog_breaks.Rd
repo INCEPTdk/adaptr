@@ -20,8 +20,8 @@ simulation speeds across cores, using \code{progress} may thus increase total
 simulation times.}
 
 \item{n_rep_new}{single integers, number of new simulations to run (i.e.,
-\code{n_rep} as supplied to \link{run_trials} minus the number of previously run
-simulations if \code{grow} is used in \link{run_trials}).}
+\code{n_rep} as supplied to \code{\link[=run_trials]{run_trials()}} minus the number of previously run
+simulations if \code{grow} is used in \code{\link[=run_trials]{run_trials()}}).}
 
 \item{cores}{single integer; the number of cores to run the simulations on
 using the \pkg{parallel} library. Defaults to \code{1}; may be increased to run
@@ -36,10 +36,10 @@ simulation numbers in each batch).
 }
 \description{
 Used internally. Generates breakpoints, messages, and 'batches' of trial
-numbers to simulate when using \link{run_trials} with the \code{progress} argument in
+numbers to simulate when using \code{\link[=run_trials]{run_trials()}} with the \code{progress} argument in
 use. Breaks will be multiples of the number of \code{cores}, and repeated use of
 the same values for breaks is avoided (if, e.g., the number of breaks times
 the number of cores is not possible if few new trials are to be run). Inputs
-are validated by \link{run_trials}.
+are validated by \code{\link[=run_trials]{run_trials()}}.
 }
 \keyword{internal}

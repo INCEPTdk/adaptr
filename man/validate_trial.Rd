@@ -83,7 +83,7 @@ specified, \code{data_looks} must be \code{NULL} (as default).}
 (default). If specified, this arm will serve as a common control arm, to
 which all other arms will be compared and the
 inferiority/superiority/equivalence thresholds (see below) will be for
-those comparisons. See \link{setup_trial} \strong{Details} below for information on
+those comparisons. See \code{\link[=setup_trial]{setup_trial()}} \strong{Details} below for information on
 behaviour with respect to these comparisons.}
 
 \item{control_prob_fixed}{if a common \code{control} arm is specified, this must
@@ -93,7 +93,7 @@ allocation probability to the first control arm may still be fixed using
 \code{fixed_probs}) Otherwise a vector of probabilities of either length \code{1} or
 \verb{number of arms - 1} can be provided, or one of the special arguments
 \code{"sqrt-based"}, \code{"sqrt-based start"}, \code{"sqrt-based fixed"} or \code{"match"}.
-See \link{setup_trial} \strong{Details} below for details in behaviour.}
+See \code{\link[=setup_trial]{setup_trial()}} \strong{Details} below for details in behaviour.}
 
 \item{inferiority}{single numeric (\verb{> 0} and \verb{<1}, default is \code{0.01})
 specifying the inferiority threshold. An arm will be considered inferior
@@ -191,20 +191,21 @@ design, will only be used in print functions if not \code{NULL} (the default).}
 regarding the trial design or specifications, will only be used in print
 functions if not \code{NULL} (the default).}
 
-\item{fun_y_gen}{function, generates outcomes. See \link{setup_trial} \strong{Details}
+\item{fun_y_gen}{function, generates outcomes. See \code{\link[=setup_trial]{setup_trial()}}
+\strong{Details}
 for information on how to specify this function.\cr
 \strong{Note:} this function is called once during setup to validate the output
 structure.}
 
-\item{fun_draws}{function, generates posterior draws. See \link{setup_trial}
+\item{fun_draws}{function, generates posterior draws. See \code{\link[=setup_trial]{setup_trial()}}
 \strong{Details} for information on how to specify this function.\cr
 \strong{Note:} this function is called up to three times during setup to
 validate the output structure.}
 
 \item{fun_raw_est}{function that takes a numeric vector and returns a
 single numeric value, used to calculate a raw summary estimate of the
-outcomes in each \code{arm}. Defaults to \link{mean}, which is always used in the
-\link{setup_trial_binom} and \link{setup_trial_norm} functions.\cr
+outcomes in each \code{arm}. Defaults to \code{\link[=mean]{mean()}}, which is always used in the
+\code{\link[=setup_trial_binom]{setup_trial_binom()}} and \code{\link[=setup_trial_norm]{setup_trial_norm()}} functions.\cr
 \strong{Note:} the function is called one time per arm during setup to validate
 the output structure.}
 }
@@ -214,6 +215,6 @@ specification.
 }
 \description{
 Used internally. Validates the inputs common to all trial specifications, as
-specified in \link{setup_trial}, \link{setup_trial_binom} and \link{setup_trial_norm}.
+specified in \code{\link[=setup_trial]{setup_trial()}}, \code{\link[=setup_trial_binom]{setup_trial_binom()}} and \code{\link[=setup_trial_norm]{setup_trial_norm()}}.
 }
 \keyword{internal}
