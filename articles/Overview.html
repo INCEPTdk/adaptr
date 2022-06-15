@@ -137,10 +137,9 @@
 <span class="co">#&gt; Absolute equivalence difference: 0.05</span>
 <span class="co">#&gt; No futility threshold (not relevant - no common control)</span>
 <span class="co">#&gt; Soften power for all analyses: 0.5</span></code></pre></div>
-<p>By default, probabilities are shown with 3 decimals. This can be changed by explicitly <code>print</code>ing the specification with the <code>prob_digits</code> arguments, for example:</p>
+<p>By default, probabilities are shown with 3 decimals. This can be changed by explicitly <code><a href="../reference/print.html">print()</a></code>ing the specification with the <code>prob_digits</code> arguments, for example:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="fu"><a href="../reference/print.html">print</a></span><span class="op">(</span><span class="va">binom_trial</span>, prob_digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="../reference/print.html">print</a></span><span class="op">(</span><span class="va">binom_trial</span>, prob_digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
 <span class="co">#&gt; Trial specification: generic binomially distributed outcome trial</span>
 <span class="co">#&gt; * Undesirable outcome</span>
 <span class="co">#&gt; * No common control arm</span>
@@ -194,7 +193,7 @@
 <span class="co">#&gt; * Credible interval width: 95%</span>
 <span class="co">#&gt; * Number of posterior draws: 5000</span>
 <span class="co">#&gt; * Posterior estimation method: medians with MAD-SDs</span></code></pre></div>
-<p>Again, we can choose the number of decimals with <code>print</code>:</p>
+<p>Again, we can choose the number of decimals with <code><a href="../reference/print.html">print()</a></code>:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/print.html">print</a></span><span class="op">(</span><span class="va">trial_res</span>, prob_digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
 <span class="co">#&gt; Single simulation result: generic binomially distributed outcome trial</span>
@@ -251,7 +250,7 @@
 <span class="co">#&gt; * Ideal design percentage: 100.0%</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Simulation details:</span>
-<span class="co">#&gt; * Simulation time: 0.764 secs</span>
+<span class="co">#&gt; * Simulation time: 0.776 secs</span>
 <span class="co">#&gt; * Base random seed: 67890</span>
 <span class="co">#&gt; * Credible interval width: 95%</span>
 <span class="co">#&gt; * Number of posterior draws: 5000</span>
@@ -311,7 +310,7 @@
 <span class="co">#&gt; * Ideal design percentage: 100.0%</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Simulation details:</span>
-<span class="co">#&gt; * Simulation time: 0.764 secs</span>
+<span class="co">#&gt; * Simulation time: 0.776 secs</span>
 <span class="co">#&gt; * Base random seed: 67890</span>
 <span class="co">#&gt; * Credible interval width: 95%</span>
 <span class="co">#&gt; * Number of posterior draws: 5000</span>
@@ -320,7 +319,7 @@
 <div class="section level3">
 <h3 id="visualise-trial-results">Visualise trial results<a class="anchor" aria-label="anchor" href="#visualise-trial-results"></a>
 </h3>
-<p>We need non-sparse results for <code>plot_history</code> (but <em>not</em> for <code>plot_status</code>), so first we re-run <code><a href="../reference/run_trials.html">run_trials()</a></code>:</p>
+<p>We need non-sparse results for <code><a href="../reference/plot_history.html">plot_history()</a></code> (but <em>not</em> for <code><a href="../reference/plot_status.html">plot_status()</a></code>), so first we re-run <code><a href="../reference/run_trials.html">run_trials()</a></code>:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">trial_res_mult</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_trials.html">run_trials</a></span><span class="op">(</span><span class="va">binom_trial</span>, n_rep <span class="op">=</span> <span class="fl">25</span>, base_seed <span class="op">=</span> <span class="fl">67890</span>,
                              sparse <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>

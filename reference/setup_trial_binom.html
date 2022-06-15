@@ -3,11 +3,11 @@
 distributed outcome and validates all inputs. Uses beta-binomial
 conjugate models with beta(1, 1) prior distributions, corresponding to a
 uniform prior (or the addition of 2 patients, 1 with an event and 1 without)
-to the trial. Use run_trial or run_trials to conduct single/multiple
+to the trial. Use run_trial() or run_trials() to conduct single/multiple
 simulations of the specified trial, respectively.
-Note: add_info as specified in setup_trial is set to NULL for trial
-specifications setup by this function.
-Further details: please see setup_trial. See setup_trial_norm for
+Note: add_info as specified in setup_trial() is set to NULL for
+trial specifications setup by this function.
+Further details: please see setup_trial(). See setup_trial_norm() for
 simplified setup of trials with normally distributed continuous outcomes.
 For additional trial specification examples, see the the Basic examples
 vignette (vignette("Basic-examples", package = "adaptr")) and the
@@ -16,11 +16,11 @@ Advanced example vignette
 distributed outcome and validates all inputs. Uses beta-binomial
 conjugate models with beta(1, 1) prior distributions, corresponding to a
 uniform prior (or the addition of 2 patients, 1 with an event and 1 without)
-to the trial. Use run_trial or run_trials to conduct single/multiple
+to the trial. Use run_trial() or run_trials() to conduct single/multiple
 simulations of the specified trial, respectively.
-Note: add_info as specified in setup_trial is set to NULL for trial
-specifications setup by this function.
-Further details: please see setup_trial. See setup_trial_norm for
+Note: add_info as specified in setup_trial() is set to NULL for
+trial specifications setup by this function.
+Further details: please see setup_trial(). See setup_trial_norm() for
 simplified setup of trials with normally distributed continuous outcomes.
 For additional trial specification examples, see the the Basic examples
 vignette (vignette("Basic-examples", package = "adaptr")) and the
@@ -84,9 +84,9 @@ Advanced example vignette
 distributed outcome and validates all inputs. Uses <em>beta-binomial</em>
 conjugate models with <code>beta(1, 1)</code> prior distributions, corresponding to a
 uniform prior (or the addition of 2 patients, 1 with an event and 1 without)
-to the trial. Use <a href="run_trial.html">run_trial</a> or <a href="run_trials.html">run_trials</a> to conduct single/multiple
-simulations of the specified trial, respectively.<br><strong>Note:</strong> <code>add_info</code> as specified in <a href="setup_trial.html">setup_trial</a> is set to <code>NULL</code> for trial
-specifications setup by this function.<br><strong>Further details:</strong> please see <a href="setup_trial.html">setup_trial</a>. See <a href="setup_trial_norm.html">setup_trial_norm</a> for
+to the trial. Use <code><a href="run_trial.html">run_trial()</a></code> or <code><a href="run_trials.html">run_trials()</a></code> to conduct single/multiple
+simulations of the specified trial, respectively.<br><strong>Note:</strong> <code>add_info</code> as specified in <code><a href="setup_trial.html">setup_trial()</a></code> is set to <code>NULL</code> for
+trial specifications setup by this function.<br><strong>Further details:</strong> please see <code><a href="setup_trial.html">setup_trial()</a></code>. See <code><a href="setup_trial_norm.html">setup_trial_norm()</a></code> for
 simplified setup of trials with normally distributed continuous outcomes.<br>
 For additional trial specification examples, see the the <strong>Basic examples</strong>
 vignette (<code><a href="../articles/Basic-examples.html">vignette("Basic-examples", package = "adaptr")</a></code>) and the
@@ -192,7 +192,7 @@ specified, <code>data_looks</code> must be <code>NULL</code> (as default).</p></
 (default). If specified, this arm will serve as a common control arm, to
 which all other arms will be compared and the
 inferiority/superiority/equivalence thresholds (see below) will be for
-those comparisons. See <a href="setup_trial.html">setup_trial</a> <strong>Details</strong> below for information on
+those comparisons. See <code><a href="setup_trial.html">setup_trial()</a></code> <strong>Details</strong> below for information on
 behaviour with respect to these comparisons.</p></dd>
 
 
@@ -204,7 +204,7 @@ allocation probability to the first control arm may still be fixed using
 <code>fixed_probs</code>) Otherwise a vector of probabilities of either length <code>1</code> or
 <code>number of arms - 1</code> can be provided, or one of the special arguments
 <code>"sqrt-based"</code>, <code>"sqrt-based start"</code>, <code>"sqrt-based fixed"</code> or <code>"match"</code>.
-See <a href="setup_trial.html">setup_trial</a> <strong>Details</strong> below for details in behaviour.</p></dd>
+See <code><a href="setup_trial.html">setup_trial()</a></code> <strong>Details</strong> below for details in behaviour.</p></dd>
 
 
 <dt>inferiority</dt>
@@ -325,16 +325,16 @@ on the natural scale).</p></dd>
 <dt>description</dt>
 <dd><p>character string, default is
 <code>"generic binomially distributed outcome trial"</code>. See arguments of
-<a href="setup_trial.html">setup_trial</a>.</p></dd>
+<code><a href="setup_trial.html">setup_trial()</a></code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>A <code>trial_spec</code> object used to run simulations by <a href="run_trial.html">run_trial</a> or
-<a href="run_trials.html">run_trials</a>. The output is essentially a list containing the input values
-(some combined in a <code>data.frame</code> called <code>trial_arms</code>), but its class
+<p>A <code>trial_spec</code> object used to run simulations by <code><a href="run_trial.html">run_trial()</a></code> or
+<code><a href="run_trials.html">run_trials()</a></code>. The output is essentially a list containing the input
+values (some combined in a <code>data.frame</code> called <code>trial_arms</code>), but its class
 signals that these inputs have been validated and inappropriate
 combinations and settings have been ruled out. Also contains <code>best_arm</code></p>
 
