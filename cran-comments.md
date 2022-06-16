@@ -1,3 +1,8 @@
+## Resubmission
+
+This is a resubmission of a minor release, fixing a moved URL an invalid file
+URI in a function documentation. Comments for original submission below.
+
 ## Release summary
 
 This is a minor patch release updating documentation, adding limited new
