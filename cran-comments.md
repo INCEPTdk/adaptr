@@ -1,16 +1,12 @@
-## Resubmission
+## Release summary
 
-This is a resubmission. In this version we have made these requested changes:
-
-* Removed " + file LICENSE" from the DESCRIPTION file
-
-* Removed the file LICENCE (LICENCE.md remains)
+This is a minor patch release updating documentation, adding limited new
+functionality, and updating an internal function due to updates to the
+`&&`-function in R >= 4.2.0.
 
 ## R CMD check results
 
 There were no ERRORs, WARNINGs or NOTEs.
-
-This CRAN submission is the first for this package. 
 
 ## Downstream dependencies
 
