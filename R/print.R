@@ -152,7 +152,7 @@ print.trial_spec <- function(x, prob_digits = 3, ...) {
 #' @details
 #' - `trial_result`: prints the results of a single trial simulated by
 #' [run_trial()]. More details are saved in the `trial_result` object and thus
-#' printed if the `sparse` argument in [run_trial()] / [run_trials()] is set to
+#' printed if the `sparse` argument in [run_trial()] or [run_trials()] is set to
 #' `FALSE`; if `TRUE`, fewer details are printed, but the omitted details are
 #' available by printing the `trial_spec` object created by [setup_trial()],
 #' [setup_trial_binom()] or [setup_trial_norm()].
@@ -225,7 +225,7 @@ print.trial_result <- function(x, prob_digits = 3, ...){
 #'
 #' @details
 #' - `trial_results`: prints the results of multiple simulations
-#' generated using [run_trials](). Further documentation on how multiple trials
+#' generated using [run_trials()]. Further documentation on how multiple trials
 #' are summarised before printing can be found in the [summary()] function
 #' documentation.
 #'

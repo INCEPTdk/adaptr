@@ -8,7 +8,7 @@
 [![CRAN
 status](https://www.r-pkg.org/badges/version/adaptr)](https://cran.r-project.org/package=adaptr)
 [![R-CMD-check](https://github.com/INCEPTdk/adaptr/workflows/R-CMD-check/badge.svg)](https://github.com/INCEPTdk/adaptr/actions/)
-[![status](https://joss.theoj.org/papers/e070045b6998360d93eed06c95ba44a7/status.svg)](https://joss.theoj.org/papers/e070045b6998360d93eed06c95ba44a7)
+[![status](https://joss.theoj.org/papers/10.21105/joss.04284/status.svg)](https://joss.theoj.org/papers/10.21105/joss.04284)
 [![codecov](https://codecov.io/gh/INCEPTdk/adaptr/branch/main/graph/badge.svg)](https://app.codecov.io/gh/INCEPTdk/adaptr/)
 ![total downloads from RStudio
 mirror](https://cranlogs.r-pkg.org/badges/grand-total/adaptr)
@@ -171,7 +171,7 @@ print(res_sum, digits = 1)
 #> * Ideal design percentage: 100.0%
 #> 
 #> Simulation details:
-#> * Simulation time: 0.38 secs
+#> * Simulation time: 0.388 secs
 #> * Base random seed: 67890
 #> * Credible interval width: 95%
 #> * Number of posterior draws: 5000

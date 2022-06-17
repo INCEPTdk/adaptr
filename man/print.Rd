@@ -128,7 +128,7 @@ The behaviour depends on the class of \code{x}:
 \itemize{
 \item \code{trial_result}: prints the results of a single trial simulated by
 \code{\link[=run_trial]{run_trial()}}. More details are saved in the \code{trial_result} object and thus
-printed if the \code{sparse} argument in \code{\link[=run_trial]{run_trial()}} / \code{\link[=run_trials]{run_trials()}} is set to
+printed if the \code{sparse} argument in \code{\link[=run_trial]{run_trial()}} or \code{\link[=run_trials]{run_trials()}} is set to
 \code{FALSE}; if \code{TRUE}, fewer details are printed, but the omitted details are
 available by printing the \code{trial_spec} object created by \code{\link[=setup_trial]{setup_trial()}},
 \code{\link[=setup_trial_binom]{setup_trial_binom()}} or \code{\link[=setup_trial_norm]{setup_trial_norm()}}.
@@ -136,7 +136,7 @@ available by printing the \code{trial_spec} object created by \code{\link[=setup
 
 \itemize{
 \item \code{trial_results}: prints the results of multiple simulations
-generated using \url{run_trials}. Further documentation on how multiple trials
+generated using \code{\link[=run_trials]{run_trials()}}. Further documentation on how multiple trials
 are summarised before printing can be found in the \code{\link[=summary]{summary()}} function
 documentation.
 }
