@@ -1,6 +1,6 @@
 # adaptr 1.1.0
 
-Minor version:
+Minor release:
 
 * Updates to the `run_trials()` function to allow exporting objects to clusters
 when running simulations on multiple cores.
