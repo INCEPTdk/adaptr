@@ -1,7 +1,7 @@
 Package: adaptr
 Title: Adaptive Trial Simulator
-Version: 1.1.0
-Date: 2022-06-16
+Version: 1.1.0.9000
+Date: 2022-06-20
 Authors@R: 
     c(person("Anders", "Granholm",
              email = "andersgran@gmail.com",
