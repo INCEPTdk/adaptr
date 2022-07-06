@@ -1,6 +1,6 @@
 # adaptr (development version)
 
-* No changes yet.
+* Minor bugfix in print method for trial specifications.
 
 # adaptr 1.1.0
 
