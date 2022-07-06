@@ -48,7 +48,7 @@ print.trial_spec <- function(x, prob_digits = 3, ...) {
           cat("* Control arm probability matched to best non-control arm")
         } else {
           cat0("* Control arm probability fixed at ",
-               round(x$control_prob_fixed), prob_digits) # Fixed at same value all the time
+               round(x$control_prob_fixed, prob_digits)) # Fixed at same value all the time
         }
       } else {
         cat0("* Control arm probability fixed at ")
