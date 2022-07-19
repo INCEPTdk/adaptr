@@ -1,6 +1,8 @@
 # adaptr (development version)
 
-* Minor bugfix in print method for trial specifications.
+* Minor bugfixes in print methods for trial specifications and summaries of multiple trial results.
+
+* Minor updates in messages in setup_trial.
 
 # adaptr 1.1.0
 

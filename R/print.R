@@ -308,7 +308,7 @@ print.trial_results_summary <- function(x, digits = 1, ...) {
                                                    character(1)), collapse = " | "), "\n",
       "* RMSE: ", fmt_dig(x$rmse, 5), "\n",
       "* RMSE treatment effect: ", ifelse(is.na(x$rmse_te), "not estimated", fmt_dig(x$rmse_te, 5)), "\n",
-      "* Ideal design percentage: ", fmt_dig(x$idp, digits), "%",
+      "* Ideal design percentage: ", ifelse(is.nan(x$idp), "not estimable", paste0(fmt_dig(x$idp, digits), "%")),
 
       # Technical simulation details
       "\n\nSimulation details:",
