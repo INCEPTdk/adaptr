@@ -283,7 +283,7 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
   best_arm <- arms[true_ys == ifelse(highest_is_best, max(true_ys), min(true_ys))]
   if (length(best_arm) > 1) {
     message(paste0("Notice: trial specification does not contain a single superior arm -", "
-                   multiple arms have the best value in true_ys: ", paste0(best_arm, collapse = " and ")))
+                   multiple arms have the best value in true_ys: ", paste0(best_arm, collapse = ", ")))
   }
 
   # Validate Bayesian settings
