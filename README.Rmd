@@ -39,9 +39,9 @@ The full package documentation is available as a stand-alone website at [inceptd
 # The easiest way is to install from CRAN directly
 install.packages("adaptr")
 
-# But you can also get the newest version from GitHub (requires the remotes package)
+# But you can also install the development version from GitHub (requires the remotes package)
 # install.packages("remotes") 
-remotes::install_github("INCEPTdk/adaptr")
+remotes::install_github("INCEPTdk/adaptr@dev")
 ```
 
 ## Example
