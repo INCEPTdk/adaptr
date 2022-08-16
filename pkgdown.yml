@@ -1,11 +1,11 @@
 pandoc: 2.7.3
-pkgdown: 2.0.4
+pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
   Advanced-example: Advanced-example.html
   Basic-examples: Basic-examples.html
   Overview: Overview.html
-last_built: 2022-06-20T11:38Z
+last_built: 2022-08-16T10:58Z
 urls:
   reference: https://inceptdk.github.io/adaptr/reference
   article: https://inceptdk.github.io/adaptr/articles

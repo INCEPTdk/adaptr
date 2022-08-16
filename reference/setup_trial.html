@@ -7,7 +7,7 @@ trial designs common outcome types. For additional trial specification
 examples, see the the Basic examples vignette
 (vignette("Basic-examples", package = "adaptr")) and the
 Advanced example vignette
-(vignette("Advanced-example", package = "adaptr")).'><title>Setup a generic trial specification — setup_trial • adaptr</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Setup a generic trial specification — setup_trial"><meta property="og:description" content='Specifies the design of an adaptive trial with any type of outcome and
+(vignette("Advanced-example", package = "adaptr")).'><title>Setup a generic trial specification — setup_trial • adaptr</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Setup a generic trial specification — setup_trial"><meta property="og:description" content='Specifies the design of an adaptive trial with any type of outcome and
 validates all inputs. Use run_trial() or run_trials() to conduct
 single/multiple simulations of the specified trial, respectively.
 See setup_trial_binom() and setup_trial_norm() for simplified setup of
@@ -26,7 +26,7 @@ Advanced example vignette
     
     <a class="navbar-brand me-2" href="../index.html">adaptr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -83,37 +83,37 @@ examples, see the the <strong>Basic examples</strong> vignette
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">setup_trial</span><span class="op">(</span>
-  <span class="va">arms</span>,
-  <span class="va">true_ys</span>,
-  fun_y_gen <span class="op">=</span> <span class="cn">NULL</span>,
-  fun_draws <span class="op">=</span> <span class="cn">NULL</span>,
-  start_probs <span class="op">=</span> <span class="cn">NULL</span>,
-  fixed_probs <span class="op">=</span> <span class="cn">NULL</span>,
-  min_probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">arms</span><span class="op">)</span><span class="op">)</span>,
-  max_probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">arms</span><span class="op">)</span><span class="op">)</span>,
-  data_looks <span class="op">=</span> <span class="cn">NULL</span>,
-  max_n <span class="op">=</span> <span class="cn">NULL</span>,
-  look_after_every <span class="op">=</span> <span class="cn">NULL</span>,
-  control <span class="op">=</span> <span class="cn">NULL</span>,
-  control_prob_fixed <span class="op">=</span> <span class="cn">NULL</span>,
-  inferiority <span class="op">=</span> <span class="fl">0.01</span>,
-  superiority <span class="op">=</span> <span class="fl">0.99</span>,
-  equivalence_prob <span class="op">=</span> <span class="cn">NULL</span>,
-  equivalence_diff <span class="op">=</span> <span class="cn">NULL</span>,
-  equivalence_only_first <span class="op">=</span> <span class="cn">NULL</span>,
-  futility_prob <span class="op">=</span> <span class="cn">NULL</span>,
-  futility_diff <span class="op">=</span> <span class="cn">NULL</span>,
-  futility_only_first <span class="op">=</span> <span class="cn">NULL</span>,
-  highest_is_best <span class="op">=</span> <span class="cn">FALSE</span>,
-  soften_power <span class="op">=</span> <span class="fl">1</span>,
-  fun_raw_est <span class="op">=</span> <span class="va">mean</span>,
-  cri_width <span class="op">=</span> <span class="fl">0.95</span>,
-  n_draws <span class="op">=</span> <span class="fl">5000</span>,
-  robust <span class="op">=</span> <span class="cn">TRUE</span>,
-  description <span class="op">=</span> <span class="cn">NULL</span>,
-  add_info <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">setup_trial</span><span class="op">(</span></span>
+<span>  <span class="va">arms</span>,</span>
+<span>  <span class="va">true_ys</span>,</span>
+<span>  fun_y_gen <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  fun_draws <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  start_probs <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  fixed_probs <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  min_probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">arms</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  max_probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">arms</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  data_looks <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  max_n <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  look_after_every <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  control <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  control_prob_fixed <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  inferiority <span class="op">=</span> <span class="fl">0.01</span>,</span>
+<span>  superiority <span class="op">=</span> <span class="fl">0.99</span>,</span>
+<span>  equivalence_prob <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  equivalence_diff <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  equivalence_only_first <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  futility_prob <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  futility_diff <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  futility_only_first <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  highest_is_best <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  soften_power <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  fun_raw_est <span class="op">=</span> <span class="va">mean</span>,</span>
+<span>  cri_width <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span>  n_draws <span class="op">=</span> <span class="fl">5000</span>,</span>
+<span>  robust <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  description <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  add_info <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -496,77 +496,77 @@ futility.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Setup a custom trial specification with right-skewed, log-normally</span></span>
-<span class="r-in"><span class="co"># distributed continuous outcomes (higher values are worse)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Define the function that will generate the outcomes in each arm</span></span>
-<span class="r-in"><span class="co"># Notice: contents should match arms/true_ys in the setup_trial() call below</span></span>
-<span class="r-in"><span class="va">get_ys_lognorm</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">allocs</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">allocs</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in">  <span class="co"># arms (names and order) and values (except for exponentiation) should match</span></span>
-<span class="r-in">  <span class="co"># those used in setup_trial (below)</span></span>
-<span class="r-in">  <span class="va">means</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Control"</span> <span class="op">=</span> <span class="fl">2.2</span>, <span class="st">"Experimental A"</span> <span class="op">=</span> <span class="fl">2.1</span>, <span class="st">"Experimental B"</span> <span class="op">=</span> <span class="fl">2.3</span><span class="op">)</span></span>
-<span class="r-in">  <span class="kw">for</span> <span class="op">(</span><span class="va">arm</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">means</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">    <span class="va">ii</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">allocs</span> <span class="op">==</span> <span class="va">arm</span><span class="op">)</span></span>
-<span class="r-in">    <span class="va">y</span><span class="op">[</span><span class="va">ii</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Lognormal.html" class="external-link">rlnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">ii</span><span class="op">)</span>, <span class="va">means</span><span class="op">[</span><span class="va">arm</span><span class="op">]</span>, <span class="fl">1.5</span><span class="op">)</span></span>
-<span class="r-in">  <span class="op">}</span></span>
-<span class="r-in">  <span class="va">y</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Define the function that will generate posterior draws</span></span>
-<span class="r-in"><span class="co"># In this example, the function uses no priors (corresponding to improper</span></span>
-<span class="r-in"><span class="co"># flat priors) and calculates results on the log-scale, before exponentiating</span></span>
-<span class="r-in"><span class="co"># back to the natural scale, which is required for assessments of</span></span>
-<span class="r-in"><span class="co"># equivalence, futility and general interpretation</span></span>
-<span class="r-in"><span class="va">get_draws_lognorm</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">arms</span>, <span class="va">allocs</span>, <span class="va">ys</span>, <span class="va">control</span>, <span class="va">n_draws</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="va">draws</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in">  <span class="va">logys</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">ys</span><span class="op">)</span></span>
-<span class="r-in">  <span class="kw">for</span> <span class="op">(</span><span class="va">arm</span> <span class="kw">in</span> <span class="va">arms</span><span class="op">)</span><span class="op">{</span></span>
-<span class="r-in">    <span class="va">ii</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">allocs</span> <span class="op">==</span> <span class="va">arm</span><span class="op">)</span></span>
-<span class="r-in">    <span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">ii</span><span class="op">)</span></span>
-<span class="r-in">    <span class="kw">if</span> <span class="op">(</span><span class="va">n</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">      <span class="co"># Necessary to avoid errors if too few patients randomised to this arm</span></span>
-<span class="r-in">      <span class="va">draws</span><span class="op">[[</span><span class="va">arm</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n_draws</span>, mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">logys</span><span class="op">[</span><span class="va">ii</span><span class="op">]</span><span class="op">)</span>, sd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">logys</span><span class="op">[</span><span class="va">ii</span><span class="op">]</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">n</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in">    <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
-<span class="r-in">      <span class="co"># Too few patients randomised to this arm - extreme uncertainty</span></span>
-<span class="r-in">      <span class="va">draws</span><span class="op">[[</span><span class="va">arm</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n_draws</span>, mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">logys</span><span class="op">)</span>, sd <span class="op">=</span> <span class="fl">1000</span> <span class="op">*</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">logys</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">logys</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in">    <span class="op">}</span></span>
-<span class="r-in">  <span class="op">}</span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">cbind</span>, <span class="va">draws</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># The actual trial specification is then defined</span></span>
-<span class="r-in"><span class="va">lognorm_trial</span> <span class="op">&lt;-</span> <span class="fu">setup_trial</span><span class="op">(</span></span>
-<span class="r-in">  <span class="co"># arms should match those above</span></span>
-<span class="r-in">  arms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Control"</span>, <span class="st">"Experimental A"</span>, <span class="st">"Experimental B"</span><span class="op">)</span>,</span>
-<span class="r-in">  <span class="co"># true_ys should match those above</span></span>
-<span class="r-in">  true_ys <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2.2</span>, <span class="fl">2.1</span>, <span class="fl">2.3</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">  fun_y_gen <span class="op">=</span> <span class="va">get_ys_lognorm</span>, <span class="co"># as specified above</span></span>
-<span class="r-in">  fun_draws <span class="op">=</span> <span class="va">get_draws_lognorm</span>, <span class="co"># as specified above</span></span>
-<span class="r-in">  max_n <span class="op">=</span> <span class="fl">5000</span>,</span>
-<span class="r-in">  look_after_every <span class="op">=</span> <span class="fl">200</span>,</span>
-<span class="r-in">  control <span class="op">=</span> <span class="st">"Control"</span>,</span>
-<span class="r-in">  <span class="co"># Qquare-root-based, fixed control group allocation ratio</span></span>
-<span class="r-in">  <span class="co"># and response-adaptive randomisation for other arms</span></span>
-<span class="r-in">  control_prob_fixed <span class="op">=</span> <span class="st">"sqrt-based"</span>,</span>
-<span class="r-in">  <span class="co"># Equivalence assessment</span></span>
-<span class="r-in">  equivalence_prob <span class="op">=</span> <span class="fl">0.9</span>,</span>
-<span class="r-in">  equivalence_diff <span class="op">=</span> <span class="fl">0.5</span>,</span>
-<span class="r-in">  equivalence_only_first <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span class="r-in">  highest_is_best <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span class="r-in">  <span class="co"># Summarise raw results by taking the mean on the</span></span>
-<span class="r-in">  <span class="co"># log scale and back-transforming</span></span>
-<span class="r-in">  fun_raw_est <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> ,</span>
-<span class="r-in">  <span class="co"># Summarise posteriors using medians with MAD-SDs,</span></span>
-<span class="r-in">  <span class="co"># as distributions will not be normal on the actual scale</span></span>
-<span class="r-in">  robust <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span class="r-in">  <span class="co"># Description/additional info used when printing</span></span>
-<span class="r-in">  description <span class="op">=</span> <span class="st">"continuous, log-normally distributed outcome"</span>,</span>
-<span class="r-in">  add_info <span class="op">=</span> <span class="st">"SD on the log scale for all arms: 1.5"</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Print trial specification with 3 digits for all probabilities</span></span>
-<span class="r-in"><span class="fu"><a href="print.html">print</a></span><span class="op">(</span><span class="va">lognorm_trial</span>, prob_digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Setup a custom trial specification with right-skewed, log-normally</span></span></span>
+<span class="r-in"><span><span class="co"># distributed continuous outcomes (higher values are worse)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Define the function that will generate the outcomes in each arm</span></span></span>
+<span class="r-in"><span><span class="co"># Notice: contents should match arms/true_ys in the setup_trial() call below</span></span></span>
+<span class="r-in"><span><span class="va">get_ys_lognorm</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">allocs</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">allocs</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="co"># arms (names and order) and values (except for exponentiation) should match</span></span></span>
+<span class="r-in"><span>  <span class="co"># those used in setup_trial (below)</span></span></span>
+<span class="r-in"><span>  <span class="va">means</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Control"</span> <span class="op">=</span> <span class="fl">2.2</span>, <span class="st">"Experimental A"</span> <span class="op">=</span> <span class="fl">2.1</span>, <span class="st">"Experimental B"</span> <span class="op">=</span> <span class="fl">2.3</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="kw">for</span> <span class="op">(</span><span class="va">arm</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">means</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="va">ii</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">allocs</span> <span class="op">==</span> <span class="va">arm</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="va">y</span><span class="op">[</span><span class="va">ii</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Lognormal.html" class="external-link">rlnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">ii</span><span class="op">)</span>, <span class="va">means</span><span class="op">[</span><span class="va">arm</span><span class="op">]</span>, <span class="fl">1.5</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">}</span></span></span>
+<span class="r-in"><span>  <span class="va">y</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Define the function that will generate posterior draws</span></span></span>
+<span class="r-in"><span><span class="co"># In this example, the function uses no priors (corresponding to improper</span></span></span>
+<span class="r-in"><span><span class="co"># flat priors) and calculates results on the log-scale, before exponentiating</span></span></span>
+<span class="r-in"><span><span class="co"># back to the natural scale, which is required for assessments of</span></span></span>
+<span class="r-in"><span><span class="co"># equivalence, futility and general interpretation</span></span></span>
+<span class="r-in"><span><span class="va">get_draws_lognorm</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">arms</span>, <span class="va">allocs</span>, <span class="va">ys</span>, <span class="va">control</span>, <span class="va">n_draws</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">draws</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">logys</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">ys</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="kw">for</span> <span class="op">(</span><span class="va">arm</span> <span class="kw">in</span> <span class="va">arms</span><span class="op">)</span><span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="va">ii</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">allocs</span> <span class="op">==</span> <span class="va">arm</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">ii</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="kw">if</span> <span class="op">(</span><span class="va">n</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>      <span class="co"># Necessary to avoid errors if too few patients randomised to this arm</span></span></span>
+<span class="r-in"><span>      <span class="va">draws</span><span class="op">[[</span><span class="va">arm</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n_draws</span>, mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">logys</span><span class="op">[</span><span class="va">ii</span><span class="op">]</span><span class="op">)</span>, sd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">logys</span><span class="op">[</span><span class="va">ii</span><span class="op">]</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">n</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>      <span class="co"># Too few patients randomised to this arm - extreme uncertainty</span></span></span>
+<span class="r-in"><span>      <span class="va">draws</span><span class="op">[[</span><span class="va">arm</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n_draws</span>, mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">logys</span><span class="op">)</span>, sd <span class="op">=</span> <span class="fl">1000</span> <span class="op">*</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">logys</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">logys</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">}</span></span></span>
+<span class="r-in"><span>  <span class="op">}</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">cbind</span>, <span class="va">draws</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># The actual trial specification is then defined</span></span></span>
+<span class="r-in"><span><span class="va">lognorm_trial</span> <span class="op">&lt;-</span> <span class="fu">setup_trial</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="co"># arms should match those above</span></span></span>
+<span class="r-in"><span>  arms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Control"</span>, <span class="st">"Experimental A"</span>, <span class="st">"Experimental B"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="co"># true_ys should match those above</span></span></span>
+<span class="r-in"><span>  true_ys <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2.2</span>, <span class="fl">2.1</span>, <span class="fl">2.3</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  fun_y_gen <span class="op">=</span> <span class="va">get_ys_lognorm</span>, <span class="co"># as specified above</span></span></span>
+<span class="r-in"><span>  fun_draws <span class="op">=</span> <span class="va">get_draws_lognorm</span>, <span class="co"># as specified above</span></span></span>
+<span class="r-in"><span>  max_n <span class="op">=</span> <span class="fl">5000</span>,</span></span>
+<span class="r-in"><span>  look_after_every <span class="op">=</span> <span class="fl">200</span>,</span></span>
+<span class="r-in"><span>  control <span class="op">=</span> <span class="st">"Control"</span>,</span></span>
+<span class="r-in"><span>  <span class="co"># Qquare-root-based, fixed control group allocation ratio</span></span></span>
+<span class="r-in"><span>  <span class="co"># and response-adaptive randomisation for other arms</span></span></span>
+<span class="r-in"><span>  control_prob_fixed <span class="op">=</span> <span class="st">"sqrt-based"</span>,</span></span>
+<span class="r-in"><span>  <span class="co"># Equivalence assessment</span></span></span>
+<span class="r-in"><span>  equivalence_prob <span class="op">=</span> <span class="fl">0.9</span>,</span></span>
+<span class="r-in"><span>  equivalence_diff <span class="op">=</span> <span class="fl">0.5</span>,</span></span>
+<span class="r-in"><span>  equivalence_only_first <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>  highest_is_best <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>  <span class="co"># Summarise raw results by taking the mean on the</span></span></span>
+<span class="r-in"><span>  <span class="co"># log scale and back-transforming</span></span></span>
+<span class="r-in"><span>  fun_raw_est <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> ,</span></span>
+<span class="r-in"><span>  <span class="co"># Summarise posteriors using medians with MAD-SDs,</span></span></span>
+<span class="r-in"><span>  <span class="co"># as distributions will not be normal on the actual scale</span></span></span>
+<span class="r-in"><span>  robust <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>  <span class="co"># Description/additional info used when printing</span></span></span>
+<span class="r-in"><span>  description <span class="op">=</span> <span class="st">"continuous, log-normally distributed outcome"</span>,</span></span>
+<span class="r-in"><span>  add_info <span class="op">=</span> <span class="st">"SD on the log scale for all arms: 1.5"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Print trial specification with 3 digits for all probabilities</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="print.html">print</a></span><span class="op">(</span><span class="va">lognorm_trial</span>, prob_digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Trial specification: continuous, log-normally distributed outcome</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> * Undesirable outcome</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> * Common control arm: Control </span>
@@ -591,7 +591,7 @@ futility.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Soften power for all analyses: 1 (no softening)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Additional info: SD on the log scale for all arms: 1.5</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -603,7 +603,7 @@ futility.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
     </footer></div>

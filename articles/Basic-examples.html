@@ -8,8 +8,8 @@
 <meta name="description" content="adaptr">
 <title>Basic examples • adaptr</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Basic examples">
 <meta property="og:description" content="adaptr">
@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">adaptr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -88,10 +88,10 @@
 <p>An <strong>advanced</strong> example on how to specify a trial design with <code><a href="../reference/setup_trial.html">setup_trial()</a></code>, including the use of custom functions for generating outcomes and yielding posterior draws, is provided in <code><a href="../articles/Advanced-example.html">vignette("Advanced-example", "adaptr")</a></code>.</p>
 <p>First, the package is loaded:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://incept.dk/" class="external-link">adaptr</a></span><span class="op">)</span>
-<span class="co">#&gt; Loading adaptr package (version 1.1.0).</span>
-<span class="co">#&gt; See 'help("adaptr")' or 'vignette("Overview", "adaptr")' for help.</span>
-<span class="co">#&gt; Further information available on https://inceptdk.github.io/adaptr/.</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://incept.dk/" class="external-link">adaptr</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Loading adaptr package (version 1.1.1).</span></span>
+<span><span class="co">#&gt; See 'help("adaptr")' or 'vignette("Overview", "adaptr")' for help.</span></span>
+<span><span class="co">#&gt; Further information available on https://inceptdk.github.io/adaptr/.</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="trial-designs-without-a-common-control-arm">Trial designs without a common control arm<a class="anchor" aria-label="anchor" href="#trial-designs-without-a-common-control-arm"></a>
 </h2>
@@ -100,75 +100,75 @@
 <h3 id="example-1-general-settings">Example 1: general settings<a class="anchor" aria-label="anchor" href="#example-1-general-settings"></a>
 </h3>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/setup_trial_binom.html">setup_trial_binom</a></span><span class="op">(</span>
-  <span class="co"># Four arms</span>
-  arms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span><span class="op">)</span>,
-  <span class="co"># Set true outcomes (in this example event probabilities) for all arms</span>
-  true_ys <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.3</span>, <span class="fl">0.35</span>, <span class="fl">0.31</span>, <span class="fl">0.27</span><span class="op">)</span>, <span class="co"># 30%, 34%, 31% and 27%, respectively</span>
-  
-  <span class="co"># Set starting allocation probabilities</span>
-  <span class="co"># Defaults to equal allocation if not specified</span>
-  start_probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.3</span>, <span class="fl">0.3</span>, <span class="fl">0.2</span>, <span class="fl">0.2</span><span class="op">)</span>,
-  <span class="co"># Set fixed allocation probability for first arm</span>
-  <span class="co"># NA corresponds to no limits for specific arms</span>
-  <span class="co"># Default (NULL) corresponds to no limits for all arms</span>
-  fixed_probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.3</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>,
-  <span class="co"># Set minimum and maximum probability limits for some arms</span>
-  <span class="co"># NA corresponds to no limits for specific arms</span>
-  <span class="co"># Default (NULL) corresponds to no limits for all arms</span>
-  <span class="co"># Must be NA for arms with fixed_probs (first arm in this example)</span>
-  <span class="co"># sum(fixed_probs) + sum(min_probs) must not exceed 1</span>
-  <span class="co"># sum(fixed_probs) + sum(max_probs) may be greater than 1, and must be at least</span>
-  <span class="co"># 1 if specified for all arms</span>
-  min_probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">0.2</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>,
-  max_probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">0.7</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>,
-  
-  <span class="co"># Set looks - alternatively, specify both max_n AND look_after_every</span>
-  data_looks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">300</span>, to <span class="op">=</span> <span class="fl">1000</span>, by <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>,
-  
-  <span class="co"># No common control arm (as default, but explicitly specified in this example)</span>
-  control <span class="op">=</span> <span class="cn">NULL</span>,
-  
-  <span class="co"># Set inferiority/superiority thresholds (different values than the defaults)</span>
-  inferiority <span class="op">=</span> <span class="fl">0.025</span>,
-  superiority <span class="op">=</span> <span class="fl">0.975</span>,
-  
-  <span class="co"># Define that the outcome is desirable (as opposed to the default setting)</span>
-  highest_is_best <span class="op">=</span> <span class="cn">TRUE</span>,
-  
-  <span class="co"># No softening (the default setting, but made explicit here)</span>
-  soften_power <span class="op">=</span> <span class="fl">1</span>,
-  
-  <span class="co"># Use different simulation/summary settings than default</span>
-  cri_width <span class="op">=</span> <span class="fl">0.89</span>, <span class="co"># 89% credible intervals</span>
-  n_draws <span class="op">=</span> <span class="fl">1000</span>, <span class="co"># Only 1000 posterior draws in each arm</span>
-  robust <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># Summarise posteriors using medians/MAD-SDs (as default)</span>
-  
-  <span class="co"># Trial description (used by print methods)</span>
-  description <span class="op">=</span> <span class="st">"example trial specification 1"</span>
-<span class="op">)</span>
-<span class="co">#&gt; Trial specification: example trial specification 1</span>
-<span class="co">#&gt; * Desirable outcome</span>
-<span class="co">#&gt; * No common control arm</span>
-<span class="co">#&gt; * Best arm: B</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Arms, true outcomes, starting allocation probabilities </span>
-<span class="co">#&gt; and allocation probability limits:</span>
-<span class="co">#&gt;  arms true_ys start_probs fixed_probs min_probs max_probs</span>
-<span class="co">#&gt;     A    0.30         0.3         0.3        NA        NA</span>
-<span class="co">#&gt;     B    0.35         0.3          NA       0.2       0.7</span>
-<span class="co">#&gt;     C    0.31         0.2          NA        NA        NA</span>
-<span class="co">#&gt;     D    0.27         0.2          NA        NA        NA</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Maximum sample size: 1000 </span>
-<span class="co">#&gt; Maximum number of data looks: 8</span>
-<span class="co">#&gt; Planned data looks after:  300, 400, 500, 600, 700, 800, 900, 1000 patients</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Superiority threshold: 0.975 </span>
-<span class="co">#&gt; Inferiority threshold: 0.025 </span>
-<span class="co">#&gt; No equivalence threshold</span>
-<span class="co">#&gt; No futility threshold (not relevant - no common control)</span>
-<span class="co">#&gt; Soften power for all analyses: 1 (no softening)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/setup_trial_binom.html">setup_trial_binom</a></span><span class="op">(</span></span>
+<span>  <span class="co"># Four arms</span></span>
+<span>  arms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span><span class="op">)</span>,</span>
+<span>  <span class="co"># Set true outcomes (in this example event probabilities) for all arms</span></span>
+<span>  true_ys <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.3</span>, <span class="fl">0.35</span>, <span class="fl">0.31</span>, <span class="fl">0.27</span><span class="op">)</span>, <span class="co"># 30%, 34%, 31% and 27%, respectively</span></span>
+<span>  </span>
+<span>  <span class="co"># Set starting allocation probabilities</span></span>
+<span>  <span class="co"># Defaults to equal allocation if not specified</span></span>
+<span>  start_probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.3</span>, <span class="fl">0.3</span>, <span class="fl">0.2</span>, <span class="fl">0.2</span><span class="op">)</span>,</span>
+<span>  <span class="co"># Set fixed allocation probability for first arm</span></span>
+<span>  <span class="co"># NA corresponds to no limits for specific arms</span></span>
+<span>  <span class="co"># Default (NULL) corresponds to no limits for all arms</span></span>
+<span>  fixed_probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.3</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>,</span>
+<span>  <span class="co"># Set minimum and maximum probability limits for some arms</span></span>
+<span>  <span class="co"># NA corresponds to no limits for specific arms</span></span>
+<span>  <span class="co"># Default (NULL) corresponds to no limits for all arms</span></span>
+<span>  <span class="co"># Must be NA for arms with fixed_probs (first arm in this example)</span></span>
+<span>  <span class="co"># sum(fixed_probs) + sum(min_probs) must not exceed 1</span></span>
+<span>  <span class="co"># sum(fixed_probs) + sum(max_probs) may be greater than 1, and must be at least</span></span>
+<span>  <span class="co"># 1 if specified for all arms</span></span>
+<span>  min_probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">0.2</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>,</span>
+<span>  max_probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">0.7</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>,</span>
+<span>  </span>
+<span>  <span class="co"># Set looks - alternatively, specify both max_n AND look_after_every</span></span>
+<span>  data_looks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">300</span>, to <span class="op">=</span> <span class="fl">1000</span>, by <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>,</span>
+<span>  </span>
+<span>  <span class="co"># No common control arm (as default, but explicitly specified in this example)</span></span>
+<span>  control <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  </span>
+<span>  <span class="co"># Set inferiority/superiority thresholds (different values than the defaults)</span></span>
+<span>  inferiority <span class="op">=</span> <span class="fl">0.025</span>,</span>
+<span>  superiority <span class="op">=</span> <span class="fl">0.975</span>,</span>
+<span>  </span>
+<span>  <span class="co"># Define that the outcome is desirable (as opposed to the default setting)</span></span>
+<span>  highest_is_best <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  </span>
+<span>  <span class="co"># No softening (the default setting, but made explicit here)</span></span>
+<span>  soften_power <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  </span>
+<span>  <span class="co"># Use different simulation/summary settings than default</span></span>
+<span>  cri_width <span class="op">=</span> <span class="fl">0.89</span>, <span class="co"># 89% credible intervals</span></span>
+<span>  n_draws <span class="op">=</span> <span class="fl">1000</span>, <span class="co"># Only 1000 posterior draws in each arm</span></span>
+<span>  robust <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># Summarise posteriors using medians/MAD-SDs (as default)</span></span>
+<span>  </span>
+<span>  <span class="co"># Trial description (used by print methods)</span></span>
+<span>  description <span class="op">=</span> <span class="st">"example trial specification 1"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Trial specification: example trial specification 1</span></span>
+<span><span class="co">#&gt; * Desirable outcome</span></span>
+<span><span class="co">#&gt; * No common control arm</span></span>
+<span><span class="co">#&gt; * Best arm: B</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Arms, true outcomes, starting allocation probabilities </span></span>
+<span><span class="co">#&gt; and allocation probability limits:</span></span>
+<span><span class="co">#&gt;  arms true_ys start_probs fixed_probs min_probs max_probs</span></span>
+<span><span class="co">#&gt;     A    0.30         0.3         0.3        NA        NA</span></span>
+<span><span class="co">#&gt;     B    0.35         0.3          NA       0.2       0.7</span></span>
+<span><span class="co">#&gt;     C    0.31         0.2          NA        NA        NA</span></span>
+<span><span class="co">#&gt;     D    0.27         0.2          NA        NA        NA</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Maximum sample size: 1000 </span></span>
+<span><span class="co">#&gt; Maximum number of data looks: 8</span></span>
+<span><span class="co">#&gt; Planned data looks after:  300, 400, 500, 600, 700, 800, 900, 1000 patients</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Superiority threshold: 0.975 </span></span>
+<span><span class="co">#&gt; Inferiority threshold: 0.025 </span></span>
+<span><span class="co">#&gt; No equivalence threshold</span></span>
+<span><span class="co">#&gt; No futility threshold (not relevant - no common control)</span></span>
+<span><span class="co">#&gt; Soften power for all analyses: 1 (no softening)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="example-2-equivalence-testing-decreasing-softening">Example 2: equivalence testing, decreasing softening<a class="anchor" aria-label="anchor" href="#example-2-equivalence-testing-decreasing-softening"></a>
@@ -180,51 +180,51 @@
 <li>Default settings for many unspecified arguments</li>
 </ul>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/setup_trial_binom.html">setup_trial_binom</a></span><span class="op">(</span>
-  <span class="co"># Specify arms and true outcome probabilities (undesirable outcome as default)</span>
-  arms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span><span class="op">)</span>,
-  true_ys <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.22</span>, <span class="fl">0.24</span>, <span class="fl">0.18</span><span class="op">)</span>,
-  
-  <span class="co"># Specify adaptive analysis looks using max_n and look_after_every</span>
-  <span class="co"># max_n does not need to be a multiple of look_after_every - a final look</span>
-  <span class="co"># will be conducted at max_n regardless</span>
-  max_n <span class="op">=</span> <span class="fl">1250</span>, <span class="co"># Maximum 1250 patients</span>
-  look_after_every <span class="op">=</span> <span class="fl">100</span>, <span class="co"># Look after every 100 patients</span>
-  
-  <span class="co"># Assess equivalence between all arms: stop if &gt;90 % probability that the</span>
-  <span class="co"># absolute difference between the best and worst arms is &lt; 5 %-points</span>
-  <span class="co"># Note: equivalence_only_first must be NULL (default) in designs without a</span>
-  <span class="co"># common control arm (such as this trial)</span>
-  equivalence_prob <span class="op">=</span> <span class="fl">0.9</span>,
-  equivalence_diff <span class="op">=</span> <span class="fl">0.05</span>,
-  
-  <span class="co"># Different softening powers at each look (13 possible looks in total)</span>
-  <span class="co"># Starts at 0 (softens all allocation probabilities to be equal) and ends at</span>
-  <span class="co"># 1 (no softening) for the final possible look in the trial</span>
-  soften_power <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">0</span>, to <span class="op">=</span> <span class="fl">1</span>, length.out <span class="op">=</span> <span class="fl">13</span><span class="op">)</span>
-<span class="op">)</span>
-<span class="co">#&gt; Trial specification: generic binomially distributed outcome trial</span>
-<span class="co">#&gt; * Undesirable outcome</span>
-<span class="co">#&gt; * No common control arm</span>
-<span class="co">#&gt; * Best arm: D</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Arms, true outcomes, starting allocation probabilities </span>
-<span class="co">#&gt; and allocation probability limits:</span>
-<span class="co">#&gt;  arms true_ys start_probs fixed_probs min_probs max_probs</span>
-<span class="co">#&gt;     A    0.20        0.25          NA        NA        NA</span>
-<span class="co">#&gt;     B    0.22        0.25          NA        NA        NA</span>
-<span class="co">#&gt;     C    0.24        0.25          NA        NA        NA</span>
-<span class="co">#&gt;     D    0.18        0.25          NA        NA        NA</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Maximum sample size: 1250 </span>
-<span class="co">#&gt; Maximum number of data looks: 13</span>
-<span class="co">#&gt; Planned looks after every 100 patients until maximum sample size</span>
-<span class="co">#&gt; Superiority threshold: 0.99 </span>
-<span class="co">#&gt; Inferiority threshold: 0.01 </span>
-<span class="co">#&gt; Equivalence threshold: 0.9 (no common control)</span>
-<span class="co">#&gt; Absolute equivalence difference: 0.05</span>
-<span class="co">#&gt; No futility threshold (not relevant - no common control)</span>
-<span class="co">#&gt; Soften power for each consequtive analysis: 0, 0.083, 0.167, 0.25, 0.333, 0.417, 0.5, 0.583, 0.667, 0.75, 0.833, 0.917, 1</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/setup_trial_binom.html">setup_trial_binom</a></span><span class="op">(</span></span>
+<span>  <span class="co"># Specify arms and true outcome probabilities (undesirable outcome as default)</span></span>
+<span>  arms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span><span class="op">)</span>,</span>
+<span>  true_ys <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.22</span>, <span class="fl">0.24</span>, <span class="fl">0.18</span><span class="op">)</span>,</span>
+<span>  </span>
+<span>  <span class="co"># Specify adaptive analysis looks using max_n and look_after_every</span></span>
+<span>  <span class="co"># max_n does not need to be a multiple of look_after_every - a final look</span></span>
+<span>  <span class="co"># will be conducted at max_n regardless</span></span>
+<span>  max_n <span class="op">=</span> <span class="fl">1250</span>, <span class="co"># Maximum 1250 patients</span></span>
+<span>  look_after_every <span class="op">=</span> <span class="fl">100</span>, <span class="co"># Look after every 100 patients</span></span>
+<span>  </span>
+<span>  <span class="co"># Assess equivalence between all arms: stop if &gt;90 % probability that the</span></span>
+<span>  <span class="co"># absolute difference between the best and worst arms is &lt; 5 %-points</span></span>
+<span>  <span class="co"># Note: equivalence_only_first must be NULL (default) in designs without a</span></span>
+<span>  <span class="co"># common control arm (such as this trial)</span></span>
+<span>  equivalence_prob <span class="op">=</span> <span class="fl">0.9</span>,</span>
+<span>  equivalence_diff <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>  </span>
+<span>  <span class="co"># Different softening powers at each look (13 possible looks in total)</span></span>
+<span>  <span class="co"># Starts at 0 (softens all allocation probabilities to be equal) and ends at</span></span>
+<span>  <span class="co"># 1 (no softening) for the final possible look in the trial</span></span>
+<span>  soften_power <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">0</span>, to <span class="op">=</span> <span class="fl">1</span>, length.out <span class="op">=</span> <span class="fl">13</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Trial specification: generic binomially distributed outcome trial</span></span>
+<span><span class="co">#&gt; * Undesirable outcome</span></span>
+<span><span class="co">#&gt; * No common control arm</span></span>
+<span><span class="co">#&gt; * Best arm: D</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Arms, true outcomes, starting allocation probabilities </span></span>
+<span><span class="co">#&gt; and allocation probability limits:</span></span>
+<span><span class="co">#&gt;  arms true_ys start_probs fixed_probs min_probs max_probs</span></span>
+<span><span class="co">#&gt;     A    0.20        0.25          NA        NA        NA</span></span>
+<span><span class="co">#&gt;     B    0.22        0.25          NA        NA        NA</span></span>
+<span><span class="co">#&gt;     C    0.24        0.25          NA        NA        NA</span></span>
+<span><span class="co">#&gt;     D    0.18        0.25          NA        NA        NA</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Maximum sample size: 1250 </span></span>
+<span><span class="co">#&gt; Maximum number of data looks: 13</span></span>
+<span><span class="co">#&gt; Planned looks after every 100 patients until maximum sample size</span></span>
+<span><span class="co">#&gt; Superiority threshold: 0.99 </span></span>
+<span><span class="co">#&gt; Inferiority threshold: 0.01 </span></span>
+<span><span class="co">#&gt; Equivalence threshold: 0.9 (no common control)</span></span>
+<span><span class="co">#&gt; Absolute equivalence difference: 0.05</span></span>
+<span><span class="co">#&gt; No futility threshold (not relevant - no common control)</span></span>
+<span><span class="co">#&gt; Soften power for each consequtive analysis: 0, 0.083, 0.167, 0.25, 0.333, 0.417, 0.5, 0.583, 0.667, 0.75, 0.833, 0.917, 1</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -241,60 +241,60 @@
 <li>Assessment of both equivalence and futility compared to the initial control only (not assessed for superior arms that become subsequent controls)</li>
 </ul>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/setup_trial_binom.html">setup_trial_binom</a></span><span class="op">(</span>
-  arms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span><span class="op">)</span>,
-  <span class="co"># Specify control arm</span>
-  control <span class="op">=</span> <span class="st">"A"</span>,
-  
-  true_ys <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.22</span>, <span class="fl">0.24</span>, <span class="fl">0.18</span><span class="op">)</span>, 
-  
-  data_looks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">100</span>, to <span class="op">=</span> <span class="fl">1000</span>, by <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>,
-  
-  <span class="co"># Fixed, square-root-transformation-based allocation throughout</span>
-  control_prob_fixed <span class="op">=</span> <span class="st">"sqrt-based fixed"</span>,
-  
-  <span class="co"># Assess equivalence: drop non-control arms if &gt; 90% probability that they</span>
-  <span class="co"># are equivalent to the common control, defined as an absolute difference of</span>
-  <span class="co"># &lt; 3 %-points</span>
-  equivalence_prob <span class="op">=</span> <span class="fl">0.9</span>,
-  equivalence_diff <span class="op">=</span> <span class="fl">0.03</span>,
-  <span class="co"># Only assess against the initial control (i.e., not assessed if an arm is</span>
-  <span class="co"># declared superior to the initial control and becomes the new control)</span>
-  equivalence_only_first <span class="op">=</span> <span class="cn">TRUE</span>,
-  
-  <span class="co"># Assess futility: drop non-control arms if &gt; 80% probability that they are</span>
-  <span class="co"># &lt; 10 %-points better (in this case lower because outcome is undesirable in</span>
-  <span class="co"># this example) compared to the common control</span>
-  futility_prob <span class="op">=</span> <span class="fl">0.8</span>,
-  futility_diff <span class="op">=</span> <span class="fl">0.1</span>,
-  <span class="co"># Only assessed for the initial control, as described above</span>
-  futility_only_first <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span>
-<span class="co">#&gt; Trial specification: generic binomially distributed outcome trial</span>
-<span class="co">#&gt; * Undesirable outcome</span>
-<span class="co">#&gt; * Common control arm: A </span>
-<span class="co">#&gt; * Control arm probability fixed at 0.366 (for 4 arms), 0.414 (for 3 arms), 0.5 (for 2 arms)</span>
-<span class="co">#&gt; * Best arm: D</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Arms, true outcomes, starting allocation probabilities </span>
-<span class="co">#&gt; and allocation probability limits:</span>
-<span class="co">#&gt;  arms true_ys start_probs fixed_probs min_probs max_probs</span>
-<span class="co">#&gt;     A    0.20       0.366       0.366        NA        NA</span>
-<span class="co">#&gt;     B    0.22       0.211       0.211        NA        NA</span>
-<span class="co">#&gt;     C    0.24       0.211       0.211        NA        NA</span>
-<span class="co">#&gt;     D    0.18       0.211       0.211        NA        NA</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Maximum sample size: 1000 </span>
-<span class="co">#&gt; Maximum number of data looks: 10</span>
-<span class="co">#&gt; Planned data looks after:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 patients</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Superiority threshold: 0.99 </span>
-<span class="co">#&gt; Inferiority threshold: 0.01 </span>
-<span class="co">#&gt; Equivalence threshold: 0.9 (only checked for first control)</span>
-<span class="co">#&gt; Absolute equivalence difference: 0.03</span>
-<span class="co">#&gt; Futility threshold: 0.8 (only checked for first control)</span>
-<span class="co">#&gt; Absolute futility difference (in beneficial direction):  0.1</span>
-<span class="co">#&gt; Soften power for all analyses: 1 (no softening - all arms fixed)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/setup_trial_binom.html">setup_trial_binom</a></span><span class="op">(</span></span>
+<span>  arms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span><span class="op">)</span>,</span>
+<span>  <span class="co"># Specify control arm</span></span>
+<span>  control <span class="op">=</span> <span class="st">"A"</span>,</span>
+<span>  </span>
+<span>  true_ys <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.22</span>, <span class="fl">0.24</span>, <span class="fl">0.18</span><span class="op">)</span>, </span>
+<span>  </span>
+<span>  data_looks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">100</span>, to <span class="op">=</span> <span class="fl">1000</span>, by <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>,</span>
+<span>  </span>
+<span>  <span class="co"># Fixed, square-root-transformation-based allocation throughout</span></span>
+<span>  control_prob_fixed <span class="op">=</span> <span class="st">"sqrt-based fixed"</span>,</span>
+<span>  </span>
+<span>  <span class="co"># Assess equivalence: drop non-control arms if &gt; 90% probability that they</span></span>
+<span>  <span class="co"># are equivalent to the common control, defined as an absolute difference of</span></span>
+<span>  <span class="co"># &lt; 3 %-points</span></span>
+<span>  equivalence_prob <span class="op">=</span> <span class="fl">0.9</span>,</span>
+<span>  equivalence_diff <span class="op">=</span> <span class="fl">0.03</span>,</span>
+<span>  <span class="co"># Only assess against the initial control (i.e., not assessed if an arm is</span></span>
+<span>  <span class="co"># declared superior to the initial control and becomes the new control)</span></span>
+<span>  equivalence_only_first <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  </span>
+<span>  <span class="co"># Assess futility: drop non-control arms if &gt; 80% probability that they are</span></span>
+<span>  <span class="co"># &lt; 10 %-points better (in this case lower because outcome is undesirable in</span></span>
+<span>  <span class="co"># this example) compared to the common control</span></span>
+<span>  futility_prob <span class="op">=</span> <span class="fl">0.8</span>,</span>
+<span>  futility_diff <span class="op">=</span> <span class="fl">0.1</span>,</span>
+<span>  <span class="co"># Only assessed for the initial control, as described above</span></span>
+<span>  futility_only_first <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Trial specification: generic binomially distributed outcome trial</span></span>
+<span><span class="co">#&gt; * Undesirable outcome</span></span>
+<span><span class="co">#&gt; * Common control arm: A </span></span>
+<span><span class="co">#&gt; * Control arm probability fixed at 0.366 (for 4 arms), 0.414 (for 3 arms), 0.5 (for 2 arms)</span></span>
+<span><span class="co">#&gt; * Best arm: D</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Arms, true outcomes, starting allocation probabilities </span></span>
+<span><span class="co">#&gt; and allocation probability limits:</span></span>
+<span><span class="co">#&gt;  arms true_ys start_probs fixed_probs min_probs max_probs</span></span>
+<span><span class="co">#&gt;     A    0.20       0.366       0.366        NA        NA</span></span>
+<span><span class="co">#&gt;     B    0.22       0.211       0.211        NA        NA</span></span>
+<span><span class="co">#&gt;     C    0.24       0.211       0.211        NA        NA</span></span>
+<span><span class="co">#&gt;     D    0.18       0.211       0.211        NA        NA</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Maximum sample size: 1000 </span></span>
+<span><span class="co">#&gt; Maximum number of data looks: 10</span></span>
+<span><span class="co">#&gt; Planned data looks after:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 patients</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Superiority threshold: 0.99 </span></span>
+<span><span class="co">#&gt; Inferiority threshold: 0.01 </span></span>
+<span><span class="co">#&gt; Equivalence threshold: 0.9 (only checked for first control)</span></span>
+<span><span class="co">#&gt; Absolute equivalence difference: 0.03</span></span>
+<span><span class="co">#&gt; Futility threshold: 0.8 (only checked for first control)</span></span>
+<span><span class="co">#&gt; Absolute futility difference (in beneficial direction):  0.1</span></span>
+<span><span class="co">#&gt; Soften power for all analyses: 1 (no softening - all arms fixed)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="example-4-sqrt-based-initial-allocation-and-restricted-rar">Example 4: sqrt-based initial allocation and restricted RAR<a class="anchor" aria-label="anchor" href="#example-4-sqrt-based-initial-allocation-and-restricted-rar"></a>
@@ -307,103 +307,103 @@
 <li>Restricted response-adaptive randomisation to the non-control arms</li>
 </ul>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/setup_trial_binom.html">setup_trial_binom</a></span><span class="op">(</span>
-  arms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span><span class="op">)</span>,
-  control <span class="op">=</span> <span class="st">"A"</span>,
-  
-  true_ys <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.22</span>, <span class="fl">0.24</span>, <span class="fl">0.18</span><span class="op">)</span>, 
-  
-  data_looks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">100</span>, to <span class="op">=</span> <span class="fl">1000</span>, by <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>,
-  
-  <span class="co"># Square-root-transformation-based control arm allocation including for</span>
-  <span class="co"># subsequent controls and initial equal allocation to the non-control arms,</span>
-  <span class="co"># followed by response-adaptive randomisation</span>
-  control_prob_fixed <span class="op">=</span> <span class="st">"sqrt-based"</span>,
-  
-  <span class="co"># Restricted response-adaptive randomisation</span>
-  <span class="co"># Minimum probabilities of 20% for non-control arms, must be NA for the</span>
-  <span class="co"># control arm with fixed allocation probability</span>
-  <span class="co"># Limits are ignored for arms that become subsequent controls</span>
-  min_probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">0.2</span>, <span class="fl">0.2</span>, <span class="fl">0.2</span><span class="op">)</span>,
-  
-  <span class="co"># Constant softening of 0.5 (= square-root transformation)</span>
-  soften_power <span class="op">=</span> <span class="fl">0.5</span>
-<span class="op">)</span>
-<span class="co">#&gt; Trial specification: generic binomially distributed outcome trial</span>
-<span class="co">#&gt; * Undesirable outcome</span>
-<span class="co">#&gt; * Common control arm: A </span>
-<span class="co">#&gt; * Control arm probability fixed at 0.366 (for 4 arms), 0.414 (for 3 arms), 0.5 (for 2 arms)</span>
-<span class="co">#&gt; * Best arm: D</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Arms, true outcomes, starting allocation probabilities </span>
-<span class="co">#&gt; and allocation probability limits:</span>
-<span class="co">#&gt;  arms true_ys start_probs fixed_probs min_probs max_probs</span>
-<span class="co">#&gt;     A    0.20       0.366       0.366        NA        NA</span>
-<span class="co">#&gt;     B    0.22       0.211          NA       0.2        NA</span>
-<span class="co">#&gt;     C    0.24       0.211          NA       0.2        NA</span>
-<span class="co">#&gt;     D    0.18       0.211          NA       0.2        NA</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Maximum sample size: 1000 </span>
-<span class="co">#&gt; Maximum number of data looks: 10</span>
-<span class="co">#&gt; Planned data looks after:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 patients</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Superiority threshold: 0.99 </span>
-<span class="co">#&gt; Inferiority threshold: 0.01 </span>
-<span class="co">#&gt; No equivalence threshold</span>
-<span class="co">#&gt; No futility threshold</span>
-<span class="co">#&gt; Soften power for all analyses: 0.5</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/setup_trial_binom.html">setup_trial_binom</a></span><span class="op">(</span></span>
+<span>  arms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span><span class="op">)</span>,</span>
+<span>  control <span class="op">=</span> <span class="st">"A"</span>,</span>
+<span>  </span>
+<span>  true_ys <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.22</span>, <span class="fl">0.24</span>, <span class="fl">0.18</span><span class="op">)</span>, </span>
+<span>  </span>
+<span>  data_looks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">100</span>, to <span class="op">=</span> <span class="fl">1000</span>, by <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>,</span>
+<span>  </span>
+<span>  <span class="co"># Square-root-transformation-based control arm allocation including for</span></span>
+<span>  <span class="co"># subsequent controls and initial equal allocation to the non-control arms,</span></span>
+<span>  <span class="co"># followed by response-adaptive randomisation</span></span>
+<span>  control_prob_fixed <span class="op">=</span> <span class="st">"sqrt-based"</span>,</span>
+<span>  </span>
+<span>  <span class="co"># Restricted response-adaptive randomisation</span></span>
+<span>  <span class="co"># Minimum probabilities of 20% for non-control arms, must be NA for the</span></span>
+<span>  <span class="co"># control arm with fixed allocation probability</span></span>
+<span>  <span class="co"># Limits are ignored for arms that become subsequent controls</span></span>
+<span>  min_probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">0.2</span>, <span class="fl">0.2</span>, <span class="fl">0.2</span><span class="op">)</span>,</span>
+<span>  </span>
+<span>  <span class="co"># Constant softening of 0.5 (= square-root transformation)</span></span>
+<span>  soften_power <span class="op">=</span> <span class="fl">0.5</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Trial specification: generic binomially distributed outcome trial</span></span>
+<span><span class="co">#&gt; * Undesirable outcome</span></span>
+<span><span class="co">#&gt; * Common control arm: A </span></span>
+<span><span class="co">#&gt; * Control arm probability fixed at 0.366 (for 4 arms), 0.414 (for 3 arms), 0.5 (for 2 arms)</span></span>
+<span><span class="co">#&gt; * Best arm: D</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Arms, true outcomes, starting allocation probabilities </span></span>
+<span><span class="co">#&gt; and allocation probability limits:</span></span>
+<span><span class="co">#&gt;  arms true_ys start_probs fixed_probs min_probs max_probs</span></span>
+<span><span class="co">#&gt;     A    0.20       0.366       0.366        NA        NA</span></span>
+<span><span class="co">#&gt;     B    0.22       0.211          NA       0.2        NA</span></span>
+<span><span class="co">#&gt;     C    0.24       0.211          NA       0.2        NA</span></span>
+<span><span class="co">#&gt;     D    0.18       0.211          NA       0.2        NA</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Maximum sample size: 1000 </span></span>
+<span><span class="co">#&gt; Maximum number of data looks: 10</span></span>
+<span><span class="co">#&gt; Planned data looks after:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 patients</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Superiority threshold: 0.99 </span></span>
+<span><span class="co">#&gt; Inferiority threshold: 0.01 </span></span>
+<span><span class="co">#&gt; No equivalence threshold</span></span>
+<span><span class="co">#&gt; No futility threshold</span></span>
+<span><span class="co">#&gt; Soften power for all analyses: 0.5</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="example-5-sqrt-based-allocation-only-to-initial-control-arm">Example 5: sqrt-based allocation only to initial control arm<a class="anchor" aria-label="anchor" href="#example-5-sqrt-based-allocation-only-to-initial-control-arm"></a>
 </h3>
 <p>This example is similar to that above (with different restriction settings), but only use <em>square-root-transformation-based</em> allocation probabilities to the <em>initial</em> control arm. Hence, this will not apply if another arm is declared superior and becomes the new control.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/setup_trial_binom.html">setup_trial_binom</a></span><span class="op">(</span>
-  arms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span><span class="op">)</span>,
-  control <span class="op">=</span> <span class="st">"A"</span>,
-  
-  true_ys <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.22</span>, <span class="fl">0.24</span>, <span class="fl">0.18</span><span class="op">)</span>, 
-  
-  data_looks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">100</span>, to <span class="op">=</span> <span class="fl">1000</span>, by <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>,
-  
-  <span class="co"># Square-root-transformation-based control arm allocation for the initial</span>
-  <span class="co"># control only and initial equal allocation to the non-control arms, followed</span>
-  <span class="co"># by response-adaptive randomisation</span>
-  control_prob_fixed <span class="op">=</span> <span class="st">"sqrt-based start"</span>,
-  
-  <span class="co"># Restrict response-adaptive randomisation</span>
-  <span class="co"># Minimum probabilities of 20% for all non-control arms</span>
-  <span class="co"># - must be NA for the initial control arm with fixed allocation probability</span>
-  min_probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">0.2</span>, <span class="fl">0.2</span>, <span class="fl">0.2</span><span class="op">)</span>,
-  <span class="co"># Maximum probabilities of 65% for all non-control arms</span>
-  <span class="co"># - must be NA for the initial control arm with fixed allocation probability</span>
-  max_probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">0.65</span>, <span class="fl">0.65</span>, <span class="fl">0.65</span><span class="op">)</span>,
-  
-  soften_power <span class="op">=</span> <span class="fl">0.75</span>
-<span class="op">)</span>
-<span class="co">#&gt; Trial specification: generic binomially distributed outcome trial</span>
-<span class="co">#&gt; * Undesirable outcome</span>
-<span class="co">#&gt; * Common control arm: A </span>
-<span class="co">#&gt; * Control arm probability fixed at 03</span>
-<span class="co">#&gt; * Best arm: D</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Arms, true outcomes, starting allocation probabilities </span>
-<span class="co">#&gt; and allocation probability limits:</span>
-<span class="co">#&gt;  arms true_ys start_probs fixed_probs min_probs max_probs</span>
-<span class="co">#&gt;     A    0.20       0.366       0.366        NA        NA</span>
-<span class="co">#&gt;     B    0.22       0.211          NA       0.2      0.65</span>
-<span class="co">#&gt;     C    0.24       0.211          NA       0.2      0.65</span>
-<span class="co">#&gt;     D    0.18       0.211          NA       0.2      0.65</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Maximum sample size: 1000 </span>
-<span class="co">#&gt; Maximum number of data looks: 10</span>
-<span class="co">#&gt; Planned data looks after:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 patients</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Superiority threshold: 0.99 </span>
-<span class="co">#&gt; Inferiority threshold: 0.01 </span>
-<span class="co">#&gt; No equivalence threshold</span>
-<span class="co">#&gt; No futility threshold</span>
-<span class="co">#&gt; Soften power for all analyses: 0.75</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/setup_trial_binom.html">setup_trial_binom</a></span><span class="op">(</span></span>
+<span>  arms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span><span class="op">)</span>,</span>
+<span>  control <span class="op">=</span> <span class="st">"A"</span>,</span>
+<span>  </span>
+<span>  true_ys <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.22</span>, <span class="fl">0.24</span>, <span class="fl">0.18</span><span class="op">)</span>, </span>
+<span>  </span>
+<span>  data_looks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">100</span>, to <span class="op">=</span> <span class="fl">1000</span>, by <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>,</span>
+<span>  </span>
+<span>  <span class="co"># Square-root-transformation-based control arm allocation for the initial</span></span>
+<span>  <span class="co"># control only and initial equal allocation to the non-control arms, followed</span></span>
+<span>  <span class="co"># by response-adaptive randomisation</span></span>
+<span>  control_prob_fixed <span class="op">=</span> <span class="st">"sqrt-based start"</span>,</span>
+<span>  </span>
+<span>  <span class="co"># Restrict response-adaptive randomisation</span></span>
+<span>  <span class="co"># Minimum probabilities of 20% for all non-control arms</span></span>
+<span>  <span class="co"># - must be NA for the initial control arm with fixed allocation probability</span></span>
+<span>  min_probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">0.2</span>, <span class="fl">0.2</span>, <span class="fl">0.2</span><span class="op">)</span>,</span>
+<span>  <span class="co"># Maximum probabilities of 65% for all non-control arms</span></span>
+<span>  <span class="co"># - must be NA for the initial control arm with fixed allocation probability</span></span>
+<span>  max_probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">0.65</span>, <span class="fl">0.65</span>, <span class="fl">0.65</span><span class="op">)</span>,</span>
+<span>  </span>
+<span>  soften_power <span class="op">=</span> <span class="fl">0.75</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Trial specification: generic binomially distributed outcome trial</span></span>
+<span><span class="co">#&gt; * Undesirable outcome</span></span>
+<span><span class="co">#&gt; * Common control arm: A </span></span>
+<span><span class="co">#&gt; * Control arm probability fixed at 0.366</span></span>
+<span><span class="co">#&gt; * Best arm: D</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Arms, true outcomes, starting allocation probabilities </span></span>
+<span><span class="co">#&gt; and allocation probability limits:</span></span>
+<span><span class="co">#&gt;  arms true_ys start_probs fixed_probs min_probs max_probs</span></span>
+<span><span class="co">#&gt;     A    0.20       0.366       0.366        NA        NA</span></span>
+<span><span class="co">#&gt;     B    0.22       0.211          NA       0.2      0.65</span></span>
+<span><span class="co">#&gt;     C    0.24       0.211          NA       0.2      0.65</span></span>
+<span><span class="co">#&gt;     D    0.18       0.211          NA       0.2      0.65</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Maximum sample size: 1000 </span></span>
+<span><span class="co">#&gt; Maximum number of data looks: 10</span></span>
+<span><span class="co">#&gt; Planned data looks after:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 patients</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Superiority threshold: 0.99 </span></span>
+<span><span class="co">#&gt; Inferiority threshold: 0.01 </span></span>
+<span><span class="co">#&gt; No equivalence threshold</span></span>
+<span><span class="co">#&gt; No futility threshold</span></span>
+<span><span class="co">#&gt; Soften power for all analyses: 0.75</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="example-6-restricted-rar-matched-control-arm-allocation">Example 6: restricted RAR, matched control-arm allocation<a class="anchor" aria-label="anchor" href="#example-6-restricted-rar-matched-control-arm-allocation"></a>
@@ -414,53 +414,53 @@
 <li>Applies to both the initial and subsequent control arms</li>
 </ul>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/setup_trial_binom.html">setup_trial_binom</a></span><span class="op">(</span>
-  arms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span><span class="op">)</span>,
-  control <span class="op">=</span> <span class="st">"A"</span>,
-  
-  true_ys <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.22</span>, <span class="fl">0.24</span>, <span class="fl">0.18</span><span class="op">)</span>, 
-  
-  data_looks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">100</span>, to <span class="op">=</span> <span class="fl">1000</span>, by <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>,
-  
-  <span class="co"># Specify starting probabilities</span>
-  <span class="co"># When "match" is specified below in control_prob_fixed, the initial control</span>
-  <span class="co"># arm's initial allocation probability must match the highest initial</span>
-  <span class="co"># non-control arm allocation probability</span>
-  start_probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.3</span>, <span class="fl">0.3</span>, <span class="fl">0.2</span>, <span class="fl">0.2</span><span class="op">)</span>,
-  
-  control_prob_fixed <span class="op">=</span> <span class="st">"match"</span>,
-  
-  <span class="co"># Restrict response-adaptive randomisation </span>
-  <span class="co"># - these are applied AFTER "matching" when calculating new allocation</span>
-  <span class="co">#   probabilities </span>
-  <span class="co"># - min_probs must be NA for the initial control arm when using matching</span>
-  min_probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">0.2</span>, <span class="fl">0.2</span>, <span class="fl">0.2</span><span class="op">)</span>,
-  
-  soften_power <span class="op">=</span> <span class="fl">0.7</span>
-<span class="op">)</span>
-<span class="co">#&gt; Trial specification: generic binomially distributed outcome trial</span>
-<span class="co">#&gt; * Undesirable outcome</span>
-<span class="co">#&gt; * Common control arm: A </span>
-<span class="co">#&gt; * Control arm probability matched to best non-control arm</span>
-<span class="co">#&gt; * Best arm: D</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Arms, true outcomes, starting allocation probabilities </span>
-<span class="co">#&gt; and allocation probability limits:</span>
-<span class="co">#&gt;  arms true_ys start_probs fixed_probs min_probs max_probs</span>
-<span class="co">#&gt;     A    0.20         0.3          NA        NA        NA</span>
-<span class="co">#&gt;     B    0.22         0.3          NA       0.2        NA</span>
-<span class="co">#&gt;     C    0.24         0.2          NA       0.2        NA</span>
-<span class="co">#&gt;     D    0.18         0.2          NA       0.2        NA</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Maximum sample size: 1000 </span>
-<span class="co">#&gt; Maximum number of data looks: 10</span>
-<span class="co">#&gt; Planned data looks after:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 patients</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Superiority threshold: 0.99 </span>
-<span class="co">#&gt; Inferiority threshold: 0.01 </span>
-<span class="co">#&gt; No equivalence threshold</span>
-<span class="co">#&gt; No futility threshold</span>
-<span class="co">#&gt; Soften power for all analyses: 0.7</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/setup_trial_binom.html">setup_trial_binom</a></span><span class="op">(</span></span>
+<span>  arms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span><span class="op">)</span>,</span>
+<span>  control <span class="op">=</span> <span class="st">"A"</span>,</span>
+<span>  </span>
+<span>  true_ys <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.22</span>, <span class="fl">0.24</span>, <span class="fl">0.18</span><span class="op">)</span>, </span>
+<span>  </span>
+<span>  data_looks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">100</span>, to <span class="op">=</span> <span class="fl">1000</span>, by <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>,</span>
+<span>  </span>
+<span>  <span class="co"># Specify starting probabilities</span></span>
+<span>  <span class="co"># When "match" is specified below in control_prob_fixed, the initial control</span></span>
+<span>  <span class="co"># arm's initial allocation probability must match the highest initial</span></span>
+<span>  <span class="co"># non-control arm allocation probability</span></span>
+<span>  start_probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.3</span>, <span class="fl">0.3</span>, <span class="fl">0.2</span>, <span class="fl">0.2</span><span class="op">)</span>,</span>
+<span>  </span>
+<span>  control_prob_fixed <span class="op">=</span> <span class="st">"match"</span>,</span>
+<span>  </span>
+<span>  <span class="co"># Restrict response-adaptive randomisation </span></span>
+<span>  <span class="co"># - these are applied AFTER "matching" when calculating new allocation</span></span>
+<span>  <span class="co">#   probabilities </span></span>
+<span>  <span class="co"># - min_probs must be NA for the initial control arm when using matching</span></span>
+<span>  min_probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">0.2</span>, <span class="fl">0.2</span>, <span class="fl">0.2</span><span class="op">)</span>,</span>
+<span>  </span>
+<span>  soften_power <span class="op">=</span> <span class="fl">0.7</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Trial specification: generic binomially distributed outcome trial</span></span>
+<span><span class="co">#&gt; * Undesirable outcome</span></span>
+<span><span class="co">#&gt; * Common control arm: A </span></span>
+<span><span class="co">#&gt; * Control arm probability matched to best non-control arm</span></span>
+<span><span class="co">#&gt; * Best arm: D</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Arms, true outcomes, starting allocation probabilities </span></span>
+<span><span class="co">#&gt; and allocation probability limits:</span></span>
+<span><span class="co">#&gt;  arms true_ys start_probs fixed_probs min_probs max_probs</span></span>
+<span><span class="co">#&gt;     A    0.20         0.3          NA        NA        NA</span></span>
+<span><span class="co">#&gt;     B    0.22         0.3          NA       0.2        NA</span></span>
+<span><span class="co">#&gt;     C    0.24         0.2          NA       0.2        NA</span></span>
+<span><span class="co">#&gt;     D    0.18         0.2          NA       0.2        NA</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Maximum sample size: 1000 </span></span>
+<span><span class="co">#&gt; Maximum number of data looks: 10</span></span>
+<span><span class="co">#&gt; Planned data looks after:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 patients</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Superiority threshold: 0.99 </span></span>
+<span><span class="co">#&gt; Inferiority threshold: 0.01 </span></span>
+<span><span class="co">#&gt; No equivalence threshold</span></span>
+<span><span class="co">#&gt; No futility threshold</span></span>
+<span><span class="co">#&gt; Soften power for all analyses: 0.7</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -476,7 +476,7 @@
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
     </footer>
