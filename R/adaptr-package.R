@@ -5,7 +5,10 @@
 #' @aliases adaptr
 #'
 #' @description
-#' \if{html}{\figure{adaptr.png}{options: align="right" width="120" alt="logo"}}
+#' \if{html}{
+#'   \figure{adaptr.png}{options: width="120" alt="logo"}
+#'   \emph{Adaptive Trial Simulator}
+#' }
 #'
 #' The `adaptr` package simulates adaptive (multi-arm) trials using adaptive
 #' stopping, adaptive arm dropping and/or response-adaptive randomisation.

@@ -1,13 +1,8 @@
-## Resubmission
-
-This is a resubmission of a minor release, fixing a moved URL and an invalid
-file URI in a function documentation. Comments for original submission below.
-
 ## Release summary
 
-This is a minor patch release updating documentation, adding limited new
-functionality, and updating an internal function due to updates to the
-`&&`-function in R >= 4.2.0.
+This is a minor patch release triggered by a CRAN request for updates to the
+package documentation to only use HTML5, which also includes minor bugfixes to
+print methods and messages in the setup_trial function.
 
 ## R CMD check results
 
