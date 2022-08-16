@@ -48,7 +48,7 @@ print.trial_spec <- function(x, prob_digits = 3, ...) {
           cat("* Control arm probability matched to best non-control arm")
         } else {
           cat0("* Control arm probability fixed at ",
-               round(x$control_prob_fixed), prob_digits) # Fixed at same value all the time
+               round(x$control_prob_fixed, prob_digits)) # Fixed at same value all the time
         }
       } else {
         cat0("* Control arm probability fixed at ")
@@ -308,7 +308,7 @@ print.trial_results_summary <- function(x, digits = 1, ...) {
                                                    character(1)), collapse = " | "), "\n",
       "* RMSE: ", fmt_dig(x$rmse, 5), "\n",
       "* RMSE treatment effect: ", ifelse(is.na(x$rmse_te), "not estimated", fmt_dig(x$rmse_te, 5)), "\n",
-      "* Ideal design percentage: ", fmt_dig(x$idp, digits), "%",
+      "* Ideal design percentage: ", ifelse(is.nan(x$idp), "not estimable", paste0(fmt_dig(x$idp, digits), "%")),
 
       # Technical simulation details
       "\n\nSimulation details:",

@@ -31,9 +31,9 @@ The full package documentation is available as a stand-alone website at
 # The easiest way is to install from CRAN directly
 install.packages("adaptr")
 
-# But you can also get the newest version from GitHub (requires the remotes package)
+# But you can also install the development version from GitHub (requires the remotes package)
 # install.packages("remotes") 
-remotes::install_github("INCEPTdk/adaptr")
+remotes::install_github("INCEPTdk/adaptr@dev")
 ```
 
 ## Example
@@ -46,7 +46,7 @@ general `setup_trial()` function, or one of the special case functions,
 
 ``` r
 library(adaptr)
-#> Loading adaptr package (version 1.1.0).
+#> Loading adaptr package (version 1.1.1).
 #> See 'help("adaptr")' or 'vignette("Overview", "adaptr")' for help.
 #> Further information available on https://inceptdk.github.io/adaptr/.
 
@@ -171,7 +171,7 @@ print(res_sum, digits = 1)
 #> * Ideal design percentage: 100.0%
 #> 
 #> Simulation details:
-#> * Simulation time: 0.388 secs
+#> * Simulation time: 0.413 secs
 #> * Base random seed: 67890
 #> * Credible interval width: 95%
 #> * Number of posterior draws: 5000
