@@ -1,6 +1,12 @@
-# adaptr (development version)
+# adaptr 1.1.1
 
-* Minor bugfixes in print methods for trial specifications and summaries of multiple trial results.
+This is a patch release triggered by a CRAN request for updates.
+
+* Minor formatting changes to the `adaptr-package` help page to comply with CRAN
+request to only use HTML5 (as used by R >=4.2.0).
+
+* Minor bugfixes in print methods for trial specifications and summaries of
+multiple trial results.
 
 * Minor updates in messages in setup_trial.
 
