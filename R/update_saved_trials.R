@@ -4,8 +4,8 @@
 #' saved by [run_trials()] using a previous version of `adaptr`, allowing the
 #' results from these previous simulations to be post-processed (including
 #' printing and plotting) by this version of the package. The function should be
-#' run only once per saved simulation object (and will print a warning if the
-#' object is already up to date).\cr
+#' run only once per saved simulation object and will issue a warning if the
+#' object is already up to date.\cr
 #' **NOTE:** some values cannot be updated and will be set to `NA` (the
 #' posterior estimates from the 'final' analysis conducted after the last
 #' adaptive analysis and including outcome data for all patients), and thus
@@ -42,7 +42,8 @@ update_saved_trials <- function(path, version = NULL, compress = TRUE) {
     save_object <- FALSE
     warning("path leads to a trial_results-object that is already up to date; object not updated.", call. = FALSE)
   } else if (is.null(prev_version)) { # Saved by version 1.1.1 or earlier
-# Do the updating
+
+    # Do the updating
 
     # Update the trial_spec-part of the object, re-arrange order of objects, set class
     object$trial_spec$adaptr_version <- .adaptr_version
@@ -58,7 +59,7 @@ update_saved_trials <- function(path, version = NULL, compress = TRUE) {
     # Update the trial_results-part of the object
     object$adaptr_version <- .adaptr_version
 
-    # Update all resulting individual trial_result objects, re-arrange order of objecs, set class
+    # Update all resulting individual trial_result objects, re-arrange order of objects, set class
     sparse <- object$sparse
 
     for (i in 1:object$n_rep) {
