@@ -87,48 +87,57 @@ print.trial_spec <- function(x, prob_digits = 3, ...) {
   }
   cat0(paste("Number of patients randomised at each look: ", paste(x$randomised_at_looks, collapse = ", ")), fill = TRUE)
 
-  cat("\nSuperiority threshold:", round(x$superiority, prob_digits),
-      "\nInferiority threshold:", round(x$inferiority, prob_digits), "\n")
+  if (length(x$superiority) == 1) {
+    cat("\nSuperiority threshold:", round(x$superiority, prob_digits), "(all analyses)", fill = TRUE)
+  } else {
+    cat("\nSuperiority thresholds:", paste(round(x$superiority, prob_digits), collapse = ", "), fill = TRUE)
+  }
+  if (length(x$inferiority) == 1) {
+    cat("Inferiority threshold:", round(x$inferiority, prob_digits), "(all analyses)", fill = TRUE)
+  } else {
+    cat("Inferiority thresholds:", paste(round(x$inferiority, prob_digits), collapse = ", "), fill = TRUE)
+  }
+
 
   # Equivalence specifications
   if (is.null(x$equivalence_prob)) {
-    cat("No equivalence threshold")
+    cat("No equivalence threshold", fill = TRUE)
   } else {
-    cat("Equivalence threshold:", round(x$equivalence_prob, prob_digits))
-
     if (is.null(x$control)) {
-      cat(" (no common control)")
+      equi_ctrl <- "(no common control)"
     } else {
       if (x$equivalence_only_first) {
-        cat(" (only checked for first control)")
+        equi_ctrl <- "(only checked for first control)"
       } else {
-        cat(" (checked for first and eventual new controls)")
+        equi_ctrl <- "(checked for first and eventual new controls)"
       }
     }
+    if (length(x$equivalence_prob) == 1) {
+      cat("Equivalence threshold:", round(x$equivalence_prob, prob_digits), "(all analyses)", equi_ctrl, fill = TRUE)
+    } else {
+      cat("Equivalence thresholds:", paste(round(x$equivalence_prob, prob_digits), collapse = ", "), equi_ctrl, fill = TRUE)
+    }
 
-    cat("\nAbsolute equivalence difference:", x$equivalence_diff)
+    cat0("Absolute equivalence difference: ", x$equivalence_diff, "\n")
   }
-  cat("\n")
 
   # Futility specifications
   if (is.null(x$futility_prob)) {
-    cat("No futility threshold")
-    if (is.null(x$control)) cat(" (not relevant - no common control)")
+    cat("No futility threshold", ifelse(is.null(x$control), "(not relevant - no common control)", NULL), fill = TRUE)
   } else {
-    cat("Futility threshold:", round(x$futility_prob, prob_digits))
-
-    if (x$futility_only_first) {
-      cat(" (only checked for first control)")
+    futility_ctrl <- ifelse(x$futility_only_first, "(only checked for first control)", "(checked for first and eventual new controls)")
+    if (length(x$futility_prob) == 1) {
+      cat("Futility threshold:", round(x$futility_prob, prob_digits), "(all analyses)", futility_ctrl, fill = TRUE)
     } else {
-      cat(" (checked for first and eventual new controls)")
+      cat("Futility thresholds:", paste(round(x$futility_prob, prob_digits), collapse = ", "), futility_ctrl, fill = TRUE)
     }
 
-    cat("\nAbsolute futility difference (in beneficial direction): ", x$futility_diff)
+    cat("Absolute futility difference (in beneficial direction):", x$futility_diff, "\n")
   }
 
   # Softening specifications
   soften_power <- if (length(unique(x$soften_power)) == 1) x$soften_power[1] else x$soften_power
-  cat0(sprintf("\nSoften power for %s:",
+  cat0(sprintf("Soften power for %s:",
                ifelse(length(soften_power) == 1, "all analyses", "each consequtive analysis")), " ")
 
   if (all(soften_power == 1)) {

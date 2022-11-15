@@ -34,7 +34,12 @@ to re-run them (mostly relevant for time-consuming simulations).
 
 **WORK IN PROGRESS - ADD EXAMPLES TO SETUP FUNCTIONS AND/OR VIGNETTES SHOWING  THE NEW LAG OF FOLLOW-UP SETTINGS IN ACTION**
 
-* Additional minor changes to trial/setup validation including proper error
+* Added the possibility to define different probability thresholds for different
+adaptive analyses to the `setup_trials()`-family of functions (for inferiority,
+superiority, equivalence, and futility probability thresholds), with according
+updates in `run_trial()` and the `print()`-method for trial specifications.
+
+* Additional minor changes to trial setup/validation including proper error
 messages in an edge case with invalid inputs and proper errors if non-integer
 numbers used for patient count arguments.
 
@@ -44,6 +49,9 @@ correctly print additional information about trials.
 * Fixed a bug where the same number of patients followed could be used for
 subsequent data_looks in the `setup_trial()`-family of functions did incorrectly
 not produce an error.
+
+* Minor fixes, updates, and added clarification to the documentation in multiple
+places.
 
 * Added internal `vapply_lgl()`-helper function.
 

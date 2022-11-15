@@ -234,10 +234,22 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
     }
   }
 
-  # Check superiority/inferiority thresholds
-  if (length(inferiority) != 1 | length(superiority) != 1 | !is.numeric(inferiority) | !is.numeric(superiority) |
-      inferiority < 0 | superiority < 0 | inferiority > 1 | superiority > 1 | inferiority >= superiority) {
-    stop("Both superiority and inferiority must be single numeric values between 0 and 1, and superiority must be higher than inferiority.", call. = FALSE)
+  # Check superiority/inferiority thresholds and correspondence
+  if (!(length(inferiority) %in% c(1, n_data_looks)) | !all(is.numeric(inferiority)) | any(inferiority < 0) |
+      any(inferiority > 1) | any(inferiority != cummax(inferiority))) {
+    stop("inferiority must be a single numeric value beween 0 and 1 or a numeric vector of the same length ",
+         "as the maximum possible number of adaptive analyses, with all values between 0 and 1 and no ",
+         "values lower than the previous value.", call. = FALSE)
+  }
+  if (!(length(superiority) %in% c(1, n_data_looks)) | !all(is.numeric(superiority)) | any(superiority < 0) |
+      any(superiority > 1) | any(superiority != cummin(superiority))) {
+    stop("superiority must be a single numeric value beween 0 and 1 or a numeric vector of the same length ",
+         "as the maximum possible number of adaptive analyses, with all values between 0 and 1 and no ",
+         "values higher than the previous value.", call. = FALSE)
+  }
+  if (any(inferiority >= superiority)) {
+    stop("Invalid combination of inferiority/superiority thresholds - inferiority threshold(s) must be ",
+         "lower than the corresponding superiority threshold(s) at all adaptive analyses.", call. = FALSE)
   }
 
   # Check that highest_is_best is correct
@@ -250,10 +262,14 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
     if (is.null(equivalence_prob) | is.null(equivalence_diff)) {
       stop("Either equivalence_prob or equivalence_diff is specified - both need to be specified at the same time.", call. = FALSE)
     }
-    if (isTRUE(length(equivalence_prob) != 1 | length(equivalence_diff) != 1 | !is.numeric(equivalence_prob) | !is.numeric(equivalence_diff) |
-               equivalence_prob <= 0 | equivalence_prob >= 1 | equivalence_diff <= 0)) {
-      stop("Both equivalence_prob and equivalence_diff must be single numeric values and equivalence_prob must be > 0 and < 1, ",
-           "while equivalence_diff must be > 0.", call. = FALSE)
+    if (!(length(equivalence_prob) %in% c(1, n_data_looks)) | !all(is.numeric(equivalence_prob)) | any(equivalence_prob <= 0) |
+          any(equivalence_prob >= 1) | any(equivalence_prob != cummin(equivalence_prob))) {
+      stop("equivalence_prob must be a single numeric value > 0 and < 1 or a numeric vector of the same length ",
+           "as the maximum possible number of adaptive analyses, with all values > 0 and < 1 and no values ",
+           "higher than the previous value.", call. = FALSE)
+    }
+    if (isTRUE(length(equivalence_diff) != 1 | !is.numeric(equivalence_diff) | equivalence_diff <= 0)) {
+      stop("equivalence_diff must be a single numeric value > 0.", call. = FALSE)
     }
     if (is.null(control)) {
       if (!is.null(equivalence_only_first)) {
@@ -276,8 +292,11 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
     if (is.null(futility_prob) | is.null(futility_diff) | is.null(futility_only_first)) {
       stop("Valid values for futility_prob, futility_diff and futility_only_first must all be specified for futility assessment.", call. = FALSE)
     }
-    if (isTRUE(length(futility_prob) != 1 | !is.numeric(futility_prob) | futility_prob >= 1 | futility_prob <= 0)) {
-      stop("futility_prob must be a single numeric value > 0 and < 1.", call. = FALSE)
+    if (!(length(futility_prob) %in% c(1, n_data_looks)) | !all(is.numeric(futility_prob)) | any(futility_prob <= 0) |
+        any(futility_prob >= 1) | any(futility_prob != cummin(futility_prob))) {
+      stop("futility_prob must be a single numeric value > 0 and < 1 or a numeric vector of the same length ",
+           "as the maximum possible number of adaptive analyses, with all values > 0 and < 1 and no values ",
+           "higher than the previous value.", call. = FALSE)
     }
     if (isTRUE(length(futility_diff) != 1 | !is.numeric(futility_diff) | futility_diff <= 0)) {
       stop("futility_diff must be a single numeric value > 0.", call. = FALSE)
@@ -495,26 +514,35 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #'   `number of arms - 1` can be provided, or one of the special arguments
 #'   `"sqrt-based"`, `"sqrt-based start"`, `"sqrt-based fixed"` or `"match"`.
 #'   See [setup_trial()] **Details** below for details in behaviour.
-#' @param inferiority single numeric (`> 0` and `<1`, default is `0.01`)
-#'   specifying the inferiority threshold. An arm will be considered inferior
-#'   and dropped if the probability that it is best (when comparing all arms) or
-#'   better than the control arm (when a common `control` is used) drops below
-#'   this threshold.
-#' @param superiority single numeric (`>0` and `<1`, default is `0.99`)
-#'   specifying the superiority threshold. If the probability that an arm is
-#'   best (when comparing all arms) or better than the control arm (when a
-#'   common `control` is used) exceeds this number, said arm will be declared
-#'   the winner and the trial will be stopped (if no common `control` is used or
-#'   if the last comparator is dropped in a design with a common control) *or*
-#'   become the new control and the trial will continue (if a common control is
-#'   specified).
-#' @param equivalence_prob single numeric (`> 0` and `< 1`) or `NULL` (default,
-#'   corresponding to no equivalence assessment). If a numeric value is
-#'   specified, arms will be stopped for equivalence if the probability of
-#'   either *(a)* equivalence compared to a common `control` or *(b)*
-#'   equivalence between all arms remaining (designs without a common control)
-#'   exceeds this threshold. Requires specification of `equivalence_diff`,
-#'   `equivalence_only_first`, and a common `control` arm.
+#' @param inferiority single numeric value or vector of numeric values of the
+#'   same length as the maximum number of possible adaptive analyses, specifying
+#'   the probability threshold(s) for inferiority (default is `0.01`). All
+#'   values must be `>= 0` and `<= 1`, and if multiple values are supplied, no
+#'   values may be lower than the preceding value. An arm will be considered
+#'   inferior and dropped if the probability that it is best (when comparing all
+#'   arms) or better than the control arm (when a common `control` is used)
+#'   drops below the inferiority threshold at an adaptive analysis.
+#' @param superiority single numeric value or vector of numeric values of the
+#'   same length as the maximum number of possible adaptive analyses, specifying
+#'   the probability threshold(s) for superiority (default is `0.99`). All
+#'   values must be `>= 0` and `<= 1`, and if multiple values are supplied, no
+#'   values may be higher than the preceding value. If the probability that an
+#'   arm is best (when comparing all arms) or better than the control arm (when
+#'   a common `control` is used) exceeds the superiority threshold at an
+#'   adaptive analysis, said arm will be declared the winner and the trial will
+#'   be stopped (if no common `control` is used or if the last comparator is
+#'   dropped in a design with a common control) *or* become the new control and
+#'   the trial will continue (if a common control is specified).
+#' @param equivalence_prob single numeric value, vector of numeric values of the
+#'   same length as the maximum number of possible adaptive analyses or `NULL`
+#'   (default, corresponding to no equivalence assessment), specifying the
+#'   probability threshold(s) for equivalence. All values must be `> 0` and
+#'   `< 1`, and if multiple values are supplied, no values may be higher than
+#'   the preceding value. If not `NULL`, arms will be dropped for equivalence if
+#'   the probability of either *(a)* equivalence compared to a common `control`
+#'   or *(b)* equivalence between all arms remaining (designs without a common
+#'   `control`) exceeds the equivalence threshold at an adaptive analysis.
+#'   Requires specification of `equivalence_diff`, and `equivalence_only_first`.
 #' @param equivalence_diff single numeric value (`> 0`) or `NULL` (default,
 #'   corresponding to no equivalence assessment). If a numeric value is
 #'   specified, estimated differences below this threshold will be considered
@@ -530,11 +558,15 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #'   be assessed for the first control (if `TRUE`) or also for subsequent
 #'   control arms (if `FALSE`) if one arm is superior to the first control and
 #'   becomes the new control.
-#' @param futility_prob single numeric (`> 0` and `< 1`) or `NULL` (default,
-#'   corresponds to no futility assessment). If a numeric value is specified,
-#'   `arms` will be stopped for futility when the probability for futility
-#'   compared to the common `control` exceeds this threshold. Requires a common
-#'   `control` arm, specification of `futility_diff` and `futility_only_first`.
+#' @param futility_prob single numeric value, vector of numeric values of the
+#'   same length as the maximum number of possible adaptive analyses or `NULL`
+#'   (default, corresponding to no futility assessment), specifying the
+#'   probability threshold(s) for futility. All values must be `> 0` and `< 1`,
+#'   and if multiple values are supplied, no values may be higher than
+#'   the preceding value. If not `NULL`, arms will be dropped for futility if
+#'   the probability for futility compared to the common `control` exceeds the
+#'   futility threshold at an adaptive analysis. Requires a common `control`
+#'   arm, specification of `futility_diff`, and `futility_only_first`.
 #' @param futility_diff single numeric value (`> 0`) or `NULL` (default,
 #'   corresponding to no futility assessment). If a numeric value is specified,
 #'   estimated differences below this threshold in the *beneficial* direction
@@ -738,6 +770,14 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' assessed against the new control arm in designs with a common control, if
 #' specified - see above). Arms will thus be dropped for equivalence before
 #' futility.
+#'
+#' \strong{Varying probability thresholds}
+#'
+#' Different probability thresholds (for superiority, inferiority, equivalence,
+#' and futility) may be specified for different adaptive analyses. This may be
+#' used, e.g., to apply more strict probability thresholds at earlier analyses,
+#' similar to the use of alpha-spending functions in conventional,
+#' frequentist group sequential trial designs.
 #'
 #' @return A `trial_spec` object used to run simulations by [run_trial()] or
 #'   [run_trials()]. The output is essentially a list containing the input

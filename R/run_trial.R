@@ -13,15 +13,17 @@
 #' arm is superior to the others, or when all arms are considered equivalent (if
 #' equivalence testing is specified).\cr
 #' If a common `control` arm is specified, all other arms will be compared to
-#' that, and if 1 comparison crosses the superiority threshold, that arm will
-#' become the new control and the old control will be considered inferior. If
-#' multiple non-control arms cross the superiority threshold in the same
-#' analysis, the one with the highest probability of being the overall best will
-#' become the new control. Equivalence/futility will also be checked in trial
-#' designs with common controls if specified, and equivalent or futile arms will
-#' be dropped. The trial simulation will be stopped when only 1 arm is left,
-#' when the final arms are all equivalent, or after the final specified adaptive
-#' analysis.\cr
+#' that, and if 1 comparison crosses the applicable superiority threshold at an
+#' adaptive analysis, that arm will become the new control and the old control
+#' will be considered inferior. If multiple non-control arms cross the
+#' applicable superiority threshold in the same adaptive analysis, the one with
+#' the highest probability of being the overall best will become the new
+#' control. Equivalence/futility will also be checked if specified, and
+#' equivalent or futile arms will be dropped in designs with a common `control`
+#' arm and the entire trial will be stopped if all remaining arms are equivalent
+#' in designs without a common `control` arm. The trial simulation will be
+#' stopped when only 1 arm is left, when the final arms are all equivalent, or
+#' after the final specified adaptive analysis.\cr
 #' After stopping (regardless of reason), a final analysis including outcome
 #' data from all patients randomised (to all arms, with the final `control` arm,
 #' if any, used as the `control` in this analysis) will be conducted. Results
@@ -201,25 +203,37 @@ run_trial <- function(trial_spec, seed = NULL, sparse = FALSE) {
   aai <- 1:n_arms # aai = active arm indices
   sum_ys <- sum_ys_all <- ns <- ns_all <- rep(0, n_arms)
   total_n <- 0
+  n_data_looks <- trial_spec$n_data_looks
   inferiority <- trial_spec$inferiority
+  if (length(inferiority) == 1) {
+    inferiority <- rep(inferiority, n_data_looks)
+  }
   superiority <- trial_spec$superiority
+  if (length(superiority) == 1) {
+    superiority <- rep(superiority, n_data_looks)
+  }
   equivalence_prob <- trial_spec$equivalence_prob
   equivalence_diff <- trial_spec$equivalence_diff
   equivalence_only_first <- trial_spec$equivalence_only_first
   check_equivalence <- !is.null(equivalence_prob)
+  if (check_equivalence & length(equivalence_prob) == 1) {
+    equivalence_prob <- rep(equivalence_prob, n_data_looks)
+  }
   equivalence_stop <- FALSE
   prob_all_equivalent <- NULL
   futility_diff <- trial_spec$futility_diff
   futility_prob <- trial_spec$futility_prob
   futility_only_first <- trial_spec$futility_only_first
   check_futility <- !is.null(futility_prob)
+  if (check_futility & length(futility_prob) == 1) {
+    futility_prob <- rep(futility_prob, n_data_looks)
+  }
   futility_stop <- FALSE
   highest_is_best <- trial_spec$highest_is_best
   cri_width <- trial_spec$cri_width
   n_draws <- trial_spec$n_draws
   robust <- trial_spec$robust
   data_looks <- trial_spec$data_looks
-  n_data_looks <- trial_spec$n_data_looks
   randomised_at_looks <- trial_spec$randomised_at_looks
   allocs <- rep(NA_character_, randomised_at_looks[n_data_looks]) # All allocations
   ys <- rep(NA_real_, randomised_at_looks[n_data_looks]) # All outcomes
@@ -314,9 +328,9 @@ run_trial <- function(trial_spec, seed = NULL, sparse = FALSE) {
       # Keep removing inferior arms until they are all dropped
       # - for every inferior arm dropped, draws/probabilities are updated
       check_equivalence <- !is.null(equivalence_prob)
-      while(any(probs_best < inferiority)) {
-        inferior_probs <- probs_best[probs_best < inferiority]
-        inferior_arms <- names(probs_best)[probs_best < inferiority]
+      while(any(probs_best < inferiority[look])) {
+        inferior_probs <- probs_best[probs_best < inferiority[look]]
+        inferior_arms <- names(probs_best)[probs_best < inferiority[look]]
 
         for (i in seq_along(inferior_arms)) {
           cur_index <- which(cur_status$arms == inferior_arms[i])
@@ -337,7 +351,7 @@ run_trial <- function(trial_spec, seed = NULL, sparse = FALSE) {
 
       # Check if an arm is superior
       superior_prob <- max(probs_best)
-      if (superior_prob > superiority) {
+      if (superior_prob > superiority[look]) {
         superior_arm <- names(probs_best)[which.max(probs_best)]
         cur_index <- which(cur_status$arms == superior_arm)
         cur_status$new_status[cur_index] <- "superior"
@@ -354,7 +368,7 @@ run_trial <- function(trial_spec, seed = NULL, sparse = FALSE) {
       # Equivalence check no common control
       if (check_equivalence) {
         prob_all_equivalent <- prob_all_equi(draws, equivalence_diff)
-        if (prob_all_equivalent > equivalence_prob){
+        if (prob_all_equivalent > equivalence_prob[look]){
           cur_status$new_status[aai] <- "equivalence"
           trial_arms$final_status[aai] <- "equivalence"
           trial_arms$status_look[aai] <- followed_n
@@ -392,9 +406,9 @@ run_trial <- function(trial_spec, seed = NULL, sparse = FALSE) {
 
         # Inferiority checks common control
         # Check if at least one arm is inferior to the control - if that is the case, then drop all inferior arms
-        # No need to re-run this part after each inferior arm is dropped, as all comparisons are relative to the contorl only
-        if (any(probs_better < inferiority, na.rm = TRUE)) {
-          which_inferior <- which(probs_better < inferiority)
+        # No need to re-run this part after each inferior arm is dropped, as all comparisons are relative to the control only
+        if (any(probs_better < inferiority[look], na.rm = TRUE)) {
+          which_inferior <- which(probs_better < inferiority[look])
           inferior_arms <- rownames(probs_res_better)[which_inferior]
           inferior_probs <- probs_better[which_inferior]
           update_draws <- TRUE
@@ -415,7 +429,7 @@ run_trial <- function(trial_spec, seed = NULL, sparse = FALSE) {
         # Superiority check common control
         # Not necessary to update draws again before superiority has been claimed
         # Relative superiority check common control
-        if (any(probs_better > superiority, na.rm = TRUE)) { # Set new control - only 1 is declared superior at a time (if multiple are better, the best is chosen)
+        if (any(probs_better > superiority[look], na.rm = TRUE)) { # Set new control - only 1 is declared superior at a time (if multiple are better, the best is chosen)
           update_draws <- TRUE
           new_control <- rownames(probs_res_better)[which.max(probs_better)]
           cur_index <- which(cur_status$arms == new_control)
@@ -441,8 +455,8 @@ run_trial <- function(trial_spec, seed = NULL, sparse = FALSE) {
           # obtained if one arm has just been deemed superior and made the new control
         } else {
           if (check_equivalence) {
-            if (any(probs_equivalence > equivalence_prob, na.rm = TRUE)) {
-              which_equivalent <- which(probs_equivalence > equivalence_prob)
+            if (any(probs_equivalence > equivalence_prob[look], na.rm = TRUE)) {
+              which_equivalent <- which(probs_equivalence > equivalence_prob[look])
               equivalent_arms <- rownames(probs_res_better)[which_equivalent]
               equivalence_probs <- probs_equivalence[which_equivalent]
               update_draws <- TRUE
@@ -467,8 +481,8 @@ run_trial <- function(trial_spec, seed = NULL, sparse = FALSE) {
 
           # Futility check common control
           if (check_futility) {
-            if (any(probs_futility > futility_prob, na.rm = TRUE)) {
-              which_futile <- which(probs_futility > futility_prob)
+            if (any(probs_futility > futility_prob[look], na.rm = TRUE)) {
+              which_futile <- which(probs_futility > futility_prob[look])
               futile_arms <- rownames(probs_res_better)[which_futile]
               # Don't consider an arm futile if it's already judged to be equivalent
               non_equi_index <- !futile_arms %in% cur_status$arms[which(cur_status$new_status == "equivalence")]
@@ -686,12 +700,12 @@ run_trial <- function(trial_spec, seed = NULL, sparse = FALSE) {
                    start_control = trial_spec$control,
                    final_control = control,
                    control_prob_fixed = control_prob_fixed,
-                   inferiority = inferiority,
-                   superiority = superiority,
-                   equivalence_prob = equivalence_prob,
+                   inferiority = trial_spec$inferiority,
+                   superiority = trial_spec$superiority,
+                   equivalence_prob = trial_spec$equivalence_prob,
                    equivalence_diff = equivalence_diff,
                    equivalence_only_first = equivalence_only_first,
-                   futility_prob = futility_prob,
+                   futility_prob = trial_spec$futility_prob,
                    futility_diff = futility_diff,
                    futility_only_first = futility_only_first,
                    highest_is_best = highest_is_best,
