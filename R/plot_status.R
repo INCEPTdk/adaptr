@@ -59,8 +59,15 @@ plot_status.trial_results <- function(object, x_value = "look", arm = NULL,
 
   assert_pkgs("ggplot2")
 
-  if (!isTRUE(x_value %in% c("look", "total n") & length(x_value) == 1)) {
-    stop("x_value must be either 'look' or 'total n'.", call. = FALSE)
+  adaptr_version <- object$trial_spec$adaptr_version
+  if (is.null(adaptr_version) | isTRUE(adaptr_version < .adaptr_version)) {
+    stop("object was created by a previous version of adaptr and cannot be used ",
+         "by this version of adaptr unless the object is updated. ",
+         "Type 'help(\"update_saved_trials\")' for help on updating.", call. = FALSE)
+  }
+
+  if (!isTRUE(x_value %in% c("look", "total n", "followed n") & length(x_value) == 1)) {
+    stop("x_value must be either 'look', 'total n', or 'followed n'.", call. = FALSE)
   }
 
   # Validate arm
@@ -112,17 +119,21 @@ plot_status.trial_results <- function(object, x_value = "look", arm = NULL,
 #' @keywords internal
 #'
 extract_statuses <- function(object, x_value, arm = NULL) {
-  looks <- object$trial_spec$data_looks
+  data_looks <- object$trial_spec$data_looks
+  randomised_at_looks <- object$trial_spec$randomised_at_looks
   overall_final_looks <- vapply_num(object$trial_results, function(x) x$final_n)
+  overall_final_followed <- vapply_num(object$trial_results, function(x) x$followed_n)
   overall_statuses <- vapply_str(object$trial_results, function(x) x$final_status)
 
   if (is.null(arm)) { # Overall statuses
     final_looks <- overall_final_looks
+    final_followed <- overall_final_followed
     statuses <- ifelse(overall_statuses == "max", "active", overall_statuses)
   } else { # Statuses for specific arm
     idx <- which(object$trial_spec$trial_arms$arms == arm)
-    final_looks <- vapply_num(object$trial_results, function(x) x$trial_res$status_look[idx])
-    final_looks <- ifelse(is.na(final_looks), overall_final_looks, final_looks)
+    final_followed <- vapply_num(object$trial_results, function(x) x$trial_res$status_look[idx])
+    final_followed <- ifelse(is.na(final_followed), overall_final_followed, final_followed)
+    final_looks <- vapply_num(final_followed, function(l) randomised_at_looks[which(data_looks == l)])
     statuses <- vapply_str(object$trial_results, function(x) x$trial_res$final_status[idx])
 
     # Correct statuses
@@ -149,32 +160,40 @@ extract_statuses <- function(object, x_value, arm = NULL) {
     )
   }
 
-  looks <- looks[looks <= max(final_looks)]
+  data_looks <- data_looks[data_looks <= max(final_followed)]
+  randomised_at_looks <- randomised_at_looks[randomised_at_looks <= max(final_looks)]
 
   # Create matrix or probabilities, fill values, bind results to data.frame
   status_levels <- c("Recruiting", "Inferiority", "Futility", "Equivalence", "Superiority")
-  m <- matrix(rep(NA, length(looks) * 7), ncol = 7, dimnames = list(NULL, c("i", "n", status_levels)))
-  for (i in seq_along(looks)) {
+  m <- matrix(rep(NA, length(data_looks) * 8), ncol = 8, dimnames = list(NULL, c("i", "nf", "nr", status_levels)))
+  for (i in seq_along(randomised_at_looks)) {
     m[i, 1] <- i
-    m[i, 2] <- looks[i]
-    m[i, 3] <- mean(statuses == "active" | final_looks > looks[i])
-    m[i, 4] <- mean(statuses == "inferiority" & final_looks <= looks[i])
-    m[i, 5] <- mean(statuses == "futility" & final_looks <= looks[i])
-    m[i, 6] <- mean(statuses == "equivalence" & final_looks <= looks[i])
-    m[i, 7] <- mean(statuses == "superiority" & final_looks <= looks[i])
+    m[i, 2] <- data_looks[i]
+    m[i, 3] <- randomised_at_looks[i]
+    m[i, 4] <- mean(statuses == "active" | final_looks > randomised_at_looks[i])
+    m[i, 5] <- mean(statuses == "inferiority" & final_looks <= randomised_at_looks[i])
+    m[i, 6] <- mean(statuses == "futility" & final_looks <= randomised_at_looks[i])
+    m[i, 7] <- mean(statuses == "equivalence" & final_looks <= randomised_at_looks[i])
+    m[i, 8] <- mean(statuses == "superiority" & final_looks <= randomised_at_looks[i])
   }
   m <- as.data.frame(m)
 
   dta <- do.call(
     rbind,
-    lapply(status_levels, function(s) cbind(m[, c("i", "n")], p = m[[s]], status = s)
+    lapply(status_levels, function(s) cbind(m[, c("i", "nf", "nr")], p = m[[s]], status = s)
     )
   )
 
-  dta$x <- if (x_value == "look") dta$i else dta$n
+  dta$x <- switch(
+    x_value,
+    "look" = dta$i,
+    "total n" = dta$nr,
+    "followed n" = dta$nf
+    )
+
   if (x_value == "look") {
     dta <- dta[, c("x", "status", "p")]
-  } else if (x_value == "total n") {
+  } else if (x_value %in% c("total n", "followed n")) {
     dta <- rbind(
       data.frame(x = rep(0, 5), status = status_levels, p = c(1, rep(0, 4))),
       dta[, c("x", "status", "p")]

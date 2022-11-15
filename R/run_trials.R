@@ -177,11 +177,12 @@ dispatch_trial_runs <- function(X, trial_spec, base_seed, sparse, cores, cl = NU
 #' @return A list of a special class `"trial_results"`, which contains the
 #'   `trial_results` (results from all simulations), `trial_spec` (the trial
 #'   specification), `n_rep`, `base_seed`, `elapsed_time` (the total simulation
-#'   run time) and `sparse` (as described above). These results may be extracted
-#'   using the [extract_results()] function and summarised using the [summary()]
-#'   or print ([print.trial_results()]) functions; see function documentation
-#'   for details on additional arguments used to select arms in simulations not
-#'   ending in superiority and other summary choices.
+#'   run time), `sparse` (as described above) and `adaptr_version` (the version
+#'   of the `adaptr` package used to run the simulations). These results may be
+#'   extracted using the [extract_results()] function and summarised using the
+#'   [summary()] or print ([print.trial_results()]) functions; see function
+#'   documentation for details on additional arguments used to select arms in
+#'   simulations not ending in superiority and other summary choices.
 #'
 #' @export
 #'
@@ -209,9 +210,13 @@ run_trials <- function(trial_spec, n_rep, path = NULL, overwrite = FALSE,
   if (is.null(sparse) | length(sparse) != 1 | any(is.na(sparse)) | !is.logical(sparse)) {
     stop("sparse must be a single TRUE or FALSE.", call. = FALSE)
   }
+  adaptr_version <- trial_spec$adaptr_version
+  if (is.null(adaptr_version) | isTRUE(adaptr_version < .adaptr_version)) {
+    stop("trial_spec was created by a previous version of adaptr. Please re-run trial setup.", call. = FALSE)
+  }
   if ((is.null(path) | overwrite) & !inherits(trial_spec, "trial_spec")) {
     stop("If a path to a file is not provided or if overwrite = TRUE, ",
-         "a valid trial specifcation must be provided.", call. = FALSE)
+         "a valid trial specification must be provided.", call. = FALSE)
   }
   if (!verify_int(n_rep, min_value = 1) | !verify_int(cores, min_value = 1)) {
     stop("n_rep and cores must be single whole numbers larger than 0.", call. = FALSE)
@@ -231,8 +236,15 @@ run_trials <- function(trial_spec, n_rep, path = NULL, overwrite = FALSE,
         !equivalent_funs(prev$trial_spec$fun_y_gen, trial_spec$fun_y_gen) |
         !equivalent_funs(prev$trial_spec$fun_draws, trial_spec$fun_draws) |
         !equivalent_funs(prev$trial_spec$fun_raw_est, trial_spec$fun_raw_est)) {
-      stop("The trial specification contained in the object in path is not ",
-           "the same as the one provided; thus the previous result was not loaded.", call. = FALSE)
+      prev_adaptr_version <- prev$trial_spec$adaptr_version
+      if ((is.null(prev_adaptr_version) | isTRUE(prev_adaptr_version < adaptr_version))) {
+        stop("The object in path was created by a previous version of adaptr and ",
+             "cannot be used by this version of adaptr unless the object is updated. ",
+             "Type 'help(\"update_saved_trials\")' for help on updating.", call. = FALSE)
+      } else {
+        stop("The trial specification contained in the object in path is not ",
+             "the same as the one provided; thus the previous result was not loaded.", call. = FALSE)
+      }
     }
     if (grow & overwrite) {
       stop("Both grow and overwrite are TRUE. At least one of them must be ",
@@ -339,7 +351,7 @@ run_trials <- function(trial_spec, n_rep, path = NULL, overwrite = FALSE,
                           n_rep = n_rep,
                           base_seed = base_seed,
                           elapsed_time = elapsed_time + Sys.time() - tic,
-                          sparse = sparse),
+                          sparse = sparse, adaptr_version = adaptr_version),
                      class = c("trial_results", "list"))
 
     if (ifelse(!is.null(path), !file.exists(path) | overwrite | grow, FALSE)) {

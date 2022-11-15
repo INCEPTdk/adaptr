@@ -200,6 +200,10 @@ vapply_int <- function(X, FUN, ...) vapply(X, FUN, FUN.VALUE = integer(1), ...)
 #' @keywords internal
 vapply_str <- function(X, FUN, ...) vapply(X, FUN, FUN.VALUE = character(1), ...)
 
+#' @rdname vapply_helpers
+#' @keywords internal
+vapply_lgl <- function(X, FUN, ...) vapply(X, FUN, FUN.VALUE = logical(1), ...)
+
 
 
 #' Assert equivalent functions

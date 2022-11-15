@@ -1,3 +1,7 @@
+# Save package version when package is built
+.adaptr_version <- as.character(packageVersion("adaptr"))
+
+
 #' Print package startup message
 #'
 #' @param libname not used.
@@ -11,7 +15,7 @@
 #' @noRd
 #'
 .onAttach <- function(libname, pkgname) {
-  packageStartupMessage("Loading adaptr package (version ", packageVersion("adaptr"), ").\n",
+  packageStartupMessage("Loading adaptr package (version ", .adaptr_version, ").\n",
                         "See 'help(\"adaptr\")' or 'vignette(\"Overview\", \"adaptr\")' for help.\n",
                         "Further information available on https://inceptdk.github.io/adaptr/.")
 }
@@ -35,7 +39,7 @@
 .onLoad <- function(libname, pkgname) {
   if (getRversion() >= "2.15.1") {
     globalVariables(c(
-      "arm", "hi", "lo", "x", "mid", "value", "ns", "look_ns", "p", "status"
+      "arm", "hi", "lo", "x", "mid", "value", "ns", "look_ns", "look_ns_all", "p", "status"
     ))
   }
 }

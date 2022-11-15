@@ -64,6 +64,17 @@
 #'   selected arm to the comparator arm, as described for `te_comp` and below).
 #'   If `TRUE`, the raw estimates (`raw_ests`, see [setup_trial()] and
 #'   [run_trial()]) will be used instead of the posterior estimates.
+#' @param final_ests single logical. If `TRUE` (recommended) the final estimates
+#'   calculated using outcome data from all patients randomised when trials are
+#'   stopped is used; if `FALSE`, the estimates calculated for each arm when an
+#'   arm is stopped (or at the last adaptive analysis if not before) using data
+#'   from patients having reach followed up at this time point and not all
+#'   patients randomised. If `NULL` (the default), this argument will be set to
+#'   `FALSE` if outcome data are available immediate after randomisation for all
+#'   patients (for backwards compatibility, as final posterior estimates may
+#'   vary slightly in this situation, even if using the same data); otherwise it
+#'   will be said to `TRUE`. See [setup_trial()] for more details on how these
+#'   estimates are calculated.
 #'
 #' @return A `data.frame` containing the following columns:
 #'   \itemize{
@@ -116,11 +127,25 @@ extract_results <- function(object,
                             select_last_arm = FALSE,
                             select_preferences = NULL,
                             te_comp = NULL,
-                            raw_ests = FALSE) {
+                            raw_ests = FALSE,
+                            final_ests = NULL) {
 
   # Validate input (only checks class)
   if (!inherits(object, "trial_results")){
     stop("object must be an output from the run_trials function.", call. = FALSE)
+  }
+
+  # Check version
+  adaptr_version <- object$adaptr_version
+  if (is.null(adaptr_version) | isTRUE(adaptr_version < .adaptr_version)) {
+    stop("object was created by a previous version of adaptr and cannot be used ",
+         "by this version of adaptr unless the object is updated. ",
+         "Type 'help(\"update_saved_trials\")' for help on updating.", call. = FALSE)
+  }
+
+  # Set final_ests
+  if (is.null(final_ests)) {
+    final_ests <- !all(object$trial_spec$data_looks == object$trial_spec$randomised_at_looks)
   }
 
   # Extract values necessary for summarising results
@@ -187,6 +212,9 @@ extract_results <- function(object,
                    sq_err_te = NA,
                    stringsAsFactors = FALSE)
 
+  # Define which estimates to use
+  which_ests <- paste0(ifelse(raw_ests, "raw", "post"), "_ests", ifelse(final_ests, "_all", ""))
+
   # Loop: selection and error estimation
   for (i in 1:n_rep) {
     tmp_res <- object$trial_results[[i]]$trial_res
@@ -243,12 +271,12 @@ extract_results <- function(object,
     # Calculate errors
     if (!is.na(cur_select)){ # An arm has been selected
       selected_index <- which(tmp_res$arms == cur_select)
-      selected_est_y <- ifelse(raw_ests, tmp_res$raw_ests[selected_index], tmp_res$post_ests[selected_index])
+      selected_est_y <- tmp_res[[which_ests]][selected_index]
       selected_true_y <- tmp_res$true_ys[selected_index]
       df$sq_err[i] <- (selected_est_y - selected_true_y)^2
       if (!is.null(te_comp)){
         if (cur_select != te_comp){
-          te_comp_est_y <- ifelse(raw_ests, tmp_res$raw_ests[te_comp_index], tmp_res$post_ests[te_comp_index])
+          te_comp_est_y <- tmp_res[[which_ests]][te_comp_index]
           df$sq_err_te[i] <- ( (selected_est_y - te_comp_est_y) - (selected_true_y - te_comp_true_y) )^2
         }
       }

@@ -14,8 +14,9 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
                            fixed_probs = NULL,
                            min_probs = rep(NA, length(arms)),
                            max_probs = rep(NA, length(arms)),
-                           data_looks = NULL, max_n = NULL,
-                           look_after_every = NULL,
+                           data_looks = NULL,
+                           max_n = NULL, look_after_every = NULL,
+                           randomised_at_looks = NULL,
                            control = NULL, control_prob_fixed = NULL,
                            inferiority = 0.01, superiority = 0.99,
                            equivalence_prob = NULL, equivalence_diff = NULL,
@@ -164,14 +165,14 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
   }
 
   # Check or setup data looks
-  if (!is.null(data_looks)) { # data_looks is sepcified, validate that
-    if (!is.numeric(data_looks) | any(data_looks != cummax(data_looks)) | isTRUE(any(data_looks < 1))) {
+  if (!is.null(data_looks)) { # data_looks is specified, validate that
+    n_data_looks <- length(data_looks)
+    if (!is.numeric(data_looks) | any(data_looks != cummax(data_looks)) | any(data_looks <= c(0, data_looks[-n_data_looks])) | isTRUE(any(data_looks < 1)) | isTRUE(any(is.na(data_looks)))) {
       stop("data_looks must be a numeric vector with values > 0 and of increasing size.", call. = FALSE)
     }
     if (!is.null(max_n) | !is.null(look_after_every)) {
       stop("If data_looks is specified, both max_n and look_after_every must be NULL.", call. = FALSE)
     }
-    n_data_looks <- length(data_looks)
   } else { # data_looks is not specified, generate from max_n and look_after every and validate those
     if (is.null(max_n) | is.null(look_after_every)) {
       stop("If data_looks is not specified, max_n and look_after_every each must be specified ",
@@ -185,6 +186,24 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
       data_looks <- look_after_every * 1:n_data_looks
       data_looks[n_data_looks] <- ifelse(data_looks[n_data_looks] > max_n, max_n, data_looks[n_data_looks])
     }
+  }
+  if (!all(vapply_lgl(data_looks, verify_int, min_value = 1))) {
+    stop("data_looks must only include whole numbers > 0.")
+  }
+
+  # Check or setup total number of patients randomised
+  if (is.null(randomised_at_looks)) {
+    randomised_at_looks <- data_looks
+  } else if (!is.numeric(randomised_at_looks) | any(randomised_at_looks != cummax(randomised_at_looks)) | isTRUE(any(randomised_at_looks < 1)) |
+             isTRUE(any(is.na(randomised_at_looks)))) {
+    stop("randomised_at_looks must be a numeric vector with values > 0 and of increasing size.", call. = FALSE)
+  } else if (length(randomised_at_looks) != length(data_looks) | isTRUE(any(data_looks > randomised_at_looks))) {
+    stop("randomised_at_looks must match the number of adaptive analyses specified and ",
+         "all numbers must be >= the number of patients with available outcome data ",
+         "at each analysis, as specified by data_looks or max_n/look_after_every.", call. = FALSE)
+  }
+  if (!all(vapply_lgl(randomised_at_looks, verify_int, min_value = 1))) {
+    stop("randomised_at_looks must only include whole numbers > 0.")
   }
 
   # Common control checks
@@ -365,6 +384,7 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
                  max_n = max_n,
                  look_after_every = look_after_every,
                  n_data_looks = n_data_looks,
+                 randomised_at_looks = randomised_at_looks,
                  control = control,
                  control_prob_fixed = if (match) "match" else control_prob_fixed,
                  inferiority = inferiority,
@@ -385,7 +405,8 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
                  add_info = add_info,
                  fun_y_gen = fun_y_gen,
                  fun_draws = fun_draws,
-                 fun_raw_est = fun_raw_est),
+                 fun_raw_est = fun_raw_est,
+                 adaptr_version = .adaptr_version),
             class = c("trial_spec", "list"))
 }
 
@@ -433,12 +454,15 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #'   probabilities, higher probabilities will be rounded down to these values.
 #'   Must be `NA` (default for all arms) if no boundary is wanted.
 #' @param data_looks vector of increasing integers, specifies when to conduct
-#'   adaptive analyses (= the total number of patients randomised at each
-#'   adaptive analysis). The last number in the vector represents the maximum
-#'   sample size. Instead of specifying `data_looks`, the `max_n` and
-#'   `look_after_every` arguments can be used in combination (then `data_looks`
-#'   must be `NULL`, the default).
-#' @param max_n single integer, maximum total sample size (defaults to `NULL`).
+#'   adaptive analyses (= the total number of patients with available outcome
+#'   data at each adaptive analysis). The last number in the vector represents
+#'   the final adaptive analysis, i.e., the final analyses where superiority,
+#'   inferiority, practical equivalence, or futility will be claimed.
+#'   Instead of specifying `data_looks`, the `max_n` and `look_after_every`
+#'   arguments can be used in combination (then `data_looks` must be `NULL`,
+#'   the default).
+#' @param max_n single integer, number of patients with available outcome data
+#'   at the last possible adaptive analysis (defaults to `NULL`).
 #'   Must only be specified if `data_looks` is `NULL`. Requires specification of
 #'   the `look_after_every` argument.
 #' @param look_after_every single integer, specified together with `max_n`.
@@ -446,6 +470,17 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #'   patients randomised, and at the total sample size as specified by `max_n`
 #'   (`max_n` does not need to be a multiple of `look_after_every`). If
 #'   specified, `data_looks` must be `NULL` (as default).
+#' @param randomised_at_looks vector of increasing integers or `NULL` (default),
+#'   specifying the number of patients randomised at the time of each adaptive
+#'   analysis. If `NULL` (the default), the number of patients randomised at
+#'   each analysis will match the number of patients with available outcome data
+#'   at said analysis, as specified by `data_looks` or `max_n` and
+#'   `look_after_every`, i.e., outcome data will be available immediately after
+#'   randomisation.\cr
+#'   If not `NULL`, the vector must be of the same length as the number of
+#'   adaptive analyses specified by `data_looks` or `max_n` and
+#'   `look_after_every`, and all values must be larger than or equal to the
+#'   number of patients with available outcome data at each analysis.
 #' @param control single character string, name of one of the `arms` or `NULL`
 #'   (default). If specified, this arm will serve as a common control arm, to
 #'   which all other arms will be compared and the
@@ -709,8 +744,10 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #'   values (some combined in a `data.frame` called `trial_arms`), but its class
 #'   signals that these inputs have been validated and inappropriate
 #'   combinations and settings have been ruled out. Also contains `best_arm`
-#'   holding the arm(s) with the best value(s) in `true_ys`. Use `str()` to
-#'   peruse the actual content of the returned object
+#'   holding the arm(s) with the best value(s) in `true_ys` and
+#'   `adaptr_version`, specifying the version of the `adaptr`-package used to
+#'   create the trial specification. Use `str()` to peruse the actual content of
+#'   the returned object.
 #'
 #' @examples
 #' # Setup a custom trial specification with right-skewed, log-normally
@@ -791,8 +828,10 @@ setup_trial <- function(arms, true_ys, fun_y_gen = NULL, fun_draws = NULL,
                         start_probs = NULL, fixed_probs = NULL,
                         min_probs = rep(NA, length(arms)),
                         max_probs = rep(NA, length(arms)),
-                        data_looks = NULL, max_n = NULL,
-                        look_after_every = NULL, control = NULL,
+                        data_looks = NULL,
+                        max_n = NULL, look_after_every = NULL,
+                        randomised_at_looks = NULL,
+                        control = NULL,
                         control_prob_fixed = NULL, inferiority = 0.01,
                         superiority = 0.99, equivalence_prob = NULL,
                         equivalence_diff = NULL, equivalence_only_first = NULL,
@@ -804,8 +843,9 @@ setup_trial <- function(arms, true_ys, fun_y_gen = NULL, fun_draws = NULL,
 
   validate_trial(arms = arms, true_ys = true_ys, start_probs = start_probs, fixed_probs = fixed_probs,
                  min_probs = min_probs, max_probs = max_probs, data_looks = data_looks, max_n = max_n,
-                 look_after_every = look_after_every, control = control, control_prob_fixed = control_prob_fixed,
-                 inferiority = inferiority, superiority = superiority, equivalence_prob = equivalence_prob,
+                 look_after_every = look_after_every, randomised_at_looks = randomised_at_looks,
+                 control = control, control_prob_fixed = control_prob_fixed, inferiority = inferiority,
+                 superiority = superiority, equivalence_prob = equivalence_prob,
                  equivalence_diff = equivalence_diff, equivalence_only_first = equivalence_only_first,
                  futility_prob = futility_prob, futility_diff = futility_diff, futility_only_first = futility_only_first,
                  highest_is_best = highest_is_best, soften_power = soften_power,
@@ -866,10 +906,11 @@ setup_trial_binom <- function(arms, true_ys, start_probs = NULL,
                               fixed_probs = NULL,
                               min_probs = rep(NA, length(arms)),
                               max_probs = rep(NA, length(arms)),
-                              data_looks = NULL, max_n = NULL,
-                              look_after_every = NULL, control = NULL,
-                              control_prob_fixed = NULL, inferiority = 0.01,
-                              superiority = 0.99,
+                              data_looks = NULL,
+                              max_n = NULL, look_after_every = NULL,
+                              randomised_at_looks = NULL,
+                              control = NULL, control_prob_fixed = NULL,
+                              inferiority = 0.01, superiority = 0.99,
                               equivalence_prob = NULL, equivalence_diff = NULL,
                               equivalence_only_first = NULL,
                               futility_prob = NULL, futility_diff = NULL,
@@ -887,8 +928,9 @@ setup_trial_binom <- function(arms, true_ys, start_probs = NULL,
   # General setup and validation
   trial <- validate_trial(arms = arms, true_ys = true_ys, start_probs = start_probs, fixed_probs = fixed_probs,
                           min_probs = min_probs, max_probs = max_probs, data_looks = data_looks, max_n = max_n,
-                          look_after_every = look_after_every, control = control, control_prob_fixed = control_prob_fixed,
-                          inferiority = inferiority, superiority = superiority, equivalence_prob = equivalence_prob,
+                          look_after_every = look_after_every, randomised_at_looks = randomised_at_looks,
+                          control = control, control_prob_fixed = control_prob_fixed, inferiority = inferiority,
+                          superiority = superiority, equivalence_prob = equivalence_prob,
                           equivalence_diff = equivalence_diff, equivalence_only_first = equivalence_only_first,
                           futility_prob = futility_prob, futility_diff = futility_diff, futility_only_first = futility_only_first,
                           highest_is_best = highest_is_best, soften_power = soften_power,
@@ -979,11 +1021,12 @@ setup_trial_norm <- function(arms, true_ys, sds, start_probs = NULL,
                              fixed_probs = NULL,
                              min_probs = rep(NA, length(arms)),
                              max_probs = rep(NA, length(arms)),
-                             data_looks = NULL, max_n = NULL,
-                             look_after_every = NULL, control = NULL,
-                             control_prob_fixed = NULL, inferiority = 0.01,
-                             superiority = 0.99, equivalence_prob = NULL,
-                             equivalence_diff = NULL,
+                             data_looks = NULL,
+                             max_n = NULL, look_after_every = NULL,
+                             randomised_at_looks = NULL,
+                             control = NULL, control_prob_fixed = NULL,
+                             inferiority = 0.01, superiority = 0.99,
+                             equivalence_prob = NULL, equivalence_diff = NULL,
                              equivalence_only_first = NULL,
                              futility_prob = NULL, futility_diff = NULL,
                              futility_only_first = NULL,
@@ -1000,8 +1043,9 @@ setup_trial_norm <- function(arms, true_ys, sds, start_probs = NULL,
   # General setup and validation and return
   validate_trial(arms = arms, true_ys = true_ys, start_probs = start_probs, fixed_probs = fixed_probs,
                  min_probs = min_probs, max_probs = max_probs, data_looks = data_looks, max_n = max_n,
-                 look_after_every = look_after_every, control = control, control_prob_fixed = control_prob_fixed,
-                 inferiority = inferiority, superiority = superiority, equivalence_prob = equivalence_prob,
+                 look_after_every = look_after_every, randomised_at_looks = randomised_at_looks,
+                 control = control, control_prob_fixed = control_prob_fixed, inferiority = inferiority,
+                 superiority = superiority, equivalence_prob = equivalence_prob,
                  equivalence_diff = equivalence_diff, equivalence_only_first = equivalence_only_first,
                  futility_prob = futility_prob, futility_diff = futility_diff, futility_only_first = futility_only_first,
                  highest_is_best = highest_is_best, soften_power = soften_power,

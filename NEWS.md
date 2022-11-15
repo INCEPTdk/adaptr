@@ -1,6 +1,51 @@
 # adaptr (development version)
 
-* No changes yet
+* Added option to have different numbers of simulated patients with outcome data
+available compared to the total number of simulated patients randomised at each
+adaptive analysis (`randomised_at_looks` argument in `setup_trial()`-family of
+functions); defaults to same behaviour as previously (i.e., assuming that
+outcome data are immediately available following randomisation).
+As a consequence, `run_trial()` now always conducts a final analysis after the
+last adaptive analysis (including both final posterior and 'raw' estimates),
+including the outcome data of all patients randomised to all arms, regardless of
+how many had outcome data available at the last conducted adaptive analysis.
+Both sets of results are saved and printed for individual simulations;
+`extract_results()` and the `summary()`- and
+`print()`-methods for multiple simulations have gained the additional argument
+`final_ests` that controls whether the results from this final analysis or from
+the last relevant adaptive analysis including each arm are used when calculating
+some performance metrics (defaults are set to ensure backwards compatibility and
+use the final estimates in situations where not all patients are included in the
+final adaptive analysis).
+
+* Updated `plot_history()` and `plot_status()` to add the possibility to plot
+different metrics relevant after the addition of the new
+`randomised_at_looks`-argument described above.
+
+* Added the `update_saved_trials()`-function, which 'updates' multiple trial
+simulation objects saved by `run_trials()` using a previous version of `adaptr`,
+which reformats the objects to work with the updated functions. Other saved
+objects will have to be re-created using the same settings as previously (due to
+some internal reformatting). Not all values can be added for updated, saved
+simulation results without re-running; these values will be replaced with `NA`s,
+and - if used - may lead to printing or plotting of missing values. However, the
+function allows re-use of the same data from previous simulations without having
+to re-run them (mostly relevant for time-consuming simulations).
+
+**WORK IN PROGRESS - ADD EXAMPLES TO SETUP FUNCTIONS AND/OR VIGNETTES SHOWING  THE NEW LAG OF FOLLOW-UP SETTINGS IN ACTION**
+
+* Additional minor changes to trial/setup validation including proper error
+messages in an edge case with invalid inputs and proper errors if non-integer
+numbers used for patient count arguments.
+
+* Minor fix to print method for individual trial results, which did not
+correctly print additional information about trials.
+
+* Fixed a bug where the same number of patients followed could be used for
+subsequent data_looks in the `setup_trial()`-family of functions did incorrectly
+not produce an error.
+
+* Added internal `vapply_lgl()`-helper function.
 
 # adaptr 1.1.1
 

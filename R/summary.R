@@ -51,7 +51,7 @@
 #'     [extract_results()].
 #'   \item `idp`: the ideal design percentage (IDP; 0-100%), see **Details**.
 #'   \item `select_strategy`, `select_last_arm`, `select_preferences`,
-#'     `te_comp`, `raw_ests`,`restrict`: as specified above.
+#'     `te_comp`, `raw_ests`, `final_ests`, `restrict`: as specified above.
 #'   \item `control`: the control arm specified by [setup_trial()],
 #'     [setup_trial_binom()] or [setup_trial_norm()]; `NULL` if no control.
 #'   \item `equivalence_assessed`, `futility_assessed`: single logicals,
@@ -102,7 +102,13 @@ summary.trial_results <- function(object,
                                   select_strategy = "control if available",
                                   select_last_arm = FALSE,
                                   select_preferences = NULL, te_comp = NULL,
-                                  raw_ests = FALSE, restrict = NULL, ...) {
+                                  raw_ests = FALSE, final_ests = NULL,
+                                  restrict = NULL, ...) {
+
+  # Set final_ests
+  if (is.null(final_ests)) {
+    final_ests <- !all(object$trial_spec$data_looks == object$trial_spec$randomised_at_looks)
+  }
 
   # Extract results
   extr_res <- extract_results(
@@ -110,7 +116,7 @@ summary.trial_results <- function(object,
     select_strategy = select_strategy,
     select_preferences = select_preferences,
     te_comp = te_comp,
-    raw_ests = raw_ests
+    raw_ests = raw_ests, final_ests = final_ests
   )
 
   # Restrict and calculate probability of conclusiveness
@@ -173,7 +179,7 @@ summary.trial_results <- function(object,
        select_last_arm = select_last_arm,
        select_preferences = select_preferences,
        te_comp = te_comp,
-       raw_ests = raw_ests,
+       raw_ests = raw_ests, final_ests = final_ests,
        restrict = restrict,
        control = object$trial_spec$control,
        equivalence_assessed = !is.null(object$trial_spec$equivalence_prob),
