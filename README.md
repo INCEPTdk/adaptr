@@ -27,8 +27,8 @@ supported by a grant from [Sygeforsikringen
 -   [Website](https://inceptdk.github.io/adaptr/) - stand-alone website
     with full package documentation
 -   [adaptr: an R package for simulating and comparing adaptive clinical
-    trials](https://doi.org/10.21105/joss.04284)
--   paper in the Journal of Open Source Software describing the package
+    trials](https://doi.org/10.21105/joss.04284) - paper in the Journal
+    of Open Source Software describing the package
 -   [An overview of methodological considerations regarding adaptive
     stopping, arm dropping and randomisation in clinical
     trials](https://doi.org/10.1016/j.jclinepi.2022.11.002) - paper in
@@ -204,7 +204,7 @@ print(res_sum, digits = 1)
 #> * Ideal design percentage: 100.0%
 #> 
 #> Simulation details:
-#> * Simulation time: 0.423 secs
+#> * Simulation time: 0.426 secs
 #> * Base random seed: 67890
 #> * Credible interval width: 95%
 #> * Number of posterior draws: 5000

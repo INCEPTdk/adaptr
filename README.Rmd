@@ -35,8 +35,8 @@ is primarily supported by a grant from
 
 * [Website](https://inceptdk.github.io/adaptr/) - stand-alone website with full
 package documentation
-* [adaptr: an R package for simulating and comparing adaptive clinical trials](https://doi.org/10.21105/joss.04284)
-- paper in the Journal of Open Source Software describing the package
+* [adaptr: an R package for simulating and comparing adaptive clinical trials](https://doi.org/10.21105/joss.04284) -
+paper in the Journal of Open Source Software describing the package
 * [An overview of methodological considerations regarding adaptive stopping, arm dropping and randomisation in clinical trials](https://doi.org/10.1016/j.jclinepi.2022.11.002) - paper in Journal of
 Clinical Epidemiology describing key methodological considerations in adaptive
 trials with description of the workflow anda simulation-based example using the
