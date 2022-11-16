@@ -22,7 +22,7 @@ Platform Trial) project](https://incept.dk/), which is primarily
 supported by a grant from [Sygeforsikringen
 “danmark”](https://www.sygeforsikring.dk/).
 
-## Resources:
+## Resources
 
 -   [Website](https://inceptdk.github.io/adaptr/) - stand-alone website
     with full package documentation
@@ -204,7 +204,7 @@ print(res_sum, digits = 1)
 #> * Ideal design percentage: 100.0%
 #> 
 #> Simulation details:
-#> * Simulation time: 0.426 secs
+#> * Simulation time: 0.41 secs
 #> * Base random seed: 67890
 #> * Credible interval width: 95%
 #> * Number of posterior draws: 5000
