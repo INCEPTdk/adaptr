@@ -55,6 +55,10 @@ places.
 
 * Added internal `vapply_lgl()`-helper function.
 
+* Added reference to open access article describing key methodological
+considerations in adaptive clinical trials to the package documentation
+(doi: 10.1016/j.jclinepi.2022.11.002).
+
 # adaptr 1.1.1
 
 This is a patch release triggered by a CRAN request for updates.

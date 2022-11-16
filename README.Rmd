@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/adaptr)](https://cran.r-project.org/package=adaptr)
 [![R-CMD-check](https://github.com/INCEPTdk/adaptr/workflows/R-CMD-check/badge.svg)](https://github.com/INCEPTdk/adaptr/actions/)
-[![status](https://joss.theoj.org/papers/10.21105/joss.04284/status.svg)]( https://joss.theoj.org/papers/10.21105/joss.04284)
+[![status](https://joss.theoj.org/papers/10.21105/joss.04284/status.svg)](https://joss.theoj.org/papers/10.21105/joss.04284)
 [![codecov](https://codecov.io/gh/INCEPTdk/adaptr/branch/main/graph/badge.svg)](https://app.codecov.io/gh/INCEPTdk/adaptr/)
 ![total downloads from RStudio mirror](https://cranlogs.r-pkg.org/badges/grand-total/adaptr)
 <!-- badges: end -->
@@ -31,15 +31,31 @@ The package has been developed as part of the
 is primarily supported by a grant from
 [Sygeforsikringen "danmark"](https://www.sygeforsikring.dk/).
 
-The full package documentation is available as a stand-alone website at [inceptdk.github.io/adaptr](https://inceptdk.github.io/adaptr/).
+## Resources:
+
+* [Website](https://inceptdk.github.io/adaptr/) - stand-alone website with full
+package documentation
+* [adaptr: an R package for simulating and comparing adaptive clinical trials](https://doi.org/10.21105/joss.04284)
+- paper in the Journal of Open Source Software describing the package
+* [An overview of methodological considerations regarding adaptive stopping, arm dropping and randomisation in clinical trials](https://doi.org/10.1016/j.jclinepi.2022.11.002) - paper in Journal of
+Clinical Epidemiology describing key methodological considerations in adaptive
+trials with description of the workflow anda simulation-based example using the
+package
 
 ## Installation
 
-```{r eval = FALSE}
-# The easiest way is to install from CRAN directly
-install.packages("adaptr")
+The easiest way is to install from CRAN directly:
 
-# But you can also install the development version from GitHub (requires the remotes package)
+```{r eval = FALSE}
+install.packages("adaptr")
+```
+
+Alternatively, you can install the **development version** from GitHub - this
+requires the *remotes*-package installed. The development version may contain
+additional features not yet available in the CRAN version, but may contain
+preliminary functions and may not be stable or fully documented:
+
+```{r eval = FALSE}
 # install.packages("remotes") 
 remotes::install_github("INCEPTdk/adaptr@dev")
 ```

@@ -52,6 +52,11 @@
 #' for simulating and comparing adaptive clinical trials. Journal of Open Source
 #' Software, 7(72), 4284. \doi{10.21105/joss.04284}
 #'
+#' Granholm A, Kaas-Hansen BS, Lange T, Schjørring OL, Andersen LW, Perner A,
+#' Jensen AKG, Møller MH (2022). An overview of methodological considerations
+#' regarding adaptive stopping, arm dropping and randomisation in clinical
+#' trials. J Clin Epidemiol. \doi{10.1016/j.jclinepi.2022.11.002}
+#'
 #' [Website/manual](https://inceptdk.github.io/adaptr/)
 #'
 #' [GitHub repository](https://github.com/INCEPTdk/adaptr/)

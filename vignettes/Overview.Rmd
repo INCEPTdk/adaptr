@@ -24,6 +24,11 @@ The package has been developed as part of the
 primarily by a grant from
 [Sygeforsikringen "danmark"](https://www.sygeforsikring.dk/).
 
+Additional guidance on the key methodological considerations when planning and
+comparing adaptive clinical trials can be found in the paper
+*"[An overview of methodological considerations regarding adaptive stopping, arm dropping and randomisation in clinical trials](https://doi.org/10.1016/j.jclinepi.2022.11.002)"* available in Journal
+of Clinical Epidemiology (open access).
+
 ## Basic example
 First, load the package:
 

@@ -123,7 +123,7 @@ print.trial_spec <- function(x, prob_digits = 3, ...) {
 
   # Futility specifications
   if (is.null(x$futility_prob)) {
-    cat("No futility threshold", ifelse(is.null(x$control), "(not relevant - no common control)", NULL), fill = TRUE)
+    cat0("No futility threshold", ifelse(is.null(x$control), " (not relevant - no common control)", ""), fill = TRUE)
   } else {
     futility_ctrl <- ifelse(x$futility_only_first, "(only checked for first control)", "(checked for first and eventual new controls)")
     if (length(x$futility_prob) == 1) {

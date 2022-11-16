@@ -407,5 +407,3 @@ loaded from non-base R packages are used, please be aware that exporting these
 objects/functions or prefixing them with their namespace is necessary if
 simulations are conducted using multiple cores. See `run_trial()` for additional
 details.
-func
-
