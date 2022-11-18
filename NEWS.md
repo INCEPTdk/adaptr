@@ -60,13 +60,13 @@ considerations in adaptive clinical trials to the package documentation
 (doi: 10.1016/j.jclinepi.2022.11.002).
 
 * Added `names = FALSE`-argument to all `quantile()` calls in `summary()`-method
-for `trial_results`-objects, to avoid unneccessary naming of some components if
+for `trial_results`-objects, to avoid unnecessary naming of some components if
 they are subsequently extracted from the returned object.
 
-* Ideal design percentages may be calculated to `NA`, `Inf` or `-Inf` in
-scenarios with no differences (and not just as `NaN`); these are now also
-printed as `"not estimable"` when printing summaries of multiple simulation
-results.
+* Ideal design percentages may be calculated as `NaN`, `Inf` or `-Inf` in
+scenarios with no differences; these are now all converted to `NA` when saving
+before being returned by the `summary()`-method for `trial_results`-objects and
+printed correctly in all cases.
 
 # adaptr 1.1.1
 

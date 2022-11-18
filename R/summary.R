@@ -144,6 +144,7 @@ summary.trial_results <- function(object,
   expected_ys <- sum(select_ys_not_na * true_ys)
   idp <- 100 * (expected_ys - min(true_ys)) / (max(true_ys) - min(true_ys))
   idp <- ifelse(object$trial_spec$highest_is_best, idp, 100 - idp)
+  idp <- ifelse(is.nan(idp) | is.infinite(idp), NA, idp)
 
   # Prepare and return summary object
   structure(c(list(n_rep = object$n_rep,
