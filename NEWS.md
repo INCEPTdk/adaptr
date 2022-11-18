@@ -59,6 +59,10 @@ places.
 considerations in adaptive clinical trials to the package documentation
 (doi: 10.1016/j.jclinepi.2022.11.002).
 
+* Added `names = FALSE`-argument to all `quantile()` calls in `summary()`-method
+for `trial_results`-objects, to avoid unneccessary naming of some components if
+they are subsequently extracted from the returned object.
+
 # adaptr 1.1.1
 
 This is a patch release triggered by a CRAN request for updates.
