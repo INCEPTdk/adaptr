@@ -63,6 +63,11 @@ considerations in adaptive clinical trials to the package documentation
 for `trial_results`-objects, to avoid unneccessary naming of some components if
 they are subsequently extracted from the returned object.
 
+* Ideal design percentages may be calculated to `NA`, `Inf` or `-Inf` in
+scenarios with no differences (and not just as `NaN`); these are now also
+printed as `"not estimable"` when printing summaries of multiple simulation
+results.
+
 # adaptr 1.1.1
 
 This is a patch release triggered by a CRAN request for updates.
