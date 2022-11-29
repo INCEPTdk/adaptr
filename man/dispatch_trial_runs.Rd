@@ -10,10 +10,11 @@ dispatch_trial_runs(X, trial_spec, base_seed, sparse, cores, cl = NULL)
 \item{trial_spec}{trial specification as provided by \code{\link[=setup_trial]{setup_trial()}},
 \code{\link[=setup_trial_binom]{setup_trial_binom()}} or \code{\link[=setup_trial_norm]{setup_trial_norm()}}.}
 
-\item{base_seed}{single integer; a random seed used as the basis for
-simulations; each simulation will set the random seed to a value based on
-this (+ the trial number), without affecting the global random seed after
-the function has been run.}
+\item{base_seed}{single integer or \code{NULL} (default); a random seed used as
+the basis for simulations. If a number is provided, each single trial
+simulation will set the random seed to a value based on this (+ the trial
+number), without affecting the global random seed after the function has
+been run.}
 
 \item{sparse}{single logical, as described in \code{\link[=run_trial]{run_trial()}}; defaults to
 \code{TRUE} when running multiple simulations, in which case only the data

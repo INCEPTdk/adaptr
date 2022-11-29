@@ -53,7 +53,11 @@ not produce an error.
 * Minor fixes, updates, and added clarification to the documentation in multiple
 places.
 
-* Added internal `vapply_lgl()`-helper function.
+* Added internal `vapply_lgl()`-helper function; `vapply()`-helpers are now used
+consequently to simplify the code.
+
+* Added multiple internal helper functions to simplify code: `stop0()`, and
+`warning0()`.
 
 * Added reference to open access article describing key methodological
 considerations in adaptive clinical trials to the package documentation

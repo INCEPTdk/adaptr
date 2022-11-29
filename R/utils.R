@@ -104,6 +104,27 @@ cat0 <- function(...) cat(..., sep = "")
 
 
 
+#' stop0() and warning() with call. = FALSE
+#'
+#' Used internally. Calls [stop0()] or [warning()] but enforces `call. = FALSE`,
+#' to suppress the call from the error/warning.
+#'
+#' @inheritParams base::stop
+#'
+#' @return NULL
+#'
+#' @keywords internal
+#'
+#' @name stop0_warning0
+#'
+stop0 <- function(...) stop0(..., call. = FALSE)
+
+#' @rdname stop0_warning0
+#' @keywords internal
+warning0 <- function(...) warning(..., call. = FALSE)
+
+
+
 #' Verify input is single integer (potentially within range)
 #'
 #' Used internally.
@@ -130,7 +151,7 @@ verify_int <- function(x, min_value = -Inf, max_value = Inf, open = "no") {
 
 
 
-#' Helper function for replacing NULL with other value
+#' Helper function for replacing NULL with other value (NULL-OR-operator)
 #'
 #' Used internally, primarily when working with list arguments, because, e.g.,
 #' `list_name$element_name` yields `NULL` when unspecified.
@@ -165,14 +186,13 @@ assert_pkgs <- function(pkgs = NULL) {
   unavailable_pkgs <- names(checks[checks])
 
   if (any(checks)) {
-    stop(
+    stop0(
       "The following required package",  ifelse(sum(checks) > 1, "s were", " was"), " unavailable: ",
       paste(unavailable_pkgs, collapse = ", "),
       ". \nConsider installing with the following command: ",
       sprintf("install.packages(%s)", paste0(ifelse(length(unavailable_pkgs) > 1, "c(", ""),
                                              paste(sprintf("\"%s\"", unavailable_pkgs), collapse = ", "),
-                                             ifelse(length(unavailable_pkgs) > 1, ")", ""))),
-      call. = FALSE
+                                             ifelse(length(unavailable_pkgs) > 1, ")", "")))
     )
   }
 

@@ -129,14 +129,14 @@ summary.trial_results <- function(object,
       extr_res <- extr_res[!is.na(extr_res$selected_arm), ]
       prob_conclusive <- NA # Not sensible when restricted
     } else {
-      stop("restrict must be either NULL, 'superior' or 'selected'.", call. = FALSE)
+      stop0("restrict must be either NULL, 'superior' or 'selected'.")
     }
   }
 
   # Calculate all additional summaries
   arms <- object$trial_spec$trial_arms$arms
   n_summarised <- nrow(extr_res)
-  count_select <- setNames(vapply(c(arms, NA), function(a) if (is.na(a)) sum(is.na(extr_res$selected_arm)) else sum(extr_res$selected_arm == a, na.rm = TRUE), FUN.VALUE = integer(1)), paste0("count_select_", c(arms, "None")))
+  count_select <- setNames(vapply_int(c(arms, NA), function(a) if (is.na(a)) sum(is.na(extr_res$selected_arm)) else sum(extr_res$selected_arm == a, na.rm = TRUE)), paste0("count_select_", c(arms, "None")))
   prob_select <- setNames(lapply(count_select, function(x) x/n_summarised), paste0("prob_select_", c(paste0("arm_", arms), "none")))
   n_selected <- sum(!is.na(extr_res$selected_arm))
   true_ys <- object$trial_spec$trial_arms$true_ys

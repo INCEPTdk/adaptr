@@ -30,11 +30,11 @@ print.trial_spec <- function(x, prob_digits = 3, ...) {
   # Check adaptr version
   adaptr_version <- x$adaptr_version
   if (is.null(adaptr_version) | isTRUE(adaptr_version < .adaptr_version)) {
-    stop("x was created by a previous version of adaptr. Please re-run trial setup.", call. = FALSE)
+    stop0("x was created by a previous version of adaptr. Please re-run trial setup.")
   }
 
   if (!verify_int(prob_digits, min_value = 2)){
-    stop("prob_digits must be a single positive whole number >= 2.", call. = FALSE)
+    stop0("prob_digits must be a single positive whole number >= 2.")
   }
 
   # General description
@@ -180,11 +180,11 @@ print.trial_result <- function(x, prob_digits = 3, ...){
   # Check adaptr version and verify other inputs
   adaptr_version <- x$adaptr_version
   if (is.null(adaptr_version) | isTRUE(adaptr_version < .adaptr_version)) {
-    stop("x was created by a previous version of adaptr. Please re-run trial.", call. = FALSE)
+    stop0("x was created by a previous version of adaptr. Please re-run trial.")
   }
 
   if (!verify_int(prob_digits, min_value = 2)) {
-    stop("prob_digits must be a single whole number >= 2.", call. = FALSE)
+    stop0("prob_digits must be a single whole number >= 2.")
   }
 
   # Status
@@ -340,9 +340,9 @@ print.trial_results_summary <- function(x, digits = 1, ...) {
       "* Equivalence: ", fmt_dig(x$prob_equivalence * 100, digits), "%", ifelse(x$equivalence_assessed, "\n", " [not assessed]\n"),
       "* Futility: ", fmt_dig(x$prob_futility * 100, digits), "%", ifelse(x$futility_assessed, "\n", " [not assessed]\n"),
       "* Inconclusive at max sample size: ", fmt_dig(x$prob_max * 100, digits), "%\n",
-      "* Selection probabilities: ", paste0(vapply(which(substr(names(x), 1, 12) == "prob_select_"),
-                                                   function(i){ paste0(ifelse(names(x)[i] == "prob_select_none", "None", substr(names(x)[i], 17, nchar(names(x)[i]))), ": ", fmt_dig(x[[names(x)[i]]]*100, digits), "%")},
-                                                   character(1)), collapse = " | "), "\n",
+      "* Selection probabilities: ", paste0(vapply_str(which(substr(names(x), 1, 12) == "prob_select_"),
+                                                       function(i){ paste0(ifelse(names(x)[i] == "prob_select_none", "None", substr(names(x)[i], 17, nchar(names(x)[i]))), ": ", fmt_dig(x[[names(x)[i]]]*100, digits), "%")}),
+                                            collapse = " | "), "\n",
       "* RMSE: ", fmt_dig(x$rmse, 5), "\n",
       "* RMSE treatment effect: ", ifelse(is.na(x$rmse_te), "not estimated", fmt_dig(x$rmse_te, 5)), "\n",
       "* Ideal design percentage: ", ifelse(is.na(x$idp), "not estimable", paste0(fmt_dig(x$idp, digits), "%")),

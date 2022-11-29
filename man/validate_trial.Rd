@@ -72,7 +72,8 @@ Instead of specifying \code{data_looks}, the \code{max_n} and \code{look_after_e
 arguments can be used in combination (then \code{data_looks} must be \code{NULL},
 the default).}
 
-\item{max_n}{single integer, maximum total sample size (defaults to \code{NULL}).
+\item{max_n}{single integer, number of patients with available outcome data
+at the last possible adaptive analysis (defaults to \code{NULL}).
 Must only be specified if \code{data_looks} is \code{NULL}. Requires specification of
 the \code{look_after_every} argument.}
 
@@ -110,28 +111,37 @@ allocation probability to the first control arm may still be fixed using
 \code{"sqrt-based"}, \code{"sqrt-based start"}, \code{"sqrt-based fixed"} or \code{"match"}.
 See \code{\link[=setup_trial]{setup_trial()}} \strong{Details} below for details in behaviour.}
 
-\item{inferiority}{single numeric (\verb{> 0} and \verb{<1}, default is \code{0.01})
-specifying the inferiority threshold. An arm will be considered inferior
-and dropped if the probability that it is best (when comparing all arms) or
-better than the control arm (when a common \code{control} is used) drops below
-this threshold.}
+\item{inferiority}{single numeric value or vector of numeric values of the
+same length as the maximum number of possible adaptive analyses, specifying
+the probability threshold(s) for inferiority (default is \code{0.01}). All
+values must be \verb{>= 0} and \verb{<= 1}, and if multiple values are supplied, no
+values may be lower than the preceding value. An arm will be considered
+inferior and dropped if the probability that it is best (when comparing all
+arms) or better than the control arm (when a common \code{control} is used)
+drops below the inferiority threshold at an adaptive analysis.}
 
-\item{superiority}{single numeric (\verb{>0} and \verb{<1}, default is \code{0.99})
-specifying the superiority threshold. If the probability that an arm is
-best (when comparing all arms) or better than the control arm (when a
-common \code{control} is used) exceeds this number, said arm will be declared
-the winner and the trial will be stopped (if no common \code{control} is used or
-if the last comparator is dropped in a design with a common control) \emph{or}
-become the new control and the trial will continue (if a common control is
-specified).}
+\item{superiority}{single numeric value or vector of numeric values of the
+same length as the maximum number of possible adaptive analyses, specifying
+the probability threshold(s) for superiority (default is \code{0.99}). All
+values must be \verb{>= 0} and \verb{<= 1}, and if multiple values are supplied, no
+values may be higher than the preceding value. If the probability that an
+arm is best (when comparing all arms) or better than the control arm (when
+a common \code{control} is used) exceeds the superiority threshold at an
+adaptive analysis, said arm will be declared the winner and the trial will
+be stopped (if no common \code{control} is used or if the last comparator is
+dropped in a design with a common control) \emph{or} become the new control and
+the trial will continue (if a common control is specified).}
 
-\item{equivalence_prob}{single numeric (\verb{> 0} and \verb{< 1}) or \code{NULL} (default,
-corresponding to no equivalence assessment). If a numeric value is
-specified, arms will be stopped for equivalence if the probability of
-either \emph{(a)} equivalence compared to a common \code{control} or \emph{(b)}
-equivalence between all arms remaining (designs without a common control)
-exceeds this threshold. Requires specification of \code{equivalence_diff},
-\code{equivalence_only_first}, and a common \code{control} arm.}
+\item{equivalence_prob}{single numeric value, vector of numeric values of the
+same length as the maximum number of possible adaptive analyses or \code{NULL}
+(default, corresponding to no equivalence assessment), specifying the
+probability threshold(s) for equivalence. All values must be \verb{> 0} and
+\verb{< 1}, and if multiple values are supplied, no values may be higher than
+the preceding value. If not \code{NULL}, arms will be dropped for equivalence if
+the probability of either \emph{(a)} equivalence compared to a common \code{control}
+or \emph{(b)} equivalence between all arms remaining (designs without a common
+\code{control}) exceeds the equivalence threshold at an adaptive analysis.
+Requires specification of \code{equivalence_diff}, and \code{equivalence_only_first}.}
 
 \item{equivalence_diff}{single numeric value (\verb{> 0}) or \code{NULL} (default,
 corresponding to no equivalence assessment). If a numeric value is
@@ -150,11 +160,15 @@ be assessed for the first control (if \code{TRUE}) or also for subsequent
 control arms (if \code{FALSE}) if one arm is superior to the first control and
 becomes the new control.}
 
-\item{futility_prob}{single numeric (\verb{> 0} and \verb{< 1}) or \code{NULL} (default,
-corresponds to no futility assessment). If a numeric value is specified,
-\code{arms} will be stopped for futility when the probability for futility
-compared to the common \code{control} exceeds this threshold. Requires a common
-\code{control} arm, specification of \code{futility_diff} and \code{futility_only_first}.}
+\item{futility_prob}{single numeric value, vector of numeric values of the
+same length as the maximum number of possible adaptive analyses or \code{NULL}
+(default, corresponding to no futility assessment), specifying the
+probability threshold(s) for futility. All values must be \verb{> 0} and \verb{< 1},
+and if multiple values are supplied, no values may be higher than
+the preceding value. If not \code{NULL}, arms will be dropped for futility if
+the probability for futility compared to the common \code{control} exceeds the
+futility threshold at an adaptive analysis. Requires a common \code{control}
+arm, specification of \code{futility_diff}, and \code{futility_only_first}.}
 
 \item{futility_diff}{single numeric value (\verb{> 0}) or \code{NULL} (default,
 corresponding to no futility assessment). If a numeric value is specified,

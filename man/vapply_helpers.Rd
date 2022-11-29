@@ -5,6 +5,7 @@
 \alias{vapply_num}
 \alias{vapply_int}
 \alias{vapply_str}
+\alias{vapply_lgl}
 \title{vapply helpers}
 \usage{
 vapply_num(X, FUN, ...)
@@ -12,6 +13,8 @@ vapply_num(X, FUN, ...)
 vapply_int(X, FUN, ...)
 
 vapply_str(X, FUN, ...)
+
+vapply_lgl(X, FUN, ...)
 }
 \arguments{
 \item{X}{a vector (atomic or list) or an \code{\link[base]{expression}}

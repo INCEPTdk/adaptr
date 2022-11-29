@@ -22,7 +22,7 @@
 prob_best <- function(m, highest_is_best = FALSE) {
   winners <- max.col(if (highest_is_best) m else -m, ties.method = "first")
   setNames(
-    vapply(seq_len(ncol(m)), function(i) mean(winners == i), FUN.VALUE = numeric(1)),
+    vapply_num(seq_len(ncol(m)), function(i) mean(winners == i)),
     colnames(m)
   )
 }

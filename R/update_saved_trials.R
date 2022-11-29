@@ -13,7 +13,6 @@
 #' [extract_results()] and [summary()] functions will lead to missing values for
 #' some of the values calculated for updated simulation objects.
 #'
-#' @inheritParams run_trial
 #' @param path single character; the path to the saved `"trial_results"`-object
 #'   containing the simulations saved by [run_trials()].
 #' @param version passed to [saveRDS()] when saving the updated object, defaults
@@ -31,16 +30,16 @@
 #'
 update_saved_trials <- function(path, version = NULL, compress = TRUE) {
   # Check if file exists at path
-  if (!file.exists(path)) stop("path must be a valid path to a trial_results-object.", call. = FALSE)
+  if (!file.exists(path)) stop0("path must be a valid path to a trial_results-object.")
   object <- readRDS(path)
   if (!inherits(object, "trial_results")) {
-    stop("path must lead to a valid trial_results-object previously saved by run_trials().", call. = FALSE)
+    stop0("path must lead to a valid trial_results-object previously saved by run_trials().")
   }
   prev_version <- object$trial_spec$adaptr_version
   save_object <- TRUE
   if (isTRUE(!is.null(prev_version) & prev_version == .adaptr_version)) { # Already up-to-date
     save_object <- FALSE
-    warning("path leads to a trial_results-object that is already up to date; object not updated.", call. = FALSE)
+    warning0("path leads to a trial_results-object that is already up to date; object not updated.")
   } else if (is.null(prev_version)) { # Saved by version 1.1.1 or earlier
 
     # Do the updating

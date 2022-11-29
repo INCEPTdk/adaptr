@@ -167,18 +167,18 @@ run_trial <- function(trial_spec, seed = NULL, sparse = FALSE) {
 
   # Check class (validation takes place when the trial is setup)
   if (!inherits(trial_spec, "trial_spec")) {
-    stop("trial_spec must be an object created by the setup_trial, ",
-         "setup_trial_binom or setup_trial_norm function.", call. = FALSE)
+    stop0("trial_spec must be an object created by the setup_trial, ",
+          "setup_trial_binom or setup_trial_norm function.")
   }
   # Check adaptr version
   adaptr_version <- trial_spec$adaptr_version
   if (is.null(adaptr_version) | isTRUE(adaptr_version < .adaptr_version)) {
-    stop("trial_spec was created by a previous version of adaptr. Please re-run trial setup.", call. = FALSE)
+    stop0("trial_spec was created by a previous version of adaptr. Please re-run trial setup.")
   }
   # Random seed
   if (!is.null(seed)) {
     if (!verify_int(seed)) {
-      stop("seed must be either NULL or a single whole number.", call. = FALSE)
+      stop0("seed must be either NULL or a single whole number.")
     } else { # Valid seed provided
       if (exists(".Random.seed", envir = globalenv())){ # A global random seed exists (not the case when called from parallel::parLapply)
         oldseed <- get(".Random.seed", envir = globalenv())
@@ -189,7 +189,7 @@ run_trial <- function(trial_spec, seed = NULL, sparse = FALSE) {
   }
   # Validate sparse
   if (is.null(sparse) | length(sparse) != 1 | any(is.na(sparse)) | !is.logical(sparse)) {
-    stop("sparse must be a single TRUE or FALSE.", call. = FALSE)
+    stop0("sparse must be a single TRUE or FALSE.")
   }
 
   # Prepare variables/extract from specification
@@ -281,11 +281,11 @@ run_trial <- function(trial_spec, seed = NULL, sparse = FALSE) {
     }
     followed_n <- data_looks[look] # Number of patients with outcome data
     total_n <- randomised_at_looks[look] # Number of patients randomised
-    cur_status$ns[aai] <- ns[aai] <- vapply(arms[aai], function(a) sum(allocs[1:followed_n] == a), integer(1))
-    cur_status$ns_all <- ns_all <- vapply(arms, function(a) sum(allocs[1:total_n] == a), integer(1))
+    cur_status$ns[aai] <- ns[aai] <- vapply_int(arms[aai], function(a) sum(allocs[1:followed_n] == a))
+    cur_status$ns_all <- ns_all <- vapply_int(arms, function(a) sum(allocs[1:total_n] == a))
     # which() required to avoid summing over NA's (which yields an NA sum)
-    cur_status$sum_ys[aai] <- sum_ys[aai] <- vapply(arms[aai], function(a) sum(ys[which(allocs[1:followed_n] == a)]), numeric(1))
-    cur_status$sum_ys_all <- sum_ys_all <- vapply(arms, function(a) sum(ys[which(allocs[1:total_n] == a)]), numeric(1))
+    cur_status$sum_ys[aai] <- sum_ys[aai] <- vapply_num(arms[aai], function(a) sum(ys[which(allocs[1:followed_n] == a)]))
+    cur_status$sum_ys_all <- sum_ys_all <- vapply_num(arms, function(a) sum(ys[which(allocs[1:total_n] == a)]))
 
     # Get draws and probabilities that each treatment is superior (and better/equivalent if specified)
     draws <- fun_draws(arms = arms[aai], allocs = allocs[1:followed_n],
@@ -394,7 +394,7 @@ run_trial <- function(trial_spec, seed = NULL, sparse = FALSE) {
       }
 
 
-    # Common control
+      # Common control
     } else { # Common control:
       run_check <- TRUE # Used to signal that it is necessary to run a new round of checks - checks must be run multiple times if new control is found
       update_draws <- FALSE # Only update if arms dropped
@@ -662,13 +662,13 @@ run_trial <- function(trial_spec, seed = NULL, sparse = FALSE) {
   trial_arms$lo_cri <- post[, 3]
   trial_arms$hi_cri <- post[, 4]
   status_ns <- ifelse(is.na(trial_arms$status_look), followed_n, trial_arms$status_look)
-  trial_arms$raw_ests <- vapply(1:n_arms, function(i) trial_spec$fun_raw_est(ys[1:status_ns[i]][which(allocs[1:status_ns[i]] == arms[i])]), numeric(1))
+  trial_arms$raw_ests <- vapply_num(1:n_arms, function(i) trial_spec$fun_raw_est(ys[1:status_ns[i]][which(allocs[1:status_ns[i]] == arms[i])]))
   trial_arms$post_ests_all <- post_final[, 1]
   trial_arms$post_errs_all <- post_final[, 2]
   trial_arms$lo_cri_all <- post_final[, 3]
   trial_arms$hi_cri_all <- post_final[, 4]
-  trial_arms$raw_ests_all <- vapply(arms, function(a) trial_spec$fun_raw_est(ys[1:total_n][which(allocs[1:total_n] == a)]), numeric(1))
-  trial_arms$probs_best_last <- vapply(arms, function(a) ifelse(a %in% names(probs_best), probs_best[which(names(probs_best) == a)], NA), numeric(1))
+  trial_arms$raw_ests_all <- vapply_num(arms, function(a) trial_spec$fun_raw_est(ys[1:total_n][which(allocs[1:total_n] == a)]))
+  trial_arms$probs_best_last <- vapply_num(arms, function(a) ifelse(a %in% names(probs_best), probs_best[which(names(probs_best) == a)], NA))
 
   # Rearrange values in trial_arms and convert to data.frame
   trial_arms_cols <- c("arms", "true_ys", "start_probs", "fixed_probs", "min_probs",

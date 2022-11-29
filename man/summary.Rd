@@ -12,6 +12,7 @@
   select_preferences = NULL,
   te_comp = NULL,
   raw_ests = FALSE,
+  final_ests = NULL,
   restrict = NULL,
   ...
 )
@@ -83,6 +84,18 @@ selected arm to the comparator arm, as described for \code{te_comp} and below).
 If \code{TRUE}, the raw estimates (\code{raw_ests}, see \code{\link[=setup_trial]{setup_trial()}} and
 \code{\link[=run_trial]{run_trial()}}) will be used instead of the posterior estimates.}
 
+\item{final_ests}{single logical. If \code{TRUE} (recommended) the final estimates
+calculated using outcome data from all patients randomised when trials are
+stopped is used; if \code{FALSE}, the estimates calculated for each arm when an
+arm is stopped (or at the last adaptive analysis if not before) using data
+from patients having reach followed up at this time point and not all
+patients randomised. If \code{NULL} (the default), this argument will be set to
+\code{FALSE} if outcome data are available immediate after randomisation for all
+patients (for backwards compatibility, as final posterior estimates may
+vary slightly in this situation, even if using the same data); otherwise it
+will be said to \code{TRUE}. See \code{\link[=setup_trial]{setup_trial()}} for more details on how these
+estimates are calculated.}
+
 \item{restrict}{single character string or \code{NULL}. If \code{NULL} (default),
 results are summarised for all simulations; if \verb{"superior}, results are
 summarised for simulations ending with superiority only; if \code{"selected"},
@@ -131,7 +144,7 @@ the selected arm and for the treatment effect, as described further in
 \code{\link[=extract_results]{extract_results()}}.
 \item \code{idp}: the ideal design percentage (IDP; 0-100\%), see \strong{Details}.
 \item \code{select_strategy}, \code{select_last_arm}, \code{select_preferences},
-\code{te_comp}, \code{raw_ests},\code{restrict}: as specified above.
+\code{te_comp}, \code{raw_ests}, \code{final_ests}, \code{restrict}: as specified above.
 \item \code{control}: the control arm specified by \code{\link[=setup_trial]{setup_trial()}},
 \code{\link[=setup_trial_binom]{setup_trial_binom()}} or \code{\link[=setup_trial_norm]{setup_trial_norm()}}; \code{NULL} if no control.
 \item \code{equivalence_assessed}, \code{futility_assessed}: single logicals,

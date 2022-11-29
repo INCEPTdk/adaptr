@@ -61,19 +61,19 @@ plot_status.trial_results <- function(object, x_value = "look", arm = NULL,
 
   adaptr_version <- object$trial_spec$adaptr_version
   if (is.null(adaptr_version) | isTRUE(adaptr_version < .adaptr_version)) {
-    stop("object was created by a previous version of adaptr and cannot be used ",
-         "by this version of adaptr unless the object is updated. ",
-         "Type 'help(\"update_saved_trials\")' for help on updating.", call. = FALSE)
+    stop0("object was created by a previous version of adaptr and cannot be used ",
+          "by this version of adaptr unless the object is updated. ",
+          "Type 'help(\"update_saved_trials\")' for help on updating.")
   }
 
   if (!isTRUE(x_value %in% c("look", "total n", "followed n") & length(x_value) == 1)) {
-    stop("x_value must be either 'look', 'total n', or 'followed n'.", call. = FALSE)
+    stop0("x_value must be either 'look', 'total n', or 'followed n'.")
   }
 
   # Validate arm
   if (!is.null(arm)) {
     if (!isTRUE(length(arm) == 1 & arm %in% object$trial_spec$trial_arms$arms)) {
-      stop("Arm must be either NULL or a single, valid trial arm.", call. = FALSE)
+      stop0("Arm must be either NULL or a single, valid trial arm.")
     }
   }
 
@@ -189,7 +189,7 @@ extract_statuses <- function(object, x_value, arm = NULL) {
     "look" = dta$i,
     "total n" = dta$nr,
     "followed n" = dta$nf
-    )
+  )
 
   if (x_value == "look") {
     dta <- dta[, c("x", "status", "p")]

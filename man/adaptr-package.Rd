@@ -11,9 +11,9 @@
   \emph{Adaptive Trial Simulator}
 }
 
-The \code{adaptr} package simulates adaptive (multi-arm) trials using adaptive
-stopping, adaptive arm dropping and/or response-adaptive randomisation.
-The package is developed as part of the
+The \code{adaptr} package simulates adaptive (multi-arm, multi-stage) randomised
+clinical trials using adaptive stopping, adaptive arm dropping and/or
+response-adaptive randomisation. The package is developed as part of the
 \href{https://incept.dk/}{INCEPT (Intensive Care Platform Trial) project},
 funded primarily by a grant from
 \href{https://www.sygeforsikring.dk/}{Sygeforsikringen "danmark"}.
@@ -52,6 +52,11 @@ If using the package, please consider citing it using
 Granholm A, Jensen AKG, Lange T, Kaas-Hansen BS (2022). adaptr: an R package
 for simulating and comparing adaptive clinical trials. Journal of Open Source
 Software, 7(72), 4284. \doi{10.21105/joss.04284}
+
+Granholm A, Kaas-Hansen BS, Lange T, Schjørring OL, Andersen LW, Perner A,
+Jensen AKG, Møller MH (2022). An overview of methodological considerations
+regarding adaptive stopping, arm dropping and randomisation in clinical
+trials. J Clin Epidemiol. \doi{10.1016/j.jclinepi.2022.11.002}
 
 \href{https://inceptdk.github.io/adaptr/}{Website/manual}
 

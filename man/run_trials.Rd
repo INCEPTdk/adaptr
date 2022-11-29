@@ -45,10 +45,11 @@ using the \pkg{parallel} library. Defaults to \code{1}; may be increased to run
 multiple simulations in parallel. \code{\link[parallel:detectCores]{parallel::detectCores()}} may be used to
 find the number of available cores.}
 
-\item{base_seed}{single integer; a random seed used as the basis for
-simulations; each simulation will set the random seed to a value based on
-this (+ the trial number), without affecting the global random seed after
-the function has been run.}
+\item{base_seed}{single integer or \code{NULL} (default); a random seed used as
+the basis for simulations. If a number is provided, each single trial
+simulation will set the random seed to a value based on this (+ the trial
+number), without affecting the global random seed after the function has
+been run.}
 
 \item{sparse}{single logical, as described in \code{\link[=run_trial]{run_trial()}}; defaults to
 \code{TRUE} when running multiple simulations, in which case only the data
@@ -90,11 +91,12 @@ environment from where \code{\link[=run_trials]{run_trials()}} is called.}
 A list of a special class \code{"trial_results"}, which contains the
 \code{trial_results} (results from all simulations), \code{trial_spec} (the trial
 specification), \code{n_rep}, \code{base_seed}, \code{elapsed_time} (the total simulation
-run time) and \code{sparse} (as described above). These results may be extracted
-using the \code{\link[=extract_results]{extract_results()}} function and summarised using the \code{\link[=summary]{summary()}}
-or print (\code{\link[=print.trial_results]{print.trial_results()}}) functions; see function documentation
-for details on additional arguments used to select arms in simulations not
-ending in superiority and other summary choices.
+run time), \code{sparse} (as described above) and \code{adaptr_version} (the version
+of the \code{adaptr} package used to run the simulations). These results may be
+extracted using the \code{\link[=extract_results]{extract_results()}} function and summarised using the
+\code{\link[=summary]{summary()}} or print (\code{\link[=print.trial_results]{print.trial_results()}}) functions; see function
+documentation for details on additional arguments used to select arms in
+simulations not ending in superiority and other summary choices.
 }
 \description{
 This function conducts multiple simulations using a trial specification as

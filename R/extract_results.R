@@ -132,15 +132,15 @@ extract_results <- function(object,
 
   # Validate input (only checks class)
   if (!inherits(object, "trial_results")){
-    stop("object must be an output from the run_trials function.", call. = FALSE)
+    stop0("object must be an output from the run_trials function.")
   }
 
   # Check version
   adaptr_version <- object$adaptr_version
   if (is.null(adaptr_version) | isTRUE(adaptr_version < .adaptr_version)) {
-    stop("object was created by a previous version of adaptr and cannot be used ",
-         "by this version of adaptr unless the object is updated. ",
-         "Type 'help(\"update_saved_trials\")' for help on updating.", call. = FALSE)
+    stop0("object was created by a previous version of adaptr and cannot be used ",
+          "by this version of adaptr unless the object is updated. ",
+          "Type 'help(\"update_saved_trials\")' for help on updating.")
   }
 
   # Set final_ests
@@ -156,34 +156,34 @@ extract_results <- function(object,
 
   # Validate selection strategy
   if (is.null(select_strategy) || length(select_strategy ) != 1){
-    stop("select_strategy  must be either 'control if available', 'none', ",
-         "control', 'final control', 'control or best', 'best', 'list or best', ",
-         "or 'list'.", call. = FALSE)
+    stop0("select_strategy  must be either 'control if available', 'none', ",
+          "control', 'final control', 'control or best', 'best', 'list or best', ",
+          "or 'list'.")
   } else if (isTRUE(select_strategy %in% c("control", "final control", "control or best"))){
     if (is.null(control)){
-      stop("select_strategy is set to 'control', 'final control', or 'control or best', ",
-           "but the trial specification includes no common control.", call. = FALSE)
+      stop0("select_strategy is set to 'control', 'final control', or 'control or best', ",
+            "but the trial specification includes no common control.")
     }
   } else if (isTRUE(select_strategy %in% c("list", "list or best"))){
     arms <- object$trial_spec$trial_arms$arms
     if (is.null(select_preferences) || !isTRUE(all(select_preferences %in% arms)) ||
         any(table(select_preferences) > 1) || length(select_preferences) > length(arms)) {
-      stop("When select_strategy is set to 'list' or 'list or best', ",
-           "select_preferences must be provided as a vector of valid treatment ",
-           "arms with no arms appearing more than once.", call. = FALSE)
+      stop0("When select_strategy is set to 'list' or 'list or best', ",
+            "select_preferences must be provided as a vector of valid treatment ",
+            "arms with no arms appearing more than once.")
     }
   } else if (isTRUE(select_strategy == "control if available")){
     select_strategy  <- if (is.null(control)) "none" else "control"
   } else if (!(select_strategy %in% c("best", "none")) ) {
-    stop("select_strateg must be either 'control if available', 'none', ",
-         "control', 'final control', 'control or best', 'best', 'list or best', ",
-         "or 'list'.", call. = FALSE)
+    stop0("select_strateg must be either 'control if available', 'none', ",
+          "control', 'final control', 'control or best', 'best', 'list or best', ",
+          "or 'list'.")
   }
   if (!isTRUE(select_last_arm %in% c(FALSE, TRUE) && length(select_last_arm) == 1)) {
-    stop("select_last_arm must be either TRUE or FALSE.", call. = FALSE)
+    stop0("select_last_arm must be either TRUE or FALSE.")
   } else if (is.null(control) & select_last_arm) {
-    stop("select_last_arm must be FALSE for trial specifications ",
-         "without a common control arm.", call. = FALSE)
+    stop0("select_last_arm must be FALSE for trial specifications ",
+          "without a common control arm.")
   }
 
   # Validate/set treatment effect comparator
@@ -193,8 +193,8 @@ extract_results <- function(object,
     }
   } else {
     if (length(te_comp) > 1 | !(te_comp %in% object$trial_spec$trial_arms$arms)) {
-      stop("te_comp must be either NULL (in which case the control arm is ",
-           "used if specified) or a single valid arm included in the trial.", call. = FALSE)
+      stop0("te_comp must be either NULL (in which case the control arm is ",
+            "used if specified) or a single valid arm included in the trial.")
     }
   }
   te_comp_index <- if (is.null(te_comp)) NULL else which(te_comp == object$trial_spec$trial_arms$arms)
@@ -202,10 +202,10 @@ extract_results <- function(object,
 
   # Start data extraction
   df <- data.frame(sim = 1:n_rep,
-                   final_n = vapply(1:n_rep, function(x) object$trial_results[[x]]$final_n, FUN.VALUE = numeric(1)),
-                   sum_ys = vapply(1:n_rep, function(x) sum(object$trial_results[[x]]$trial_res$sum_ys), FUN.VALUE = numeric(1)),
-                   ratio_ys = vapply(1:n_rep, function(x) sum(object$trial_results[[x]]$trial_res$sum_ys)/object$trial_results[[x]]$final_n, FUN.VALUE = numeric(1)),
-                   final_status = vapply(1:n_rep, function(x) object$trial_results[[x]]$final_status, FUN.VALUE = character(1)),
+                   final_n = vapply_num(1:n_rep, function(x) object$trial_results[[x]]$final_n),
+                   sum_ys = vapply_num(1:n_rep, function(x) sum(object$trial_results[[x]]$trial_res$sum_ys)),
+                   ratio_ys = vapply_num(1:n_rep, function(x) sum(object$trial_results[[x]]$trial_res$sum_ys)/object$trial_results[[x]]$final_n),
+                   final_status = vapply_str(1:n_rep, function(x) object$trial_results[[x]]$final_status),
                    superior_arm = NA,
                    selected_arm = NA,
                    sq_err = NA,
@@ -243,7 +243,7 @@ extract_results <- function(object,
       if (select_last_arm & sum(tmp_sel$final_status %in% c("control", "active")) == 1) {
         cur_select <- tmp_sel$arms[tmp_sel$final_status == "control"]
 
-      # Otherwise select according to selection strategy
+        # Otherwise select according to selection strategy
       } else if (isTRUE(select_strategy == "none")) {
         cur_select <- NA
       } else if (isTRUE(select_strategy == "control")) {

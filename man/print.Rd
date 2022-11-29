@@ -19,6 +19,7 @@
   select_preferences = NULL,
   te_comp = NULL,
   raw_ests = FALSE,
+  final_ests = NULL,
   restrict = NULL,
   digits = 1,
   ...
@@ -96,6 +97,18 @@ estimated compared to the specified effect in the selected arm) and
 selected arm to the comparator arm, as described for \code{te_comp} and below).
 If \code{TRUE}, the raw estimates (\code{raw_ests}, see \code{\link[=setup_trial]{setup_trial()}} and
 \code{\link[=run_trial]{run_trial()}}) will be used instead of the posterior estimates.}
+
+\item{final_ests}{single logical. If \code{TRUE} (recommended) the final estimates
+calculated using outcome data from all patients randomised when trials are
+stopped is used; if \code{FALSE}, the estimates calculated for each arm when an
+arm is stopped (or at the last adaptive analysis if not before) using data
+from patients having reach followed up at this time point and not all
+patients randomised. If \code{NULL} (the default), this argument will be set to
+\code{FALSE} if outcome data are available immediate after randomisation for all
+patients (for backwards compatibility, as final posterior estimates may
+vary slightly in this situation, even if using the same data); otherwise it
+will be said to \code{TRUE}. See \code{\link[=setup_trial]{setup_trial()}} for more details on how these
+estimates are calculated.}
 
 \item{restrict}{single character string or \code{NULL}. If \code{NULL} (default),
 results are summarised for all simulations; if \verb{"superior}, results are

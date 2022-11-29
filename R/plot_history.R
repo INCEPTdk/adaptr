@@ -88,21 +88,21 @@ plot_history.trial_result <- function(object,
 
   adaptr_version <- object$adaptr_version
   if (is.null(adaptr_version) | isTRUE(adaptr_version < .adaptr_version)) {
-    stop("object was created by a previous version of adaptr and cannot be used ",
-         "by this version of adaptr. Please re-run simulation using run_trial().", call. = FALSE)
+    stop0("object was created by a previous version of adaptr and cannot be used ",
+          "by this version of adaptr. Please re-run simulation using run_trial().")
   }
 
   if (!isTRUE(x_value %in% c("look", "total n", "followed n") & length(x_value) == 1)) {
-    stop("x_value must be either 'look', 'total n', or 'followed n'.", call. = FALSE)
+    stop0("x_value must be either 'look', 'total n', or 'followed n'.")
   }
   if (!isTRUE(y_value %in% c("prob", "n", "n all", "pct", "pct all", "sum ys",
                              "sum ys all", "ratio ys", "ratio ys all") & length(y_value) == 1)) {
-    stop("y_value must be either 'prob', 'n', 'n all', 'pct', 'pct all',
-         'sum ys', 'sum ys all', 'ratio ys', or 'ratio ys all'.", call. = FALSE)
+    stop0("y_value must be either 'prob', 'n', 'n all', 'pct', 'pct all',
+         'sum ys', 'sum ys all', 'ratio ys', or 'ratio ys all'.")
   }
   if (isTRUE(object$sparse)) {
-    stop("Plotting the history for single trials requires non-sparse results. ",
-         "Please call run_trial() again with sparse = FALSE.", call. = FALSE)
+    stop0("Plotting the history for single trials requires non-sparse results. ",
+          "Please call run_trial() again with sparse = FALSE.")
   }
 
   dta <- extract_history(object, metric = y_value)
@@ -111,7 +111,7 @@ plot_history.trial_result <- function(object,
     "look" = dta$look,
     "total n" = dta$look_ns_all,
     "followed n" = dta$look_ns
-    )
+  )
 
   ggplot2::ggplot(dta, ggplot2::aes(x = x, y = value, colour = arm)) +
     do.call(ggplot2::geom_line, line %||% list(NULL)) +
@@ -143,21 +143,21 @@ plot_history.trial_results <- function(object,
 
   adaptr_version <- object$adaptr_version
   if (is.null(adaptr_version) | isTRUE(adaptr_version < .adaptr_version)) {
-    stop("object was created by a previous version of adaptr and cannot be used ",
-         "by this version of adaptr. Please re-run simulation using run_trial().", call. = FALSE)
+    stop0("object was created by a previous version of adaptr and cannot be used ",
+          "by this version of adaptr. Please re-run simulation using run_trial().")
   }
 
   if (!isTRUE(x_value %in% c("look", "total n", "followed n") & length(x_value) == 1)) {
-    stop("x_value must be either 'look', 'total n', or 'followed n'.", call. = FALSE)
+    stop0("x_value must be either 'look', 'total n', or 'followed n'.")
   }
   if (!isTRUE(y_value %in% c("prob", "n", "n all", "pct", "pct all", "sum ys",
                              "sum ys all", "ratio ys", "ratio ys all") & length(y_value) == 1)) {
-    stop("y_value must be either 'prob', 'n', 'n all', 'pct', 'pct all',
-         'sum ys', 'sum ys all', 'ratio ys', or 'ratio ys all'.", call. = FALSE)
+    stop0("y_value must be either 'prob', 'n', 'n all', 'pct', 'pct all',
+         'sum ys', 'sum ys all', 'ratio ys', or 'ratio ys all'.")
   }
   if (isTRUE(object$sparse)) {
-    stop("Plotting the history for multiple trials requires non-sparse results.",
-         "Please call run_trials() again with sparse = FALSE.", call. = FALSE)
+    stop0("Plotting the history for multiple trials requires non-sparse results.",
+          "Please call run_trials() again with sparse = FALSE.")
   }
 
   # Enforce defaults if ill-defined input
