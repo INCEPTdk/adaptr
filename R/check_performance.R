@@ -51,8 +51,6 @@ calculate_idp <- function(sels, arms, true_ys, highest_is_best) {
 #'   the global random seed will be restored after the function has run,
 #'   so it is not affected. If `"base"` is specified, the `base_seed` specified
 #'   in [run_trials()] is used.
-#' @param names single logical that determines whether `rownames()` will be
-#'   added to the returned `data.frame`.
 #'
 #' @return A tidy `data.frame` with added class `trial_performance` (to control
 #'   the number of digits printed, see [print()]), with the columns `"metric"`
@@ -147,7 +145,7 @@ check_performance <- function(object, select_strategy = "control if available",
                               select_last_arm = FALSE, select_preferences = NULL,
                               te_comp = NULL, raw_ests = FALSE, final_ests = NULL,
                               restrict = NULL, uncertainty = FALSE, n_boot = 5000,
-                              ci_width = 0.95, boot_seed = NULL, names = FALSE) {
+                              ci_width = 0.95, boot_seed = NULL) {
 
   # Check validity of restrict argument
   if (!is.null(restrict)) {
@@ -210,7 +208,7 @@ check_performance <- function(object, select_strategy = "control if available",
                                "ratio_ys_mean", "ratio_ys_sd",
                                "ratio_ys_median", "ratio_ys_p25", "ratio_ys_p75",
                                "prob_conclusive", "prob_superior", "prob_equivalence",
-                               "prob_futility", "prob_max", paste0("prob_select_", c(arms, "none")),
+                               "prob_futility", "prob_max", paste0("prob_select_", c(paste0("arm_", arms), "none")),
                                "rmse", "rmse_te", "idp"),
                     est = NA, err_sd = NA, err_mad = NA, lo_ci = NA, hi_ci = NA)
 
@@ -230,7 +228,7 @@ check_performance <- function(object, select_strategy = "control if available",
                summarise_num(extr_res$sum_ys[restrict_idx]),
                summarise_num(extr_res$ratio_ys[restrict_idx]),
                mean(extr_res$final_status != "max"),
-               mean(extr_res$final_status[restrict_idx] == "superior"),
+               mean(extr_res$final_status[restrict_idx] == "superiority"),
                mean(extr_res$final_status[restrict_idx] == "equivalence"),
                mean(extr_res$final_status[restrict_idx] == "futility"),
                mean(extr_res$final_status[restrict_idx] == "max"),
@@ -239,9 +237,6 @@ check_performance <- function(object, select_strategy = "control if available",
                sqrt(mean(extr_res$sq_err[restrict_idx], na.rm = TRUE)) %f|% NA,
                sqrt(mean(extr_res$sq_err_te[restrict_idx], na.rm = TRUE)) %f|% NA,
                calculate_idp(extr_res$selected_arm[restrict_idx], arms, true_ys, highest_is_best) %f|% NA)
-  if (isTRUE(names)) { # Set row.names if requested
-    row.names(res) <- res$metric
-  }
 
   # Simply object or do bootstrapping
   if (!uncertainty) { # No bootstrapping
@@ -267,7 +262,7 @@ check_performance <- function(object, select_strategy = "control if available",
                          summarise_num(extr_boot$sum_ys[restrict_idx]),
                          summarise_num(extr_boot$ratio_ys[restrict_idx]),
                          mean(extr_boot$final_status != "max"),
-                         mean(extr_boot$final_status[restrict_idx] == "superior"),
+                         mean(extr_boot$final_status[restrict_idx] == "superiority"),
                          mean(extr_boot$final_status[restrict_idx] == "equivalence"),
                          mean(extr_boot$final_status[restrict_idx] == "futility"),
                          mean(extr_boot$final_status[restrict_idx] == "max"),

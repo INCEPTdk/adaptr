@@ -40,7 +40,7 @@ to re-run them (mostly relevant for time-consuming simulations).
 * Added the `check_performance()` function (and a `print()`-method), which
 calculates performance metrics and can be used to calculate uncertainty measures
 using non-parametric bootstrapping. This function is now used internally by
-the `summary()`-method for multiple trial objects. **NOTE TO SELF - not yet, but will be done**
+the `summary()`-method for multiple trial objects.
 
 * Added the possibility to define different probability thresholds for different
 adaptive analyses to the `setup_trials()`-family of functions (for inferiority,

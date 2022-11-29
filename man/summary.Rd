@@ -102,9 +102,8 @@ summarised for simulations ending with superiority only; if \code{"selected"},
 results are summarised for simulations ending with a selected arm
 (according to the specified arm selection strategy for simulations not
 ending with superiority). Some summary measures (e.g., \code{prob_conclusive})
-can only be calculated across all simulations and several are calculated
-regardless of \code{restrict} settings, but have substantially different
-interpretations if restricted.}
+have substantially different interpretations if restricted, but are
+calculated nonetheless.}
 
 \item{...}{additional arguments, not used.}
 }
@@ -137,8 +136,10 @@ specified in \code{\link[=setup_trial]{setup_trial()}}, \code{\link[=setup_trial
 }
 \description{
 Summarises simulation results from the \code{\link[=run_trials]{run_trials()}} function. Uses
-\code{\link[=extract_results]{extract_results()}}, which may be used directly to extract key trial results
-without summarising.
+\code{\link[=extract_results]{extract_results()}} and \code{\link[=check_performance]{check_performance()}}, which may be used directly to
+extract key trial results without summarising or to calculate performance
+metrics (with uncertainty measures if desired) and return them in a tidy
+\code{data.frame}-format.
 }
 \examples{
 # Setup a trial specification

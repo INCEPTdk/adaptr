@@ -16,8 +16,7 @@ check_performance(
   uncertainty = FALSE,
   n_boot = 5000,
   ci_width = 0.95,
-  boot_seed = NULL,
-  names = FALSE
+  boot_seed = NULL
 )
 }
 \arguments{
@@ -125,9 +124,6 @@ provided, this value will be used as the random seed when bootstrapping and
 the global random seed will be restored after the function has run,
 so it is not affected. If \code{"base"} is specified, the \code{base_seed} specified
 in \code{\link[=run_trials]{run_trials()}} is used.}
-
-\item{names}{single logical that determines whether \code{rownames()} will be
-added to the returned \code{data.frame}.}
 }
 \value{
 A tidy \code{data.frame} with added class \code{trial_performance} (to control
