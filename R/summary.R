@@ -16,40 +16,19 @@
 #'   interpretations if restricted.
 #' @param ... additional arguments, not used.
 #'
-#' @return A `"trial_results_summary"` object containing the following:
+#' @return A `"trial_results_summary"` object containing the following values:
 #' \itemize{
 #'   \item `n_rep`: the number of simulations.
-#'   \item `n_summarised`: the number of simulations summarised.
+#'   \item `n_summarised`: as described in [check_performance()].
 #'   \item `highest_is_best`: as specified in [setup_trial()].
 #'   \item `elapsed_time`: the total simulation time.
-#'   \item `size_mean`, `size_sd`, `size_median`, `size_p25`, `size_p75`: the
-#'     mean, standard deviation, median as well as 25- and 75-percentiles of the
-#'     sample sizes of the summarised trial simulations.
-#'   \item `sum_ys_mean`, `sum_ys_sd`, `sum_ys_median`, `sum_ys_p25`,
-#'     `sum_ys_p75`: the mean, standard deviation, median as well as 25- and
-#'     75-percentiles of the total `sum_ys` (e.g., the total number of events in
-#'     trials with a binary outcome, or the sums of continuous values for all
-#'     patients across all arms in trials with a continuous outcome) across all
-#'     arms in the summarised trial simulations.
-#'   \item `ratio_ys_mean`, `ratio_ys_sd`, `ratio_ys_median`, `ratio_ys_p25`,
-#'     `ratio_ys_p75`: the mean, standard deviation, median as well as 25- and
-#'     75-percentiles of the final `ratio_ys` (`sum_ys/final_n`) across all arms
-#'     in the summarised trial simulations.
-#'   \item `prob_conclusive`: the proportion of conclusive trial simulations
-#'     (simulations not stopped at the maximum sample size without a
-#'     superiority, equivalence or futility decision).
-#'   \item `prob_superior`, `prob_equivalence`, `prob_futility`, `prob_max`: the
-#'     proportion (0-1) of trial simulations stopped for superiority,
-#'     equivalence, futility or inconclusive at the maximum allowed sample size,
-#'     respectively.
-#'   \item `prob_select_*`: the selection probabilities for each arm and for no
-#'     selection, according to the specified selection strategy. Contains one
-#'     element per `arm`, named as `prob_select_arm_<arm name>` and
-#'     `prob_select_none` for the probability of selecting no arm.
-#'   \item `rmse`, `rmse_te`: the root mean squared error of the estimates for
-#'     the selected arm and for the treatment effect, as described further in
-#'     [extract_results()].
-#'   \item `idp`: the ideal design percentage (IDP; 0-100%), see **Details**.
+#'   \item `size_mean`, `size_sd`, `size_median`, `size_p25`, `size_p75`,
+#'     `sum_ys_mean`, `sum_ys_sd`, `sum_ys_median`, `sum_ys_p25`, `sum_ys_p75`,
+#'     `ratio_ys_mean`, `ratio_ys_sd`, `ratio_ys_median`, `ratio_ys_p25`,
+#'     `ratio_ys_p75`, `prob_conclusive`, `prob_superior`, `prob_equivalence`,
+#'     `prob_futility`, `prob_max`, `prob_select_*` (with `*` being all `arm`
+#'     names), `rmse`, `rmse_te`, `idp`: performance metrics as described in
+#'     [check_performance()].
 #'   \item `select_strategy`, `select_last_arm`, `select_preferences`,
 #'     `te_comp`, `raw_ests`, `final_ests`, `restrict`: as specified above.
 #'   \item `control`: the control arm specified by [setup_trial()],
@@ -62,19 +41,6 @@
 #'     specified in [setup_trial()], [setup_trial_binom()] or
 #'     [setup_trial_norm()].
 #'   }
-#'
-#' @details
-#' The ideal design percentage (IDP) returned (described below) is based on
-#' *Viele et al, 2020* \doi{10.1177/1740774519877836} and
-#' has been adapted to work for trials with both desirable/undesirable outcomes
-#' and non-binary outcomes. Briefly, the expected outcome is calculated as the
-#' sum of the true outcomes in each arm multiplied by the corresponding
-#' selection probabilities (ignoring simulations with no selected arm). The IDP
-#' is then calculated as:
-#' - For desirable outcomes:\cr
-#'   `100 * (expected outcome - lowest true outcome) / (highest true outcome - lowest true outcome)`
-#' - For undesirable outcomes:\cr
-#'   `100 - IDP calculated for desirable outcomes`
 #'
 #' @examples
 #' # Setup a trial specification
@@ -95,6 +61,10 @@
 #'
 #' @name summary
 #' @export
+#'
+#' @seealso
+#' [extract_results()], [check_performance()].
+#'
 #'
 #' @importFrom stats setNames
 #'

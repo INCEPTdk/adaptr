@@ -226,7 +226,7 @@ and warned against.}
 
 \item{robust}{single logical, if \code{TRUE} (default) the medians and median
 absolute deviations (scaled to be comparable to the standard deviation for
-normal distributions; MAD_SD) are used to summarise the posterior
+normal distributions; MAD_SDs) are used to summarise the posterior
 distributions; if \code{FALSE}, the means and standard deviations (SDs) are used
 instead (slightly faster, but may be less appropriate for posteriors skewed
 on the natural scale).}
@@ -333,9 +333,9 @@ custom functions}
 If the \code{fun_y_gen}, \code{fun_draws}, or \code{fun_raw_est} functions calls other
 user-specified functions (or uses objects defined by the user outside these
 functions or the \code{\link[=setup_trial]{setup_trial()}}-call) or functions from external packages
-and simulations are conducted on multiple cores, these objects or functions must
-be exported or prefixed with their namespaces, respectively, as  described in
-\code{\link[=run_trials]{run_trials()}}.
+and simulations are conducted on multiple cores, these objects or functions
+must be exported or prefixed with their namespaces, respectively, as
+described in \code{\link[=run_trials]{run_trials()}}.
 
 \strong{More information on arguments}
 \itemize{

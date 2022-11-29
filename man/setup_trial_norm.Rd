@@ -208,7 +208,7 @@ and warned against.}
 
 \item{robust}{single logical, if \code{TRUE} (default) the medians and median
 absolute deviations (scaled to be comparable to the standard deviation for
-normal distributions; MAD_SD) are used to summarise the posterior
+normal distributions; MAD_SDs) are used to summarise the posterior
 distributions; if \code{FALSE}, the means and standard deviations (SDs) are used
 instead (slightly faster, but may be less appropriate for posteriors skewed
 on the natural scale).}

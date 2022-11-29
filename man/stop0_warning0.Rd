@@ -4,7 +4,7 @@
 \alias{stop0_warning0}
 \alias{stop0}
 \alias{warning0}
-\title{stop() and warning() with call. = FALSE}
+\title{stop0() and warning() with call. = FALSE}
 \usage{
 stop0(...)
 
@@ -16,7 +16,7 @@ warning0(...)
     condition object.}
 }
 \description{
-Used internally. Calls \code{\link[=stop]{stop()}} or \code{\link[=warning]{warning()}} but enforces \code{call. = FALSE},
+Used internally. Calls \code{\link[=stop0]{stop0()}} or \code{\link[=warning]{warning()}} but enforces \code{call. = FALSE},
 to suppress the call from the error/warning.
 }
 \keyword{internal}

@@ -64,7 +64,7 @@
 #'
 #' @seealso
 #' [setup_trial()], [setup_trial_binom()], [setup_trial_norm()], [run_trial()],
-#' [run_trials()], [extract_results()], [summary()], [print()], [plot_status()]
-#' and [plot_history()].
+#' [run_trials()], [extract_results()], [check_performance()], [summary()],
+#' [print()], [plot_status()], and [plot_history()].
 #'
 NULL

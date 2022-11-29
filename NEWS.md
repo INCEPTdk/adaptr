@@ -1,22 +1,27 @@
 # adaptr (development version)
 
-* Added option to have different numbers of simulated patients with outcome data
-available compared to the total number of simulated patients randomised at each
-adaptive analysis (`randomised_at_looks` argument in `setup_trial()`-family of
-functions); defaults to same behaviour as previously (i.e., assuming that
-outcome data are immediately available following randomisation).
-As a consequence, `run_trial()` now always conducts a final analysis after the
-last adaptive analysis (including both final posterior and 'raw' estimates),
-including the outcome data of all patients randomised to all arms, regardless of
-how many had outcome data available at the last conducted adaptive analysis.
+### New features:
+
+* Simulate follow-up (and data collection) lag: added option to have different
+numbers of simulated patients with outcome data available compared to the total
+number of simulated patients randomised at each adaptive analysis
+(`randomised_at_looks` argument in `setup_trial()`-family of functions);
+defaults to same behaviour as previously (i.e., assuming that outcome data are
+immediately available following randomisation). As a consequence, `run_trial()`
+now always conducts a final analysis after the last adaptive analysis (including
+both final posterior and 'raw' estimates), including the outcome data of all
+patients randomised to all arms, regardless of how many had outcome data
+available at the last conducted adaptive analysis.
 Both sets of results are saved and printed for individual simulations;
-`extract_results()` and the `summary()`- and
-`print()`-methods for multiple simulations have gained the additional argument
-`final_ests` that controls whether the results from this final analysis or from
-the last relevant adaptive analysis including each arm are used when calculating
-some performance metrics (defaults are set to ensure backwards compatibility and
-use the final estimates in situations where not all patients are included in the
-final adaptive analysis).
+`extract_results()` and the `summary()`- and `print()`-methods for multiple
+simulations have gained the additional argument `final_ests` that controls
+whether the results from this final analysis or from the last relevant adaptive
+analysis including each arm are used when calculating some performance metrics
+(defaults are set to ensure backwards compatibility and use the final estimates
+in situations where not all patients are included in the final adaptive
+analysis).
+
+**WORK IN PROGRESS - ADD EXAMPLES TO SETUP FUNCTIONS AND/OR VIGNETTES SHOWING  THE NEW LAG OF FOLLOW-UP SETTINGS IN ACTION**
 
 * Updated `plot_history()` and `plot_status()` to add the possibility to plot
 different metrics relevant after the addition of the new
@@ -32,12 +37,17 @@ and - if used - may lead to printing or plotting of missing values. However, the
 function allows re-use of the same data from previous simulations without having
 to re-run them (mostly relevant for time-consuming simulations).
 
-**WORK IN PROGRESS - ADD EXAMPLES TO SETUP FUNCTIONS AND/OR VIGNETTES SHOWING  THE NEW LAG OF FOLLOW-UP SETTINGS IN ACTION**
+* Added the `check_performance()` function (and a `print()`-method), which
+calculates performance metrics and can be used to calculate uncertainty measures
+using non-parametric bootstrapping. This function is now used internally by
+the `summary()`-method for multiple trial objects. **NOTE TO SELF - not yet, but will be done**
 
 * Added the possibility to define different probability thresholds for different
 adaptive analyses to the `setup_trials()`-family of functions (for inferiority,
 superiority, equivalence, and futility probability thresholds), with according
 updates in `run_trial()` and the `print()`-method for trial specifications.
+
+### Other changes:
 
 * Additional minor changes to trial setup/validation including proper error
 messages in an edge case with invalid inputs and proper errors if non-integer
@@ -56,8 +66,8 @@ places.
 * Added internal `vapply_lgl()`-helper function; `vapply()`-helpers are now used
 consequently to simplify the code.
 
-* Added multiple internal helper functions to simplify code: `stop0()`, and
-`warning0()`.
+* Added multiple internal helper functions to simplify code in existing or new
+functions: `stop0()`, `warning0()`, `%|f`, and `summarise_num`.
 
 * Added reference to open access article describing key methodological
 considerations in adaptive clinical trials to the package documentation
@@ -73,6 +83,11 @@ before being returned by the `summary()`-method for `trial_results`-objects and
 printed correctly in all cases.
 
 * Minor edits/clarifications to documentation and errors/warnings/messages.
+
+* The proportion of conclusive trials when restricting the trials summarised (in
+`extract_results()`) may now be calculated by the `summary()`-method for
+multiple trial simulations and by the new `check_performance()`-function, even
+if this measure may be difficult to interpret under such circumstances.
 
 # adaptr 1.1.1
 

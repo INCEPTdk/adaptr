@@ -2,7 +2,8 @@
 #'
 #' This function extracts relevant information from multiple simulations of the
 #' same trial specification in a tidy `data.frame` (1 simulation per row).
-#' See also the [summary()] function.
+#' See also the [check_performance()] and [summary()] functions, that uses the
+#' output from this function to further summarise simulation results..
 #'
 #' @param object `trial_results` object, output from the [run_trials()]
 #'   function.
@@ -120,6 +121,9 @@
 #' extract_results(res, select_strategy = "control")
 #'
 #' @export
+#'
+#' @seealso
+#' [check_performance()], [summary()].
 #'
 
 extract_results <- function(object,

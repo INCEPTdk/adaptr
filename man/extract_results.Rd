@@ -126,7 +126,8 @@ comparator specified (see \code{te_comp} above).
 \description{
 This function extracts relevant information from multiple simulations of the
 same trial specification in a tidy \code{data.frame} (1 simulation per row).
-See also the \code{\link[=summary]{summary()}} function.
+See also the \code{\link[=check_performance]{check_performance()}} and \code{\link[=summary]{summary()}} functions, that uses the
+output from this function to further summarise simulation results..
 }
 \examples{
 # Setup a trial specification
@@ -142,4 +143,7 @@ res <- run_trials(binom_trial, n_rep = 10, base_seed = 12345)
 # in simulations not ending with superiority
 extract_results(res, select_strategy = "control")
 
+}
+\seealso{
+\code{\link[=check_performance]{check_performance()}}, \code{\link[=summary]{summary()}}.
 }

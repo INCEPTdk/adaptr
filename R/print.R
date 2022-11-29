@@ -176,7 +176,7 @@ print.trial_spec <- function(x, prob_digits = 3, ...) {
 #' @describeIn print Single trial result
 #' @export
 #'
-print.trial_result <- function(x, prob_digits = 3, ...){
+print.trial_result <- function(x, prob_digits = 3, ...) {
   # Check adaptr version and verify other inputs
   adaptr_version <- x$adaptr_version
   if (is.null(adaptr_version) | isTRUE(adaptr_version < .adaptr_version)) {
@@ -250,6 +250,27 @@ print.trial_result <- function(x, prob_digits = 3, ...){
   invisible(x)
 }
 
+
+
+#' Print method for trial performance metrics
+#'
+#' @param x object to print, output from [check_performance()].
+#' @param digits single integer, the number of digits used when printing
+#'   the numeric results (for all performance estimates). Default is `3? .
+#'
+#' @describeIn print Trial performance metrics
+#' @export
+#'
+print.trial_performance <- function(x, digits = 3, ...) {
+  x_round <- x
+  for (i in 2:ncol(x_round)) {
+    x_round[[i]] <- vapply_num(x_round[[i]], function(col) round(col, digits = 3))
+  }
+  class(x_round) <- "data.frame"
+  print(x_round)
+  # Return invisibly
+  invisible(x)
+}
 
 
 #' Print method for multiple simulated trials

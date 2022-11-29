@@ -10,7 +10,7 @@ run_trial(trial_spec, seed = NULL, sparse = FALSE)
 \item{trial_spec}{\code{trial_spec} object, generated and validated by the
 \code{\link[=setup_trial]{setup_trial()}}, \code{\link[=setup_trial_binom]{setup_trial_binom()}} or \code{\link[=setup_trial_norm]{setup_trial_norm()}} function.}
 
-\item{seed}{single integer or \code{NULL} (default), if a value is provided, this
+\item{seed}{single integer or \code{NULL} (default). If a value is provided, this
 value will be used as the random seed when running and the global random
 seed will be restored after the function has run, so it is not affected.}
 

@@ -608,7 +608,7 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #'   and warned against.
 #' @param robust single logical, if `TRUE` (default) the medians and median
 #'   absolute deviations (scaled to be comparable to the standard deviation for
-#'   normal distributions; MAD_SD) are used to summarise the posterior
+#'   normal distributions; MAD_SDs) are used to summarise the posterior
 #'   distributions; if `FALSE`, the means and standard deviations (SDs) are used
 #'   instead (slightly faster, but may be less appropriate for posteriors skewed
 #'   on the natural scale).
@@ -686,9 +686,9 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' If the `fun_y_gen`, `fun_draws`, or `fun_raw_est` functions calls other
 #' user-specified functions (or uses objects defined by the user outside these
 #' functions or the [setup_trial()]-call) or functions from external packages
-#' and simulations are conducted on multiple cores, these objects or functions must
-#' be exported or prefixed with their namespaces, respectively, as  described in
-#' [run_trials()].
+#' and simulations are conducted on multiple cores, these objects or functions
+#' must be exported or prefixed with their namespaces, respectively, as
+#' described in [run_trials()].
 #'
 #'
 #' \strong{More information on arguments}

@@ -88,6 +88,30 @@ summarise_dist <- function(x, robust = TRUE, interval_width = 0.95) {
 }
 
 
+#' Summarise numeric vector
+#'
+#' Used internally, to summarise numeric vectors.
+#'
+#' @param x a numeric vector.
+#'
+#' @return A numeric vector with five named elements: `mean`, `sd`, `median`,
+#'   `p25`, and `p75`, corresponding to the mean, standard deviation, median,
+#'   and 25-/75-percentiles.
+#'
+#' @importFrom stats quantile sd
+#'
+#' @keywords internal
+#'
+summarise_num <- function(x) {
+  ps <- quantile(x, probs = c(0.5, 0.25, 0.75), names = FALSE)
+  c(mean = mean(x),
+    sd = sd(x),
+    median = ps[1],
+    p25 = ps[2],
+    p75 = ps[3])
+}
+
+
 
 #' cat() with sep = ""
 #'
@@ -151,7 +175,7 @@ verify_int <- function(x, min_value = -Inf, max_value = Inf, open = "no") {
 
 
 
-#' Helper function for replacing NULL with other value (NULL-OR-operator)
+#' Replace NULL with other value (NULL-OR-operator)
 #'
 #' Used internally, primarily when working with list arguments, because, e.g.,
 #' `list_name$element_name` yields `NULL` when unspecified.
@@ -168,6 +192,30 @@ verify_int <- function(x, min_value = -Inf, max_value = Inf, open = "no") {
 
 
 
+#' Replace non-finite values with other value (finite-OR-operator)
+#'
+#' Used internally, helper function that replaces non-finite (i.e., `NA`, `NaN`,
+#' `Inf`, and `-Inf`) values according to [is.finite()], primarily used to
+#' replace `NaN`/`Inf`/`-Inf` with `NA`.
+#'
+#' @param a atomic vector of any type.
+#'
+#' @param b single value to replace non-finite values with.
+#'
+#' @return If values in `a` are non-finite, they are replaced with `b`,
+#'   otherwise they are left unchanged.
+#'
+#' @keywords internal
+#'
+#' @name replace_nonfinite
+#'
+`%f|%` <- function(x, y) {
+  x[!is.finite(x)] <- y
+  x
+}
+
+
+
 #' Check availability of required packages
 #'
 #' Used internally, helper function to check if SUGGESTED packages are
@@ -177,7 +225,7 @@ verify_int <- function(x, min_value = -Inf, max_value = Inf, open = "no") {
 #' @param pkgs, character vector with name(s) of package(s) to check.
 #'
 #' @return `TRUE` if all packages available, otherwise execution is halted with
-#' an error.
+#'   an error.
 #'
 #' @keywords internal
 #'

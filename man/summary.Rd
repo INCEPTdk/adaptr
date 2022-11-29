@@ -109,40 +109,19 @@ interpretations if restricted.}
 \item{...}{additional arguments, not used.}
 }
 \value{
-A \code{"trial_results_summary"} object containing the following:
+A \code{"trial_results_summary"} object containing the following values:
 \itemize{
 \item \code{n_rep}: the number of simulations.
-\item \code{n_summarised}: the number of simulations summarised.
+\item \code{n_summarised}: as described in \code{\link[=check_performance]{check_performance()}}.
 \item \code{highest_is_best}: as specified in \code{\link[=setup_trial]{setup_trial()}}.
 \item \code{elapsed_time}: the total simulation time.
-\item \code{size_mean}, \code{size_sd}, \code{size_median}, \code{size_p25}, \code{size_p75}: the
-mean, standard deviation, median as well as 25- and 75-percentiles of the
-sample sizes of the summarised trial simulations.
-\item \code{sum_ys_mean}, \code{sum_ys_sd}, \code{sum_ys_median}, \code{sum_ys_p25},
-\code{sum_ys_p75}: the mean, standard deviation, median as well as 25- and
-75-percentiles of the total \code{sum_ys} (e.g., the total number of events in
-trials with a binary outcome, or the sums of continuous values for all
-patients across all arms in trials with a continuous outcome) across all
-arms in the summarised trial simulations.
-\item \code{ratio_ys_mean}, \code{ratio_ys_sd}, \code{ratio_ys_median}, \code{ratio_ys_p25},
-\code{ratio_ys_p75}: the mean, standard deviation, median as well as 25- and
-75-percentiles of the final \code{ratio_ys} (\code{sum_ys/final_n}) across all arms
-in the summarised trial simulations.
-\item \code{prob_conclusive}: the proportion of conclusive trial simulations
-(simulations not stopped at the maximum sample size without a
-superiority, equivalence or futility decision).
-\item \code{prob_superior}, \code{prob_equivalence}, \code{prob_futility}, \code{prob_max}: the
-proportion (0-1) of trial simulations stopped for superiority,
-equivalence, futility or inconclusive at the maximum allowed sample size,
-respectively.
-\item \verb{prob_select_*}: the selection probabilities for each arm and for no
-selection, according to the specified selection strategy. Contains one
-element per \code{arm}, named as \verb{prob_select_arm_<arm name>} and
-\code{prob_select_none} for the probability of selecting no arm.
-\item \code{rmse}, \code{rmse_te}: the root mean squared error of the estimates for
-the selected arm and for the treatment effect, as described further in
-\code{\link[=extract_results]{extract_results()}}.
-\item \code{idp}: the ideal design percentage (IDP; 0-100\%), see \strong{Details}.
+\item \code{size_mean}, \code{size_sd}, \code{size_median}, \code{size_p25}, \code{size_p75},
+\code{sum_ys_mean}, \code{sum_ys_sd}, \code{sum_ys_median}, \code{sum_ys_p25}, \code{sum_ys_p75},
+\code{ratio_ys_mean}, \code{ratio_ys_sd}, \code{ratio_ys_median}, \code{ratio_ys_p25},
+\code{ratio_ys_p75}, \code{prob_conclusive}, \code{prob_superior}, \code{prob_equivalence},
+\code{prob_futility}, \code{prob_max}, \verb{prob_select_*} (with \code{*} being all \code{arm}
+names), \code{rmse}, \code{rmse_te}, \code{idp}: performance metrics as described in
+\code{\link[=check_performance]{check_performance()}}.
 \item \code{select_strategy}, \code{select_last_arm}, \code{select_preferences},
 \code{te_comp}, \code{raw_ests}, \code{final_ests}, \code{restrict}: as specified above.
 \item \code{control}: the control arm specified by \code{\link[=setup_trial]{setup_trial()}},
@@ -161,21 +140,6 @@ Summarises simulation results from the \code{\link[=run_trials]{run_trials()}} f
 \code{\link[=extract_results]{extract_results()}}, which may be used directly to extract key trial results
 without summarising.
 }
-\details{
-The ideal design percentage (IDP) returned (described below) is based on
-\emph{Viele et al, 2020} \doi{10.1177/1740774519877836} and
-has been adapted to work for trials with both desirable/undesirable outcomes
-and non-binary outcomes. Briefly, the expected outcome is calculated as the
-sum of the true outcomes in each arm multiplied by the corresponding
-selection probabilities (ignoring simulations with no selected arm). The IDP
-is then calculated as:
-\itemize{
-\item For desirable outcomes:\cr
-\verb{100 * (expected outcome - lowest true outcome) / (highest true outcome - lowest true outcome)}
-\item For undesirable outcomes:\cr
-\verb{100 - IDP calculated for desirable outcomes}
-}
-}
 \examples{
 # Setup a trial specification
 binom_trial <- setup_trial_binom(arms = c("A", "B", "C", "D"),
@@ -193,4 +157,7 @@ res_sum <- summary(res, select_strategy = "control")
 # Print summary
 print(res_sum, digits = 1)
 
+}
+\seealso{
+\code{\link[=extract_results]{extract_results()}}, \code{\link[=check_performance]{check_performance()}}.
 }
