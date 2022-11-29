@@ -37,8 +37,8 @@
 #' @param trial_spec `trial_spec` object, generated and validated by the
 #'   [setup_trial()], [setup_trial_binom()] or [setup_trial_norm()] function.
 #' @param seed single integer or `NULL` (default), if a value is provided, this
-#'   value will be used as the random seed when running (the global random seed
-#'   will be restored after the function has run, so it is not affected).
+#'   value will be used as the random seed when running and the global random
+#'   seed will be restored after the function has run, so it is not affected.
 #' @param sparse single logical; if `FALSE` (default) everything listed below is
 #'   included in the returned object. If `TRUE`, only a limited amount of data
 #'   is included in the returned object. This can be practical when running many

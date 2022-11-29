@@ -125,10 +125,11 @@ dispatch_trial_runs <- function(X, trial_spec, base_seed, sparse, cores, cl = NU
 #'   using the \pkg{parallel} library. Defaults to `1`; may be increased to run
 #'   multiple simulations in parallel. [parallel::detectCores()] may be used to
 #'   find the number of available cores.
-#' @param base_seed single integer; a random seed used as the basis for
-#'   simulations; each simulation will set the random seed to a value based on
-#'   this (+ the trial number), without affecting the global random seed after
-#'   the function has been run.
+#' @param base_seed single integer or `NULL` (default); a random seed used as
+#'   the basis for simulations. If a number is provided, each single trial
+#'   simulation will set the random seed to a value based on this (+ the trial
+#'   number), without affecting the global random seed after the function has
+#'   been run.
 #' @param sparse single logical, as described in [run_trial()]; defaults to
 #'   `TRUE` when running multiple simulations, in which case only the data
 #'   necessary to summarise all simulations are saved for each simulation.

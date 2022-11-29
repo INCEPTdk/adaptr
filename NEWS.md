@@ -68,6 +68,8 @@ scenarios with no differences; these are now all converted to `NA` when saving
 before being returned by the `summary()`-method for `trial_results`-objects and
 printed correctly in all cases.
 
+* Minor edits/clarifications to documentation and errors/warnings/messages.
+
 # adaptr 1.1.1
 
 This is a patch release triggered by a CRAN request for updates.

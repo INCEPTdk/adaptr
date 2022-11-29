@@ -10,9 +10,9 @@
 #'   \emph{Adaptive Trial Simulator}
 #' }
 #'
-#' The `adaptr` package simulates adaptive (multi-arm) trials using adaptive
-#' stopping, adaptive arm dropping and/or response-adaptive randomisation.
-#' The package is developed as part of the
+#' The `adaptr` package simulates adaptive (multi-arm, multi-stage) randomised
+#' clinical trials using adaptive stopping, adaptive arm dropping and/or
+#' response-adaptive randomisation. The package is developed as part of the
 #' [INCEPT (Intensive Care Platform Trial) project](https://incept.dk/),
 #' funded primarily by a grant from
 #' [Sygeforsikringen "danmark"](https://www.sygeforsikring.dk/).

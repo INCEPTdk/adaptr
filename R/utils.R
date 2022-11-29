@@ -149,8 +149,9 @@ verify_int <- function(x, min_value = -Inf, max_value = Inf, open = "no") {
 
 #' Check availability of required packages
 #'
-#' Used internally, helper to check if SUGGESTED packages are available. Will
-#' halt execution if any of the queried packages are not available.
+#' Used internally, helper function to check if SUGGESTED packages are
+#' available. Will halt execution if any of the queried packages are not
+#' available and provide installation instructions.
 #'
 #' @param pkgs, character vector with name(s) of package(s) to check.
 #'
@@ -160,14 +161,14 @@ verify_int <- function(x, min_value = -Inf, max_value = Inf, open = "no") {
 #' @keywords internal
 #'
 assert_pkgs <- function(pkgs = NULL) {
-  checks <- sapply(pkgs, function(p) isFALSE(requireNamespace(p, quietly = TRUE)))
+  checks <- vapply_lgl(pkgs, function(p) isFALSE(requireNamespace(p, quietly = TRUE)))
   unavailable_pkgs <- names(checks[checks])
 
   if (any(checks)) {
     stop(
-      "The following required packages were unavailable: ",
+      "The following required package",  ifelse(sum(checks) > 1, "s were", " was"), " unavailable: ",
       paste(unavailable_pkgs, collapse = ", "),
-      ". \nConsider installing them with the following command: ",
+      ". \nConsider installing with the following command: ",
       sprintf("install.packages(%s)", paste0(ifelse(length(unavailable_pkgs) > 1, "c(", ""),
                                              paste(sprintf("\"%s\"", unavailable_pkgs), collapse = ", "),
                                              ifelse(length(unavailable_pkgs) > 1, ")", ""))),
