@@ -198,8 +198,7 @@ plot_status(trial_res_mult, x_value = "total n")
 ```
 
 We can also plot the statuses for specific arms, or of all arms if supplying
-`NA` to the `arm`-argument. In this example, *Arm A* is
-increasingly dropped for inferiority as simulations progress:
+`NA` to the `arm`-argument:
 
 ```{r}
 plot_status(trial_res_mult, x_value = "total n", arm = NA, ncol = 1)
