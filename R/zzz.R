@@ -2,6 +2,7 @@
 .adaptr_version <- as.character(packageVersion("adaptr"))
 
 
+
 #' Print package startup message
 #'
 #' @param libname not used.

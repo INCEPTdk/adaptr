@@ -52,6 +52,11 @@ adaptive analyses to the `setup_trials()`-family of functions (for inferiority,
 superiority, equivalence, and futility probability thresholds), with according
 updates in `run_trial()` and the `print()`-method for trial specifications.
 
+* Updated `plot_status()`; multiple arms may now simultaneously be plotted by
+specifying more than one valid arm or `NA` (which lead to statuses for all arms
+being plotted) in the `arm` argument. In addition, `arm` name(s) are now always
+included on the plots.
+
 ### Other changes:
 
 * Additional minor changes to trial setup/validation including proper error

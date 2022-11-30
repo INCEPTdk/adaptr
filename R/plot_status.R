@@ -5,12 +5,15 @@
 #'
 #' @inheritParams extract_results
 #' @inheritParams plot_history
-#' @param arm single character string or `NULL` (default); can be set to a valid
-#'   trial `arm`. If `NULL`, the overall trial statuses are plotted, otherwise
-#'   the statuses for a single, specific trial arm are plotted.
+#' @param arm character string of one or more unique, valid `arm` names, `NA`,
+#'  or `NULL` (default). If `NULL`, the overall trial statuses are plotted,
+#'  otherwise the specified arms or all arms (if `NA`) are plotted.
 #' @param area list of styling settings for the area as per \pkg{ggplot2}
 #'   conventions (e.g., `alpha`, `size`). The default (`list(alpha = 0.5)`) sets
 #'   the transparency to 50% so overlain shaded areas are visible.
+#' @param nrow,ncol the number of rows and columns when plotting statuses for
+#'   multiple arms in the same plot (using faceting in `ggplot2`). Defaults to
+#'   `NULL`, in which case this will be determined automatically where relevant.
 #'
 #' @return A `ggplot2` plot object.
 #'
@@ -32,6 +35,9 @@
 #'   # Plot trial statuses at each look according to total allocations
 #'   plot_status(res_mult, x_value = "total n")
 #'
+#'   # Plot trial statuses for all arms
+#'   plot_status(res_mult, arm = NA)
+#'
 #'   # Do not return/print last plot in documentation
 #'   invisible(NULL)
 #' }
@@ -40,7 +46,7 @@
 #' [plot_history()].
 #'
 plot_status <- function(object, x_value = "look", arm = NULL,
-                        area = list(alpha = 0.5)) {
+                        area = list(alpha = 0.5), nrow = NULL, ncol = NULL) {
   UseMethod("plot_status")
 }
 
@@ -55,7 +61,7 @@ plot_status <- function(object, x_value = "look", arm = NULL,
 #' @export
 #'
 plot_status.trial_results <- function(object, x_value = "look", arm = NULL,
-                                      area = list(alpha = 0.5)) {
+                                      area = list(alpha = 0.5), nrow = NULL, ncol = NULL) {
 
   assert_pkgs("ggplot2")
 
@@ -70,27 +76,53 @@ plot_status.trial_results <- function(object, x_value = "look", arm = NULL,
     stop0("x_value must be either 'look', 'total n', or 'followed n'.")
   }
 
-  # Validate arm
-  if (!is.null(arm)) {
-    if (!isTRUE(length(arm) == 1 & arm %in% object$trial_spec$trial_arms$arms)) {
-      stop0("Arm must be either NULL or a single, valid trial arm.")
+  # Validate arm(s)
+  arm_null <- is.null(arm)
+  if (!arm_null) {
+    available_arms <- object$trial_spec$trial_arms$arms
+    if (all(is.na(arm)) & length(arm) == 1) { # Single NA supplied - use all arms
+      arm <- available_arms
+    } else if (!isTRUE(all(arm %in% available_arms) & length(arm) == length(unique(arm)))) { # Multiple values or 1 arm other than NA supplied
+      stop0("arm must be either NULL, NA, or one or multiple unique, valid trial arm(s).")
     }
   }
 
   # Extract data and prepare legend colours
-  dta <- extract_statuses(object, x_value = x_value, arm = arm)
+  if (arm_null) {
+    dta <- extract_statuses(object, x_value = x_value, arm = arm)
+  } else {
+    dta <- list()
+    for (i in seq_along(arm)) {
+      cur_dta <- extract_statuses(object, x_value = x_value, arm = arm[i])
+      cur_dta$facet <- paste0("Arm: ", arm[i])
+      dta[[i]] <- cur_dta
+    }
+    dta <- do.call(rbind, dta)
+    dta$facet <- factor(dta$facet, levels = paste0("Arm: ", arm))
+  }
+
   colours <- c(Recruiting = "grey50", Inferiority = "darkred", Futility = "#5C3D00",
                Equivalence = "navy", Superiority = "darkgreen")
 
-  fill_name <- if (is.null(arm)) "Overall statuses" else paste("Arm", arm, "statuses")
-
-  ggplot2::ggplot(dta, ggplot2::aes(x = x, y = p, fill = status)) +
+  # Make the base plot
+  p <- ggplot2::ggplot(dta, ggplot2::aes(x = x, y = p, fill = status)) +
     do.call(ggplot2::geom_area, area %||% formals()$area) +
-    ggplot2::scale_fill_manual(values = colours, name = fill_name, breaks = levels(dta$status)) +
+    ggplot2::scale_fill_manual(values = colours, breaks = levels(dta$status)) +
     make_x_scale(x_value) +
     make_y_scale("status") +
     ggplot2::theme_minimal() +
     ggplot2::theme(legend.title = ggplot2::element_blank())
+  # Facet if plotting one or more arms (to add arm labels to the top)
+  if (!arm_null) {
+    if (is.null(nrow) & is.null(ncol)) { # Set nrow if both nrow and ncol are NULL
+      nrow <- ceiling(sqrt(length(arm)))
+    }
+    p <- p +
+      ggplot2::facet_wrap(ggplot2::vars(facet), nrow = nrow, ncol = ncol, strip.position = "top") +
+      ggplot2::theme(strip.background = ggplot2::element_blank(), strip.placement = "outside")
+  }
+  # Return
+  p
 }
 
 
