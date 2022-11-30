@@ -192,8 +192,8 @@ extract_statuses <- function(object, x_value, arm = NULL) {
     )
   }
 
-  data_looks <- data_looks[data_looks <= max(overall_final_followed)]#max(final_followed)]
-  randomised_at_looks <- randomised_at_looks[randomised_at_looks <= max(overall_final_looks)]#max(final_looks)]
+  data_looks <- data_looks[data_looks <= max(overall_final_followed)]
+  randomised_at_looks <- randomised_at_looks[randomised_at_looks <= max(overall_final_looks)]
 
   # Create matrix or probabilities, fill values, bind results to data.frame
   status_levels <- c("Recruiting", "Inferiority", "Futility", "Equivalence", "Superiority")
