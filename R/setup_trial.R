@@ -475,8 +475,8 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' @param data_looks vector of increasing integers, specifies when to conduct
 #'   adaptive analyses (= the total number of patients with available outcome
 #'   data at each adaptive analysis). The last number in the vector represents
-#'   the final adaptive analysis, i.e., the final analyses where superiority,
-#'   inferiority, practical equivalence, or futility will be claimed.
+#'   the final adaptive analysis, i.e., the final analysis where superiority,
+#'   inferiority, practical equivalence, or futility can be claimed.
 #'   Instead of specifying `data_looks`, the `max_n` and `look_after_every`
 #'   arguments can be used in combination (then `data_looks` must be `NULL`,
 #'   the default).
@@ -486,16 +486,17 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #'   the `look_after_every` argument.
 #' @param look_after_every single integer, specified together with `max_n`.
 #'   Adaptive analyses will be conducted after every `look_after_every`
-#'   patients randomised, and at the total sample size as specified by `max_n`
-#'   (`max_n` does not need to be a multiple of `look_after_every`). If
-#'   specified, `data_looks` must be `NULL` (as default).
-#' @param randomised_at_looks vector of increasing integers or `NULL` (default),
+#'   patients have available outcome data, and at the total sample size as
+#'   specified by `max_n` (`max_n` does not need to be a multiple of
+#'   `look_after_every`). If specified, `data_looks` must be `NULL` (default).
+#' @param randomised_at_looks vector of increasing integers or `NULL`,
 #'   specifying the number of patients randomised at the time of each adaptive
-#'   analysis. If `NULL` (the default), the number of patients randomised at
-#'   each analysis will match the number of patients with available outcome data
-#'   at said analysis, as specified by `data_looks` or `max_n` and
-#'   `look_after_every`, i.e., outcome data will be available immediately after
-#'   randomisation.\cr
+#'   analysis using the current allocation probabilities at said analysis.
+#'   If `NULL` (the default), the number of patients randomised at each analysis
+#'   will match the number of patients with available outcome data at said
+#'   analysis, as specified by `data_looks` or `max_n` and `look_after_every`,
+#'   i.e., outcome data will be available immediately after randomisation for
+#'   all patients.\cr
 #'   If not `NULL`, the vector must be of the same length as the number of
 #'   adaptive analyses specified by `data_looks` or `max_n` and
 #'   `look_after_every`, and all values must be larger than or equal to the
@@ -629,8 +630,9 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' The function must return a single numeric vector, corresponding to the
 #' outcomes for all patients allocated since the last adaptive analysis, in the
 #' same order as `allocs`.\cr
-#' See the **Examples** vignette (`vignette("Examples", "adaptr")`) for an
-#' example with further details.
+#' See the **Advanced example** vignette
+#' (`vignette("Advanced-example", package = "adaptr")`) for an example with
+#' further details.
 #'
 #' \strong{How to specify the `fun_draws` function}
 #'
@@ -658,8 +660,9 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' Important: the `matrix` cannot contain `NA`s, even if no patients have been
 #' randomised to an arm yet. See the provided example for one way to alleviate
 #' this.\cr
-#' See the **Examples** vignette (`vignette("Examples", "adaptr")`) for an
-#' example with further details.
+#' See the **Advanced examples** vignette
+#' (`vignette("Advanced-example", package = "adaptr")`) for an example with
+#' further details.
 #'
 #' _Notes_
 #' - Different estimation methods and prior distributions may be used;
@@ -777,7 +780,8 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' and futility) may be specified for different adaptive analyses. This may be
 #' used, e.g., to apply more strict probability thresholds at earlier analyses,
 #' similar to the use of alpha-spending functions in conventional,
-#' frequentist group sequential trial designs.
+#' frequentist group sequential trial designs. See the **Basic examples**
+#' vignette (`vignette("Basic-examples", package = "adaptr")`) for an example.
 #'
 #' @return A `trial_spec` object used to run simulations by [run_trial()] or
 #'   [run_trials()]. The output is essentially a list containing the input

@@ -204,12 +204,18 @@ print(res_sum, digits = 1)
 #> * Ideal design percentage: 100.0%
 #> 
 #> Simulation details:
-#> * Simulation time: 0.429 secs
+#> * Simulation time: 0.435 secs
 #> * Base random seed: 67890
 #> * Credible interval width: 95%
 #> * Number of posterior draws: 5000
 #> * Estimation method: posterior medians with MAD-SDs
 ```
+
+Performance metrics may also be calculated and returned in a tidy
+`data.frame` (with bootstrapped uncertainty measures, if requested) may
+be calculated by the `check_performance()`-function, and the
+`plot_convergence()` function may be used to visually assess stability
+of performance metrics according to the number of simulations.
 
 Plot trial statuses or history of trial metrics over time:
 

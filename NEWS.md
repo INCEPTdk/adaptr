@@ -13,15 +13,14 @@ both final posterior and 'raw' estimates), including the outcome data of all
 patients randomised to all arms, regardless of how many had outcome data
 available at the last conducted adaptive analysis.
 Both sets of results are saved and printed for individual simulations;
-`extract_results()` and the `summary()`- and `print()`-methods for multiple
+`extract_results()`, the `summary()`- and the `print()`-methods for multiple
 simulations have gained the additional argument `final_ests` that controls
 whether the results from this final analysis or from the last relevant adaptive
 analysis including each arm are used when calculating some performance metrics
 (defaults are set to ensure backwards compatibility and use the final estimates
 in situations where not all patients are included in the final adaptive
-analysis).
-
-**WORK IN PROGRESS - ADD EXAMPLES TO SETUP FUNCTIONS AND/OR VIGNETTES SHOWING  THE NEW LAG OF FOLLOW-UP SETTINGS IN ACTION**
+analysis). An example has been added to the `Basic examples` vignette
+illustrating the use of this argument.
 
 * Updated `plot_history()` and `plot_status()` to add the possibility to plot
 different metrics relevant after the addition of the new
@@ -59,9 +58,22 @@ included on the plots.
 
 ### Other changes:
 
-* Additional minor changes to trial setup/validation including proper error
-messages in an edge case with invalid inputs and proper errors if non-integer
-numbers used for patient count arguments.
+* Added reference to open access article describing key methodological
+considerations in adaptive clinical trials to the package documentation
+(doi: 10.1016/j.jclinepi.2022.11.002).
+
+* The proportion of conclusive trials when restricting the trials summarised (in
+`extract_results()`) may now be calculated by the `summary()`-method for
+multiple trial simulations and by the new `check_performance()`-function, even
+if this measure may be difficult to interpret under such circumstances.
+
+* Minor fixes, updates, and added clarification to the documentation in multiple
+places, including in vignettes, which have also been updated to illustrate some
+of the new functions added.
+
+* Minor changes to trial setup/validation including proper error messages in an
+edge case with invalid inputs and proper errors if non-integer numbers used for
+patient count arguments.
 
 * Minor fix to print method for individual trial results, which did not
 correctly print additional information about trials.
@@ -70,34 +82,21 @@ correctly print additional information about trials.
 subsequent data_looks in the `setup_trial()`-family of functions did incorrectly
 not produce an error.
 
-* Minor fixes, updates, and added clarification to the documentation in multiple
-places.
-
 * Added internal `vapply_lgl()`-helper function; `vapply()`-helpers are now used
 consequently to simplify the code.
 
 * Added multiple internal helper functions to simplify code in existing or new
-functions: `stop0()`, `warning0()`, `%|f`, and `summarise_num`.
-
-* Added reference to open access article describing key methodological
-considerations in adaptive clinical trials to the package documentation
-(doi: 10.1016/j.jclinepi.2022.11.002).
+functions: `stop0()`, `warning0()`, `%|f`, and `summarise_num()`.
 
 * Added `names = FALSE`-argument to all `quantile()` calls in `summary()`-method
 for `trial_results`-objects, to avoid unnecessary naming of some components if
 they are subsequently extracted from the returned object.
 
 * Ideal design percentages may be calculated as `NaN`, `Inf` or `-Inf` in
-scenarios with no differences; these are now all converted to `NA` when saving
-before being returned by the `summary()`-method for `trial_results`-objects and
-printed correctly in all cases.
+scenarios with no differences; these are now all converted to `NA` before being
+returned by the various functions..
 
-* Minor edits/clarifications to documentation and errors/warnings/messages.
-
-* The proportion of conclusive trials when restricting the trials summarised (in
-`extract_results()`) may now be calculated by the `summary()`-method for
-multiple trial simulations and by the new `check_performance()`-function, even
-if this measure may be difficult to interpret under such circumstances.
+* Minor edits/clarifications to several errors/warnings/messages.
 
 * Minor fix to internal `verify_int()`-function; when supplied with, e.g., a
 character vector, execution was stopped with an error instead of returning

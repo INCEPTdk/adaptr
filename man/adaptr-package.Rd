@@ -42,7 +42,7 @@ For further information see the function documentation or the \strong{Overview}
 vignette (\code{vignette("Overview", package = "adaptr")}) for an example of how
 the functions work in combination.
 For further examples and guidance on setting up trial specifications, see
-\link{setup_trial} documentation, the \strong{Basic examples} vignette
+\code{\link[=setup_trial]{setup_trial()}} documentation, the \strong{Basic examples} vignette
 (\code{vignette("Basic-examples", package = "adaptr")}) and the
 \strong{Advanced example} vignette
 (\code{vignette("Advanced-example", package = "adaptr")}).

@@ -62,8 +62,8 @@ Must be \code{NA} (default for all arms) if no boundary is wanted.}
 \item{data_looks}{vector of increasing integers, specifies when to conduct
 adaptive analyses (= the total number of patients with available outcome
 data at each adaptive analysis). The last number in the vector represents
-the final adaptive analysis, i.e., the final analyses where superiority,
-inferiority, practical equivalence, or futility will be claimed.
+the final adaptive analysis, i.e., the final analysis where superiority,
+inferiority, practical equivalence, or futility can be claimed.
 Instead of specifying \code{data_looks}, the \code{max_n} and \code{look_after_every}
 arguments can be used in combination (then \code{data_looks} must be \code{NULL},
 the default).}
@@ -75,17 +75,18 @@ the \code{look_after_every} argument.}
 
 \item{look_after_every}{single integer, specified together with \code{max_n}.
 Adaptive analyses will be conducted after every \code{look_after_every}
-patients randomised, and at the total sample size as specified by \code{max_n}
-(\code{max_n} does not need to be a multiple of \code{look_after_every}). If
-specified, \code{data_looks} must be \code{NULL} (as default).}
+patients have available outcome data, and at the total sample size as
+specified by \code{max_n} (\code{max_n} does not need to be a multiple of
+\code{look_after_every}). If specified, \code{data_looks} must be \code{NULL} (default).}
 
-\item{randomised_at_looks}{vector of increasing integers or \code{NULL} (default),
+\item{randomised_at_looks}{vector of increasing integers or \code{NULL},
 specifying the number of patients randomised at the time of each adaptive
-analysis. If \code{NULL} (the default), the number of patients randomised at
-each analysis will match the number of patients with available outcome data
-at said analysis, as specified by \code{data_looks} or \code{max_n} and
-\code{look_after_every}, i.e., outcome data will be available immediately after
-randomisation.\cr
+analysis using the current allocation probabilities at said analysis.
+If \code{NULL} (the default), the number of patients randomised at each analysis
+will match the number of patients with available outcome data at said
+analysis, as specified by \code{data_looks} or \code{max_n} and \code{look_after_every},
+i.e., outcome data will be available immediately after randomisation for
+all patients.\cr
 If not \code{NULL}, the vector must be of the same length as the number of
 adaptive analyses specified by \code{data_looks} or \code{max_n} and
 \code{look_after_every}, and all values must be larger than or equal to the

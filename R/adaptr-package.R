@@ -40,7 +40,7 @@
 #' vignette (`vignette("Overview", package = "adaptr")`) for an example of how
 #' the functions work in combination.
 #' For further examples and guidance on setting up trial specifications, see
-#' [setup_trial] documentation, the **Basic examples** vignette
+#' [setup_trial()] documentation, the **Basic examples** vignette
 #' (`vignette("Basic-examples", package = "adaptr")`) and the
 #' **Advanced example** vignette
 #' (`vignette("Advanced-example", package = "adaptr")`).

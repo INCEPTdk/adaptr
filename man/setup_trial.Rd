@@ -77,8 +77,8 @@ Must be \code{NA} (default for all arms) if no boundary is wanted.}
 \item{data_looks}{vector of increasing integers, specifies when to conduct
 adaptive analyses (= the total number of patients with available outcome
 data at each adaptive analysis). The last number in the vector represents
-the final adaptive analysis, i.e., the final analyses where superiority,
-inferiority, practical equivalence, or futility will be claimed.
+the final adaptive analysis, i.e., the final analysis where superiority,
+inferiority, practical equivalence, or futility can be claimed.
 Instead of specifying \code{data_looks}, the \code{max_n} and \code{look_after_every}
 arguments can be used in combination (then \code{data_looks} must be \code{NULL},
 the default).}
@@ -90,17 +90,18 @@ the \code{look_after_every} argument.}
 
 \item{look_after_every}{single integer, specified together with \code{max_n}.
 Adaptive analyses will be conducted after every \code{look_after_every}
-patients randomised, and at the total sample size as specified by \code{max_n}
-(\code{max_n} does not need to be a multiple of \code{look_after_every}). If
-specified, \code{data_looks} must be \code{NULL} (as default).}
+patients have available outcome data, and at the total sample size as
+specified by \code{max_n} (\code{max_n} does not need to be a multiple of
+\code{look_after_every}). If specified, \code{data_looks} must be \code{NULL} (default).}
 
-\item{randomised_at_looks}{vector of increasing integers or \code{NULL} (default),
+\item{randomised_at_looks}{vector of increasing integers or \code{NULL},
 specifying the number of patients randomised at the time of each adaptive
-analysis. If \code{NULL} (the default), the number of patients randomised at
-each analysis will match the number of patients with available outcome data
-at said analysis, as specified by \code{data_looks} or \code{max_n} and
-\code{look_after_every}, i.e., outcome data will be available immediately after
-randomisation.\cr
+analysis using the current allocation probabilities at said analysis.
+If \code{NULL} (the default), the number of patients randomised at each analysis
+will match the number of patients with available outcome data at said
+analysis, as specified by \code{data_looks} or \code{max_n} and \code{look_after_every},
+i.e., outcome data will be available immediately after randomisation for
+all patients.\cr
 If not \code{NULL}, the vector must be of the same length as the number of
 adaptive analyses specified by \code{data_looks} or \code{max_n} and
 \code{look_after_every}, and all values must be larger than or equal to the
@@ -272,8 +273,9 @@ since the last adaptive analysis are randomised to.
 The function must return a single numeric vector, corresponding to the
 outcomes for all patients allocated since the last adaptive analysis, in the
 same order as \code{allocs}.\cr
-See the \strong{Examples} vignette (\code{vignette("Examples", "adaptr")}) for an
-example with further details.
+See the \strong{Advanced example} vignette
+(\code{vignette("Advanced-example", package = "adaptr")}) for an example with
+further details.
 
 \strong{How to specify the \code{fun_draws} function}
 
@@ -303,8 +305,9 @@ be transformed to probabilities and similarly for other measures.\cr
 Important: the \code{matrix} cannot contain \code{NA}s, even if no patients have been
 randomised to an arm yet. See the provided example for one way to alleviate
 this.\cr
-See the \strong{Examples} vignette (\code{vignette("Examples", "adaptr")}) for an
-example with further details.
+See the \strong{Advanced examples} vignette
+(\code{vignette("Advanced-example", package = "adaptr")}) for an example with
+further details.
 
 \emph{Notes}
 \itemize{
@@ -425,7 +428,8 @@ Different probability thresholds (for superiority, inferiority, equivalence,
 and futility) may be specified for different adaptive analyses. This may be
 used, e.g., to apply more strict probability thresholds at earlier analyses,
 similar to the use of alpha-spending functions in conventional,
-frequentist group sequential trial designs.
+frequentist group sequential trial designs. See the \strong{Basic examples}
+vignette (\code{vignette("Basic-examples", package = "adaptr")}) for an example.
 }
 \examples{
 # Setup a custom trial specification with right-skewed, log-normally
