@@ -29,8 +29,10 @@ outcomes, respectively, with some limitations in flexibility.
 \item The \code{\link[=run_trial]{run_trial()}} and \code{\link[=run_trials]{run_trials()}} functions are used to conduct single
 or multiple simulations, respectively, according to a trial specification
 setup as described in #1.
-\item The \code{\link[=extract_results]{extract_results()}} and \code{\link[=summary]{summary()}} functions are used to
-extract or summarise the results of multiple trial simulations.
+\item The \code{\link[=extract_results]{extract_results()}}, \code{\link[=check_performance]{check_performance()}} and \code{\link[=summary]{summary()}} functions
+are used to extract results from multiple trial simulations, calculate
+performance metrics, and summarise results. The \code{\link[=plot_convergence]{plot_convergence()}} function
+plots performance metrics according to the number of simulations conducted.
 \item The \code{\link[=plot_status]{plot_status()}} and \code{\link[=plot_history]{plot_history()}} functions are used to plot the
 overall trial/arm statuses for multiple simulated trials or the history of
 trial metrics over time for single/multiple simulated trials, respectively.
@@ -65,5 +67,5 @@ trials. J Clin Epidemiol. \doi{10.1016/j.jclinepi.2022.11.002}
 \seealso{
 \code{\link[=setup_trial]{setup_trial()}}, \code{\link[=setup_trial_binom]{setup_trial_binom()}}, \code{\link[=setup_trial_norm]{setup_trial_norm()}}, \code{\link[=run_trial]{run_trial()}},
 \code{\link[=run_trials]{run_trials()}}, \code{\link[=extract_results]{extract_results()}}, \code{\link[=check_performance]{check_performance()}}, \code{\link[=summary]{summary()}},
-\code{\link[=print]{print()}}, \code{\link[=plot_status]{plot_status()}}, and \code{\link[=plot_history]{plot_history()}}.
+\code{\link[=plot_convergence]{plot_convergence()}}, \code{\link[=print]{print()}}, \code{\link[=plot_status]{plot_status()}}, and \code{\link[=plot_history]{plot_history()}}.
 }

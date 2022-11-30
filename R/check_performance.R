@@ -121,8 +121,10 @@ calculate_idp <- function(sels, arms, true_ys, highest_is_best) {
 #'
 #' @export
 #'
+#' @importFrom stats sd median quantile
+#'
 #' @seealso
-#' [extract_results()], [summary()].
+#' [extract_results()], [summary()], [plot_convergence()].
 #'
 #' @examples
 #' # Setup a trial specification

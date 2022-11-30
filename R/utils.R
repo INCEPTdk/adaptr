@@ -141,7 +141,7 @@ cat0 <- function(...) cat(..., sep = "")
 #'
 #' @name stop0_warning0
 #'
-stop0 <- function(...) stop0(..., call. = FALSE)
+stop0 <- function(...) stop(..., call. = FALSE)
 
 #' @rdname stop0_warning0
 #' @keywords internal
@@ -167,7 +167,8 @@ warning0 <- function(...) warning(..., call. = FALSE)
 #'
 verify_int <- function(x, min_value = -Inf, max_value = Inf, open = "no") {
   if (is.null(x)) return(FALSE)
-  is_int <- length(x) == 1 & all(!is.na(x)) & all(is.numeric(x)) & all(floor(x) == x)
+  if (!is.numeric(x)) return(FALSE)
+  is_int <- length(x) == 1 & all(!is.na(x)) & all(floor(x) == x)
   is_above_min <- if (open %in% c("left", "yes")) min_value < x else min_value <= x
   is_below_max <- if (open %in% c("right", "yes")) x < max_value else x <= max_value
   all(is_int) & all(is_above_min) & all(is_below_max)

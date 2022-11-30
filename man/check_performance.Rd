@@ -221,5 +221,5 @@ n_boot = 1000, boot_seed = "base")
 
 }
 \seealso{
-\code{\link[=extract_results]{extract_results()}}, \code{\link[=summary]{summary()}}.
+\code{\link[=extract_results]{extract_results()}}, \code{\link[=summary]{summary()}}, \code{\link[=plot_convergence]{plot_convergence()}}.
 }

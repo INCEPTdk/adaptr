@@ -119,7 +119,7 @@ A \code{"trial_results_summary"} object containing the following values:
 \code{ratio_ys_mean}, \code{ratio_ys_sd}, \code{ratio_ys_median}, \code{ratio_ys_p25},
 \code{ratio_ys_p75}, \code{prob_conclusive}, \code{prob_superior}, \code{prob_equivalence},
 \code{prob_futility}, \code{prob_max}, \verb{prob_select_*} (with \code{*} being all \code{arm}
-names), \code{rmse}, \code{rmse_te}, \code{idp}: performance metrics as described in
+names), \code{rmse}, \code{rmse_te}, and \code{idp}: performance metrics as described in
 \code{\link[=check_performance]{check_performance()}}.
 \item \code{select_strategy}, \code{select_last_arm}, \code{select_preferences},
 \code{te_comp}, \code{raw_ests}, \code{final_ests}, \code{restrict}: as specified above.
@@ -160,5 +160,5 @@ print(res_sum, digits = 1)
 
 }
 \seealso{
-\code{\link[=extract_results]{extract_results()}}, \code{\link[=check_performance]{check_performance()}}.
+\code{\link[=extract_results]{extract_results()}}, \code{\link[=check_performance]{check_performance()}}, \code{\link[=plot_convergence]{plot_convergence()}}.
 }

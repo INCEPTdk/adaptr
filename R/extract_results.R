@@ -123,7 +123,7 @@
 #' @export
 #'
 #' @seealso
-#' [check_performance()], [summary()].
+#' [check_performance()], [summary()], [plot_convergence()].
 #'
 
 extract_results <- function(object,

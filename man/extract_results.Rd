@@ -145,5 +145,5 @@ extract_results(res, select_strategy = "control")
 
 }
 \seealso{
-\code{\link[=check_performance]{check_performance()}}, \code{\link[=summary]{summary()}}.
+\code{\link[=check_performance]{check_performance()}}, \code{\link[=summary]{summary()}}, \code{\link[=plot_convergence]{plot_convergence()}}.
 }

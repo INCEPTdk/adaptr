@@ -42,6 +42,11 @@ calculates performance metrics and can be used to calculate uncertainty measures
 using non-parametric bootstrapping. This function is now used internally by
 the `summary()`-method for multiple trial objects.
 
+* Added the `plot_convergence()` function which plots performance metrics
+according to the number of simulations conducted for multiple simulated trials
+(possibly after splitting the simulations into batches), used to assess
+stability of performance metrics.
+
 * Added the possibility to define different probability thresholds for different
 adaptive analyses to the `setup_trials()`-family of functions (for inferiority,
 superiority, equivalence, and futility probability thresholds), with according
@@ -88,6 +93,10 @@ printed correctly in all cases.
 `extract_results()`) may now be calculated by the `summary()`-method for
 multiple trial simulations and by the new `check_performance()`-function, even
 if this measure may be difficult to interpret under such circumstances.
+
+* Minor fix to internal `verify_int()`-function; when supplied with, e.g., a
+character vector, execution was stopped with an error instead of returning
+`FALSE`, as need to print the proper error after checks.
 
 # adaptr 1.1.1
 

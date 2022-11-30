@@ -28,8 +28,10 @@
 #' 2. The [run_trial()] and [run_trials()] functions are used to conduct single
 #' or multiple simulations, respectively, according to a trial specification
 #' setup as described in #1.
-#' 3. The [extract_results()] and [summary()] functions are used to
-#' extract or summarise the results of multiple trial simulations.
+#' 3. The [extract_results()], [check_performance()] and [summary()] functions
+#' are used to extract results from multiple trial simulations, calculate
+#' performance metrics, and summarise results. The [plot_convergence()] function
+#' plots performance metrics according to the number of simulations conducted.
 #' 4. The [plot_status()] and [plot_history()] functions are used to plot the
 #' overall trial/arm statuses for multiple simulated trials or the history of
 #' trial metrics over time for single/multiple simulated trials, respectively.
@@ -65,6 +67,6 @@
 #' @seealso
 #' [setup_trial()], [setup_trial_binom()], [setup_trial_norm()], [run_trial()],
 #' [run_trials()], [extract_results()], [check_performance()], [summary()],
-#' [print()], [plot_status()], and [plot_history()].
+#' [plot_convergence()], [print()], [plot_status()], and [plot_history()].
 #'
 NULL

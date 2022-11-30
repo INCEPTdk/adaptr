@@ -21,7 +21,7 @@
 #'     `ratio_ys_mean`, `ratio_ys_sd`, `ratio_ys_median`, `ratio_ys_p25`,
 #'     `ratio_ys_p75`, `prob_conclusive`, `prob_superior`, `prob_equivalence`,
 #'     `prob_futility`, `prob_max`, `prob_select_*` (with `*` being all `arm`
-#'     names), `rmse`, `rmse_te`, `idp`: performance metrics as described in
+#'     names), `rmse`, `rmse_te`, and `idp`: performance metrics as described in
 #'     [check_performance()].
 #'   \item `select_strategy`, `select_last_arm`, `select_preferences`,
 #'     `te_comp`, `raw_ests`, `final_ests`, `restrict`: as specified above.
@@ -57,7 +57,7 @@
 #' @export
 #'
 #' @seealso
-#' [extract_results()], [check_performance()].
+#' [extract_results()], [check_performance()], [plot_convergence()].
 #'
 summary.trial_results <- function(object,
                                   select_strategy = "control if available",
