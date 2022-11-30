@@ -102,6 +102,10 @@ returned by the various functions..
 character vector, execution was stopped with an error instead of returning
 `FALSE`, as need to print the proper error after checks.
 
+* Minor fix to `plot_status()`, where the upper area (for trials/arms still
+recruiting) where sometimes erroneously not plotted due to a floating point
+issue where the summed proportions could sometimes slightly exceed 100%.
+
 # adaptr 1.1.1
 
 This is a patch release triggered by a CRAN request for updates.
