@@ -94,11 +94,11 @@ plot_status.trial_results <- function(object, x_value = "look", arm = NULL,
     dta <- list()
     for (i in seq_along(arm)) {
       cur_dta <- extract_statuses(object, x_value = x_value, arm = arm[i])
-      cur_dta$facet <- paste0("Arm: ", arm[i])
+      cur_dta$facet <- arm[i]
       dta[[i]] <- cur_dta
     }
     dta <- do.call(rbind, dta)
-    dta$facet <- factor(dta$facet, levels = paste0("Arm: ", arm))
+    dta$facet <- factor(dta$facet, levels = arm)
   }
 
   colours <- c(Recruiting = "grey50", Inferiority = "darkred", Futility = "#5C3D00",
@@ -118,7 +118,7 @@ plot_status.trial_results <- function(object, x_value = "look", arm = NULL,
       nrow <- ceiling(sqrt(length(arm)))
     }
     p <- p +
-      ggplot2::facet_wrap(ggplot2::vars(facet), nrow = nrow, ncol = ncol, strip.position = "top") +
+      ggplot2::facet_wrap(ggplot2::vars(facet), scales = "free_x", nrow = nrow, ncol = ncol, strip.position = "top") +
       ggplot2::theme(strip.background = ggplot2::element_blank(), strip.placement = "outside")
   }
   # Return
@@ -192,8 +192,8 @@ extract_statuses <- function(object, x_value, arm = NULL) {
     )
   }
 
-  data_looks <- data_looks[data_looks <= max(final_followed)]
-  randomised_at_looks <- randomised_at_looks[randomised_at_looks <= max(final_looks)]
+  data_looks <- data_looks[data_looks <= max(overall_final_followed)]#max(final_followed)]
+  randomised_at_looks <- randomised_at_looks[randomised_at_looks <= max(overall_final_looks)]#max(final_looks)]
 
   # Create matrix or probabilities, fill values, bind results to data.frame
   status_levels <- c("Recruiting", "Inferiority", "Futility", "Equivalence", "Superiority")
@@ -202,7 +202,8 @@ extract_statuses <- function(object, x_value, arm = NULL) {
     m[i, 1] <- i
     m[i, 2] <- data_looks[i]
     m[i, 3] <- randomised_at_looks[i]
-    m[i, 4] <- mean(statuses == "active" | final_looks > randomised_at_looks[i])
+    # Minor correction factor due to rounding errors which in some cases may make the last area not seen
+    m[i, 4] <- max(mean(statuses == "active" | final_looks > randomised_at_looks[i]) - .Machine$double.eps^0.5, 0)
     m[i, 5] <- mean(statuses == "inferiority" & final_looks <= randomised_at_looks[i])
     m[i, 6] <- mean(statuses == "futility" & final_looks <= randomised_at_looks[i])
     m[i, 7] <- mean(statuses == "equivalence" & final_looks <= randomised_at_looks[i])
