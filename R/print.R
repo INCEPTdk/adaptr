@@ -27,11 +27,6 @@ NULL
 #' @export
 #'
 print.trial_spec <- function(x, prob_digits = 3, ...) {
-  # Check adaptr version
-  adaptr_version <- x$adaptr_version
-  if (is.null(adaptr_version) | isTRUE(adaptr_version < .adaptr_version)) {
-    stop0("x was created by a previous version of adaptr. Please re-run trial setup.")
-  }
 
   if (!verify_int(prob_digits, min_value = 2)){
     stop0("prob_digits must be a single positive whole number >= 2.")
@@ -177,11 +172,6 @@ print.trial_spec <- function(x, prob_digits = 3, ...) {
 #' @export
 #'
 print.trial_result <- function(x, prob_digits = 3, ...) {
-  # Check adaptr version and verify other inputs
-  adaptr_version <- x$adaptr_version
-  if (is.null(adaptr_version) | isTRUE(adaptr_version < .adaptr_version)) {
-    stop0("x was created by a previous version of adaptr. Please re-run trial.")
-  }
 
   if (!verify_int(prob_digits, min_value = 2)) {
     stop0("prob_digits must be a single whole number >= 2.")

@@ -224,10 +224,8 @@ A \code{trial_spec} object used to run simulations by \code{\link[=run_trial]{ru
 values (some combined in a \code{data.frame} called \code{trial_arms}), but its class
 signals that these inputs have been validated and inappropriate
 combinations and settings have been ruled out. Also contains \code{best_arm}
-holding the arm(s) with the best value(s) in \code{true_ys} and
-\code{adaptr_version}, specifying the version of the \code{adaptr}-package used to
-create the trial specification. Use \code{str()} to peruse the actual content of
-the returned object.
+holding the arm(s) with the best value(s) in \code{true_ys}. Use \code{str()} to
+peruse the actual content of the returned object.
 }
 \description{
 Specifies the design of an adaptive trial with a continuous, normally

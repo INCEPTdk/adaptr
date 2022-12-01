@@ -28,13 +28,19 @@ different metrics relevant after the addition of the new
 
 * Added the `update_saved_trials()`-function, which 'updates' multiple trial
 simulation objects saved by `run_trials()` using a previous version of `adaptr`,
-which reformats the objects to work with the updated functions. Other saved
-objects will have to be re-created using the same settings as previously (due to
-some internal reformatting). Not all values can be added for updated, saved
-simulation results without re-running; these values will be replaced with `NA`s,
-and - if used - may lead to printing or plotting of missing values. However, the
-function allows re-use of the same data from previous simulations without having
-to re-run them (mostly relevant for time-consuming simulations).
+which reformats the objects to work with the updated functions. Not all values 
+an be added to previously saved simulation results without re-running; these
+values will be replaced with `NA`s, and - if used - may lead to printing or
+plotting of missing values. However, the function allows re-use of the same data
+from previous simulations without having to re-run them (mostly relevant for
+time-consuming simulations).
+**Important:** please notice that other objects (i.e., objects returned from the
+`setup_trial()`-family of functions and single simulations returned by
+`run_trial()`) may create problems or errors with some functions if created by
+previous versions of the package and manually reloaded; these objects will have
+to be updated by re-running the code using the newest version of the package.
+Similarly, manually reloaded results from `run_trials()` that are not updated
+using this function may cause errors/problems when used.
 
 * Added the `check_performance()` function (and a `print()`-method), which
 calculates performance metrics and can be used to calculate uncertainty measures
@@ -56,7 +62,7 @@ specifying more than one valid arm or `NA` (which lead to statuses for all arms
 being plotted) in the `arm` argument. In addition, `arm` name(s) are now always
 included on the plots.
 
-### Other changes:
+### Documentation, bug fixes, and other changes:
 
 * Added reference to open access article describing key methodological
 considerations in adaptive clinical trials to the package documentation
@@ -79,22 +85,22 @@ patient count arguments.
 correctly print additional information about trials.
 
 * Fixed a bug where the same number of patients followed could be used for
-subsequent data_looks in the `setup_trial()`-family of functions did incorrectly
-not produce an error.
+subsequent data_looks in the `setup_trial()`-family of functions; this now
+produces an error.
 
 * Added internal `vapply_lgl()`-helper function; `vapply()`-helpers are now used
 consequently to simplify the code.
 
-* Added multiple internal helper functions to simplify code in existing or new
-functions: `stop0()`, `warning0()`, `%|f`, and `summarise_num()`.
+* Added multiple internal (non-exported) helper functions to simplify code
+throughout the package: `stop0()`, `warning0()`, `%|f`, and `summarise_num()`.
 
-* Added `names = FALSE`-argument to all `quantile()` calls in `summary()`-method
+* Added `names = FALSE`-argument to `quantile()` calls in the `summary()`-method
 for `trial_results`-objects, to avoid unnecessary naming of some components if
 they are subsequently extracted from the returned object.
 
 * Ideal design percentages may be calculated as `NaN`, `Inf` or `-Inf` in
 scenarios with no differences; these are now all converted to `NA` before being
-returned by the various functions..
+returned by the various functions.
 
 * Minor edits/clarifications to several errors/warnings/messages.
 
@@ -102,8 +108,8 @@ returned by the various functions..
 character vector, execution was stopped with an error instead of returning
 `FALSE`, as need to print the proper error after checks.
 
-* Minor fix to `plot_status()`, where the upper area (for trials/arms still
-recruiting) where sometimes erroneously not plotted due to a floating point
+* Minor fix to `plot_status()`, where the upper area (representing trials/arms
+still recruiting) was sometimes erroneously not plotted due to a floating point
 issue where the summed proportions could sometimes slightly exceed 100%.
 
 # adaptr 1.1.1

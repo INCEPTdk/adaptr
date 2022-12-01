@@ -211,10 +211,6 @@ run_trials <- function(trial_spec, n_rep, path = NULL, overwrite = FALSE,
   if (is.null(sparse) | length(sparse) != 1 | any(is.na(sparse)) | !is.logical(sparse)) {
     stop0("sparse must be a single TRUE or FALSE.")
   }
-  adaptr_version <- trial_spec$adaptr_version
-  if (is.null(adaptr_version) | isTRUE(adaptr_version < .adaptr_version)) {
-    stop0("trial_spec was created by a previous version of adaptr. Please re-run trial setup.")
-  }
   if ((is.null(path) | overwrite) & !inherits(trial_spec, "trial_spec")) {
     stop0("If a path to a file is not provided or if overwrite = TRUE, ",
           "a valid trial specification must be provided.")
@@ -238,7 +234,7 @@ run_trials <- function(trial_spec, n_rep, path = NULL, overwrite = FALSE,
         !equivalent_funs(prev$trial_spec$fun_draws, trial_spec$fun_draws) |
         !equivalent_funs(prev$trial_spec$fun_raw_est, trial_spec$fun_raw_est)) {
       prev_adaptr_version <- prev$trial_spec$adaptr_version
-      if ((is.null(prev_adaptr_version) | isTRUE(prev_adaptr_version < adaptr_version))) {
+      if ((is.null(prev_adaptr_version) | isTRUE(prev_adaptr_version < .adaptr_version))) {
         stop0("The object in path was created by a previous version of adaptr and ",
               "cannot be used by this version of adaptr unless the object is updated. ",
               "Type 'help(\"update_saved_trials\")' for help on updating.")
@@ -352,7 +348,7 @@ run_trials <- function(trial_spec, n_rep, path = NULL, overwrite = FALSE,
                           n_rep = n_rep,
                           base_seed = base_seed,
                           elapsed_time = elapsed_time + Sys.time() - tic,
-                          sparse = sparse, adaptr_version = adaptr_version),
+                          sparse = sparse, adaptr_version = .adaptr_version),
                      class = c("trial_results", "list"))
 
     if (ifelse(!is.null(path), !file.exists(path) | overwrite | grow, FALSE)) {

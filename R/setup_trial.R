@@ -424,8 +424,7 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
                  add_info = add_info,
                  fun_y_gen = fun_y_gen,
                  fun_draws = fun_draws,
-                 fun_raw_est = fun_raw_est,
-                 adaptr_version = .adaptr_version),
+                 fun_raw_est = fun_raw_est),
             class = c("trial_spec", "list"))
 }
 
@@ -788,10 +787,8 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #'   values (some combined in a `data.frame` called `trial_arms`), but its class
 #'   signals that these inputs have been validated and inappropriate
 #'   combinations and settings have been ruled out. Also contains `best_arm`
-#'   holding the arm(s) with the best value(s) in `true_ys` and
-#'   `adaptr_version`, specifying the version of the `adaptr`-package used to
-#'   create the trial specification. Use `str()` to peruse the actual content of
-#'   the returned object.
+#'   holding the arm(s) with the best value(s) in `true_ys`. Use `str()` to
+#'   peruse the actual content of the returned object.
 #'
 #' @examples
 #' # Setup a custom trial specification with right-skewed, log-normally

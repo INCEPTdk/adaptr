@@ -86,12 +86,6 @@ plot_history.trial_result <- function(object,
                                       line = NULL, ...) {
   assert_pkgs("ggplot2")
 
-  adaptr_version <- object$adaptr_version
-  if (is.null(adaptr_version) | isTRUE(adaptr_version < .adaptr_version)) {
-    stop0("object was created by a previous version of adaptr and cannot be used ",
-          "by this version of adaptr. Please re-run simulation using run_trial().")
-  }
-
   if (!isTRUE(x_value %in% c("look", "total n", "followed n") & length(x_value) == 1)) {
     stop0("x_value must be either 'look', 'total n', or 'followed n'.")
   }
@@ -140,12 +134,6 @@ plot_history.trial_results <- function(object,
                                        ribbon = list(width = 0.5, alpha = 0.2),
                                        ...) {
   assert_pkgs("ggplot2")
-
-  adaptr_version <- object$adaptr_version
-  if (is.null(adaptr_version) | isTRUE(adaptr_version < .adaptr_version)) {
-    stop0("object was created by a previous version of adaptr and cannot be used ",
-          "by this version of adaptr. Please re-run simulation using run_trial().")
-  }
 
   if (!isTRUE(x_value %in% c("look", "total n", "followed n") & length(x_value) == 1)) {
     stop0("x_value must be either 'look', 'total n', or 'followed n'.")

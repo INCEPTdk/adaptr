@@ -50,8 +50,7 @@
 #'
 #' @return A `trial_result` object containing everything listed below if
 #'   `sparse` (as described above) is `FALSE`. Otherwise only `final_status`,
-#'   `final_n`, `followed_n`, `trial_res`, `seed`, `sparse`, and
-#'   `adaptr_version` are included.
+#'   `final_n`, `followed_n`, `trial_res`, `seed`, and `sparse` are included.
 #'   \itemize{
 #'     \item `final_status`: either `"superiority"`, `"equivalence"`,
 #'       `"futility"`, or `"max"` (stopped at the last possible adaptive
@@ -143,8 +142,6 @@
 #'       specified in [setup_trial()], [setup_trial_binom()] or
 #'       [setup_trial_norm()].
 #'     \item `sparse`: single logical, corresponding to the `sparse` input.
-#'     \item `adaptr_version`: single character string, version of the `adaptr`
-#'       package used to run the analysis.
 #'    }
 #'
 #' @export
@@ -170,11 +167,7 @@ run_trial <- function(trial_spec, seed = NULL, sparse = FALSE) {
     stop0("trial_spec must be an object created by the setup_trial, ",
           "setup_trial_binom or setup_trial_norm function.")
   }
-  # Check adaptr version
-  adaptr_version <- trial_spec$adaptr_version
-  if (is.null(adaptr_version) | isTRUE(adaptr_version < .adaptr_version)) {
-    stop0("trial_spec was created by a previous version of adaptr. Please re-run trial setup.")
-  }
+
   # Random seed
   if (!is.null(seed)) {
     if (!verify_int(seed)) {
@@ -686,8 +679,7 @@ run_trial <- function(trial_spec, seed = NULL, sparse = FALSE) {
                    followed_n = followed_n,
                    trial_res = trial_arms,
                    seed = seed,
-                   sparse = TRUE,
-                   adaptr_version = .adaptr_version),
+                   sparse = TRUE),
               class = c("trial_result", "list"))
   } else {
     structure(list(final_status = final_status,
@@ -721,8 +713,7 @@ run_trial <- function(trial_spec, seed = NULL, sparse = FALSE) {
                    cri_width = cri_width,
                    n_draws = n_draws,
                    robust = robust,
-                   sparse = FALSE,
-                   adaptr_version = .adaptr_version),
+                   sparse = FALSE),
               class = c("trial_result", "list"))
   }
 }

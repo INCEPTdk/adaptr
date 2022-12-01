@@ -65,13 +65,6 @@ plot_status.trial_results <- function(object, x_value = "look", arm = NULL,
 
   assert_pkgs("ggplot2")
 
-  adaptr_version <- object$trial_spec$adaptr_version
-  if (is.null(adaptr_version) | isTRUE(adaptr_version < .adaptr_version)) {
-    stop0("object was created by a previous version of adaptr and cannot be used ",
-          "by this version of adaptr unless the object is updated. ",
-          "Type 'help(\"update_saved_trials\")' for help on updating.")
-  }
-
   if (!isTRUE(x_value %in% c("look", "total n", "followed n") & length(x_value) == 1)) {
     stop0("x_value must be either 'look', 'total n', or 'followed n'.")
   }
@@ -94,11 +87,11 @@ plot_status.trial_results <- function(object, x_value = "look", arm = NULL,
     dta <- list()
     for (i in seq_along(arm)) {
       cur_dta <- extract_statuses(object, x_value = x_value, arm = arm[i])
-      cur_dta$facet <- arm[i]
+      cur_dta$arm_facet <- arm[i]
       dta[[i]] <- cur_dta
     }
     dta <- do.call(rbind, dta)
-    dta$facet <- factor(dta$facet, levels = arm)
+    dta$arm_facet <- factor(dta$arm_facet, levels = arm)
   }
 
   colours <- c(Recruiting = "grey50", Inferiority = "darkred", Futility = "#5C3D00",
@@ -118,7 +111,7 @@ plot_status.trial_results <- function(object, x_value = "look", arm = NULL,
       nrow <- ceiling(sqrt(length(arm)))
     }
     p <- p +
-      ggplot2::facet_wrap(ggplot2::vars(facet), scales = "free_x", nrow = nrow, ncol = ncol, strip.position = "top") +
+      ggplot2::facet_wrap(ggplot2::vars(arm_facet), scales = "free_x", nrow = nrow, ncol = ncol, strip.position = "top") +
       ggplot2::theme(strip.background = ggplot2::element_blank(), strip.placement = "outside")
   }
   # Return

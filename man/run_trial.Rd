@@ -26,8 +26,7 @@ required by \code{\link[=plot_history]{plot_history()}}.}
 \value{
 A \code{trial_result} object containing everything listed below if
 \code{sparse} (as described above) is \code{FALSE}. Otherwise only \code{final_status},
-\code{final_n}, \code{followed_n}, \code{trial_res}, \code{seed}, \code{sparse}, and
-\code{adaptr_version} are included.
+\code{final_n}, \code{followed_n}, \code{trial_res}, \code{seed}, and \code{sparse} are included.
 \itemize{
 \item \code{final_status}: either \code{"superiority"}, \code{"equivalence"},
 \code{"futility"}, or \code{"max"} (stopped at the last possible adaptive
@@ -119,8 +118,6 @@ the order of randomization (\code{0} or \code{1} for binary outcomes).
 specified in \code{\link[=setup_trial]{setup_trial()}}, \code{\link[=setup_trial_binom]{setup_trial_binom()}} or
 \code{\link[=setup_trial_norm]{setup_trial_norm()}}.
 \item \code{sparse}: single logical, corresponding to the \code{sparse} input.
-\item \code{adaptr_version}: single character string, version of the \code{adaptr}
-package used to run the analysis.
 }
 }
 \description{

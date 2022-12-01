@@ -139,14 +139,6 @@ extract_results <- function(object,
     stop0("object must be an output from the run_trials function.")
   }
 
-  # Check version
-  adaptr_version <- object$adaptr_version
-  if (is.null(adaptr_version) | isTRUE(adaptr_version < .adaptr_version)) {
-    stop0("object was created by a previous version of adaptr and cannot be used ",
-          "by this version of adaptr unless the object is updated. ",
-          "Type 'help(\"update_saved_trials\")' for help on updating.")
-  }
-
   # Set final_ests
   if (is.null(final_ests)) {
     final_ests <- !all(object$trial_spec$data_looks == object$trial_spec$randomised_at_looks)

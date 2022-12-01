@@ -179,11 +179,13 @@ plot_convergence(trial_res_mult, metrics = c("size mean", "prob superior",
 ```
 
 It is seen that the low number of simulations used in this example leads to
-substantial uncertainty and instability in performance metrics.
+substantial uncertainty and instability in performance metrics (except the ideal
+design percentage, which is at 100% here, but would likely drop somewhat if more
+simulations were conducted).
 
 ### Visualise trial results
-We need non-sparse results for `plot_history()` (but *not* for `plot_status()`),
-so first we re-run `run_trials()`:
+We need non-sparse results for `plot_history()` (but *not* for `plot_status()`
+or `plot_convergence()` presented above), so first we re-run `run_trials()`:
 
 ```{r}
 trial_res_mult <- run_trials(binom_trial, n_rep = 25, base_seed = 67890,
