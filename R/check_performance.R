@@ -181,9 +181,9 @@ check_performance <- function(object, select_strategy = "control if available",
       if (!verify_int(boot_seed)) {
         stop0("boot_seed must be either NULL, 'base' or a single whole number.")
       }
-      if (exists(".random.seed", envir = globalenv())) {
-        oldseed <- get(".random.seed", envir = globalenv())
-        on.exit(assign(".random.seed", value = oldseed,
+      if (exists(".Random.seed", envir = globalenv())) {
+        oldseed <- get(".Random.seed", envir = globalenv())
+        on.exit(assign(".Random.seed", value = oldseed,
                        envir = globalenv()), add = TRUE, after = FALSE)
       }
       set.seed(boot_seed)
