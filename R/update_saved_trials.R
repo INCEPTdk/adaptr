@@ -82,6 +82,7 @@ update_saved_trials <- function(path, version = NULL, compress = TRUE) {
 
       if (!sparse) { # Update results for non-sparse objects
         tmp$randomised_at_looks <- tmp$looks
+        tmp$max_randomised <- tmp$max_n
         for (l in seq_along(tmp$all_looks)) { # Update results for each look
           tmp$all_looks[[l]]$sum_ys_all <- tmp$all_looks[[l]]$sum_ys
           tmp$all_looks[[l]]$ns_all <- tmp$all_looks[[l]]$ns
@@ -94,7 +95,7 @@ update_saved_trials <- function(path, version = NULL, compress = TRUE) {
       object$trial_results[[i]] <- if (sparse) {
         tmp[c("final_status", "final_n", "followed_n", "trial_res", "seed", "sparse")]
       } else {
-        tmp[c("final_status", "final_n", "followed_n", "max_n", "looks", "planned_looks", "randomised_at_looks",
+        tmp[c("final_status", "final_n", "followed_n", "max_n", "max_randomised", "looks", "planned_looks", "randomised_at_looks",
               "start_control", "final_control", "control_prob_fixed", "inferiority", "superiority", "equivalence_prob",
               "equivalence_diff", "equivalence_only_first", "futility_prob", "futility_diff", "futility_only_first",
               "highest_is_best", "soften_power", "best_arm", "trial_res", "all_looks", "allocs", "ys", "seed", "description",

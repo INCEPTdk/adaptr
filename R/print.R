@@ -203,7 +203,7 @@ print.trial_result <- function(x, prob_digits = 3, ...) {
                        x$start_control, "/", x$final_control)))
 
     cat(final_status)
-    cat0("\nFinal/maximum allowed sample sizes: ", fmt_pct(x$final_n, max(x$randomised_at_looks)),
+    cat0("\nFinal/maximum allowed sample sizes: ", fmt_pct(x$final_n, x$max_randomised),
          "\nAvailable outcome data at last adaptive analysis: ", fmt_pct(x$followed_n, x$final_n), "\n\n")
   }
 
