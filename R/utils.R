@@ -128,7 +128,7 @@ cat0 <- function(...) cat(..., sep = "")
 
 
 
-#' stop0() and warning() with call. = FALSE
+#' stop() and warning() with call. = FALSE
 #'
 #' Used internally. Calls [stop0()] or [warning()] but enforces `call. = FALSE`,
 #' to suppress the call from the error/warning.
