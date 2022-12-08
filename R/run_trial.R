@@ -56,17 +56,19 @@
 #'       `"futility"`, or `"max"` (stopped at the last possible adaptive
 #'       analysis), as calculated during the adaptive analyses.
 #'     \item `final_n`: the total number of patients randomised.
-#'     \item `followed_n` the total number of patients with available outcome
+#'     \item `followed_n`: the total number of patients with available outcome
 #'       data at the last adaptive analysis conducted.
 #'     \item `max_n`: the pre-specified maximum number of patients with outcome
 #'       data available at the last possible adaptive analysis.
+#'     \item `max_randomised`: the pre-specified maximum number of patients
+#'       randomised at the last possible adaptive analysis.
 #'     \item `looks`: numeric vector, the total number of patients with outcome
 #'       data available at each conducted adaptive analysis.
 #'     \item `planned_looks`: numeric vector, the cumulated number of patients
 #'       planned to have outcome data available at each adaptive analysis, even
 #'       those not conducted if the simulation is stopped before the final
 #'       possible analysis.
-#'     \item `randomised at looks`: numeric vector, the total number of patients
+#'     \item `randomised_at_looks`: numeric vector, the total number of patients
 #'       randomised at each conducted adaptive analysis.
 #'     \item `start_control`: character, initial common control arm (if
 #'       specified).
@@ -686,6 +688,7 @@ run_trial <- function(trial_spec, seed = NULL, sparse = FALSE) {
                    final_n = total_n,
                    followed_n = followed_n,
                    max_n = data_looks[n_data_looks],
+                   max_randomised = max(randomised_at_looks),
                    looks = data_looks[1:look],
                    planned_looks = data_looks,
                    randomised_at_looks = randomised_at_looks[1:look],

@@ -32,17 +32,19 @@ A \code{trial_result} object containing everything listed below if
 \code{"futility"}, or \code{"max"} (stopped at the last possible adaptive
 analysis), as calculated during the adaptive analyses.
 \item \code{final_n}: the total number of patients randomised.
-\item \code{followed_n} the total number of patients with available outcome
+\item \code{followed_n}: the total number of patients with available outcome
 data at the last adaptive analysis conducted.
 \item \code{max_n}: the pre-specified maximum number of patients with outcome
 data available at the last possible adaptive analysis.
+\item \code{max_randomised}: the pre-specified maximum number of patients
+randomised at the last possible adaptive analysis.
 \item \code{looks}: numeric vector, the total number of patients with outcome
 data available at each conducted adaptive analysis.
 \item \code{planned_looks}: numeric vector, the cumulated number of patients
 planned to have outcome data available at each adaptive analysis, even
 those not conducted if the simulation is stopped before the final
 possible analysis.
-\item \verb{randomised at looks}: numeric vector, the total number of patients
+\item \code{randomised_at_looks}: numeric vector, the total number of patients
 randomised at each conducted adaptive analysis.
 \item \code{start_control}: character, initial common control arm (if
 specified).
