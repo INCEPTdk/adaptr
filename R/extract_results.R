@@ -171,7 +171,7 @@ extract_results <- function(object,
   } else if (isTRUE(select_strategy == "control if available")){
     select_strategy  <- if (is.null(control)) "none" else "control"
   } else if (!(select_strategy %in% c("best", "none")) ) {
-    stop0("select_strateg must be either 'control if available', 'none', ",
+    stop0("select_strategy must be either 'control if available', 'none', ",
           "control', 'final control', 'control or best', 'best', 'list or best', ",
           "or 'list'.")
   }
