@@ -211,8 +211,7 @@ plot_convergence <- function(object, metrics = "size mean", resolution = 100,
 
   # Make the base plot
   p <- ggplot2::ggplot(data = plot_dta, ggplot2::aes(res_points, y)) +
-    ggplot2::geom_line(ggplot2::aes(colour = split), show.legend = FALSE) +
-    ggplot2::scale_colour_manual(values = rep_len("black", length.out = n_split)) +
+    ggplot2::geom_line(ggplot2::aes(group = split), show.legend = FALSE) +
     ggplot2::scale_x_continuous(limits = c(0, max(res_points)),
                                 name = ifelse(n_split == 1, "Number of simulations", "Number of simulations per split"),
                                 expand = ggplot2::expansion(mult = c(0, 0.035))) +
