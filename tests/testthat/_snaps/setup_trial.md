@@ -19,9 +19,12 @@
       
       Maximum sample size: 500 
       Maximum number of data looks: 10
-      Planned looks after every 50 patients until maximum sample size
-      Superiority threshold: 0.99 
-      Inferiority threshold: 0.01 
+      Planned looks after every 50
+       patients have reached follow-up until final look after 500 patients
+      Number of patients randomised at each look:  50, 100, 150, 200, 250, 300, 350, 400, 450, 500
+      
+      Superiority threshold: 0.99 (all analyses)
+      Inferiority threshold: 0.01 (all analyses)
       No equivalence threshold
       No futility threshold
       Soften power for all analyses: 0.5
@@ -47,11 +50,12 @@
       
       Maximum sample size: 2000 
       Maximum number of data looks: 18
-      Planned data looks after:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000 patients
+      Planned data looks after:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000 patients have reached follow-up
+      Number of patients randomised at each look:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000
       
-      Superiority threshold: 0.99 
-      Inferiority threshold: 0.01 
-      Equivalence threshold: 0.9 (no common control)
+      Superiority threshold: 0.99 (all analyses)
+      Inferiority threshold: 0.01 (all analyses)
+      Equivalence threshold: 0.9 (all analyses) (no common control)
       Absolute equivalence difference: 0.05
       No futility threshold (not relevant - no common control)
       Soften power for all analyses: 0.5
@@ -75,11 +79,12 @@
       
       Maximum sample size: 2000 
       Maximum number of data looks: 18
-      Planned data looks after:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000 patients
+      Planned data looks after:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000 patients have reached follow-up
+      Number of patients randomised at each look:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000
       
-      Superiority threshold: 0.99 
-      Inferiority threshold: 0.01 
-      Equivalence threshold: 0.9 (no common control)
+      Superiority threshold: 0.99 (all analyses)
+      Inferiority threshold: 0.01 (all analyses)
+      Equivalence threshold: 0.9 (all analyses) (no common control)
       Absolute equivalence difference: 0.05
       No futility threshold (not relevant - no common control)
       Soften power for all analyses: 0.5
@@ -104,10 +109,13 @@
       
       Maximum sample size: 5000 
       Maximum number of data looks: 25
-      Planned looks after every 200 patients until maximum sample size
-      Superiority threshold: 0.99 
-      Inferiority threshold: 0.01 
-      Equivalence threshold: 0.9 (only checked for first control)
+      Planned looks after every 200
+       patients have reached follow-up until final look after 5000 patients
+      Number of patients randomised at each look:  200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000, 2200, 2400, 2600, 2800, 3000, 3200, 3400, 3600, 3800, 4000, 4200, 4400, 4600, 4800, 5000
+      
+      Superiority threshold: 0.99 (all analyses)
+      Inferiority threshold: 0.01 (all analyses)
+      Equivalence threshold: 0.9 (all analyses) (only checked for first control)
       Absolute equivalence difference: 0.5
       No futility threshold
       Soften power for all analyses: 1 (no softening)
