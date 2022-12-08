@@ -117,7 +117,7 @@ plot_convergence <- function(object, metrics = "size mean", resolution = 100,
                               select_preferences = select_preferences, te_comp = te_comp, raw_ests = raw_ests,
                               final_ests = final_ests)
 
- if (isTRUE(restrict == "superior")) {
+  if (isTRUE(restrict == "superior")) {
     extr_res <- extr_res[!is.na(extr_res$superior_arm), ]
   } else if (isTRUE(restrict == "selected")) {
     extr_res <- extr_res[!is.na(extr_res$selected_arm), ]
