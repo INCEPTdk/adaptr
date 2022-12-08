@@ -49,6 +49,7 @@
       final_n                  1    -none-     numeric  
       followed_n               1    -none-     numeric  
       max_n                    1    -none-     numeric  
+      max_randomised           1    -none-     numeric  
       looks                    7    -none-     numeric  
       planned_looks           18    -none-     numeric  
       randomised_at_looks      7    -none-     numeric  
@@ -106,7 +107,7 @@
       * Ideal design percentage: 50.0%
       
       Simulation details:
-      * Simulation time: 0.919 secs
+      * Simulation time: 1.03 secs
       * Base random seed: 12345
       * Credible interval width: 95%
       * Number of posterior draws: 5000
@@ -140,7 +141,7 @@
       * Ideal design percentage: 50.0%
       
       Simulation details:
-      * Simulation time: 0.919 secs
+      * Simulation time: 1.03 secs
       * Base random seed: 12345
       * Credible interval width: 95%
       * Number of posterior draws: 5000
