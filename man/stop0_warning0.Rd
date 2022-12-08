@@ -4,7 +4,7 @@
 \alias{stop0_warning0}
 \alias{stop0}
 \alias{warning0}
-\title{stop0() and warning() with call. = FALSE}
+\title{stop() and warning() with call. = FALSE}
 \usage{
 stop0(...)
 
