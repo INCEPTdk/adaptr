@@ -1,5 +1,7 @@
-# This files serves to document what RData files are created for tests,
-# and may be used to recreate them if needed
+# This file serves to document what RData files are created for tests,
+# and may be used to recreate them if needed. The contents of the if-statement
+# block are intended to be run manually after calling devtools::load_all() when
+# working in the development version
 
 if (FALSE) {
   save_testdata <- function(object, filename) {
@@ -24,6 +26,9 @@ if (FALSE) {
 
   res <- run_trials(trial, n_rep = 20, base_seed = 12345, sparse = FALSE)
   save_testdata(res, "binom__results__3_arms__no_control__equivalence__softened")
+
+  res <- run_trials(trial, n_rep = 20, base_seed = 12345)
+  save_testdata(res, "binom__results__3_arms__no_control__equivalence__softened___sparse")
 
 
   # Binomial trial with common control, equivalence and futility testing
