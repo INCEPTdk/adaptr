@@ -17,7 +17,7 @@ test_that("updating outdated trials objects works", {
   expect_invisible(update_saved_trials(tmp_file))
   expect_warning(update_saved_trials(tmp_file))
 
-  pseudo_old_res_sparse <- read_testdata("binom__results__3_arms__no_control__equivalence__softened___sparse")
+  pseudo_old_res_sparse <- read_testdata("binom__results__3_arms__no_control__equivalence__softened__sparse")
   pseudo_old_res_sparse$adaptr_version <- NULL # mimic what happened in adaptr until v1.1.1
   saveRDS(pseudo_old_res_sparse, tmp_file)
   expect_invisible(update_saved_trials(tmp_file))

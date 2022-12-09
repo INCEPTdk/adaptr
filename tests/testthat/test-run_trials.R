@@ -1,7 +1,5 @@
 test_that("dispatch_trial_runs works", {
-  setup <- read_testdata(
-    "binom__setup__3_arms__common_control__equivalence__futility__softened"
-  )
+  setup <- read_testdata("binom__setup__3_arms__common_control__equivalence__futility__softened")
 
   # Serial run
   expect_snapshot(
@@ -11,6 +9,8 @@ test_that("dispatch_trial_runs works", {
   # Parallel run
   cl <- parallel::makeCluster(2)
   on.exit(parallel::stopCluster(cl))
+  # Necessary to avoid testing error due to versions of functions from previous installed package being loaded on the cluster
+  parallel::clusterExport(cl, ls("package:adaptr"))
   expect_snapshot(
     dispatch_trial_runs(1:5, setup, base_seed = 12345, sparse = TRUE, cores = 2, cl = cl)
   )
@@ -30,7 +30,7 @@ test_that("multiple trials simulation works", {
   setup <- read_testdata("binom__setup__3_arms__no_control__equivalence__softened")
   res <- run_trials(setup, n_rep = 20, base_seed = 12345, sparse = FALSE)
 
-  sink_file <- tempfile() # diverts progress bar to no distort test output
+  sink_file <- tempfile() # diverts progress bar to not distort test output
   on.exit(try(file.remove(sink_file)), add = TRUE, after = FALSE)
   sink(sink_file)
   res_with_progress <- run_trials(setup, n_rep = 20, base_seed = 12345, sparse = FALSE, progress = 0.1)

@@ -42,42 +42,38 @@
 ---
 
     Code
-      summary(res)
+      print(res)
     Output
-                             Length Class      Mode     
-      final_status             1    -none-     character
-      final_n                  1    -none-     numeric  
-      followed_n               1    -none-     numeric  
-      max_n                    1    -none-     numeric  
-      max_randomised           1    -none-     numeric  
-      looks                    7    -none-     numeric  
-      planned_looks           18    -none-     numeric  
-      randomised_at_looks      7    -none-     numeric  
-      start_control            1    -none-     character
-      final_control            1    -none-     character
-      control_prob_fixed       0    -none-     NULL     
-      inferiority              1    -none-     numeric  
-      superiority              1    -none-     numeric  
-      equivalence_prob         1    -none-     numeric  
-      equivalence_diff         1    -none-     numeric  
-      equivalence_only_first   1    -none-     logical  
-      futility_prob            1    -none-     numeric  
-      futility_diff            1    -none-     numeric  
-      futility_only_first      1    -none-     logical  
-      highest_is_best          1    -none-     logical  
-      soften_power            18    -none-     numeric  
-      best_arm                 1    -none-     character
-      trial_res               25    data.frame list     
-      all_looks                7    -none-     list     
-      allocs                 900    -none-     character
-      ys                     900    -none-     numeric  
-      seed                     1    -none-     numeric  
-      description              1    -none-     character
-      add_info                 0    -none-     NULL     
-      cri_width                1    -none-     numeric  
-      n_draws                  1    -none-     numeric  
-      robust                   1    -none-     logical  
-      sparse                   1    -none-     logical  
+      Single simulation result [saved/printed with sparse details]
+      
+      Final status: inconclusive, stopped at final allowed adaptive analysis
+      Final sample size: 2000
+      Available outcome data at last adaptive analysis: 2000/2000 (100.0%)
+      
+      Trial results overview:
+       arms true_ys final_status status_look status_probs final_alloc
+          A    0.25       active          NA           NA       0.194
+          B    0.20       active          NA           NA       0.656
+          C    0.30     inferior        2000        0.007       0.150
+      
+      Esimates from final analysis (all patients):
+       arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
+          A        180    742        0.243         0.243        0.0161      0.213
+          B        178    841        0.212         0.212        0.0141      0.185
+          C        113    417        0.271         0.272        0.0221      0.230
+       hi_cri_all
+            0.274
+            0.240
+            0.316
+      
+      Estimates from last adaptive analysis including each arm:
+       arms sum_ys  ns raw_ests post_ests post_errs lo_cri hi_cri
+          A    180 742    0.243     0.243    0.0159  0.213  0.275
+          B    178 841    0.212     0.212    0.0141  0.185  0.241
+          C    113 417    0.271     0.271    0.0215  0.230  0.316
+      
+      Simulation details:
+      * Random seed: 12345
 
 # print and summary of multiple trials work
 
@@ -107,7 +103,7 @@
       * Ideal design percentage: 50.0%
       
       Simulation details:
-      * Simulation time: 1.03 secs
+      * Simulation time: 0.881 secs
       * Base random seed: 12345
       * Credible interval width: 95%
       * Number of posterior draws: 5000
@@ -141,11 +137,60 @@
       * Ideal design percentage: 50.0%
       
       Simulation details:
-      * Simulation time: 1.03 secs
+      * Simulation time: 0.881 secs
       * Base random seed: 12345
       * Credible interval width: 95%
       * Number of posterior draws: 5000
       * Estimation method: posterior medians with MAD-SDs
+
+---
+
+    Code
+      print(res)
+    Output
+      Single simulation result [saved/printed with sparse details]
+      
+      Final status: inconclusive, stopped at final allowed adaptive analysis
+      Final sample size: 2000
+      Available outcome data at last adaptive analysis: 2000/2000 (100.0%)
+      
+      Trial results overview:
+       arms true_ys final_status status_look status_probs final_alloc
+          A    0.25       active          NA           NA       0.194
+          B    0.20       active          NA           NA       0.656
+          C    0.30     inferior        2000        0.007       0.150
+      
+      Esimates from final analysis (all patients):
+       arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
+          A        180    742        0.243         0.243        0.0161      0.213
+          B        178    841        0.212         0.212        0.0141      0.185
+          C        113    417        0.271         0.272        0.0221      0.230
+       hi_cri_all
+            0.274
+            0.240
+            0.316
+      
+      Estimates from last adaptive analysis including each arm:
+       arms sum_ys  ns raw_ests post_ests post_errs lo_cri hi_cri
+          A    180 742    0.243     0.243    0.0159  0.213  0.275
+          B    178 841    0.212     0.212    0.0141  0.185  0.241
+          C    113 417    0.271     0.271    0.0215  0.230  0.316
+      
+      Simulation details:
+      * Random seed: 12345
+
+---
+
+    Code
+      summary(res)
+    Output
+                   Length Class      Mode     
+      final_status  1     -none-     character
+      final_n       1     -none-     numeric  
+      followed_n    1     -none-     numeric  
+      trial_res    25     data.frame list     
+      seed          1     -none-     numeric  
+      sparse        1     -none-     logical  
 
 # print of trial setup works
 
@@ -179,4 +224,70 @@
       (checked for first and eventual new controls)
       Absolute futility difference (in beneficial direction): 0.05 
       Soften power for all analyses: 0.5
+
+---
+
+    Code
+      print(res)
+    Output
+      Trial specification: generic normally distributed outcome trial
+      * Undesirable outcome
+      * Common control arm: B 
+      * Control arm probability matched to best non-control arm
+      * Best arms: A and B
+      
+      Arms, true outcomes, starting allocation probabilities 
+      and allocation probability limits:
+       arms true_ys start_probs fixed_probs min_probs max_probs
+          A    0.25       0.333          NA        NA        NA
+          B    0.25       0.333          NA        NA        NA
+          C    0.30       0.333          NA        NA        NA
+      
+      Maximum sample size: 1000 
+      Maximum number of data looks: 5
+      Planned data looks after:  200, 400, 600, 800, 1000 patients have reached follow-up
+      Number of patients randomised at each look:  200, 400, 600, 800, 1000
+      
+      Superiority thresholds: 0.99, 0.98, 0.97, 0.96, 0.95
+      Inferiority thresholds: 0.01, 0.02, 0.03, 0.04, 0.05
+      Equivalence thresholds: 0.99, 0.98, 0.97, 0.96, 0.95 
+      (only checked for first control)
+      Absolute equivalence difference: 0.05
+      Futility thresholds: 0.99, 0.98, 0.97, 0.96, 0.95 
+      (only checked for first control)
+      Absolute futility difference (in beneficial direction): 0.05 
+      Soften power for all analyses: 1 (no softening)
+      
+      Additional info: Arm SDs - A: 1; B: 1; C: 1.
+
+---
+
+    Code
+      print(res)
+    Output
+      Trial specification: generic normally distributed outcome trial
+      * Undesirable outcome
+      * Common control arm: B 
+      * Control arm probability fixed at 0.333
+      * Best arms: A and B
+      
+      Arms, true outcomes, starting allocation probabilities 
+      and allocation probability limits:
+       arms true_ys start_probs fixed_probs min_probs max_probs
+          A    0.25       0.333       0.333        NA        NA
+          B    0.25       0.333       0.333        NA        NA
+          C    0.30       0.333       0.333        NA        NA
+      
+      Maximum sample size: 1000 
+      Maximum number of data looks: 5
+      Planned data looks after:  200, 400, 600, 800, 1000 patients have reached follow-up
+      Number of patients randomised at each look:  200, 400, 600, 800, 1000
+      
+      Superiority threshold: 0.99 (all analyses)
+      Inferiority threshold: 0.01 (all analyses)
+      No equivalence threshold
+      No futility threshold
+      Soften power for all analyses: 1 (no softening - all arms fixed)
+      
+      Additional info: Arm SDs - A: 1; B: 1; C: 1.
 
