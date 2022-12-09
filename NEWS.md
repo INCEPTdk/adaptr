@@ -129,6 +129,13 @@ editor_options:
     trials/arms still recruiting) was sometimes erroneously not plotted
     due to a floating point issue where the summed proportions could
     sometimes slightly exceed 100%.
+    
+*   Added additional tests to test increase coverage of existing functions.
+
+*   Minor fix in internal `reallocate_probs()` function, when `"match"`-ing
+    control arm allocation to the highest probability in a non-control arm and
+    if all probabilities were initially 0, the returned vector lacked names,
+    which are now added.
 
 # adaptr 1.1.1
 
