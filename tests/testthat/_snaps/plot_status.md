@@ -156,3 +156,20 @@
       89 17 1900 1900 0.05000000 Superiority
       90 18 2000 2000 0.05000000 Superiority
 
+---
+
+    Code
+      extract_statuses(res, x_value = "look")
+    Output
+         x      status    p
+      1  1  Recruiting 1.00
+      2  2  Recruiting 1.00
+      3  3  Recruiting 0.95
+      4  4  Recruiting 0.95
+      5  5  Recruiting 0.95
+      21 1 Superiority 0.00
+      22 2 Superiority 0.00
+      23 3 Superiority 0.05
+      24 4 Superiority 0.05
+      25 5 Superiority 0.05
+

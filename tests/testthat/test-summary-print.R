@@ -5,7 +5,7 @@ test_that("print and summary of single trial work", {
   res <- read_testdata("binom__result__3_arms__no_control__equivalence__softened__sparse")
   expect_snapshot(print(res))
 
-  res <- read_testdata("norm__setup__3_arms__common_control__matched__varying_probs")
+  res <- read_testdata("norm__result__3_arms__common_control__fixed__all_arms_fixed")
   expect_snapshot(print(res))
 })
 
@@ -27,6 +27,9 @@ test_that("print of trial setup works", {
   expect_snapshot(print(res))
 
   res <- read_testdata("norm__setup__3_arms__common_control__fixed__all_arms_fixed")
+  expect_snapshot(print(res))
+
+  res <- read_testdata("norm__setup__3_arms__common_control__matched__varying_probs")
   expect_snapshot(print(res))
 })
 

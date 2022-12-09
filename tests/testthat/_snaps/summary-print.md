@@ -75,6 +75,49 @@
       Simulation details:
       * Random seed: 12345
 
+---
+
+    Code
+      print(res)
+    Output
+      Single simulation result: generic normally distributed outcome trial
+      * Undesirable outcome
+      * Initial/final common control arms: B/B
+      
+      Final status: inconclusive, stopped at final allowed adaptive analysis
+      Final/maximum allowed sample sizes: 1000/1000 (100.0%)
+      Available outcome data at last adaptive analysis: 1000/1000 (100.0%)
+      
+      Trial results overview:
+       arms true_ys final_status status_look status_probs final_alloc
+          A    0.25       active          NA           NA       0.333
+          B    0.25      control          NA           NA       0.333
+          C    0.30       active          NA           NA       0.333
+      
+      Esimates from final analysis (all patients):
+       arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
+          A       81.8    355        0.230         0.229        0.0550      0.120
+          B       69.9    328        0.213         0.213        0.0560      0.105
+          C       72.1    317        0.228         0.228        0.0565      0.119
+       hi_cri_all
+            0.337
+            0.325
+            0.338
+      
+      Estimates from last adaptive analysis including each arm:
+       arms sum_ys  ns raw_ests post_ests post_errs lo_cri hi_cri
+          A   81.8 355    0.230     0.231    0.0541  0.123  0.337
+          B   69.9 328    0.213     0.213    0.0551  0.104  0.320
+          C   72.1 317    0.228     0.228    0.0559  0.119  0.338
+      
+      Simulation details:
+      * Random seed: 12345
+      * Credible interval width: 95%
+      * Number of posterior draws: 5000
+      * Posterior estimation method: means with SDs
+      
+      Additional info: Arm SDs - A: 1; B: 1; C: 1.
+
 # print and summary of multiple trials work
 
     Code
@@ -288,6 +331,41 @@
       No equivalence threshold
       No futility threshold
       Soften power for all analyses: 1 (no softening - all arms fixed)
+      
+      Additional info: Arm SDs - A: 1; B: 1; C: 1.
+
+---
+
+    Code
+      print(res)
+    Output
+      Trial specification: generic normally distributed outcome trial
+      * Undesirable outcome
+      * Common control arm: B 
+      * Control arm probability matched to best non-control arm
+      * Best arms: A and B
+      
+      Arms, true outcomes, starting allocation probabilities 
+      and allocation probability limits:
+       arms true_ys start_probs fixed_probs min_probs max_probs
+          A    0.25       0.333          NA        NA        NA
+          B    0.25       0.333          NA        NA        NA
+          C    0.30       0.333          NA        NA        NA
+      
+      Maximum sample size: 1000 
+      Maximum number of data looks: 5
+      Planned data looks after:  200, 400, 600, 800, 1000 patients have reached follow-up
+      Number of patients randomised at each look:  200, 400, 600, 800, 1000
+      
+      Superiority thresholds: 0.99, 0.98, 0.97, 0.96, 0.95
+      Inferiority thresholds: 0.01, 0.02, 0.03, 0.04, 0.05
+      Equivalence thresholds: 0.99, 0.98, 0.97, 0.96, 0.95 
+      (only checked for first control)
+      Absolute equivalence difference: 0.05
+      Futility thresholds: 0.99, 0.98, 0.97, 0.96, 0.95 
+      (only checked for first control)
+      Absolute futility difference (in beneficial direction): 0.05 
+      Soften power for all analyses: 1 (no softening)
       
       Additional info: Arm SDs - A: 1; B: 1; C: 1.
 

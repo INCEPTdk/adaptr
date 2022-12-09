@@ -20,6 +20,8 @@ test_that("Status plot for all arms works", {
 test_that("Status extraction works", {
   expect_snapshot(extract_statuses(results, x_value = "look"))
   expect_snapshot(extract_statuses(results, x_value = "n"))
+  res <- read_testdata( "norm__results__3_arms__common_control__fixed__all_arms_fixed")
+  expect_snapshot(extract_statuses(res, x_value = "look"))
 })
 
 test_that("Status plot produces errors with invalid input", {

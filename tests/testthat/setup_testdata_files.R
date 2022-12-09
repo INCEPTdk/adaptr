@@ -91,5 +91,11 @@ if (FALSE) {
     data_looks = seq(from = 200, to = 1000, by = 200)
   )
   save_testdata(trial, "norm__setup__3_arms__common_control__fixed__all_arms_fixed")
+
+  res <- run_trial(trial, seed = 12345)
+  save_testdata(res, "norm__result__3_arms__common_control__fixed__all_arms_fixed")
+
+  res <- run_trials(trial, n_rep = 20, base_seed = 12345)
+  save_testdata(res, "norm__results__3_arms__common_control__fixed__all_arms_fixed")
 }
 
