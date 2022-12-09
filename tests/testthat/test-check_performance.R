@@ -19,4 +19,15 @@ test_that("invalid parameters handled correctly", {
 
   expect_error(check_performance(res, uncertainty = "yes"))
   expect_error(check_performance(res, uncertainty = TRUE, ci_width = 95))
+
+  expect_error(check_performance(res, restrict = "inferior"))
+
+  expect_error(check_performance(res, uncertainty = TRUE, n_boot = 10))
+  expect_warning(check_performance(res, uncertainty = TRUE, n_boot = 100))
+  expect_error(check_performance(res, uncertainty = TRUE, n_boot = 1000, boot_seed == "wrong"))
+  res_no_seed <- res
+  res_no_seed$base_seed <- NULL
+  expect_error(check_performance(res_no_seed, uncertainty = TRUE, n_boot = 1000, boot_seed == "base"))
+  expect_error(check_performance(res, uncertainty = TRUE, n_boot = 1000, boot_seed == 0.5))
+
 })
