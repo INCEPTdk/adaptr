@@ -112,7 +112,7 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
       any(fixed_probs > 1, na.rm = TRUE) | any(fixed_probs < 0, na.rm = TRUE) |
       any(min_probs > 1, na.rm = TRUE) | any(min_probs < 0, na.rm = TRUE) |
       any(max_probs > 1, na.rm = TRUE) | any(max_probs < 0, na.rm = TRUE)) {
-    stop0("All allocaiton probability values/limits (start_probs, fixed_probs, ",
+    stop0("All allocation probability values/limits (start_probs, fixed_probs, ",
           "min_probs and max_probs) must be between 0 and 1.")
   }
 

@@ -69,3 +69,37 @@ test_that("multiple trials simulation works on multiple cores", {
   res_mc_extr <- extract_results(run_trials(setup, n_rep = 20, base_seed = 12345, sparse = FALSE, cores = 2))
   expect_equal(res_extr, res_mc_extr)
 })
+
+
+
+test_that("Growing trial objects works", {
+  setup <- setup_trial_binom(
+    arms = c("Arm A", "Arm B", "Arm C"),
+    true_ys = c(0.25, 0.20, 0.30),
+    min_probs = rep(0.15, 3),
+    data_looks = seq(from = 300, to = 2000, by = 100),
+    equivalence_prob = 0.9,
+    equivalence_diff = 0.05,
+    soften_power = 0.5
+  )
+
+  # Everything run in one go
+  res1 <- run_trials(setup, n_rep = 20, base_seed = 12345)
+
+  # Run in two "batches", saving results in a file
+  temp_res_file <- tempfile()
+  on.exit(try(rm(temp_res_file), silent = TRUE), add = TRUE, after = FALSE)
+  res2 <- run_trials(setup, n_rep = 10, base_seed = 12345, path = temp_res_file)
+  res2 <- run_trials(setup, n_rep = 20, base_seed = 12345, path = temp_res_file, grow = TRUE)
+
+  for (s in c("res1", "res2")) {
+    temp_s <- get(s)
+    temp_s$elapsed_time <- as.difftime(0, units = "secs")
+    for (f in c("fun_y_gen", "fun_draws", "fun_raw_est"))
+      temp_s[[f]] <- deparse(temp_s[[f]])
+    assign(s, temp_s)
+  }
+
+  expect_equal(res1, res2)
+})
+
