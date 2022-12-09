@@ -39,7 +39,7 @@ package documentation
 paper in the Journal of Open Source Software describing the package
 * [An overview of methodological considerations regarding adaptive stopping, arm dropping and randomisation in clinical trials](https://doi.org/10.1016/j.jclinepi.2022.11.002) - paper in Journal of
 Clinical Epidemiology describing key methodological considerations in adaptive
-trials with description of the workflow anda simulation-based example using the
+trials with description of the workflow and a simulation-based example using the
 package
 
 ## Installation

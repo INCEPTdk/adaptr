@@ -31,7 +31,7 @@
 #' 3. The [extract_results()], [check_performance()] and [summary()] functions
 #' are used to extract results from multiple trial simulations, calculate
 #' performance metrics, and summarise results. The [plot_convergence()] function
-#' assessess stability of performance metrics according to the number of
+#' assesses stability of performance metrics according to the number of
 #' simulations conducted.
 #' 4. The [plot_status()] and [plot_history()] functions are used to plot the
 #' overall trial/arm statuses for multiple simulated trials or the history of

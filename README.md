@@ -34,7 +34,7 @@ supported by a grant from [Sygeforsikringen
     trials](https://doi.org/10.1016/j.jclinepi.2022.11.002) - paper in
     Journal of Clinical Epidemiology describing key methodological
     considerations in adaptive trials with description of the workflow
-    anda simulation-based example using the package
+    and a simulation-based example using the package
 
 ## Installation
 
@@ -204,7 +204,7 @@ print(res_sum, digits = 1)
 #> * Ideal design percentage: 100.0%
 #> 
 #> Simulation details:
-#> * Simulation time: 0.447 secs
+#> * Simulation time: 0.552 secs
 #> * Base random seed: 67890
 #> * Credible interval width: 95%
 #> * Number of posterior draws: 5000
