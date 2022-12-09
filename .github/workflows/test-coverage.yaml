@@ -26,5 +26,7 @@ jobs:
           extra-packages: covr
 
       - name: Test coverage
-        run: covr::codecov()
+        run: |
+          Sys.setenv(NOT_CRAN = "true") # ensure all tests are recognised
+          covr::codecov()
         shell: Rscript {0}
