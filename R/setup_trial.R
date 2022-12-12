@@ -46,7 +46,7 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
     if (is.null(control) | sum(control %in% arms) != 1) {
       stop0("control_prob_fixed is specified, but no single valid control is specified.")
     }
-    if (length(control_prob_fixed) == 1 & control_prob_fixed %in% c("sqrt-based", "sqrt-based start", "sqrt-based fixed")) {
+    if (isTRUE(length(control_prob_fixed) == 1 & control_prob_fixed %in% c("sqrt-based", "sqrt-based start", "sqrt-based fixed"))) {
       control_prob_fixed_orig <- control_prob_fixed
       if (!is.null(start_probs)) {
         stop0("When control_prob_fixed is set to 'sqrt-based', 'sqrt-based start', ",

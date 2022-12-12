@@ -137,6 +137,9 @@ editor_options:
     if all probabilities were initially 0, the returned vector lacked names,
     which are now added.
 
+*   Minor fix to internal `validate_trial()` function to not give an error when
+    multiple values were supplied to the `control_prob_fixed` argument.
+
 # adaptr 1.1.1
 
 This is a patch release triggered by a CRAN request for updates.

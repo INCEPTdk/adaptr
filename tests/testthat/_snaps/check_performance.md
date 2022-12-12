@@ -213,3 +213,79 @@
       27           rmse_te       NA
       28               idp  100.000
 
+---
+
+    Code
+      check_performance(res, restrict = "superior", uncertainty = TRUE, boot_seed = "base",
+        n_boot = 100)
+    Warning <simpleWarning>
+      values for n_boot < 1000 are not recommended, as they may cause instable results.
+    Output
+                    metric      est  err_sd err_mad   lo_ci    hi_ci
+      1       n_summarised   13.000   2.260   1.483   9.000   17.000
+      2          size_mean  876.923  98.264 114.460 712.558 1045.250
+      3            size_sd  337.031  35.016  32.177 237.961  367.142
+      4        size_median  800.000 199.737 296.520 573.750 1300.000
+      5           size_p25  600.000 107.538 111.195 500.000  928.750
+      6           size_p75 1300.000 183.213   0.000 761.875 1300.000
+      7        sum_ys_mean  190.769  20.889  23.817 155.329  226.319
+      8          sum_ys_sd   73.574   8.833   8.987  46.514   81.304
+      9      sum_ys_median  169.000  39.042  47.443 127.000  261.000
+      10        sum_ys_p25  127.000  18.639  14.085 112.000  189.600
+      11        sum_ys_p75  261.000  38.881  43.737 162.213  298.000
+      12     ratio_ys_mean    0.218   0.004   0.004   0.211    0.227
+      13       ratio_ys_sd    0.014   0.002   0.002   0.009    0.017
+      14   ratio_ys_median    0.212   0.007   0.002   0.209    0.230
+      15      ratio_ys_p25    0.210   0.004   0.003   0.201    0.214
+      16      ratio_ys_p75    0.229   0.007   0.007   0.211    0.239
+      17   prob_conclusive    0.800   0.094   0.074   0.600    0.950
+      18     prob_superior    1.000   0.000   0.000   1.000    1.000
+      19  prob_equivalence    0.000   0.000   0.000   0.000    0.000
+      20     prob_futility    0.000   0.000   0.000   0.000    0.000
+      21          prob_max    0.000   0.000   0.000   0.000    0.000
+      22 prob_select_arm_A    0.000   0.000   0.000   0.000    0.000
+      23 prob_select_arm_B    1.000   0.000   0.000   1.000    1.000
+      24 prob_select_arm_C    0.000   0.000   0.000   0.000    0.000
+      25  prob_select_none    0.000   0.000   0.000   0.000    0.000
+      26              rmse    0.027   0.003   0.004   0.021    0.033
+      27           rmse_te       NA      NA      NA      NA       NA
+      28               idp  100.000   0.000   0.000 100.000  100.000
+
+---
+
+    Code
+      check_performance(res, restrict = "selected", uncertainty = TRUE, boot_seed = "base",
+        n_boot = 100)
+    Warning <simpleWarning>
+      values for n_boot < 1000 are not recommended, as they may cause instable results.
+    Output
+                    metric      est  err_sd err_mad   lo_ci    hi_ci
+      1       n_summarised   13.000   2.260   1.483   9.000   17.000
+      2          size_mean  876.923  98.264 114.460 712.558 1045.250
+      3            size_sd  337.031  35.016  32.177 237.961  367.142
+      4        size_median  800.000 199.737 296.520 573.750 1300.000
+      5           size_p25  600.000 107.538 111.195 500.000  928.750
+      6           size_p75 1300.000 183.213   0.000 761.875 1300.000
+      7        sum_ys_mean  190.769  20.889  23.817 155.329  226.319
+      8          sum_ys_sd   73.574   8.833   8.987  46.514   81.304
+      9      sum_ys_median  169.000  39.042  47.443 127.000  261.000
+      10        sum_ys_p25  127.000  18.639  14.085 112.000  189.600
+      11        sum_ys_p75  261.000  38.881  43.737 162.213  298.000
+      12     ratio_ys_mean    0.218   0.004   0.004   0.211    0.227
+      13       ratio_ys_sd    0.014   0.002   0.002   0.009    0.017
+      14   ratio_ys_median    0.212   0.007   0.002   0.209    0.230
+      15      ratio_ys_p25    0.210   0.004   0.003   0.201    0.214
+      16      ratio_ys_p75    0.229   0.007   0.007   0.211    0.239
+      17   prob_conclusive    0.800   0.094   0.074   0.600    0.950
+      18     prob_superior    1.000   0.000   0.000   1.000    1.000
+      19  prob_equivalence    0.000   0.000   0.000   0.000    0.000
+      20     prob_futility    0.000   0.000   0.000   0.000    0.000
+      21          prob_max    0.000   0.000   0.000   0.000    0.000
+      22 prob_select_arm_A    0.000   0.000   0.000   0.000    0.000
+      23 prob_select_arm_B    1.000   0.000   0.000   1.000    1.000
+      24 prob_select_arm_C    0.000   0.000   0.000   0.000    0.000
+      25  prob_select_none    0.000   0.000   0.000   0.000    0.000
+      26              rmse    0.027   0.003   0.004   0.021    0.033
+      27           rmse_te       NA      NA      NA      NA       NA
+      28               idp  100.000   0.000   0.000 100.000  100.000
+

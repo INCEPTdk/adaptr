@@ -1,3 +1,85 @@
+# single trial simulation works
+
+    Code
+      run_trial(setup_equi_futil_only_first, seed = 12345)
+    Output
+      Single simulation result: generic binomially distributed outcome trial
+      * Undesirable outcome
+      * Initial/final common control arms: B/B
+      
+      Final status: conclusive, stopped for equivalence
+      Final/maximum allowed sample sizes: 500/2000 (25.0%)
+      Available outcome data at last adaptive analysis: 500/500 (100.0%)
+      
+      Trial results overview:
+       arms true_ys final_status status_look status_probs final_alloc
+          A    0.20  equivalence         500            1       0.333
+          B    0.21      control         500           NA       0.333
+          C    0.70     inferior         500            0       0.333
+      
+      Esimates from final analysis (all patients):
+       arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
+          A         39    195        0.200         0.202        0.0286      0.151
+          B         25    152        0.164         0.168        0.0294      0.115
+          C        114    153        0.745         0.743        0.0358      0.668
+       hi_cri_all
+            0.262
+            0.230
+            0.807
+      
+      Estimates from last adaptive analysis including each arm:
+       arms sum_ys  ns raw_ests post_ests post_errs lo_cri hi_cri
+          A     39 195    0.200     0.202    0.0282  0.149  0.261
+          B     25 152    0.164     0.167    0.0295  0.113  0.231
+          C    114 153    0.745     0.744    0.0346  0.669  0.807
+      
+      Simulation details:
+      * Random seed: 12345
+      * Credible interval width: 95%
+      * Number of posterior draws: 5000
+      * Posterior estimation method: medians with MAD-SDs
+
+---
+
+    Code
+      run_trial(setup_equi_futil_only_first, seed = 12345)
+    Output
+      Single simulation result: generic binomially distributed outcome trial
+      * Undesirable outcome
+      * Initial/final common control arms: B/B
+      
+      Final status: conclusive, stopped for equivalence
+      Final/maximum allowed sample sizes: 500/2000 (25.0%)
+      Available outcome data at last adaptive analysis: 500/500 (100.0%)
+      
+      Trial results overview:
+       arms true_ys final_status status_look status_probs final_alloc
+          A    0.20  equivalence         500            1       0.333
+          B    0.21      control         500           NA       0.333
+          C    0.70     inferior         500            0       0.333
+      
+      Esimates from final analysis (all patients):
+       arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
+          A         39    195        0.200         0.202        0.0286      0.151
+          B         25    152        0.164         0.168        0.0294      0.115
+          C        114    153        0.745         0.743        0.0358      0.668
+       hi_cri_all
+            0.262
+            0.230
+            0.807
+      
+      Estimates from last adaptive analysis including each arm:
+       arms sum_ys  ns raw_ests post_ests post_errs lo_cri hi_cri
+          A     39 195    0.200     0.202    0.0282  0.149  0.261
+          B     25 152    0.164     0.167    0.0295  0.113  0.231
+          C    114 153    0.745     0.744    0.0346  0.669  0.807
+      
+      Simulation details:
+      * Random seed: 12345
+      * Credible interval width: 95%
+      * Number of posterior draws: 5000
+      * Posterior estimation method: medians with MAD-SDs
+
 # dispatch_trial_runs works
 
     Code

@@ -1,3 +1,54 @@
+test_that("single trial simulation works", {
+  setup <- read_testdata("binom__setup__3_arms__no_control__equivalence__softened")
+  res <- read_testdata("binom__result__3_arms__no_control__equivalence__softened")
+  expect_equal(run_trial(setup, seed = 12345, sparse = FALSE), res)
+
+  setup <- read_testdata("binom__setup__3_arms__common_control__equivalence__futility__softened")
+  res <- read_testdata("binom__result__3_arms__common_control__equivalence__futility__softened")
+  expect_equal(run_trial(setup, seed = 12345, sparse = FALSE), res)
+
+  setup_equi_futil_only_first <- setup_trial_binom(
+    arms = c("A", "B", "C"),
+    control = "B",
+    control_prob_fixed = 1/3,
+    fixed_probs = c(NA, 1/3, NA),
+    true_ys = c(0.2, 0.21, 0.7),
+    data_looks = seq(from = 500, to = 2000, by = 500),
+    equivalence_prob = 0.9,
+    equivalence_diff = 0.25,
+    equivalence_only_first = TRUE,
+    futility_prob = 0.95,
+    futility_diff = 0.05,
+    futility_only_first = TRUE
+  )
+  expect_snapshot(run_trial(setup_equi_futil_only_first, seed = 12345))
+
+  setup_equi_futil_only_first2 <- setup_trial_binom(
+    arms = c("A", "B", "C"),
+    control = "B",
+    control_prob_fixed = c(1/3, 1/2),
+    fixed_probs = c(NA, 1/3, NA),
+    true_ys = c(0.2, 0.21, 0.7),
+    data_looks = seq(from = 500, to = 2000, by = 500),
+    equivalence_prob = 0.9,
+    equivalence_diff = 0.25,
+    equivalence_only_first = TRUE,
+    futility_prob = 0.95,
+    futility_diff = 0.05,
+    futility_only_first = TRUE
+  )
+  expect_snapshot(run_trial(setup_equi_futil_only_first, seed = 12345))
+})
+
+test_that("Single trial simulation errors on invalid inputs", {
+  setup <- read_testdata("binom__setup__3_arms__no_control__equivalence__softened")
+  setup_wrong <- setup
+  class(setup_wrong) <- "list"
+  expect_error(run_trial(setup_wrong, seed = 4131))
+  expect_error(run_trial(setup, seed = "invalid"))
+  expect_error(run_trial(setup, sparse = NA))
+})
+
 test_that("dispatch_trial_runs works", {
      setup <- read_testdata("binom__setup__3_arms__common_control__equivalence__futility__softened")
 
@@ -16,16 +67,6 @@ test_that("dispatch_trial_runs works", {
          dispatch_trial_runs(1:5, setup, base_seed = 12345, sparse = TRUE, cores = 2, cl = cl)
        )
      }
-})
-
-test_that("single trial simulation works", {
-  setup <- read_testdata("binom__setup__3_arms__no_control__equivalence__softened")
-  res <- read_testdata("binom__result__3_arms__no_control__equivalence__softened")
-  expect_equal(run_trial(setup, seed = 12345, sparse = FALSE), res)
-
-  setup <- read_testdata("binom__setup__3_arms__common_control__equivalence__futility__softened")
-  res <- read_testdata("binom__result__3_arms__common_control__equivalence__futility__softened")
-  expect_equal(run_trial(setup, seed = 12345, sparse = FALSE), res)
 })
 
 test_that("multiple trials simulation works", {
@@ -61,9 +102,30 @@ test_that("prog_breaks", {
 # This test also uses extract_results, to avoid the issue mentioned at the top
 test_that("multiple trials simulation works on multiple cores", {
   setup <- read_testdata("binom__setup__3_arms__no_control__equivalence__softened")
-  res_extr <- extract_results(run_trials(setup, n_rep = 20, base_seed = 12345, sparse = FALSE))
-  res_mc_extr <- extract_results(run_trials(setup, n_rep = 20, base_seed = 12345, sparse = FALSE, cores = 2))
-  expect_equal(res_extr, res_mc_extr)
+
+  # Run trials
+  res <- run_trials(setup, n_rep = 20, base_seed = 12345, sparse = FALSE)
+  res_mc <- run_trials(setup, n_rep = 20, base_seed = 12345, sparse = FALSE, cores = 2)
+
+  # Always test using extract_results to avoid issues mentioned in check_cluster_version()
+  expect_equal(extract_results(res),
+               extract_results(res_mc))
+
+  # Test only run conditionally, see check_cluster_version() function for
+  # explanation.
+  cl <- parallel::makeCluster(2)
+  on.exit(parallel::stopCluster(cl))
+  if (check_cluster_version(cl)) {
+    # Harmonise items know to be problematic (run-time and functions)
+    for (x in c("res", "res_mc")) {
+      temp_x <- get(x)
+      temp_x$elapsed_time <- as.difftime(0, units = "secs")
+      for (f in c("fun_y_gen", "fun_draws", "fun_raw_est"))
+        temp_x$trial_spec[[f]] <- deparse(temp_x$trial_spec[[f]])
+      assign(x, temp_x)
+    }
+    expect_equal(res, res_mc)
+  }
 })
 
 
