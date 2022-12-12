@@ -187,6 +187,7 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
       data_looks[n_data_looks] <- ifelse(data_looks[n_data_looks] > max_n, max_n, data_looks[n_data_looks])
     }
   }
+  data_looks <- round(data_looks, digits = 10) # Round to avoid floating point errors
   if (!all(vapply_lgl(data_looks, verify_int, min_value = 1))) {
     stop0("data_looks must only include whole numbers > 0.")
   }
@@ -202,6 +203,7 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
           "all numbers must be >= the number of patients with available outcome data ",
           "at each analysis, as specified by data_looks or max_n/look_after_every.")
   }
+  randomised_at_looks <- round(randomised_at_looks, digits = 10) # Round to avoid floating point errors
   if (!all(vapply_lgl(randomised_at_looks, verify_int, min_value = 1))) {
     stop0("randomised_at_looks must only include whole numbers > 0.")
   }
