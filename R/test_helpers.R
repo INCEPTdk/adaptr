@@ -47,7 +47,7 @@ read_testdata <- function(filename) {
 #' @noRd
 #'
 check_cluster_version <- function(cl, minimum_version = NULL) {
-  cl_version <- clusterCall(cl, function() packageVersion("adaptr"))[[1]][1]
+  cl_version <- clusterCall(cl, packageVersion, "adaptr")[[1]][1]
   if (is.null(minimum_version)) {
     cl_version == .adaptr_version
   } else {

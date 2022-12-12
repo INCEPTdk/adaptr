@@ -9,6 +9,9 @@ test_that("valid parameters work", {
 
   expect_snapshot(check_performance(res, restrict = "superior"))
   expect_snapshot(check_performance(res, restrict = "selected"))
+
+  expect_snapshot(check_performance(res, restrict = "superior", uncertainty = TRUE, boot_seed = "base", n_boot = 100))
+  expect_snapshot(check_performance(res, restrict = "selected", uncertainty = TRUE, boot_seed = "base", n_boot = 100))
 })
 
 test_that("invalid parameters handled correctly", {
@@ -24,10 +27,10 @@ test_that("invalid parameters handled correctly", {
 
   expect_error(check_performance(res, uncertainty = TRUE, n_boot = 10))
   expect_warning(check_performance(res, uncertainty = TRUE, n_boot = 100))
-  expect_error(check_performance(res, uncertainty = TRUE, n_boot = 1000, boot_seed == "wrong"))
+  expect_error(check_performance(res, uncertainty = TRUE, n_boot = 1000, boot_seed = "wrong"))
   res_no_seed <- res
   res_no_seed$base_seed <- NULL
-  expect_error(check_performance(res_no_seed, uncertainty = TRUE, n_boot = 1000, boot_seed == "base"))
+  expect_error(check_performance(res_no_seed, uncertainty = TRUE, n_boot = 1000, boot_seed = "base"))
   expect_error(check_performance(res, uncertainty = TRUE, n_boot = 1000, boot_seed == 0.5))
 
 })

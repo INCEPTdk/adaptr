@@ -1,6 +1,7 @@
 test_that("convergence plot of multiple binom trials works", {
   res <- read_testdata("binom__results__3_arms__common_control__equivalence__futility__softened")
 
+
   p <- plot_convergence(res)
   vdiffr::expect_doppelganger("convergence plot, binomial, size mean", p)
 
@@ -12,6 +13,13 @@ test_that("convergence plot of multiple binom trials works", {
 
   p <- plot_convergence(res, metrics = "prob_select_arm_A")
   vdiffr::expect_doppelganger("convergence plot, binomial, prob select arm A", p)
+
+  res <- read_testdata("binom__results__3_arms__no_control__equivalence__softened__sparse")
+  p <- plot_convergence(res, restrict = "superior")
+  vdiffr::expect_doppelganger("convergence plot, binomial, size mean, superior", p)
+
+  p <- plot_convergence(res,metrics = c("size mean", "rmse"), restrict = "selected")
+  vdiffr::expect_doppelganger("convergence plot, binomial, size  mean, rmse, selected", p)
 })
 
 test_that("convergence plot errors on invalid input", {
