@@ -233,15 +233,15 @@ run_trials <- function(trial_spec, n_rep, path = NULL, overwrite = FALSE,
         !equivalent_funs(prev$trial_spec$fun_y_gen, trial_spec$fun_y_gen) |
         !equivalent_funs(prev$trial_spec$fun_draws, trial_spec$fun_draws) |
         !equivalent_funs(prev$trial_spec$fun_raw_est, trial_spec$fun_raw_est)) {
-      prev_adaptr_version <- prev$trial_spec$adaptr_version
-      if ((is.null(prev_adaptr_version) | isTRUE(prev_adaptr_version < .adaptr_version))) {
-        stop0("The object in path was created by a previous version of adaptr and ",
-              "cannot be used by this version of adaptr unless the object is updated. ",
-              "Type 'help(\"update_saved_trials\")' for help on updating.")
-      } else {
         stop0("The trial specification contained in the object in path is not ",
               "the same as the one provided; thus the previous result was not loaded.")
-      }
+    } else {
+      prev_adaptr_version <- prev$adaptr_version
+        if ((is.null(prev_adaptr_version) | isTRUE(prev_adaptr_version < .adaptr_version))) {
+          stop0("The object in path was created by a previous version of adaptr and ",
+                "cannot be used by this version of adaptr unless the object is updated. ",
+                "Type 'help(\"update_saved_trials\")' for help on updating.")
+        }
     }
     if (grow & overwrite) {
       stop0("Both grow and overwrite are TRUE. At least one of them must be ",

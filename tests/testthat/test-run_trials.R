@@ -69,7 +69,7 @@ test_that("dispatch_trial_runs works", {
      }
 })
 
-test_that("multiple trials simulation works", {
+test_that("Multiple trials simulation works", {
   setup <- read_testdata("binom__setup__3_arms__no_control__equivalence__softened")
   res <- run_trials(setup, n_rep = 20, base_seed = 12345, sparse = FALSE)
 
@@ -100,7 +100,7 @@ test_that("prog_breaks", {
 })
 
 # This test also uses extract_results, to avoid the issue mentioned at the top
-test_that("multiple trials simulation works on multiple cores", {
+test_that("Multiple trials simulation works on multiple cores", {
   setup <- read_testdata("binom__setup__3_arms__no_control__equivalence__softened")
 
   # Run trials
@@ -128,7 +128,53 @@ test_that("multiple trials simulation works on multiple cores", {
   }
 })
 
+test_that("run_trials errors on invalid input", {
+  setup <- read_testdata("binom__setup__3_arms__no_control__equivalence__softened")
+  expect_error(run_trials(setup, n_rep = 10, sparse = NA))
+  expect_error(run_trials(list(), n_rep = 10))
+  expect_error(run_trials(setup, n_rep = 1:10, cores = 0.5))
 
+  res <- run_trials(setup, n_rep = 10, base_seed = 4131)
+  temp_res_file <- tempfile()
+  on.exit(try(rm(temp_res_file), silent = TRUE), add = TRUE, after = FALSE)
+
+  # Error growing object from pseudo-previous version
+  res_err <- res
+  res_err$adaptr_version <- NULL
+  saveRDS(object = res_err, file = temp_res_file)
+  expect_error(run_trials(setup, n_rep = 10, path = temp_res_file, base_seed = 4131))
+
+  # Error with trial spec
+  res_err <- res
+  res_err$trial_spec$control <- "A"
+  saveRDS(object = res_err, file = temp_res_file)
+  expect_error(run_trials(setup, n_rep = 10, path = temp_res_file, base_seed = 4131))
+
+  # Error with both grow and overwrite being TRUE
+  expect_error(run_trials(setup, n_rep = 10, path = temp_res_file, grow = TRUE, overwrite = TRUE))
+
+  # Error with n_rep being smaller than previous and warning with equal and grow == TRUE
+  saveRDS(object = res, file = temp_res_file)
+  expect_error(run_trials(setup, n_rep = 8, path = temp_res_file, base_seed = 4131))
+  expect_warning(run_trials(setup, n_rep = 10, path = temp_res_file, grow = TRUE, base_seed = 4131))
+
+  # Error with sparse being different
+  expect_error(run_trials(setup, n_rep = 10, path = temp_res_file, base_seed = 4131, sparse = FALSE))
+
+  # Error with base_seed from previous version
+  res_err <- res
+  res_err$base_seed <- 1234
+  saveRDS(object = res_err, file = temp_res_file)
+  expect_error(run_trials(setup, n_rep = 10, path = temp_res_file, base_seed = 4131))
+
+  # grow == TRUE and invalid file path
+  expect_error(run_trials(setup, n_rep = 10, path = paste0(temp_res_file, ".error"), grow = TRUE))
+
+  # Invalid other values
+  expect_error(run_trials(setup, n_rep = 10, base_seed = 0.3))
+  expect_error(run_trials(setup, n_rep = 10, base_seed = 1, progress = 10))
+
+})
 
 test_that("Growing trial objects works", {
   setup <- setup_trial_binom(
@@ -148,9 +194,17 @@ test_that("Growing trial objects works", {
   temp_res_file <- tempfile()
   on.exit(try(rm(temp_res_file), silent = TRUE), add = TRUE, after = FALSE)
   res2 <- run_trials(setup, n_rep = 10, base_seed = 12345, path = temp_res_file)
-  res2 <- run_trials(setup, n_rep = 20, base_seed = 12345, path = temp_res_file, grow = TRUE)
+  # Grow with progress bar to test
+  sink_file <- tempfile() # diverts progress bar to not distort test output
+  on.exit(try(file.remove(sink_file)), add = TRUE, after = FALSE)
+  sink(sink_file)
+  res2 <- run_trials(setup, n_rep = 20, base_seed = 12345, path = temp_res_file, grow = TRUE, progress = 0.05)
+  sink()
 
-  for (s in c("res1", "res2")) {
+  # Reload without growing
+  res3 <- run_trials(setup, n_rep = 20, base_seed = 12345, temp_res_file)
+
+  for (s in c("res1", "res2", "res3")) {
     temp_s <- get(s)
     temp_s$elapsed_time <- as.difftime(0, units = "secs")
     for (f in c("fun_y_gen", "fun_draws", "fun_raw_est"))
@@ -159,5 +213,6 @@ test_that("Growing trial objects works", {
   }
 
   expect_equal(res1, res2)
+  expect_equal(res1, res3)
 })
 
