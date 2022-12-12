@@ -1,26 +1,22 @@
-# This test commented out
-# Caused an error when a previous version of the adaptr package is installed -
-# functions from the package and not the updated functions from the development
-# version are loaded on the multiple cores. The export solution only solves this
-# when the package is not installed.
+test_that("dispatch_trial_runs works", {
+     setup <- read_testdata("binom__setup__3_arms__common_control__equivalence__futility__softened")
 
-# test_that("dispatch_trial_runs works", {
-#   setup <- read_testdata("binom__setup__3_arms__common_control__equivalence__futility__softened")
-#
-#   # Serial run
-#   expect_snapshot(
-#     dispatch_trial_runs(1:5, setup, base_seed = 12345, sparse = FALSE, cores = 1)
-#   )
-#
-#   # Parallel run
-#   cl <- parallel::makeCluster(2)
-#   on.exit(parallel::stopCluster(cl))
-#   # Necessary to avoid testing error due to versions of functions from previous installed package being loaded on the cluster
-#   parallel::clusterExport(cl, ls("package:adaptr"))
-#   expect_snapshot(
-#     dispatch_trial_runs(1:5, setup, base_seed = 12345, sparse = TRUE, cores = 2, cl = cl)
-#   )
-# })
+     # Serial run
+     expect_snapshot(
+       dispatch_trial_runs(1:5, setup, base_seed = 12345, sparse = FALSE, cores = 1)
+     )
+
+     # Parallel run
+     # Test only run conditionally, see check_cluster_version() function for
+     # explanation.
+     cl <- parallel::makeCluster(2)
+     on.exit(parallel::stopCluster(cl))
+     if (check_cluster_version(cl)) {
+       expect_snapshot(
+         dispatch_trial_runs(1:5, setup, base_seed = 12345, sparse = TRUE, cores = 2, cl = cl)
+       )
+     }
+})
 
 test_that("single trial simulation works", {
   setup <- read_testdata("binom__setup__3_arms__no_control__equivalence__softened")
