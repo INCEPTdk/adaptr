@@ -135,7 +135,9 @@
     when multiple values were supplied to the `control_prob_fixed` argument, and
     to give the correct error when multiple values were provided to
     `equivalence_diff` or `futility_diff`, and to give an error when `NA` was
-    supplied to `futility_only_first`.
+    supplied to `futility_only_first`, and to add some tolerance to the checks
+    of `data_looks` and `randomised_at_looks` to avoid errors due to floating
+    point imprecision when specified using multiplication or similar.
 
 # adaptr 1.1.1
 
