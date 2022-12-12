@@ -204,7 +204,7 @@ print(res_sum, digits = 1)
 #> * Ideal design percentage: 100.0%
 #> 
 #> Simulation details:
-#> * Simulation time: 0.552 secs
+#> * Simulation time: 0.432 secs
 #> * Base random seed: 67890
 #> * Credible interval width: 95%
 #> * Number of posterior draws: 5000
@@ -267,7 +267,7 @@ Changes to the code base should follow these steps:
     the `NEWS.md` file to see the formatting)
 -   Create a [pull
     request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork)
-    into the `main` branch of `adaptr`
+    into the `dev` branch of `adaptr`
 
 ## Citation
 

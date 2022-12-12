@@ -156,7 +156,7 @@ Changes to the code base should follow these steps:
 errors, warnings, nor notes) and add a bullet at the top of NEWS.md with a short
 description of the change, your GitHub handle and the id of the pull request
 implementing the change (check the `NEWS.md` file to see the formatting)
-- Create a [pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork) into the `main` branch of `adaptr`
+- Create a [pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork) into the `dev` branch of `adaptr`
 
 ## Citation
 
