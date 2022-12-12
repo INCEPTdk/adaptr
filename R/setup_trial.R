@@ -268,7 +268,7 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
             "as the maximum possible number of adaptive analyses, with all values > 0 and < 1 and no values ",
             "higher than the previous value.")
     }
-    if (isTRUE(length(equivalence_diff) != 1 | !is.numeric(equivalence_diff) | equivalence_diff <= 0)) {
+    if (isTRUE(length(equivalence_diff) != 1 | !is.numeric(equivalence_diff) | any(equivalence_diff <= 0))) {
       stop0("equivalence_diff must be a single numeric value > 0.")
     }
     if (is.null(control)) {
@@ -298,10 +298,10 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
             "as the maximum possible number of adaptive analyses, with all values > 0 and < 1 and no values ",
             "higher than the previous value.")
     }
-    if (isTRUE(length(futility_diff) != 1 | !is.numeric(futility_diff) | futility_diff <= 0)) {
+    if (isTRUE(length(futility_diff) != 1 | !is.numeric(futility_diff) | any(futility_diff <= 0))) {
       stop0("futility_diff must be a single numeric value > 0.")
     }
-    if (isTRUE(length(futility_only_first) > 1 | !is.logical(futility_only_first))) {
+    if (isTRUE(length(futility_only_first) > 1 | !is.logical(futility_only_first) | is.na(futility_only_first))) {
       stop0("futility_only_first must be either TRUE or FALSE for futility assessment.")
     }
   }

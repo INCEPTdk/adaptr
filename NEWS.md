@@ -137,8 +137,11 @@ editor_options:
     if all probabilities were initially 0, the returned vector lacked names,
     which are now added.
 
-*   Minor fix to internal `validate_trial()` function to not give an error when
-    multiple values were supplied to the `control_prob_fixed` argument.
+*   Minor fixes to internal `validate_trial()` function to not give an error
+    when multiple values were supplied to the `control_prob_fixed` argument, and
+    to give the correct error when multiple values were provided to
+    `equivalence_diff` or `futility_diff`, and to give an error when `NA` was
+    supplied to `futility_only_first`.
 
 # adaptr 1.1.1
 
