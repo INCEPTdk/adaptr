@@ -34,7 +34,7 @@ analysis (\code{"followed n"}) are plotted on the x-axis.}
 
 \item{arm}{character string of one or more unique, valid \code{arm} names, \code{NA},
 or \code{NULL} (default). If \code{NULL}, the overall trial statuses are plotted,
-otherwise the specified arms or all arms (if \code{NA}) are plotted.}
+otherwise the specified arms or all arms (if \code{NA} is specified) are plotted.}
 
 \item{area}{list of styling settings for the area as per \pkg{ggplot2}
 conventions (e.g., \code{alpha}, \code{size}). The default (\code{list(alpha = 0.5)}) sets
@@ -48,8 +48,8 @@ multiple arms in the same plot (using faceting in \code{ggplot2}). Defaults to
 A \code{ggplot2} plot object.
 }
 \description{
-Plots the statuses over time of multiple simulated trials (overall or for a
-specific arm). Requires the \code{ggplot2} package installed.
+Plots the statuses over time of multiple simulated trials (overall or for one
+or more specific arms). Requires the \code{ggplot2} package installed.
 }
 \examples{
 #### Only run examples if ggplot2 is installed ####

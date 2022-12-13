@@ -139,7 +139,7 @@ Summarises simulation results from the \code{\link[=run_trials]{run_trials()}} f
 \code{\link[=extract_results]{extract_results()}} and \code{\link[=check_performance]{check_performance()}}, which may be used directly to
 extract key trial results without summarising or to calculate performance
 metrics (with uncertainty measures if desired) and return them in a tidy
-\code{data.frame}-format.
+\code{data.frame}.
 }
 \examples{
 # Setup a trial specification

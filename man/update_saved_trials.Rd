@@ -24,9 +24,10 @@ Invisibly returns the updated \code{"trial_results"}-object.
 This function updates a previously saved \code{"trial_results"}-object created and
 saved by \code{\link[=run_trials]{run_trials()}} using a previous version of \code{adaptr}, allowing the
 results from these previous simulations to be post-processed (including
-printing and plotting) without errors by this version of the package. The
-function should be run only once per saved simulation object and will issue a
-warning if the object is already up to date.\cr
+performance metric calculation, printing and plotting) without errors by this
+version of the package. The function should be run only once per saved
+simulation object and will issue a warning if the object is already up to
+date.\cr
 \strong{NOTE:} some values cannot be updated and will be set to \code{NA} (the
 posterior estimates from the 'final' analysis conducted after the last
 adaptive analysis and including outcome data for all patients), and thus

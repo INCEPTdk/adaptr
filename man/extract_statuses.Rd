@@ -16,7 +16,7 @@ analysis (\code{"followed n"}) are plotted on the x-axis.}
 
 \item{arm}{character string of one or more unique, valid \code{arm} names, \code{NA},
 or \code{NULL} (default). If \code{NULL}, the overall trial statuses are plotted,
-otherwise the specified arms or all arms (if \code{NA}) are plotted.}
+otherwise the specified arms or all arms (if \code{NA} is specified) are plotted.}
 }
 \value{
 A tidy \code{data.frame} (one row possible status per look) containing the
