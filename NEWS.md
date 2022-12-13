@@ -1,4 +1,8 @@
-# adaptr (development version)
+# adaptr 1.2.0
+
+This is a minor release implementing new functionality, updating
+documentation, and fixing multiple minor issues, mostly in validation of
+supplied arguments.
 
 ### New features:
 
@@ -6,7 +10,7 @@
     different numbers of simulated patients with outcome data available
     compared to the total number of simulated patients randomised at
     each adaptive analysis (`randomised_at_looks` argument in
-    `setup_trial()` family of functions); defaults to same behaviour as
+    `setup_trial()` family of functions). Defaults to same behaviour as
     previously (i.e., assuming that outcome data are immediately
     available following randomisation). As a consequence, `run_trial()`
     now always conducts a final analysis after the last adaptive
@@ -20,14 +24,15 @@
     the results from this final analysis or from the last relevant
     adaptive analysis including each arm are used when calculating some
     performance metrics (defaults are set to ensure backwards
-    compatibility and use the final estimates in situations where not
-    all patients are included in the final adaptive analysis). An
+    compatibility and otherwise use the final estimates in situations where
+    not all patients are included in the final adaptive analysis). An
     example has been added to the `Basic examples` vignette illustrating
     the use of this argument.
 
 *   Updated `plot_history()` and `plot_status()` to add the possibility
-    to plot different metrics relevant after the addition of the new
-    `randomised_at_looks` argument described above.
+    to plot different metrics according to the number of patients
+    randomised as specified by the the new `randomised_at_looks`
+    argument to the `setup_trial()` functions as described above.
 
 *   Added the `update_saved_trials()` function, which 'updates' multiple
     trial simulation objects saved by `run_trials()` using previous
@@ -72,39 +77,36 @@
 ### Documentation, bug fixes, and other changes:
 
 *   Added reference to open access article describing key methodological
-    considerations in adaptive clinical trials to the package
-    documentation (<https://doi.org/10.1016/j.jclinepi.2022.11.002>).
+    considerations in adaptive clinical trials using adaptive stopping,
+    arm dropping, and randomisation to the package documentation
+    (<https://doi.org/10.1016/j.jclinepi.2022.11.002>).
 
 *   The proportion of conclusive trials when restricting the trials
     summarised (in `extract_results()`) may now be calculated by the
     `summary()` method for multiple trial simulations and by the new
     `check_performance()` function, even if this measure may be
-    difficult to interpret under such circumstances.
+    difficult to interpret when the trials summarised is restricted.
 
 *   Minor fixes, updates, and added clarification to the documentation
     in multiple places, including in vignettes, which have also been
     updated to illustrate some of the new functions added.
 
-*   Minor changes to trial setup/validation including proper error
-    messages in an edge case with invalid inputs and proper errors if
-    non-integer numbers used for patient count arguments.
-
 *   Minor fix to `print()` method for individual trial results, which did
     not correctly print additional information about trials.
 
-*   Fixed a bug where the same number of patients followed could be used
-    for subsequent data_looks in the `setup_trial()` family of
+*   Fixed a bug where the same number of patients included could be used
+    for subsequent `data_looks` in the `setup_trial()` family of
     functions; this now produces an error.
 
-*   Added internal `vapply_lgl()` helper function; `vapply()` helpers
-    are now used consistently to simplify the code.
+*   Added internal `vapply_lgl()` helper function; the internal `vapply()`
+    helper functions are now used consistently to simplify the code.
 
 *   Added multiple internal (non-exported) helper functions to simplify
     code throughout the package: `stop0()`, `warning0()`, `%f|%`, and
     `summarise_num()`.
 
 *   Added `names = FALSE` argument to `quantile()` calls in the
-    `summary()` method for `trial_results` objects, to avoid unnecessary
+    `summary()` method for `trial_results` objects to avoid unnecessary
     naming of some components if they are subsequently extracted from
     the returned object.
 
@@ -117,27 +119,31 @@
 *   Minor fix to internal `verify_int()` function; when supplied with,
     e.g., a character vector, execution was stopped with an error
     instead of returning `FALSE`, as needed to print the proper error
-    after checks.
+    messages after checks.
 
 *   Minor fix to `plot_status()`, where the upper area (representing
     trials/arms still recruiting) was sometimes erroneously not plotted
     due to a floating point issue where the summed proportions could
-    sometimes slightly exceed 100%.
+    sometimes slightly exceed 1.
     
-*   Added additional tests to test increase coverage of existing functions.
+*   Added additional tests to test increase coverage of existing and
+    new functions.
 
 *   Minor fix in internal `reallocate_probs()` function, when `"match"`-ing
     control arm allocation to the highest probability in a non-control arm and
     if all probabilities were initially 0, the returned vector lacked names,
-    which are now added.
+    which have now been added.
 
-*   Minor fixes to internal `validate_trial()` function to not give an error
-    when multiple values were supplied to the `control_prob_fixed` argument, and
-    to give the correct error when multiple values were provided to
-    `equivalence_diff` or `futility_diff`, and to give an error when `NA` was
-    supplied to `futility_only_first`, and to add some tolerance to the checks
-    of `data_looks` and `randomised_at_looks` to avoid errors due to floating
-    point imprecision when specified using multiplication or similar.
+*   Minor fixes to internal `validate_trial()` function in order to: not
+    give an error when multiple values were supplied to the
+    `control_prob_fixed` argument; and to give the correct error when
+    multiple values were provided to `equivalence_diff` or `futility_diff`;
+    and to give an error when `NA` was supplied to `futility_only_first`;
+    and to add some tolerance to the checks of `data_looks` and
+    `randomised_at_looks` to avoid errors due to floating point imprecision
+    when specified using multiplication or similar; and correct errors if
+    decimal numbers for patient count arguments were supplied; and additional
+    minor updates to errors/messages.
 
 # adaptr 1.1.1
 

@@ -353,3 +353,51 @@
       
       
 
+# Multiple trials simulation works on multiple cores
+
+    Code
+      extract_results(res)
+    Output
+         sim final_n sum_ys  ratio_ys final_status superior_arm selected_arm
+      1    1    1300    329 0.2530769  equivalence         <NA>         <NA>
+      2    2    1300    306 0.2353846  superiority            B            B
+      3    3    1300    261 0.2007692  superiority            B            B
+      4    4    1800    414 0.2300000  equivalence         <NA>         <NA>
+      5    5    1000    221 0.2210000  superiority            B            B
+      6    6    2000    448 0.2240000          max         <NA>         <NA>
+      7    7     800    169 0.2112500  superiority            B            B
+      8    8    2000    426 0.2130000          max         <NA>         <NA>
+      9    9    1100    259 0.2354545  equivalence         <NA>         <NA>
+      10  10    2000    468 0.2340000          max         <NA>         <NA>
+      11  11     500    123 0.2460000  superiority            B            B
+      12  12     600    127 0.2116667  superiority            B            B
+      13  13     500    112 0.2240000  superiority            B            B
+      14  14    2000    470 0.2350000          max         <NA>         <NA>
+      15  15    1000    201 0.2010000  superiority            B            B
+      16  16    1300    298 0.2292308  superiority            B            B
+      17  17     700    145 0.2071429  superiority            B            B
+      18  18    1300    273 0.2100000  superiority            B            B
+      19  19     600    139 0.2316667  superiority            B            B
+      20  20     500    105 0.2100000  superiority            B            B
+               sq_err sq_err_te
+      1            NA        NA
+      2  3.596022e-05        NA
+      3  6.573150e-04        NA
+      4            NA        NA
+      5  1.765044e-04        NA
+      6            NA        NA
+      7  7.646365e-04        NA
+      8            NA        NA
+      9            NA        NA
+      10           NA        NA
+      11 1.495443e-05        NA
+      12 1.262834e-03        NA
+      13 9.001071e-04        NA
+      14           NA        NA
+      15 1.340530e-03        NA
+      16 1.802045e-06        NA
+      17 6.622977e-04        NA
+      18 5.508946e-04        NA
+      19 8.399707e-04        NA
+      20 2.576842e-03        NA
+

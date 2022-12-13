@@ -23,8 +23,9 @@ knitr::opts_chunk$set(
 ![total downloads from RStudio mirror](https://cranlogs.r-pkg.org/badges/grand-total/adaptr)
 <!-- badges: end -->
 
-The `adaptr` package simulates adaptive clinical trials using adaptive
-stopping, adaptive arm dropping and/or response-adaptive randomisation.
+The `adaptr` package simulates adaptive (multi-arm, multi-stage) clinical trials
+using adaptive stopping, adaptive arm dropping and/or response-adaptive
+randomisation.
 
 The package has been developed as part of the
 [INCEPT (Intensive Care Platform Trial) project](https://incept.dk/), which
@@ -36,8 +37,8 @@ is primarily supported by a grant from
 * [Website](https://inceptdk.github.io/adaptr/) - stand-alone website with full
 package documentation
 * [adaptr: an R package for simulating and comparing adaptive clinical trials](https://doi.org/10.21105/joss.04284) -
-paper in the Journal of Open Source Software describing the package
-* [An overview of methodological considerations regarding adaptive stopping, arm dropping and randomisation in clinical trials](https://doi.org/10.1016/j.jclinepi.2022.11.002) - paper in Journal of
+article in the Journal of Open Source Software describing the package
+* [An overview of methodological considerations regarding adaptive stopping, arm dropping and randomisation in clinical trials](https://doi.org/10.1016/j.jclinepi.2022.11.002) - article in Journal of
 Clinical Epidemiology describing key methodological considerations in adaptive
 trials with description of the workflow and a simulation-based example using the
 package
@@ -52,8 +53,8 @@ install.packages("adaptr")
 
 Alternatively, you can install the **development version** from GitHub - this
 requires the *remotes*-package installed. The development version may contain
-additional features not yet available in the CRAN version, but may contain
-preliminary functions and may not be stable or fully documented:
+additional features not yet available in the CRAN version (including preliminary
+functions) and may not be stable or fully documented:
 
 ```{r eval = FALSE}
 # install.packages("remotes") 
@@ -114,8 +115,8 @@ print(res_sum, digits = 1)
 ```
 
 Performance metrics may also be calculated and returned in a tidy `data.frame`
-(with bootstrapped uncertainty measures, if requested) may be calculated by the
-`check_performance()`-function, and the `plot_convergence()` function may be
+(with bootstrapped uncertainty measures, if requested) by the
+`check_performance()` function, and the `plot_convergence()` function may be
 used to visually assess stability of performance metrics according to the number
 of simulations.
 
@@ -156,7 +157,8 @@ Changes to the code base should follow these steps:
 errors, warnings, nor notes) and add a bullet at the top of NEWS.md with a short
 description of the change, your GitHub handle and the id of the pull request
 implementing the change (check the `NEWS.md` file to see the formatting)
-- Create a [pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork) into the `dev` branch of `adaptr`
+- Create a [pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork) into the `dev` branch
+of `adaptr`
 
 ## Citation
 

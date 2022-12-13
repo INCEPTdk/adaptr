@@ -14,8 +14,9 @@ status](https://www.r-pkg.org/badges/version/adaptr)](https://cran.r-project.org
 mirror](https://cranlogs.r-pkg.org/badges/grand-total/adaptr)
 <!-- badges: end -->
 
-The `adaptr` package simulates adaptive clinical trials using adaptive
-stopping, adaptive arm dropping and/or response-adaptive randomisation.
+The `adaptr` package simulates adaptive (multi-arm, multi-stage)
+clinical trials using adaptive stopping, adaptive arm dropping and/or
+response-adaptive randomisation.
 
 The package has been developed as part of the [INCEPT (Intensive Care
 Platform Trial) project](https://incept.dk/), which is primarily
@@ -27,11 +28,11 @@ supported by a grant from [Sygeforsikringen
 -   [Website](https://inceptdk.github.io/adaptr/) - stand-alone website
     with full package documentation
 -   [adaptr: an R package for simulating and comparing adaptive clinical
-    trials](https://doi.org/10.21105/joss.04284) - paper in the Journal
-    of Open Source Software describing the package
+    trials](https://doi.org/10.21105/joss.04284) - article in the
+    Journal of Open Source Software describing the package
 -   [An overview of methodological considerations regarding adaptive
     stopping, arm dropping and randomisation in clinical
-    trials](https://doi.org/10.1016/j.jclinepi.2022.11.002) - paper in
+    trials](https://doi.org/10.1016/j.jclinepi.2022.11.002) - article in
     Journal of Clinical Epidemiology describing key methodological
     considerations in adaptive trials with description of the workflow
     and a simulation-based example using the package
@@ -46,8 +47,8 @@ install.packages("adaptr")
 
 Alternatively, you can install the **development version** from GitHub -
 this requires the *remotes*-package installed. The development version
-may contain additional features not yet available in the CRAN version,
-but may contain preliminary functions and may not be stable or fully
+may contain additional features not yet available in the CRAN version
+(including preliminary functions) and may not be stable or fully
 documented:
 
 ``` r
@@ -65,7 +66,7 @@ general `setup_trial()` function, or one of the special case functions,
 
 ``` r
 library(adaptr)
-#> Loading adaptr package (version 1.1.1.9000).
+#> Loading adaptr package (version 1.1.2).
 #> See 'help("adaptr")' or 'vignette("Overview", "adaptr")' for help.
 #> Further information available on https://inceptdk.github.io/adaptr/.
 
@@ -204,7 +205,7 @@ print(res_sum, digits = 1)
 #> * Ideal design percentage: 100.0%
 #> 
 #> Simulation details:
-#> * Simulation time: 0.432 secs
+#> * Simulation time: 0.448 secs
 #> * Base random seed: 67890
 #> * Credible interval width: 95%
 #> * Number of posterior draws: 5000
@@ -212,10 +213,10 @@ print(res_sum, digits = 1)
 ```
 
 Performance metrics may also be calculated and returned in a tidy
-`data.frame` (with bootstrapped uncertainty measures, if requested) may
-be calculated by the `check_performance()`-function, and the
-`plot_convergence()` function may be used to visually assess stability
-of performance metrics according to the number of simulations.
+`data.frame` (with bootstrapped uncertainty measures, if requested) by
+the `check_performance()` function, and the `plot_convergence()`
+function may be used to visually assess stability of performance metrics
+according to the number of simulations.
 
 Plot trial statuses or history of trial metrics over time:
 

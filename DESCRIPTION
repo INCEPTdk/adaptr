@@ -1,7 +1,7 @@
 Package: adaptr
 Title: Adaptive Trial Simulator
-Version: 1.1.1.9000
-Date: 2022-08-19
+Version: 1.1.2
+Date: 2022-12-13
 Authors@R: 
     c(person("Anders", "Granholm",
              email = "andersgran@gmail.com",
@@ -32,9 +32,9 @@ Imports:
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 NeedsCompilation: no
-URL: https://incept.dk/,
-    https://github.com/INCEPTdk/adaptr/,
-    https://inceptdk.github.io/adaptr/
+URL: https://inceptdk.github.io/adaptr/,
+     https://github.com/INCEPTdk/adaptr/,
+     https://incept.dk/
 BugReports: https://github.com/INCEPTdk/adaptr/issues/
 RoxygenNote: 7.2.2
 Suggests: 

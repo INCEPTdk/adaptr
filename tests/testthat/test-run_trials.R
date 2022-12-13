@@ -102,29 +102,35 @@ test_that("prog_breaks", {
 # This test also uses extract_results, to avoid the issue mentioned at the top
 test_that("Multiple trials simulation works on multiple cores", {
   setup <- read_testdata("binom__setup__3_arms__no_control__equivalence__softened")
-
-  # Run trials
   res <- run_trials(setup, n_rep = 20, base_seed = 12345, sparse = FALSE)
-  res_mc <- run_trials(setup, n_rep = 20, base_seed = 12345, sparse = FALSE, cores = 2)
+  expect_snapshot(extract_results(res)) # Avoid empty test
 
-  # Always test using extract_results to avoid issues mentioned in check_cluster_version()
-  expect_equal(extract_results(res),
-               extract_results(res_mc))
-
-  # Test only run conditionally, see check_cluster_version() function for
+  # Tests only run conditionally, see check_cluster_version() function for
   # explanation.
   cl <- parallel::makeCluster(2)
   on.exit(parallel::stopCluster(cl))
-  if (check_cluster_version(cl)) {
-    # Harmonise items know to be problematic (run-time and functions)
-    for (x in c("res", "res_mc")) {
-      temp_x <- get(x)
-      temp_x$elapsed_time <- as.difftime(0, units = "secs")
-      for (f in c("fun_y_gen", "fun_draws", "fun_raw_est"))
-        temp_x$trial_spec[[f]] <- deparse(temp_x$trial_spec[[f]])
-      assign(x, temp_x)
+
+  if (check_cluster_version(cl, "1.0.0")) { # Any released version of adaptr installed
+    # Run trials on multiple cores
+    res_mc <- run_trials(setup, n_rep = 20, base_seed = 12345, sparse = FALSE, cores = 2)
+
+    # Always test using extract_results to avoid issues mentioned in check_cluster_version()
+    expect_equal(extract_results(res),
+                 extract_results(res_mc))
+
+
+    # Only test íf most updated version installed
+    if (check_cluster_version(cl)) {
+      # Harmonise items know to be problematic (run-time and functions)
+      for (x in c("res", "res_mc")) {
+        temp_x <- get(x)
+        temp_x$elapsed_time <- as.difftime(0, units = "secs")
+        for (f in c("fun_y_gen", "fun_draws", "fun_raw_est"))
+          temp_x$trial_spec[[f]] <- deparse(temp_x$trial_spec[[f]])
+        assign(x, temp_x)
+      }
+      expect_equal(res, res_mc)
     }
-    expect_equal(res, res_mc)
   }
 })
 
