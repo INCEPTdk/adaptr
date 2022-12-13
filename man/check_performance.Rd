@@ -113,7 +113,8 @@ calculate uncertainty measures.}
 
 \item{n_boot}{single integer (default \code{5000}); the number of bootstrap
 samples to use if \code{uncertainty = TRUE}. Values \verb{< 100} are not allowed and
-values \verb{< 1000} will give a warning.}
+values \verb{< 1000} will lead to a warning, and results are thus likely to be
+unstable.}
 
 \item{ci_width}{single numeric \verb{>= 0} and \verb{< 1}, the width of the
 percentile-based bootstrapped confidence intervals. Defaults to \code{0.95},
@@ -128,17 +129,19 @@ in \code{\link[=run_trials]{run_trials()}} is used.}
 \value{
 A tidy \code{data.frame} with added class \code{trial_performance} (to control
 the number of digits printed, see \code{\link[=print]{print()}}), with the columns \code{"metric"}
-(described below), \code{"est"} (the estimates of each metric), and the following four columns if
-\code{uncertainty = TRUE}: \code{"err_sd"} (bootstrapped SDs), \code{"err_mad"}
-(bootstrapped MAD-SDs, as described in \code{\link[=setup_trial]{setup_trial()}} or \code{\link[=mad]{mad()}}),
-\code{"lo_ci"}, and \code{"hi_ci"}, the latter two corresponding to the lower/upper
-limits of the percentile-based bootstrapped confidence intervals.\cr
+(described below), \code{"est"} (the estimates of each metric), and the
+following four columns if \code{uncertainty = TRUE}: \code{"err_sd"} (bootstrapped
+SDs), \code{"err_mad"} (bootstrapped MAD-SDs, as described in \code{\link[=setup_trial]{setup_trial()}}
+and \code{\link[=mad]{mad()}}), \code{"lo_ci"}, and \code{"hi_ci"}, the latter two corresponding to the
+lower/upper limits of the percentile-based bootstrapped confidence
+intervals.\cr
 The following performance metrics are calculated:
 \itemize{
 \item \code{n_summarised}: the number of simulations summarised.
 \item \code{size_mean}, \code{size_sd}, \code{size_median}, \code{size_p25}, \code{size_p75}: the
 mean, standard deviation, median as well as 25- and 75-percentiles of the
-sample sizes of the summarised trial simulations.
+sample sizes (number of patients randomised in each simulated trial) of
+the summarised trial simulations.
 \item \code{sum_ys_mean}, \code{sum_ys_sd}, \code{sum_ys_median}, \code{sum_ys_p25},
 \code{sum_ys_p75}: the mean, standard deviation, median as well as 25- and
 75-percentiles of the total \code{sum_ys} (e.g., the total number of events in
@@ -149,8 +152,8 @@ arms in the summarised trial simulations.
 \code{ratio_ys_p75}: the mean, standard deviation, median as well as 25- and
 75-percentiles of the final \code{ratio_ys} (\code{sum_ys/final_n}) across all arms
 in the summarised trial simulations.
-\item \code{prob_conclusive}: the proportion of conclusive trial simulations
-(simulations not stopped at the maximum sample size without a
+\item \code{prob_conclusive}: the proportion (\code{0} to \code{1}) of conclusive trial
+simulations (simulations not stopped at the maximum sample size without a
 superiority, equivalence or futility decision).
 \item \code{prob_superior}, \code{prob_equivalence}, \code{prob_futility}, \code{prob_max}: the
 proportion (\code{0} to \code{1}) of trial simulations stopped for superiority,
@@ -166,25 +169,14 @@ element per \code{arm}, named as \verb{prob_select_arm_<arm name>} and
 the selected arm and for the treatment effect, as described further in
 \code{\link[=extract_results]{extract_results()}}.
 \item \code{idp}: the ideal design percentage (IDP; 0-100\%), see \strong{Details}.
-\item \code{select_strategy}, \code{select_last_arm}, \code{select_preferences},
-\code{te_comp}, \code{raw_ests}, \code{final_ests}, \code{restrict}: as specified above.
-\item \code{control}: the control arm specified by \code{\link[=setup_trial]{setup_trial()}},
-\code{\link[=setup_trial_binom]{setup_trial_binom()}} or \code{\link[=setup_trial_norm]{setup_trial_norm()}}; \code{NULL} if no control.
-\item \code{equivalence_assessed}, \code{futility_assessed}: single logicals,
-specifies whether the trial design specification includes assessments of
-equivalence and/or futility.
-\item \code{base_seed}: as specified in \code{\link[=run_trials]{run_trials()}}.
-\item \code{cri_width}, \code{n_draws}, \code{robust}, \code{description}, \code{add_info}: as
-specified in \code{\link[=setup_trial]{setup_trial()}}, \code{\link[=setup_trial_binom]{setup_trial_binom()}} or
-\code{\link[=setup_trial_norm]{setup_trial_norm()}}.
 }
 }
 \description{
 Calculates performance metrics from trial simulation results from the
 \code{\link[=run_trials]{run_trials()}} function, with bootstrapped uncertainty measures if requested.
 Uses \code{\link[=extract_results]{extract_results()}}, which may be used directly to extract key trial
-results without summarising, and is used in \code{\link[=summary]{summary()}} to calculate the
-performance metrics presented by that function.
+results without summarising. This function is used in \code{\link[=summary]{summary()}} to
+calculate the performance metrics presented by that function.
 }
 \details{
 The ideal design percentage (IDP) returned (described below) is based on

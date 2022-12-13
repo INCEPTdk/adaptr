@@ -3,9 +3,9 @@
 #' Plots performance metrics according to the number of simulations conducted
 #' for multiple simulated trials. The number of trials may be split into a
 #' a number of batches to illustrate stability of performance metrics across
-#' different simulations. Selection and restriction strategies as described in
-#' [extract_results()] and [check_performance()]. Requires the `ggplot2`
-#' package installed.
+#' different simulations. Calculations are done according to specified selection
+#' and restriction strategies as described in [extract_results()] and
+#' [check_performance()]. Requires the `ggplot2` package installed.
 #'
 #' @inheritParams extract_results
 #' @inheritParams check_performance
@@ -51,7 +51,8 @@
 #'   res_mult <- run_trials(binom_trial, n_rep = 25, base_seed = 678)
 #'
 #'   # NOTE: the number of simulations in this example is smaller than
-#'   # recommended, and the plots reflect that
+#'   # recommended - the plots reflect that, and show that performance metrics
+#'   # are not stable and have likely not converged yet
 #'
 #'   # Convergence plot of mean sample sizes
 #'   plot_convergence(res_mult, metrics = "size mean")

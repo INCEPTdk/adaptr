@@ -25,14 +25,15 @@
 #' stopped when only 1 arm is left, when the final arms are all equivalent, or
 #' after the final specified adaptive analysis.\cr
 #' After stopping (regardless of reason), a final analysis including outcome
-#' data from all patients randomised (to all arms, with the final `control` arm,
-#' if any, used as the `control` in this analysis) will be conducted. Results
-#' from this analysis will be saved, but not used with regards to the adaptive
-#' stopping rules. This is particularly relevant if less patients have available
-#' outcome data at the adaptive analyses than the total number of patients
-#' randomised (as specified in [setup_trial()], [setup_trial_binom()], or
-#' [setup_trial_norm()]), as the final analysis will then include all patients
-#' randomised, which may be more than in the final adaptive analysis conducted.
+#' data from all patients randomised to all arms will be conducted (with the
+#' final `control` arm, if any, used as the `control` in this analysis).
+#' Results from this analysis will be saved, but not used with regards to the
+#' adaptive stopping rules. This is particularly relevant if less patients have
+#' available outcome data at the adaptive analyses than the total number of
+#' patients randomised (as specified in [setup_trial()], [setup_trial_binom()],
+#' or [setup_trial_norm()]), as the final analysis will then include all
+#' patients randomised, which may be more than in the last adaptive analysis
+#' conducted.
 #'
 #' @param trial_spec `trial_spec` object, generated and validated by the
 #'   [setup_trial()], [setup_trial_binom()] or [setup_trial_norm()] function.

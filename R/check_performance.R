@@ -25,8 +25,8 @@ calculate_idp <- function(sels, arms, true_ys, highest_is_best) {
 #' Calculates performance metrics from trial simulation results from the
 #' [run_trials()] function, with bootstrapped uncertainty measures if requested.
 #' Uses [extract_results()], which may be used directly to extract key trial
-#' results without summarising, and is used in [summary()] to calculate the
-#' performance metrics presented by that function.
+#' results without summarising. This function is used in [summary()] to
+#' calculate the performance metrics presented by that function.
 #'
 #' @inheritParams extract_results
 #' @param restrict single character string or `NULL`. If `NULL` (default),
@@ -42,7 +42,8 @@ calculate_idp <- function(sels, arms, true_ys, highest_is_best) {
 #'   calculate uncertainty measures.
 #' @param n_boot single integer (default `5000`); the number of bootstrap
 #'   samples to use if `uncertainty = TRUE`. Values `< 100` are not allowed and
-#'   values `< 1000` will give a warning.
+#'   values `< 1000` will lead to a warning, and results are thus likely to be
+#'   unstable.
 #' @param ci_width single numeric `>= 0` and `< 1`, the width of the
 #'   percentile-based bootstrapped confidence intervals. Defaults to `0.95`,
 #'   corresponding to 95% confidence intervals.
@@ -54,17 +55,19 @@ calculate_idp <- function(sels, arms, true_ys, highest_is_best) {
 #'
 #' @return A tidy `data.frame` with added class `trial_performance` (to control
 #'   the number of digits printed, see [print()]), with the columns `"metric"`
-#'   (described below), `"est"` (the estimates of each metric), and the following four columns if
-#'   `uncertainty = TRUE`: `"err_sd"` (bootstrapped SDs), `"err_mad"`
-#'   (bootstrapped MAD-SDs, as described in [setup_trial()] or [mad()]),
-#'   `"lo_ci"`, and `"hi_ci"`, the latter two corresponding to the lower/upper
-#'   limits of the percentile-based bootstrapped confidence intervals.\cr
+#'   (described below), `"est"` (the estimates of each metric), and the
+#'   following four columns if `uncertainty = TRUE`: `"err_sd"` (bootstrapped
+#'   SDs), `"err_mad"` (bootstrapped MAD-SDs, as described in [setup_trial()]
+#'   and [mad()]), `"lo_ci"`, and `"hi_ci"`, the latter two corresponding to the
+#'   lower/upper limits of the percentile-based bootstrapped confidence
+#'   intervals.\cr
 #'   The following performance metrics are calculated:
 #' \itemize{
 #'   \item `n_summarised`: the number of simulations summarised.
 #'   \item `size_mean`, `size_sd`, `size_median`, `size_p25`, `size_p75`: the
 #'     mean, standard deviation, median as well as 25- and 75-percentiles of the
-#'     sample sizes of the summarised trial simulations.
+#'     sample sizes (number of patients randomised in each simulated trial) of
+#'     the summarised trial simulations.
 #'   \item `sum_ys_mean`, `sum_ys_sd`, `sum_ys_median`, `sum_ys_p25`,
 #'     `sum_ys_p75`: the mean, standard deviation, median as well as 25- and
 #'     75-percentiles of the total `sum_ys` (e.g., the total number of events in
@@ -75,8 +78,8 @@ calculate_idp <- function(sels, arms, true_ys, highest_is_best) {
 #'     `ratio_ys_p75`: the mean, standard deviation, median as well as 25- and
 #'     75-percentiles of the final `ratio_ys` (`sum_ys/final_n`) across all arms
 #'     in the summarised trial simulations.
-#'   \item `prob_conclusive`: the proportion of conclusive trial simulations
-#'     (simulations not stopped at the maximum sample size without a
+#'   \item `prob_conclusive`: the proportion (`0` to `1`) of conclusive trial
+#'     simulations (simulations not stopped at the maximum sample size without a
 #'     superiority, equivalence or futility decision).
 #'   \item `prob_superior`, `prob_equivalence`, `prob_futility`, `prob_max`: the
 #'     proportion (`0` to `1`) of trial simulations stopped for superiority,
@@ -92,17 +95,6 @@ calculate_idp <- function(sels, arms, true_ys, highest_is_best) {
 #'     the selected arm and for the treatment effect, as described further in
 #'     [extract_results()].
 #'   \item `idp`: the ideal design percentage (IDP; 0-100%), see **Details**.
-#'   \item `select_strategy`, `select_last_arm`, `select_preferences`,
-#'     `te_comp`, `raw_ests`, `final_ests`, `restrict`: as specified above.
-#'   \item `control`: the control arm specified by [setup_trial()],
-#'     [setup_trial_binom()] or [setup_trial_norm()]; `NULL` if no control.
-#'   \item `equivalence_assessed`, `futility_assessed`: single logicals,
-#'     specifies whether the trial design specification includes assessments of
-#'     equivalence and/or futility.
-#'   \item `base_seed`: as specified in [run_trials()].
-#'   \item `cri_width`, `n_draws`, `robust`, `description`, `add_info`: as
-#'     specified in [setup_trial()], [setup_trial_binom()] or
-#'     [setup_trial_norm()].
 #'   }
 #'
 #' @details

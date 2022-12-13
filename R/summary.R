@@ -4,7 +4,7 @@
 #' [extract_results()] and [check_performance()], which may be used directly to
 #' extract key trial results without summarising or to calculate performance
 #' metrics (with uncertainty measures if desired) and return them in a tidy
-#' `data.frame`-format.
+#' `data.frame`.
 #'
 #' @inheritParams extract_results
 #' @inheritParams check_performance

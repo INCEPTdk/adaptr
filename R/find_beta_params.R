@@ -31,8 +31,8 @@
 #' @return A single-row `data.frame` with five columns: the two shape parameters
 #'   of the beta distribution (`alpha`, `beta`), rounded according to `n_dec`,
 #'   and the actual lower and upper boundaries of the interval and the median
-#'   (with appropriate names, e.g. `p2.5`, `p50`, and `p97.5` for a `95%`
-#'   interval), when using those rounded values.
+#'   (with appropriate names, e.g. `p2.5`, `p50`, and `p97.5` for a
+#'   `95%` interval), when using those rounded values.
 #'
 #' @importFrom stats qbeta optimise
 #'
