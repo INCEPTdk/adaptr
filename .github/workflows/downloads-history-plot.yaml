@@ -32,7 +32,7 @@ jobs:
             # convert to inches
           plot(df$date, df$count,
                xlab = "Dashed line: mean per day",
-               ylab = "No. downloads", type = "o", pch = 16, cex = 0.75, lwd = 0.2,
+               ylab = "No. downloads", type = "l", lwd = 0.5,
                main = paste("Downloads per day since release\n",
                             "Total downloads:",
                             format(sum(df$count), big.mark = ",", scientific = FALSE)))
