@@ -23,7 +23,8 @@ jobs:
 
       - name: Draw history
         run: |
-          install.packages("cranlogs", repos = "https://cloud.r-project.org")
+          Sys.setenv(NOT_CRAN = "false")
+          install.packages("cranlogs")
 
           df <- cranlogs::cran_downloads("adaptr", from = "2022-03-14", to = Sys.Date() - 1)
             # today's stats won't be available
