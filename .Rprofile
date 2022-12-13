@@ -1,4 +1,3 @@
-# Load devtools and set NOT_CRAN option (for test coverage to be calculated correctly)
-message("Loading devtools and setting NOT_CRAN option to \"true\"")
-library(devtools)
+# Set NOT_CRAN option (for test coverage to be calculated correctly)
+message("Setting NOT_CRAN option to \"true\"")
 Sys.setenv(NOT_CRAN = "true")
