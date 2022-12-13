@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">adaptr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -70,7 +70,8 @@
 
 
 
-<script src="Overview_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+
+<div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Overview</h1>
             
@@ -81,25 +82,47 @@
 
     
     
-<p>The <code>adaptr</code> package simulates adaptive clinical trials using adaptive stopping, adaptive arm dropping and/or response-adaptive randomisation.</p>
-<p>The package has been developed as part of the <a href="https://incept.dk/" class="external-link">INCEPT (Intensive Care Platform Trial) project</a>, funded primarily by a grant from <a href="https://www.sygeforsikring.dk/" class="external-link">Sygeforsikringen “danmark”</a>.</p>
+<p>The <code>adaptr</code> package simulates adaptive clinical trials
+using adaptive stopping, adaptive arm dropping and/or response-adaptive
+randomisation.</p>
+<p>The package has been developed as part of the <a href="https://incept.dk/" class="external-link">INCEPT (Intensive Care Platform Trial)
+project</a>, funded primarily by a grant from <a href="https://www.sygeforsikring.dk/" class="external-link">Sygeforsikringen
+“danmark”</a>.</p>
+<p>Additional guidance on the key methodological considerations when
+planning and comparing adaptive clinical trials can be found in the open
+access article <em>“<a href="https://doi.org/10.1016/j.jclinepi.2022.11.002" class="external-link">An overview of
+methodological considerations regarding adaptive stopping, arm dropping
+and randomisation in clinical trials</a>”</em> available in Journal of
+Clinical Epidemiology.</p>
 <div class="section level2">
 <h2 id="basic-example">Basic example<a class="anchor" aria-label="anchor" href="#basic-example"></a>
 </h2>
 <p>First, load the package:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://incept.dk/" class="external-link">adaptr</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Loading adaptr package (version 1.1.1).</span></span>
+<span><span class="co">#&gt; Loading adaptr package (version 1.2.0).</span></span>
 <span><span class="co">#&gt; See 'help("adaptr")' or 'vignette("Overview", "adaptr")' for help.</span></span>
 <span><span class="co">#&gt; Further information available on https://inceptdk.github.io/adaptr/.</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="set-up-trial">Set up trial<a class="anchor" aria-label="anchor" href="#set-up-trial"></a>
 </h3>
-<p>Then, setup a trial with the desired specifications. <code>adaptr</code> offers the general purpose function <code><a href="../reference/setup_trial.html">setup_trial()</a></code>, but here we use the built-in <code><a href="../reference/setup_trial_binom.html">setup_trial_binom()</a></code> for a trial with a binary, binomially distributed, undesirable outcome such as mortality (<code>adaptr</code> also includes <code><a href="../reference/setup_trial_norm.html">setup_trial_norm()</a></code> for continuous, normally distributed outcomes). The example trial specification has three characteristics:</p>
+<p>Then, setup a trial with the desired specifications.
+<code>adaptr</code> offers the general purpose function
+<code><a href="../reference/setup_trial.html">setup_trial()</a></code>, but here we use the built-in
+<code><a href="../reference/setup_trial_binom.html">setup_trial_binom()</a></code> for a trial with a binary, binomially
+distributed, undesirable outcome such as mortality (<code>adaptr</code>
+also includes <code><a href="../reference/setup_trial_norm.html">setup_trial_norm()</a></code> for continuous, normally
+distributed outcomes). The example trial specification has three
+characteristics:</p>
 <ul>
-<li>The allocation probability to each arm cannot be lower than 15% (<code>min_probs</code>).</li>
-<li>Equivalence stopping rule: if the simulation yields a 90% probability (<code>equivalence_prob</code>) of treatment differences being &lt; 5 %-points (<code>equivalence_diff</code>), the trial is stopped.</li>
-<li>We soften allocation ratios (<code>soften_power</code>) by a constant factor.</li>
+<li>The allocation probability to each arm cannot be lower than 15%
+(<code>min_probs</code>).</li>
+<li>Equivalence stopping rule: if the simulation yields a 90%
+probability (<code>equivalence_prob</code>) of treatment differences
+being &lt; 5 %-points (<code>equivalence_diff</code>), the trial is
+stopped.</li>
+<li>We soften allocation ratios (<code>soften_power</code>) by a
+constant factor.</li>
 </ul>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">binom_trial</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/setup_trial_binom.html">setup_trial_binom</a></span><span class="op">(</span></span>
@@ -111,8 +134,15 @@
 <span>  equivalence_diff <span class="op">=</span> <span class="fl">0.05</span>,</span>
 <span>  soften_power <span class="op">=</span> <span class="fl">0.5</span> </span>
 <span><span class="op">)</span> </span></code></pre></div>
-<p>See <code>?setup_trial()</code> for more details on these arguments or <code><a href="../articles/Basic-examples.html">vignette("Basic-examples", "adaptr")</a></code> for basic example trial specifications and a thorough review of the general settings, and <code><a href="../articles/Advanced-example.html">vignette("Advanced-example", "adaptr")</a></code> for an <strong>advanced</strong> example including details on how to specify user-written functions for generating outcomes and posterior draws.</p>
-<p>We can print an overview of the trial specification by simply running:</p>
+<p>See <code>?setup_trial()</code> for more details on these arguments
+or <code><a href="../articles/Basic-examples.html">vignette("Basic-examples", "adaptr")</a></code> for
+<strong>basic</strong> example trial specifications and a thorough
+review of the general settings, and
+<code><a href="../articles/Advanced-example.html">vignette("Advanced-example", "adaptr")</a></code> for an
+<strong>advanced</strong> example including details on how to specify
+user-written functions for generating outcomes and posterior draws.</p>
+<p>We can print an overview of the trial specification by simply
+running:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">binom_trial</span></span>
 <span><span class="co">#&gt; Trial specification: generic binomially distributed outcome trial</span></span>
@@ -129,15 +159,18 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Maximum sample size: 2000 </span></span>
 <span><span class="co">#&gt; Maximum number of data looks: 18</span></span>
-<span><span class="co">#&gt; Planned data looks after:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000 patients</span></span>
+<span><span class="co">#&gt; Planned data looks after:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000 patients have reached follow-up</span></span>
+<span><span class="co">#&gt; Number of patients randomised at each look:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Superiority threshold: 0.99 </span></span>
-<span><span class="co">#&gt; Inferiority threshold: 0.01 </span></span>
-<span><span class="co">#&gt; Equivalence threshold: 0.9 (no common control)</span></span>
+<span><span class="co">#&gt; Superiority threshold: 0.99 (all analyses)</span></span>
+<span><span class="co">#&gt; Inferiority threshold: 0.01 (all analyses)</span></span>
+<span><span class="co">#&gt; Equivalence threshold: 0.9 (all analyses) (no common control)</span></span>
 <span><span class="co">#&gt; Absolute equivalence difference: 0.05</span></span>
 <span><span class="co">#&gt; No futility threshold (not relevant - no common control)</span></span>
 <span><span class="co">#&gt; Soften power for all analyses: 0.5</span></span></code></pre></div>
-<p>By default, probabilities are shown with 3 decimals. This can be changed by explicitly <code><a href="../reference/print.html">print()</a></code>ing the specification with the <code>prob_digits</code> arguments, for example:</p>
+<p>By default, probabilities are shown with 3 decimals. This can be
+changed by explicitly <code><a href="../reference/print.html">print()</a></code>ing the specification with the
+<code>prob_digits</code> arguments, for example:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/print.html">print</a></span><span class="op">(</span><span class="va">binom_trial</span>, prob_digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Trial specification: generic binomially distributed outcome trial</span></span>
@@ -154,11 +187,12 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Maximum sample size: 2000 </span></span>
 <span><span class="co">#&gt; Maximum number of data looks: 18</span></span>
-<span><span class="co">#&gt; Planned data looks after:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000 patients</span></span>
+<span><span class="co">#&gt; Planned data looks after:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000 patients have reached follow-up</span></span>
+<span><span class="co">#&gt; Number of patients randomised at each look:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Superiority threshold: 0.99 </span></span>
-<span><span class="co">#&gt; Inferiority threshold: 0.01 </span></span>
-<span><span class="co">#&gt; Equivalence threshold: 0.9 (no common control)</span></span>
+<span><span class="co">#&gt; Superiority threshold: 0.99 (all analyses)</span></span>
+<span><span class="co">#&gt; Inferiority threshold: 0.01 (all analyses)</span></span>
+<span><span class="co">#&gt; Equivalence threshold: 0.9 (all analyses) (no common control)</span></span>
 <span><span class="co">#&gt; Absolute equivalence difference: 0.05</span></span>
 <span><span class="co">#&gt; No futility threshold (not relevant - no common control)</span></span>
 <span><span class="co">#&gt; Soften power for all analyses: 0.5</span></span></code></pre></div>
@@ -166,7 +200,8 @@
 <div class="section level3">
 <h3 id="simulate-a-single-trial">Simulate a single trial<a class="anchor" aria-label="anchor" href="#simulate-a-single-trial"></a>
 </h3>
-<p>Remember to define the <code>seed</code> to ensure reproducible results. The final trial results are wrapped here, but when used interactively, you can widen the console for non-wrapped output:</p>
+<p>Remember to define the <code>seed</code> to ensure reproducible
+results:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trial_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_trial.html">run_trial</a></span><span class="op">(</span><span class="va">binom_trial</span>, seed <span class="op">=</span> <span class="fl">12345</span><span class="op">)</span></span>
 <span></span>
@@ -175,43 +210,70 @@
 <span><span class="co">#&gt; * Undesirable outcome</span></span>
 <span><span class="co">#&gt; * No common control arm</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Final status: inconclusive, stopped at maximum sample size</span></span>
+<span><span class="co">#&gt; Final status: inconclusive, stopped at final allowed adaptive analysis</span></span>
 <span><span class="co">#&gt; Final/maximum allowed sample sizes: 2000/2000 (100.0%)</span></span>
+<span><span class="co">#&gt; Available outcome data at last adaptive analysis: 2000/2000 (100.0%)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Final trial results:</span></span>
-<span><span class="co">#&gt;   arms true_ys sum_ys  ns raw_ests post_ests post_errs lo_cri hi_cri</span></span>
-<span><span class="co">#&gt;  Arm A    0.25    180 742    0.243     0.243    0.0159  0.213  0.275</span></span>
-<span><span class="co">#&gt;  Arm B    0.20    178 841    0.212     0.212    0.0141  0.185  0.241</span></span>
-<span><span class="co">#&gt;  Arm C    0.30    113 417    0.271     0.271    0.0215  0.230  0.316</span></span>
-<span><span class="co">#&gt;  final_status status_look status_probs final_alloc</span></span>
-<span><span class="co">#&gt;        active          NA           NA       0.194</span></span>
-<span><span class="co">#&gt;        active          NA           NA       0.656</span></span>
-<span><span class="co">#&gt;      inferior        2000        0.007       0.150</span></span>
+<span><span class="co">#&gt; Trial results overview:</span></span>
+<span><span class="co">#&gt;   arms true_ys final_status status_look status_probs final_alloc</span></span>
+<span><span class="co">#&gt;  Arm A    0.25       active          NA           NA       0.194</span></span>
+<span><span class="co">#&gt;  Arm B    0.20       active          NA           NA       0.656</span></span>
+<span><span class="co">#&gt;  Arm C    0.30     inferior        2000        0.007       0.150</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Esimates from final analysis (all patients):</span></span>
+<span><span class="co">#&gt;   arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all</span></span>
+<span><span class="co">#&gt;  Arm A        180    742        0.243         0.243        0.0161      0.213</span></span>
+<span><span class="co">#&gt;  Arm B        178    841        0.212         0.212        0.0141      0.185</span></span>
+<span><span class="co">#&gt;  Arm C        113    417        0.271         0.272        0.0221      0.230</span></span>
+<span><span class="co">#&gt;  hi_cri_all</span></span>
+<span><span class="co">#&gt;       0.274</span></span>
+<span><span class="co">#&gt;       0.240</span></span>
+<span><span class="co">#&gt;       0.316</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Estimates from last adaptive analysis including each arm:</span></span>
+<span><span class="co">#&gt;   arms sum_ys  ns raw_ests post_ests post_errs lo_cri hi_cri</span></span>
+<span><span class="co">#&gt;  Arm A    180 742    0.243     0.243    0.0159  0.213  0.275</span></span>
+<span><span class="co">#&gt;  Arm B    178 841    0.212     0.212    0.0141  0.185  0.241</span></span>
+<span><span class="co">#&gt;  Arm C    113 417    0.271     0.271    0.0215  0.230  0.316</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Simulation details:</span></span>
 <span><span class="co">#&gt; * Random seed: 12345</span></span>
 <span><span class="co">#&gt; * Credible interval width: 95%</span></span>
 <span><span class="co">#&gt; * Number of posterior draws: 5000</span></span>
 <span><span class="co">#&gt; * Posterior estimation method: medians with MAD-SDs</span></span></code></pre></div>
-<p>Again, we can choose the number of decimals with <code><a href="../reference/print.html">print()</a></code>:</p>
+<p>Again, we can choose the number of decimals with
+<code><a href="../reference/print.html">print()</a></code>:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/print.html">print</a></span><span class="op">(</span><span class="va">trial_res</span>, prob_digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Single simulation result: generic binomially distributed outcome trial</span></span>
 <span><span class="co">#&gt; * Undesirable outcome</span></span>
 <span><span class="co">#&gt; * No common control arm</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Final status: inconclusive, stopped at maximum sample size</span></span>
+<span><span class="co">#&gt; Final status: inconclusive, stopped at final allowed adaptive analysis</span></span>
 <span><span class="co">#&gt; Final/maximum allowed sample sizes: 2000/2000 (100.0%)</span></span>
+<span><span class="co">#&gt; Available outcome data at last adaptive analysis: 2000/2000 (100.0%)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Final trial results:</span></span>
-<span><span class="co">#&gt;   arms true_ys sum_ys  ns raw_ests post_ests post_errs lo_cri hi_cri</span></span>
-<span><span class="co">#&gt;  Arm A    0.25    180 742     0.24      0.24     0.016   0.21   0.27</span></span>
-<span><span class="co">#&gt;  Arm B    0.20    178 841     0.21      0.21     0.014   0.19   0.24</span></span>
-<span><span class="co">#&gt;  Arm C    0.30    113 417     0.27      0.27     0.022   0.23   0.32</span></span>
-<span><span class="co">#&gt;  final_status status_look status_probs final_alloc</span></span>
-<span><span class="co">#&gt;        active          NA           NA        0.19</span></span>
-<span><span class="co">#&gt;        active          NA           NA        0.66</span></span>
-<span><span class="co">#&gt;      inferior        2000        0.007        0.15</span></span>
+<span><span class="co">#&gt; Trial results overview:</span></span>
+<span><span class="co">#&gt;   arms true_ys final_status status_look status_probs final_alloc</span></span>
+<span><span class="co">#&gt;  Arm A    0.25       active          NA           NA        0.19</span></span>
+<span><span class="co">#&gt;  Arm B    0.20       active          NA           NA        0.66</span></span>
+<span><span class="co">#&gt;  Arm C    0.30     inferior        2000        0.007        0.15</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Esimates from final analysis (all patients):</span></span>
+<span><span class="co">#&gt;   arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all</span></span>
+<span><span class="co">#&gt;  Arm A        180    742         0.24          0.24         0.016       0.21</span></span>
+<span><span class="co">#&gt;  Arm B        178    841         0.21          0.21         0.014       0.19</span></span>
+<span><span class="co">#&gt;  Arm C        113    417         0.27          0.27         0.022       0.23</span></span>
+<span><span class="co">#&gt;  hi_cri_all</span></span>
+<span><span class="co">#&gt;        0.27</span></span>
+<span><span class="co">#&gt;        0.24</span></span>
+<span><span class="co">#&gt;        0.32</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Estimates from last adaptive analysis including each arm:</span></span>
+<span><span class="co">#&gt;   arms sum_ys  ns raw_ests post_ests post_errs lo_cri hi_cri</span></span>
+<span><span class="co">#&gt;  Arm A    180 742     0.24      0.24     0.016   0.21   0.27</span></span>
+<span><span class="co">#&gt;  Arm B    178 841     0.21      0.21     0.014   0.19   0.24</span></span>
+<span><span class="co">#&gt;  Arm C    113 417     0.27      0.27     0.022   0.23   0.32</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Simulation details:</span></span>
 <span><span class="co">#&gt; * Random seed: 12345</span></span>
@@ -222,11 +284,30 @@
 <div class="section level3">
 <h3 id="simulate-multiple-trials">Simulate multiple trials<a class="anchor" aria-label="anchor" href="#simulate-multiple-trials"></a>
 </h3>
-<p>Generally, we want to run many simulations using the same trial specification to assess and compare performance metrics of different trial designs. This is the job of <code><a href="../reference/run_trials.html">run_trials()</a></code> (note the final <strong><em>s</em></strong>); again, note the use of a <code>base_seed</code> for reproducible results. Here we run 25 simulations (for tolerable run-time when producing this example), but in practice you will probably want to run more simulations.</p>
+<p>Generally, we want to run many simulations using the same trial
+specification to assess and compare performance metrics of different
+trial designs. This is the job of <code><a href="../reference/run_trials.html">run_trials()</a></code> (note the
+final <strong><em>s</em></strong>); again, note the use of a
+<code>base_seed</code> for reproducible results. Here we run 25
+simulations, but in practice you will generally want to run more
+simulations. The low number of simulations in this example have been
+chosen to make run-time tolerable when producing the example, but leads
+to uncertainty and instability in the results, as seen below.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">trial_res_mult</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_trials.html">run_trials</a></span><span class="op">(</span><span class="va">binom_trial</span>, n_rep <span class="op">=</span> <span class="fl">25</span>, base_seed <span class="op">=</span> <span class="fl">67890</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">trial_res_mult</span></span>
+<code class="sourceCode R"><span><span class="va">trial_res_mult</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_trials.html">run_trials</a></span><span class="op">(</span><span class="va">binom_trial</span>, n_rep <span class="op">=</span> <span class="fl">25</span>, base_seed <span class="op">=</span> <span class="fl">67890</span><span class="op">)</span></span></code></pre></div>
+<p><code><a href="../reference/run_trials.html">run_trials()</a></code> can run simulations on several CPU cores
+concurrently: set the <code>cores</code> argument to some number greater
+than <code>1</code> (which is the default value, resulting in
+serial/non-parallel processing). As an aside, you can see the number of
+available CPU cores by calling <code><a href="https://rdrr.io/r/parallel/detectCores.html" class="external-link">parallel::detectCores()</a></code>.</p>
+</div>
+<div class="section level3">
+<h3 id="calculate-performance-metrics-and-summmarise-results">Calculate performance metrics and summmarise results<a class="anchor" aria-label="anchor" href="#calculate-performance-metrics-and-summmarise-results"></a>
+</h3>
+<p>The results of multiple simulations may be summarised by printing the
+resulting object:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">trial_res_mult</span></span>
 <span><span class="co">#&gt; Multiple simulation results: generic binomially distributed outcome trial</span></span>
 <span><span class="co">#&gt; * Undesirable outcome</span></span>
 <span><span class="co">#&gt; * Number of simulations: 25</span></span>
@@ -235,7 +316,7 @@
 <span><span class="co">#&gt; * Selection strategy: no selection if no superior arm</span></span>
 <span><span class="co">#&gt; * Treatment effect compared to: no comparison</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Performance metrics (using posterior estimates):</span></span>
+<span><span class="co">#&gt; Performance metrics (using posterior estimates from last adaptive analysis):</span></span>
 <span><span class="co">#&gt; * Sample sizes: mean 1324.0 (SD: 547.2) | median 1200.0 (IQR: 1000.0 to 1900.0)</span></span>
 <span><span class="co">#&gt; * Total summarised outcomes: mean 296.1 (SD: 111.5) | median 282.0 (IQR: 228.0 to 415.0)</span></span>
 <span><span class="co">#&gt; * Total summarised outcome rates: mean 0.228 (SD: 0.013) | median 0.230 (IQR: 0.220 to 0.235)</span></span>
@@ -250,18 +331,59 @@
 <span><span class="co">#&gt; * Ideal design percentage: 100.0%</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Simulation details:</span></span>
-<span><span class="co">#&gt; * Simulation time: 0.659 secs</span></span>
+<span><span class="co">#&gt; * Simulation time: 0.988 secs</span></span>
 <span><span class="co">#&gt; * Base random seed: 67890</span></span>
 <span><span class="co">#&gt; * Credible interval width: 95%</span></span>
 <span><span class="co">#&gt; * Number of posterior draws: 5000</span></span>
 <span><span class="co">#&gt; * Estimation method: posterior medians with MAD-SDs</span></span></code></pre></div>
-<p><code><a href="../reference/run_trials.html">run_trials()</a></code> can run simulations on several CPU cores concurrently: set the <code>cores</code> argument to some number greater than <code>1</code> (which is the default value, resulting in serial/non-parallel processing). As an aside, you can see the number of available CPU cores by calling <code><a href="https://rdrr.io/r/parallel/detectCores.html" class="external-link">parallel::detectCores()</a></code>.</p>
-</div>
-<div class="section level3">
-<h3 id="get-the-results-of-multiple-trials">Get the results of multiple trials<a class="anchor" aria-label="anchor" href="#get-the-results-of-multiple-trials"></a>
-</h3>
-<p>Just printing the resulting object (as the last line above) is not necessarily what you want. <code>adaptr</code> has two convenience functions to get the results of multiple simulations of the same trial specification, <code><a href="../reference/extract_results.html">extract_results()</a></code> and <code><a href="../reference/summary.html">summary()</a></code>; see their documentation for details, e.g. on arm selection in trials not ending with superiority. The <code><a href="../reference/extract_results.html">extract_results()</a></code> function yields a tidy <code>data.frame</code> with one simulation per row:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<p>This calls the <code><a href="../reference/summary.html">summary()</a></code> method (as known from, e.g.,
+regression models in <code>R</code>), which summarises the results, and
+prints the output from that function in a human-friendly manner using
+the <code><a href="../reference/print.html">print()</a></code> method for summarised simulations.</p>
+<p>The <code><a href="../reference/summary.html">summary()</a></code> function can also be called directly,
+which allows more control of how results are summarised (including which
+arms are selected in inconclusive trials), and allows subsequent
+extraction of individual key results. In addition, the number of digits
+can be controlled when printed:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">res_sum</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/summary.html">summary</a></span><span class="op">(</span><span class="va">trial_res_mult</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/print.html">print</a></span><span class="op">(</span><span class="va">res_sum</span>, digits <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Multiple simulation results: generic binomially distributed outcome trial</span></span>
+<span><span class="co">#&gt; * Undesirable outcome</span></span>
+<span><span class="co">#&gt; * Number of simulations: 25</span></span>
+<span><span class="co">#&gt; * Number of simulations summarised: 25 (all trials)</span></span>
+<span><span class="co">#&gt; * No common control arm</span></span>
+<span><span class="co">#&gt; * Selection strategy: no selection if no superior arm</span></span>
+<span><span class="co">#&gt; * Treatment effect compared to: no comparison</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Performance metrics (using posterior estimates from last adaptive analysis):</span></span>
+<span><span class="co">#&gt; * Sample sizes: mean 1324.0 (SD: 547.2) | median 1200.0 (IQR: 1000.0 to 1900.0)</span></span>
+<span><span class="co">#&gt; * Total summarised outcomes: mean 296.1 (SD: 111.5) | median 282.0 (IQR: 228.0 to 415.0)</span></span>
+<span><span class="co">#&gt; * Total summarised outcome rates: mean 0.228 (SD: 0.013) | median 0.230 (IQR: 0.220 to 0.235)</span></span>
+<span><span class="co">#&gt; * Conclusive: 80.0%</span></span>
+<span><span class="co">#&gt; * Superiority: 64.0%</span></span>
+<span><span class="co">#&gt; * Equivalence: 16.0%</span></span>
+<span><span class="co">#&gt; * Futility: 0.0% [not assessed]</span></span>
+<span><span class="co">#&gt; * Inconclusive at max sample size: 20.0%</span></span>
+<span><span class="co">#&gt; * Selection probabilities: Arm A: 0.0% | Arm B: 64.0% | Arm C: 0.0% | None: 36.0%</span></span>
+<span><span class="co">#&gt; * RMSE: 0.01642</span></span>
+<span><span class="co">#&gt; * RMSE treatment effect: not estimated</span></span>
+<span><span class="co">#&gt; * Ideal design percentage: 100.0%</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Simulation details:</span></span>
+<span><span class="co">#&gt; * Simulation time: 0.988 secs</span></span>
+<span><span class="co">#&gt; * Base random seed: 67890</span></span>
+<span><span class="co">#&gt; * Credible interval width: 95%</span></span>
+<span><span class="co">#&gt; * Number of posterior draws: 5000</span></span>
+<span><span class="co">#&gt; * Estimation method: posterior medians with MAD-SDs</span></span></code></pre></div>
+<p>The <code><a href="../reference/summary.html">summary()</a></code> method, however, may not necessarily be
+what you want. <code>adaptr</code> has additional functions that may be
+used on multiple simulations using the same trial specification.</p>
+<p>The <code><a href="../reference/extract_results.html">extract_results()</a></code> function extract key trial results
+and yields a tidy <code>data.frame</code> with one simulation per
+row:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">extr_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/extract_results.html">extract_results</a></span><span class="op">(</span><span class="va">trial_res_mult</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">extr_res</span><span class="op">)</span></span>
@@ -282,67 +404,98 @@
 <span><span class="co">#&gt; 4           NA        NA</span></span>
 <span><span class="co">#&gt; 5 3.422824e-06        NA</span></span>
 <span><span class="co">#&gt; 6 4.852161e-05        NA</span></span></code></pre></div>
-<p><code><a href="../reference/summary.html">summary()</a></code> (as expected and known from, e.g., regression models in <code>R</code>) summarises the results in a human-friendly manner. Individual key results can be extracted from the resulting object or printed:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">res_sum</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/summary.html">summary</a></span><span class="op">(</span><span class="va">trial_res_mult</span><span class="op">)</span></span>
+<p>Further, the <code><a href="../reference/check_performance.html">check_performance()</a></code> function calculates key
+performance metrics and returns them in a tidy <code>data.frame</code>
+with one metric per row, and may also be used to assess the uncertainty
+in these estimates using bootstrapping:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">perf_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/check_performance.html">check_performance</a></span><span class="op">(</span><span class="va">trial_res_mult</span>, uncertainty <span class="op">=</span> <span class="cn">TRUE</span>, n_boot <span class="op">=</span> <span class="fl">1000</span>,</span>
+<span>                              boot_seed <span class="op">=</span> <span class="st">"base"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/print.html">print</a></span><span class="op">(</span><span class="va">res_sum</span>, digits <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Multiple simulation results: generic binomially distributed outcome trial</span></span>
-<span><span class="co">#&gt; * Undesirable outcome</span></span>
-<span><span class="co">#&gt; * Number of simulations: 25</span></span>
-<span><span class="co">#&gt; * Number of simulations summarised: 25 (all trials)</span></span>
-<span><span class="co">#&gt; * No common control arm</span></span>
-<span><span class="co">#&gt; * Selection strategy: no selection if no superior arm</span></span>
-<span><span class="co">#&gt; * Treatment effect compared to: no comparison</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Performance metrics (using posterior estimates):</span></span>
-<span><span class="co">#&gt; * Sample sizes: mean 1324.0 (SD: 547.2) | median 1200.0 (IQR: 1000.0 to 1900.0)</span></span>
-<span><span class="co">#&gt; * Total summarised outcomes: mean 296.1 (SD: 111.5) | median 282.0 (IQR: 228.0 to 415.0)</span></span>
-<span><span class="co">#&gt; * Total summarised outcome rates: mean 0.228 (SD: 0.013) | median 0.230 (IQR: 0.220 to 0.235)</span></span>
-<span><span class="co">#&gt; * Conclusive: 80.0%</span></span>
-<span><span class="co">#&gt; * Superiority: 64.0%</span></span>
-<span><span class="co">#&gt; * Equivalence: 16.0%</span></span>
-<span><span class="co">#&gt; * Futility: 0.0% [not assessed]</span></span>
-<span><span class="co">#&gt; * Inconclusive at max sample size: 20.0%</span></span>
-<span><span class="co">#&gt; * Selection probabilities: Arm A: 0.0% | Arm B: 64.0% | Arm C: 0.0% | None: 36.0%</span></span>
-<span><span class="co">#&gt; * RMSE: 0.01642</span></span>
-<span><span class="co">#&gt; * RMSE treatment effect: not estimated</span></span>
-<span><span class="co">#&gt; * Ideal design percentage: 100.0%</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Simulation details:</span></span>
-<span><span class="co">#&gt; * Simulation time: 0.659 secs</span></span>
-<span><span class="co">#&gt; * Base random seed: 67890</span></span>
-<span><span class="co">#&gt; * Credible interval width: 95%</span></span>
-<span><span class="co">#&gt; * Number of posterior draws: 5000</span></span>
-<span><span class="co">#&gt; * Estimation method: posterior medians with MAD-SDs</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/print.html">print</a></span><span class="op">(</span><span class="va">perf_res</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                   metric      est  err_sd err_mad    lo_ci    hi_ci</span></span>
+<span><span class="co">#&gt; 1           n_summarised   25.000   0.000   0.000   25.000   25.000</span></span>
+<span><span class="co">#&gt; 2              size_mean 1324.000 104.423 106.747 1131.800 1524.000</span></span>
+<span><span class="co">#&gt; 3                size_sd  547.175  47.966  48.405  441.268  627.113</span></span>
+<span><span class="co">#&gt; 4            size_median 1200.000 229.311 296.520 1000.000 1600.000</span></span>
+<span><span class="co">#&gt; 5               size_p25 1000.000 132.490   0.000  600.000 1100.000</span></span>
+<span><span class="co">#&gt; 6               size_p75 1900.000 184.737 148.260 1500.000 2000.000</span></span>
+<span><span class="co">#&gt; 7            sum_ys_mean  296.120  21.297  22.120  255.065  335.856</span></span>
+<span><span class="co">#&gt; 8              sum_ys_sd  111.481  10.793  10.592   87.716  129.987</span></span>
+<span><span class="co">#&gt; 9          sum_ys_median  282.000  41.603  63.752  234.000  359.000</span></span>
+<span><span class="co">#&gt; 10            sum_ys_p25  228.000  31.031  13.343  138.000  266.000</span></span>
+<span><span class="co">#&gt; 11            sum_ys_p75  415.000  32.732   7.413  325.000  431.000</span></span>
+<span><span class="co">#&gt; 12         ratio_ys_mean    0.228   0.003   0.003    0.223    0.233</span></span>
+<span><span class="co">#&gt; 13           ratio_ys_sd    0.013   0.002   0.002    0.009    0.016</span></span>
+<span><span class="co">#&gt; 14       ratio_ys_median    0.230   0.004   0.003    0.220    0.234</span></span>
+<span><span class="co">#&gt; 15          ratio_ys_p25    0.220   0.004   0.005    0.210    0.228</span></span>
+<span><span class="co">#&gt; 16          ratio_ys_p75    0.235   0.003   0.003    0.232    0.242</span></span>
+<span><span class="co">#&gt; 17       prob_conclusive    0.800   0.079   0.059    0.640    0.960</span></span>
+<span><span class="co">#&gt; 18         prob_superior    0.640   0.095   0.119    0.440    0.800</span></span>
+<span><span class="co">#&gt; 19      prob_equivalence    0.160   0.076   0.059    0.040    0.320</span></span>
+<span><span class="co">#&gt; 20         prob_futility    0.000   0.000   0.000    0.000    0.000</span></span>
+<span><span class="co">#&gt; 21              prob_max    0.200   0.079   0.059    0.040    0.360</span></span>
+<span><span class="co">#&gt; 22 prob_select_arm_Arm A    0.000   0.000   0.000    0.000    0.000</span></span>
+<span><span class="co">#&gt; 23 prob_select_arm_Arm B    0.640   0.095   0.119    0.440    0.800</span></span>
+<span><span class="co">#&gt; 24 prob_select_arm_Arm C    0.000   0.000   0.000    0.000    0.000</span></span>
+<span><span class="co">#&gt; 25      prob_select_none    0.360   0.095   0.119    0.200    0.560</span></span>
+<span><span class="co">#&gt; 26                  rmse    0.016   0.004   0.004    0.008    0.024</span></span>
+<span><span class="co">#&gt; 27               rmse_te       NA      NA      NA       NA       NA</span></span>
+<span><span class="co">#&gt; 28                   idp  100.000   0.000   0.000  100.000  100.000</span></span></code></pre></div>
+<p>Finally, the stability of performance metrics according to the number
+of simulations may be assessed visually using the
+<code><a href="../reference/plot_convergence.html">plot_convergence()</a></code> function. Note that all
+<code>adaptr</code> plotting functions require the <code>ggplot2</code>
+package.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Convergence plots for four performance metrics</span></span>
+<span><span class="fu"><a href="../reference/plot_convergence.html">plot_convergence</a></span><span class="op">(</span><span class="va">trial_res_mult</span>, metrics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"size mean"</span>, <span class="st">"prob superior"</span>,</span>
+<span>                                             <span class="st">"rmse"</span>, <span class="st">"idp"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="Overview_files/figure-html/unnamed-chunk-13-1.png" width="576" style="display: block; margin: auto;"></p>
+<p>It is seen that the low number of simulations used in this example
+leads to substantial uncertainty and instability in performance metrics
+(while the ideal design percentage is always at 100% here, it would
+likely drop somewhat if more simulations were conducted).</p>
 </div>
 <div class="section level3">
 <h3 id="visualise-trial-results">Visualise trial results<a class="anchor" aria-label="anchor" href="#visualise-trial-results"></a>
 </h3>
-<p>We need non-sparse results for <code><a href="../reference/plot_history.html">plot_history()</a></code> (but <em>not</em> for <code><a href="../reference/plot_status.html">plot_status()</a></code>), so first we re-run <code><a href="../reference/run_trials.html">run_trials()</a></code>:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<p>In addition to the convergence plots, results may be visualised using
+the <code><a href="../reference/plot_status.html">plot_status()</a></code> and <code><a href="../reference/plot_history.html">plot_history()</a></code>
+functions. We need non-sparse results for <code><a href="../reference/plot_history.html">plot_history()</a></code>
+(but <em>not</em> for <code><a href="../reference/plot_status.html">plot_status()</a></code> or
+<code><a href="../reference/plot_convergence.html">plot_convergence()</a></code> presented above), so first we re-run
+<code><a href="../reference/run_trials.html">run_trials()</a></code> with the <code>sparse</code> argument set to
+<code>FALSE</code>:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trial_res_mult</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_trials.html">run_trials</a></span><span class="op">(</span><span class="va">binom_trial</span>, n_rep <span class="op">=</span> <span class="fl">25</span>, base_seed <span class="op">=</span> <span class="fl">67890</span>,</span>
 <span>                             sparse <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p>Note that the <code>adaptr</code> plotting functions require the <code>ggplot2</code> package. First, we plot the overall trial statuses according to the total number of patients randomised (this does <em>not</em> require <code>sparse = FALSE</code>):</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<p>First, we plot the overall trial statuses according to the total
+number of patients randomised (this function does <em>not</em> require
+<code>sparse = FALSE</code>):</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_status.html">plot_status</a></span><span class="op">(</span><span class="va">trial_res_mult</span>, x_value <span class="op">=</span> <span class="st">"total n"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Overview_files/figure-html/unnamed-chunk-12-1.png" width="576" style="display: block; margin: auto;"></p>
-<p>We can also plot the statuses for specific arms. In this example, <em>Arm A</em> is increasingly dropped for inferiority as simulations progress:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_status.html">plot_status</a></span><span class="op">(</span><span class="va">trial_res_mult</span>, x_value <span class="op">=</span> <span class="st">"total n"</span>, arm <span class="op">=</span> <span class="st">"Arm A"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Overview_files/figure-html/unnamed-chunk-13-1.png" width="576" style="display: block; margin: auto;"></p>
-<p>Next, we plot the history of allocation probabilities at each adaptive analysis look. Intervals cover the inter-quartile range by default (<code>interval_width = 0.5</code>):</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<p><img src="Overview_files/figure-html/unnamed-chunk-15-1.png" width="576" style="display: block; margin: auto;"></p>
+<p>We can also plot the statuses for specific arms, or for all arms if
+supplying <code>NA</code> to the <code>arm</code>-argument:</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_status.html">plot_status</a></span><span class="op">(</span><span class="va">trial_res_mult</span>, x_value <span class="op">=</span> <span class="st">"total n"</span>, arm <span class="op">=</span> <span class="cn">NA</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<p><img src="Overview_files/figure-html/unnamed-chunk-16-1.png" width="576" style="display: block; margin: auto;"></p>
+<p>Next, we plot the history of allocation probabilities at each
+adaptive analysis look. Intervals cover the inter-quartile range by
+default (<code>interval_width = 0.5</code>):</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_history.html">plot_history</a></span><span class="op">(</span><span class="va">trial_res_mult</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Overview_files/figure-html/unnamed-chunk-14-1.png" width="576" style="display: block; margin: auto;"></p>
-<p>Plotting other summary metrics is possible; see <code><a href="../reference/plot_history.html">plot_history()</a></code>.</p>
+<p><img src="Overview_files/figure-html/unnamed-chunk-17-1.png" width="576" style="display: block; margin: auto;"></p>
+<p>Plotting other summary metrics is possible; see
+<code><a href="../reference/plot_history.html">plot_history()</a></code>.</p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
 </h2>
 <p>If using the package, please consider citing:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"adaptr"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; To cite adaptr in publications use:</span></span>

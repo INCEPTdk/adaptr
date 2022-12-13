@@ -34,7 +34,13 @@
     <loc>https://inceptdk.github.io/adaptr/reference/assert_pkgs.html</loc>
   </url>
   <url>
+    <loc>https://inceptdk.github.io/adaptr/reference/calculate_idp.html</loc>
+  </url>
+  <url>
     <loc>https://inceptdk.github.io/adaptr/reference/cat0.html</loc>
+  </url>
+  <url>
+    <loc>https://inceptdk.github.io/adaptr/reference/check_performance.html</loc>
   </url>
   <url>
     <loc>https://inceptdk.github.io/adaptr/reference/dispatch_trial_runs.html</loc>
@@ -85,6 +91,9 @@
     <loc>https://inceptdk.github.io/adaptr/reference/make_y_scale.html</loc>
   </url>
   <url>
+    <loc>https://inceptdk.github.io/adaptr/reference/plot_convergence.html</loc>
+  </url>
+  <url>
     <loc>https://inceptdk.github.io/adaptr/reference/plot_history.html</loc>
   </url>
   <url>
@@ -109,6 +118,9 @@
     <loc>https://inceptdk.github.io/adaptr/reference/reallocate_probs.html</loc>
   </url>
   <url>
+    <loc>https://inceptdk.github.io/adaptr/reference/replace_nonfinite.html</loc>
+  </url>
+  <url>
     <loc>https://inceptdk.github.io/adaptr/reference/replace_null.html</loc>
   </url>
   <url>
@@ -130,10 +142,19 @@
     <loc>https://inceptdk.github.io/adaptr/reference/setup_trial_norm.html</loc>
   </url>
   <url>
+    <loc>https://inceptdk.github.io/adaptr/reference/stop0_warning0.html</loc>
+  </url>
+  <url>
     <loc>https://inceptdk.github.io/adaptr/reference/summarise_dist.html</loc>
   </url>
   <url>
+    <loc>https://inceptdk.github.io/adaptr/reference/summarise_num.html</loc>
+  </url>
+  <url>
     <loc>https://inceptdk.github.io/adaptr/reference/summary.html</loc>
+  </url>
+  <url>
+    <loc>https://inceptdk.github.io/adaptr/reference/update_saved_trials.html</loc>
   </url>
   <url>
     <loc>https://inceptdk.github.io/adaptr/reference/validate_trial.html</loc>

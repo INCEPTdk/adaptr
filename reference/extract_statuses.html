@@ -12,7 +12,7 @@ arm from multiple trial simulations. Works with sparse results."><!-- mathjax --
     
     <a class="navbar-brand me-2" href="../index.html">adaptr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -73,14 +73,15 @@ arm from multiple trial simulations. Works with sparse results."><!-- mathjax --
 
 <dt>x_value</dt>
 <dd><p>single character string, determining whether the number of
-adaptive analysis looks (<code>"look"</code>, default) or the total cumulated number of
-patients allocated (<code>"total n"</code>) are plotted on the x-axis.</p></dd>
+adaptive analysis looks (<code>"look"</code>, default), the total cumulated number of
+patients randomised (<code>"total n"</code>) or with outcome data available at each
+analysis (<code>"followed n"</code>) are plotted on the x-axis.</p></dd>
 
 
 <dt>arm</dt>
-<dd><p>single character string or <code>NULL</code> (default); can be set to a valid
-trial <code>arm</code>. If <code>NULL</code>, the overall trial statuses are plotted, otherwise
-the statuses for a single, specific trial arm are plotted.</p></dd>
+<dd><p>character string of one or more unique, valid <code>arm</code> names, <code>NA</code>,
+or <code>NULL</code> (default). If <code>NULL</code>, the overall trial statuses are plotted,
+otherwise the specified arms or all arms (if <code>NA</code> is specified) are plotted.</p></dd>
 
 </dl></div>
     <div class="section level2">

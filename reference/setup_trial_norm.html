@@ -46,7 +46,7 @@ Advanced example vignette
     
     <a class="navbar-brand me-2" href="../index.html">adaptr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -122,6 +122,7 @@ For additional trial specification examples, see the the
 <span>  data_looks <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  max_n <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  look_after_every <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  randomised_at_looks <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  control <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  control_prob_fixed <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  inferiority <span class="op">=</span> <span class="fl">0.01</span>,</span>
@@ -187,15 +188,18 @@ Must be <code>NA</code> (default for all arms) if no boundary is wanted.</p></dd
 
 <dt>data_looks</dt>
 <dd><p>vector of increasing integers, specifies when to conduct
-adaptive analyses (= the total number of patients randomised at each
-adaptive analysis). The last number in the vector represents the maximum
-sample size. Instead of specifying <code>data_looks</code>, the <code>max_n</code> and
-<code>look_after_every</code> arguments can be used in combination (then <code>data_looks</code>
-must be <code>NULL</code>, the default).</p></dd>
+adaptive analyses (= the total number of patients with available outcome
+data at each adaptive analysis). The last number in the vector represents
+the final adaptive analysis, i.e., the final analysis where superiority,
+inferiority, practical equivalence, or futility can be claimed.
+Instead of specifying <code>data_looks</code>, the <code>max_n</code> and <code>look_after_every</code>
+arguments can be used in combination (then <code>data_looks</code> must be <code>NULL</code>,
+the default).</p></dd>
 
 
 <dt>max_n</dt>
-<dd><p>single integer, maximum total sample size (defaults to <code>NULL</code>).
+<dd><p>single integer, number of patients with available outcome data
+at the last possible adaptive analysis (defaults to <code>NULL</code>).
 Must only be specified if <code>data_looks</code> is <code>NULL</code>. Requires specification of
 the <code>look_after_every</code> argument.</p></dd>
 
@@ -203,9 +207,24 @@ the <code>look_after_every</code> argument.</p></dd>
 <dt>look_after_every</dt>
 <dd><p>single integer, specified together with <code>max_n</code>.
 Adaptive analyses will be conducted after every <code>look_after_every</code>
-patients randomised, and at the total sample size as specified by <code>max_n</code>
-(<code>max_n</code> does not need to be a multiple of <code>look_after_every</code>). If
-specified, <code>data_looks</code> must be <code>NULL</code> (as default).</p></dd>
+patients have available outcome data, and at the total sample size as
+specified by <code>max_n</code> (<code>max_n</code> does not need to be a multiple of
+<code>look_after_every</code>). If specified, <code>data_looks</code> must be <code>NULL</code> (default).</p></dd>
+
+
+<dt>randomised_at_looks</dt>
+<dd><p>vector of increasing integers or <code>NULL</code>,
+specifying the number of patients randomised at the time of each adaptive
+analysis using the current allocation probabilities at said analysis.
+If <code>NULL</code> (the default), the number of patients randomised at each analysis
+will match the number of patients with available outcome data at said
+analysis, as specified by <code>data_looks</code> or <code>max_n</code> and <code>look_after_every</code>,
+i.e., outcome data will be available immediately after randomisation for
+all patients.<br>
+If not <code>NULL</code>, the vector must be of the same length as the number of
+adaptive analyses specified by <code>data_looks</code> or <code>max_n</code> and
+<code>look_after_every</code>, and all values must be larger than or equal to the
+number of patients with available outcome data at each analysis.</p></dd>
 
 
 <dt>control</dt>
@@ -229,32 +248,41 @@ See <code><a href="setup_trial.html">setup_trial()</a></code> <strong>Details</s
 
 
 <dt>inferiority</dt>
-<dd><p>single numeric (<code>&gt; 0</code> and <code>&lt;1</code>, default is <code>0.01</code>)
-specifying the inferiority threshold. An arm will be considered inferior
-and dropped if the probability that it is best (when comparing all arms) or
-better than the control arm (when a common <code>control</code> is used) drops below
-this threshold.</p></dd>
+<dd><p>single numeric value or vector of numeric values of the
+same length as the maximum number of possible adaptive analyses, specifying
+the probability threshold(s) for inferiority (default is <code>0.01</code>). All
+values must be <code>&gt;= 0</code> and <code>&lt;= 1</code>, and if multiple values are supplied, no
+values may be lower than the preceding value. An arm will be considered
+inferior and dropped if the probability that it is best (when comparing all
+arms) or better than the control arm (when a common <code>control</code> is used)
+drops below the inferiority threshold at an adaptive analysis.</p></dd>
 
 
 <dt>superiority</dt>
-<dd><p>single numeric (<code>&gt;0</code> and <code>&lt;1</code>, default is <code>0.99</code>)
-specifying the superiority threshold. If the probability that an arm is
-best (when comparing all arms) or better than the control arm (when a
-common <code>control</code> is used) exceeds this number, said arm will be declared
-the winner and the trial will be stopped (if no common <code>control</code> is used or
-if the last comparator is dropped in a design with a common control) <em>or</em>
-become the new control and the trial will continue (if a common control is
-specified).</p></dd>
+<dd><p>single numeric value or vector of numeric values of the
+same length as the maximum number of possible adaptive analyses, specifying
+the probability threshold(s) for superiority (default is <code>0.99</code>). All
+values must be <code>&gt;= 0</code> and <code>&lt;= 1</code>, and if multiple values are supplied, no
+values may be higher than the preceding value. If the probability that an
+arm is best (when comparing all arms) or better than the control arm (when
+a common <code>control</code> is used) exceeds the superiority threshold at an
+adaptive analysis, said arm will be declared the winner and the trial will
+be stopped (if no common <code>control</code> is used or if the last comparator is
+dropped in a design with a common control) <em>or</em> become the new control and
+the trial will continue (if a common control is specified).</p></dd>
 
 
 <dt>equivalence_prob</dt>
-<dd><p>single numeric (<code>&gt; 0</code> and <code>&lt; 1</code>) or <code>NULL</code> (default,
-corresponding to no equivalence assessment). If a numeric value is
-specified, arms will be stopped for equivalence if the probability of
-either <em>(a)</em> equivalence compared to a common <code>control</code> or <em>(b)</em>
-equivalence between all arms remaining (designs without a common control)
-exceeds this threshold. Requires specification of <code>equivalence_diff</code>,
-<code>equivalence_only_first</code>, and a common <code>control</code> arm.</p></dd>
+<dd><p>single numeric value, vector of numeric values of the
+same length as the maximum number of possible adaptive analyses or <code>NULL</code>
+(default, corresponding to no equivalence assessment), specifying the
+probability threshold(s) for equivalence. All values must be <code>&gt; 0</code> and
+<code>&lt; 1</code>, and if multiple values are supplied, no values may be higher than
+the preceding value. If not <code>NULL</code>, arms will be dropped for equivalence if
+the probability of either <em>(a)</em> equivalence compared to a common <code>control</code>
+or <em>(b)</em> equivalence between all arms remaining (designs without a common
+<code>control</code>) exceeds the equivalence threshold at an adaptive analysis.
+Requires specification of <code>equivalence_diff</code>, and <code>equivalence_only_first</code>.</p></dd>
 
 
 <dt>equivalence_diff</dt>
@@ -279,11 +307,15 @@ becomes the new control.</p></dd>
 
 
 <dt>futility_prob</dt>
-<dd><p>single numeric (<code>&gt; 0</code> and <code>&lt; 1</code>) or <code>NULL</code> (default,
-corresponds to no futility assessment). If a numeric value is specified,
-<code>arms</code> will be stopped for futility when the probability for futility
-compared to the common <code>control</code> exceeds this threshold. Requires a common
-<code>control</code> arm, specification of <code>futility_diff</code> and <code>futility_only_first</code>.</p></dd>
+<dd><p>single numeric value, vector of numeric values of the
+same length as the maximum number of possible adaptive analyses or <code>NULL</code>
+(default, corresponding to no futility assessment), specifying the
+probability threshold(s) for futility. All values must be <code>&gt; 0</code> and <code>&lt; 1</code>,
+and if multiple values are supplied, no values may be higher than
+the preceding value. If not <code>NULL</code>, arms will be dropped for futility if
+the probability for futility compared to the common <code>control</code> exceeds the
+futility threshold at an adaptive analysis. Requires a common <code>control</code>
+arm, specification of <code>futility_diff</code>, and <code>futility_only_first</code>.</p></dd>
 
 
 <dt>futility_diff</dt>
@@ -337,7 +369,7 @@ and warned against.</p></dd>
 <dt>robust</dt>
 <dd><p>single logical, if <code>TRUE</code> (default) the medians and median
 absolute deviations (scaled to be comparable to the standard deviation for
-normal distributions; MAD_SD) are used to summarise the posterior
+normal distributions; MAD_SDs) are used to summarise the posterior
 distributions; if <code>FALSE</code>, the means and standard deviations (SDs) are used
 instead (slightly faster, but may be less appropriate for posteriors skewed
 on the natural scale).</p></dd>
@@ -361,7 +393,7 @@ combinations and settings have been ruled out. Also contains <code>best_arm</cod
 
 
 <p>holding the arm(s) with the best value(s) in <code>true_ys</code>. Use <code><a href="https://rdrr.io/r/utils/str.html" class="external-link">str()</a></code> to
-peruse the actual content of the returned object</p>
+peruse the actual content of the returned object.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -405,9 +437,12 @@ distributed, <code>FALSE</code> is used as the default value for the <code>robus
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Maximum sample size: 500 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Maximum number of data looks: 10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Planned looks after every 50 patients until maximum sample size</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Superiority threshold: 0.99 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Inferiority threshold: 0.01 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Planned looks after every 50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  patients have reached follow-up until final look after 500 patients</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of patients randomised at each look:  50, 100, 150, 200, 250, 300, 350, 400, 450, 500</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Superiority threshold: 0.99 (all analyses)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Inferiority threshold: 0.01 (all analyses)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> No equivalence threshold</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> No futility threshold</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Soften power for all analyses: 0.5</span>

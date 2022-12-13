@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">adaptr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -70,7 +70,8 @@
 
 
 
-<script src="Advanced-example_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+
+<div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Advanced example</h1>
             
@@ -81,37 +82,85 @@
 
     
     
-<p>This vignette provides an <strong>advanced</strong> example on how to:</p>
+<p>This vignette provides an <strong>advanced</strong> example on how
+to:</p>
 <ol style="list-style-type: decimal">
-<li>Specify a trial design with <code><a href="../reference/setup_trial.html">setup_trial()</a></code> using user-written functions for generating outcomes and drawing samples from the posterior distributions</li>
-<li>Transform the raw outcome estimates in a way appropriate for your needs</li>
+<li>Specify a trial design with <code><a href="../reference/setup_trial.html">setup_trial()</a></code> using
+user-written functions for generating outcomes and drawing samples from
+the posterior distributions</li>
+<li>Transform the raw outcome estimates in a way appropriate for your
+needs</li>
 <li>Derive and specify prior probability distributions</li>
 </ol>
-<p>The manual for <code><a href="../reference/setup_trial.html">setup_trial()</a></code> contains another example (more succinctly annotated); see the <strong>Examples</strong> sections in <code>?setup_trial()</code>. As an alternative to using custom functions, the convenience functions <code><a href="../reference/setup_trial_binom.html">setup_trial_binom()</a></code> and <code><a href="../reference/setup_trial_norm.html">setup_trial_norm()</a></code> may be used for simulating trials with binary, binomially distributed or continuous, normally distributed outcomes, using sensible defaults and flat priors.</p>
-<p>This vignette is intended for advanced users and assume general knowledge of writing R functions and specifying prior distributions for (simple, conjugate) Bayesian models. Before reading this vignette, we highly encourage you to read the Basic examples vignette (see <code><a href="../articles/Basic-examples.html">vignette("Basic-examples", "adaptr")</a></code>) with more basic examples using the simplified <code><a href="../reference/setup_trial_binom.html">setup_trial_binom()</a></code> function and a thorough discussion of the settings applicable to all trial designs.</p>
+<p>The manual for <code><a href="../reference/setup_trial.html">setup_trial()</a></code> contains another example
+(more succinctly annotated); see the <strong>Examples</strong> sections
+in <code>?setup_trial()</code>. As an alternative to using custom
+functions, the convenience functions <code><a href="../reference/setup_trial_binom.html">setup_trial_binom()</a></code>
+and <code><a href="../reference/setup_trial_norm.html">setup_trial_norm()</a></code> may be used for simulating trials
+with binary, binomially distributed or continuous, normally distributed
+outcomes, using sensible defaults and flat priors.</p>
+<p>This vignette is intended for advanced users and assume general
+knowledge of writing R functions and specifying prior distributions for
+(simple, conjugate) Bayesian models. Before reading this vignette, we
+highly encourage you to read the Basic examples vignette (see
+<code><a href="../articles/Basic-examples.html">vignette("Basic-examples", "adaptr")</a></code>) with more basic
+examples using the simplified <code><a href="../reference/setup_trial_binom.html">setup_trial_binom()</a></code> function
+and a thorough discussion of the settings applicable to all trial
+designs.</p>
 <div class="section level2">
 <h2 id="preamble">Preamble<a class="anchor" aria-label="anchor" href="#preamble"></a>
 </h2>
-<p>In this example, we set up a trial with three <code>arms</code>, one of which is the <code>control</code>, and an undesirable binary outcome (e.g., mortality).</p>
-<p>This examples creates a custom version of the <code><a href="../reference/setup_trial_binom.html">setup_trial_binom()</a></code> function using non-flat priors for the event rates in each arm (<code><a href="../reference/setup_trial_binom.html">setup_trial_binom()</a></code> uses flat priors), and returning event probabilities as percentages (instead of fractions), to illustrate the use of a custom function to summarise the raw outcome data.</p>
-<p>While <code><a href="../reference/setup_trial.html">setup_trial()</a></code> attempts to validate the custom functions by assessing their output during trial specification, some edge cases might elude this validation. We, therefore, urge users specifying custom functions to carefully test more complex functions themselves before actual use.</p>
-<p>If you go through the trouble of writing a nice set of functions for generating outcomes and sampling from posterior distributions, please consider adding these to the package. This way, others can benefit from your work and it helps validate them. See how on the <a href="https://github.com/INCEPTdk/adaptr#contributing" class="external-link">GitHub</a> page under <strong>Contributing</strong>.</p>
-<p>Although the user-written custom functions below do not depend on the <code>adaptr</code> package, as the first thing we load the package:</p>
+<p>In this example, we set up a trial with three <code>arms</code>, one
+of which is the <code>control</code>, and an undesirable binary outcome
+(e.g., mortality).</p>
+<p>This examples creates a custom version of the
+<code><a href="../reference/setup_trial_binom.html">setup_trial_binom()</a></code> function using non-flat priors for the
+event rates in each arm (<code><a href="../reference/setup_trial_binom.html">setup_trial_binom()</a></code> uses flat
+priors), and returning event probabilities as percentages (instead of
+fractions), to illustrate the use of a custom function to summarise the
+raw outcome data.</p>
+<p>While <code><a href="../reference/setup_trial.html">setup_trial()</a></code> attempts to validate the custom
+functions by assessing their output during trial specification, some
+edge cases might elude this validation. We, therefore, urge users
+specifying custom functions to carefully test more complex functions
+themselves before actual use.</p>
+<p>If you go through the trouble of writing a nice set of functions for
+generating outcomes and sampling from posterior distributions, please
+consider adding these to the package. This way, others can benefit from
+your work and it helps validate them. See how on the <a href="https://github.com/INCEPTdk/adaptr#contributing" class="external-link">GitHub</a> page
+under <strong>Contributing</strong>.</p>
+<p>Although the user-written custom functions below do not depend on the
+<code>adaptr</code> package, as the first thing we load the package:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://incept.dk/" class="external-link">adaptr</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Loading adaptr package (version 1.1.1).</span></span>
+<span><span class="co">#&gt; Loading adaptr package (version 1.2.0).</span></span>
 <span><span class="co">#&gt; See 'help("adaptr")' or 'vignette("Overview", "adaptr")' for help.</span></span>
 <span><span class="co">#&gt; Further information available on https://inceptdk.github.io/adaptr/.</span></span></code></pre></div>
 <p>–and then set the global seed to ensure reproducible results:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">89</span><span class="op">)</span></span></code></pre></div>
-<p>We define the functions and (for illustration purposes and as a sanity check) print their outputs. They are, then, invoked by <code><a href="../reference/setup_trial.html">setup_trial()</a></code> (in the final code chunk of this vignette).</p>
+<p>We define the functions and (for illustration purposes and as a
+sanity check) print their outputs. They are, then, invoked by
+<code><a href="../reference/setup_trial.html">setup_trial()</a></code> (in the final code chunk of this
+vignette).</p>
 </div>
 <div class="section level2">
 <h2 id="functions-for-generating-outcomes">Functions for generating outcomes<a class="anchor" aria-label="anchor" href="#functions-for-generating-outcomes"></a>
 </h2>
-<p>This function should take a single argument (<code>allocs</code>), a character vector containing the allocations (names of trial <code>arms</code>) of all patients included since the last adaptive analysis. The function must return a <em>numeric</em> vector, regardless of actual outcome type (so, e.g., categorical outcomes must be encoded as numeric). The returned numeric vector must be of the same length, and the values in the same order as <code>allocs</code>. That is, the third element of <code>allocs</code> specifies the allocation of the third patient randomised since the last adaptive analysis, and (correspondingly) the third element of the returned vector is that patient’s outcome.</p>
-<p>It sounds complicated, but it becomes clearer when we actually specify the function (essentially a re-implementation of the built-in function used by <code><a href="../reference/setup_trial_binom.html">setup_trial_binom()</a></code>):</p>
+<p>This function should take a single argument (<code>allocs</code>), a
+character vector containing the allocations (names of trial
+<code>arms</code>) of all patients included since the last adaptive
+analysis. The function must return a <em>numeric</em> vector, regardless
+of actual outcome type (so, e.g., categorical outcomes must be encoded
+as numeric). The returned numeric vector must be of the same length, and
+the values in the same order as <code>allocs</code>. That is, the third
+element of <code>allocs</code> specifies the allocation of the third
+patient randomised since the last adaptive analysis, and
+(correspondingly) the third element of the returned vector is that
+patient’s outcome.</p>
+<p>It sounds complicated, but it becomes clearer when we actually
+specify the function (essentially a re-implementation of the built-in
+function used by <code><a href="../reference/setup_trial_binom.html">setup_trial_binom()</a></code>):</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">get_ys_binom_custom</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">allocs</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="co"># Binary outcome coded as 0/1 - prepare returned vector of appropriate length</span></span>
@@ -134,7 +183,10 @@
 <span>  <span class="co"># Return outcome vector</span></span>
 <span>  <span class="va">y</span></span>
 <span><span class="op">}</span></span></code></pre></div>
-<p>To illustrate how the function works, we first generate random allocations for 50 patients using equal allocation probabilities, the default behaviour of <code><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample()</a></code>. By enclosing the call in parentheses, the resulting allocations are printed:</p>
+<p>To illustrate how the function works, we first generate random
+allocations for 50 patients using equal allocation probabilities, the
+default behaviour of <code><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample()</a></code>. By enclosing the call in
+parentheses, the resulting allocations are printed:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="va">allocs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Control"</span>, <span class="st">"Experimental arm A"</span>, <span class="st">"Experimental arm  B"</span><span class="op">)</span>,</span>
 <span>                  size <span class="op">=</span> <span class="fl">50</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
@@ -164,14 +216,34 @@
 <div class="section level2">
 <h2 id="functions-for-drawing-posterior-samples">Functions for drawing posterior samples<a class="anchor" aria-label="anchor" href="#functions-for-drawing-posterior-samples"></a>
 </h2>
-<p>The <code><a href="../reference/setup_trial_binom.html">setup_trial_binom()</a></code> function uses <em>beta-binomial conjugate prior models</em> in each arm, with <code>beta(1, 1)</code> priors. These priors are uniform (≈ “non-informative”) on the probability scale and corresponds to the same amount of information as provided by 2 patients (1 with and 1 without an event), described in greater detail by, e.g., <em>Ryan et al, 2019</em> (<a href="https://doi.org/10.1136/bmjopen-2018-024256" class="external-link">10.1136/bmjopen-2018-024256</a>).</p>
-<p>Our custom function for generating posterior draws also uses beta-binomial conjugate prior models, but with informative priors. Informative priors may prevent undue influence of random, early fluctuations in a trial by pulling posterior estimates closer to the prior when limited data are available.</p>
-<p>We seek relatively weakly informative priors centred on previous knowledge (or beliefs), and so before we can actually define a function for generating posterior draws based on informative priors, we need to derive such a prior.</p>
+<p>The <code><a href="../reference/setup_trial_binom.html">setup_trial_binom()</a></code> function uses <em>beta-binomial
+conjugate prior models</em> in each arm, with <code>beta(1, 1)</code>
+priors. These priors are uniform (≈ “non-informative”) on the
+probability scale and corresponds to the same amount of information as
+provided by 2 patients (1 with and 1 without an event), described in
+greater detail by, e.g., <em>Ryan et al, 2019</em> (<a href="https://doi.org/10.1136/bmjopen-2018-024256" class="external-link">10.1136/bmjopen-2018-024256</a>).</p>
+<p>Our custom function for generating posterior draws also uses
+beta-binomial conjugate prior models, but with informative priors.
+Informative priors may prevent undue influence of random, early
+fluctuations in a trial by pulling posterior estimates closer to the
+prior when limited data are available.</p>
+<p>We seek relatively weakly informative priors centred on previous
+knowledge (or beliefs), and so before we can actually define a function
+for generating posterior draws based on informative priors, we need to
+derive such a prior.</p>
 <div class="section level3">
 <h3 id="informative-priors">Informative priors<a class="anchor" aria-label="anchor" href="#informative-priors"></a>
 </h3>
-<p>We assume that we have prior knowledge corresponding to a belief that the best estimate for the true event probability in the <code>control</code> arm is 0.25 (25%), and that the true event probability is between 0.15 and 0.35 (15-35%) with 95% probability. The mean of a beta distribution is simply <code>[number of events]/[number of patients]</code>.</p>
-<p>To derive a beta distribution that reflects this prior belief, we use <code><a href="../reference/find_beta_params.html">find_beta_params()</a></code>, a helper function included in the <code>adaptr</code> (see <code><a href="../reference/find_beta_params.html">?find_beta_params</a></code> for details):</p>
+<p>We assume that we have prior knowledge corresponding to a belief that
+the best estimate for the true event probability in the
+<code>control</code> arm is 0.25 (25%), and that the true event
+probability is between 0.15 and 0.35 (15-35%) with 95% probability. The
+mean of a beta distribution is simply
+<code>[number of events]/[number of patients]</code>.</p>
+<p>To derive a beta distribution that reflects this prior belief, we use
+<code><a href="../reference/find_beta_params.html">find_beta_params()</a></code>, a helper function included in the
+<code>adaptr</code> (see <code><a href="../reference/find_beta_params.html">?find_beta_params</a></code> for
+details):</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/find_beta_params.html">find_beta_params</a></span><span class="op">(</span></span>
 <span>  theta <span class="op">=</span> <span class="fl">0.25</span>, <span class="co"># Event ratio</span></span>
@@ -181,35 +253,89 @@
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;   alpha beta      p2.5     p50.0     p97.5</span></span>
 <span><span class="co">#&gt; 1    15   45 0.1498208 0.2472077 0.3659499</span></span></code></pre></div>
-<p>We thus see that our prior belief prior roughly corresponds to previous randomisation of 60 patients of whom 15 (<code>alpha</code>) experienced the event and 45 (<code>beta</code>) did not.</p>
-<p>Even though we may expect event probabilities to differ in the non-control arms, for this example we consider this prior appropriate for all arms as we consider event probabilities smaller/larger than those represented by the prior unlikely.</p>
-<p>Below, we illustrate the effects of this prior compared to the default <code>beta(1, 1)</code> prior used in <code><a href="../reference/setup_trial_binom.html">setup_trial_binom()</a></code> for a single trial arm with 20 patients randomised, 12 events and 8 non-events. This corresponds to an estimated event probability of 0.6 (60%), far more than the expected 0.25 (25%). This could come about by random fluctuations when few patients have been randomised, even if our prior beliefs are correct.</p>
+<p>We thus see that our prior belief prior roughly corresponds to
+previous randomisation of 60 patients of whom 15 (<code>alpha</code>)
+experienced the event and 45 (<code>beta</code>) did not.</p>
+<p>Even though we may expect event probabilities to differ in the
+non-control arms, for this example we consider this prior appropriate
+for all arms as we consider event probabilities smaller/larger than
+those represented by the prior unlikely.</p>
+<p>Below, we illustrate the effects of this prior compared to the
+default <code>beta(1, 1)</code> prior used in
+<code><a href="../reference/setup_trial_binom.html">setup_trial_binom()</a></code> for a single trial arm with 20 patients
+randomised, 12 events and 8 non-events. This corresponds to an estimated
+event probability of 0.6 (60%), far more than the expected 0.25 (25%).
+This could come about by random fluctuations when few patients have been
+randomised, even if our prior beliefs are correct.</p>
 <p><img src="Advanced-example_files/figure-html/prior_posterior_20-1.png" width="576" style="display: block; margin: auto;"></p>
-<p>Next, we illustrate the effects on the same prior after 200 patients have been randomised to the same arm, with 56 events and 144 non-events, which corresponds to an estimated event probability of 0.28 (28%), which is more similar to the expected event probability.</p>
+<p>Next, we illustrate the effects on the same prior after 200 patients
+have been randomised to the same arm, with 56 events and 144 non-events,
+which corresponds to an estimated event probability of 0.28 (28%), which
+is more similar to the expected event probability.</p>
 <p><img src="Advanced-example_files/figure-html/prior_posterior_200-1.png" width="576" style="display: block; margin: auto;"></p>
-<p>When comparing to the previous plot, we clearly see that once more patients have been randomised, the larger sample of observed data starts to dominate the posterior, so that the prior exerts less influence on the posterior distribution (both posterior distributions are very alike despite the very different prior distributions).</p>
+<p>When comparing to the previous plot, we clearly see that once more
+patients have been randomised, the larger sample of observed data starts
+to dominate the posterior, so that the prior exerts less influence on
+the posterior distribution (both posterior distributions are very alike
+despite the very different prior distributions).</p>
 </div>
 <div class="section level3">
 <h3 id="defining-the-function-to-generate-posterior-draws">Defining the function to generate posterior draws<a class="anchor" aria-label="anchor" href="#defining-the-function-to-generate-posterior-draws"></a>
 </h3>
-<p>There are a number of important things to be aware of when specifying this function. First, it must accept all the following arguments (with the exact same names, <em>even</em> if you do not used them in your function):</p>
+<p>There are a number of important things to be aware of when specifying
+this function. First, it must accept all the following arguments (with
+the exact same names, <em>even</em> if you do not used them in your
+function):</p>
 <ul>
 <li>
-<code>arms</code>: character vector of the <em>currently active</em> <code>arms</code> in the trial.</li>
+<code>arms</code>: character vector of the <em>currently active</em>
+<code>arms</code> in the trial.</li>
 <li>
-<code>allocs</code>: character vector of the allocations (trial <code>arms</code>) of <em>all</em> patients randomised in the trial, <em>including</em> those randomised to <code>arms</code> that are no longer active.</li>
+<code>allocs</code>: character vector of the allocations (trial
+<code>arms</code>) of <em>all</em> patients randomised in the trial,
+<em>including</em> those randomised to <code>arms</code> that are no
+longer active.</li>
 <li>
-<code>ys</code>: numeric vector of the outcomes of <em>all</em> patients randomised in the trial, <em>including</em> those randomised to <code>arms</code> that are no longer active.</li>
+<code>ys</code>: numeric vector of the outcomes of <em>all</em>
+patients randomised in the trial, <em>including</em> those randomised to
+<code>arms</code> that are no longer active.</li>
 <li>
-<code>control</code>: single character, the <em>current</em> <code>control</code> arm; <code>NULL</code> in trials without a common <code>control</code>.</li>
+<code>control</code>: single character, the <em>current</em>
+<code>control</code> arm; <code>NULL</code> in trials without a common
+<code>control</code>.</li>
 <li>
-<code>n_draws</code>: single integer, the number of posterior draws to generate for <em>each</em> arm.</li>
+<code>n_draws</code>: single integer, the number of posterior draws
+to generate for <em>each</em> arm.</li>
 </ul>
-<p>Alternatively, unused arguments can be left out and the ellipsis (<code>...</code>) included as the final argument in your function.</p>
-<p>Second, the order of <code>allocs</code> and <code>ys</code> must match: the fifth element of <code>allocs</code> represents the allocation of the fifth patient, while the fifth element of <code>ys</code> represent the outcome of the same patient.</p>
-<p>Third, <code>allocs</code> and <code>ys</code> are provided for <strong>all</strong> patients, including those randomised to <code>arms</code> that are no longer active. This is done as users in some situations may want to use these data when generating posterior draws for the other (and currently <strong>active</strong>) <code>arms</code>.</p>
-<p>Fourth, <code>adaptr</code> does not restrict how posterior samples are drawn. Consequently, Markov chain Monte Carlo- or variational inference-based methods may be used, and other packages supplying such functionality may be called by user-provided functions. However, using more complex methods than simple conjugate models substantially increases simulation run time. Consequently, simpler models are well-suited for use in simulations.</p>
-<p>Fifth, the function must return a numeric <code>matrix</code> with <code>length(arms)</code> columns and <code>n_draws</code> rows, with the <strong>currently active</strong> <code>arms</code> as column names. That is, each row must contain one posterior draw for each arm. <code>NA</code>’s are not allowed, so even if no patients have been randomised to an arm yet, valid numeric values should be returned (e.g., drawn from the prior or from another very diffuse <em>posterior</em> distribution). Even if the outcome is not truly numeric, both the vector of outcomes provided to the function (<code>ys</code>) and the returned <code>matrix</code> with posterior draws must be encoded as numeric.</p>
+<p>Alternatively, unused arguments can be left out and the ellipsis
+(<code>...</code>) included as the final argument in your function.</p>
+<p>Second, the order of <code>allocs</code> and <code>ys</code> must
+match: the fifth element of <code>allocs</code> represents the
+allocation of the fifth patient, while the fifth element of
+<code>ys</code> represent the outcome of the same patient.</p>
+<p>Third, <code>allocs</code> and <code>ys</code> are provided for
+<strong>all</strong> patients, including those randomised to
+<code>arms</code> that are no longer active. This is done as users in
+some situations may want to use these data when generating posterior
+draws for the other (and currently <strong>active</strong>)
+<code>arms</code>.</p>
+<p>Fourth, <code>adaptr</code> does not restrict how posterior samples
+are drawn. Consequently, Markov chain Monte Carlo- or variational
+inference-based methods may be used, and other packages supplying such
+functionality may be called by user-provided functions. However, using
+more complex methods than simple conjugate models substantially
+increases simulation run time. Consequently, simpler models are
+well-suited for use in simulations.</p>
+<p>Fifth, the function must return a numeric <code>matrix</code> with
+<code>length(arms)</code> columns and <code>n_draws</code> rows, with
+the <strong>currently active</strong> <code>arms</code> as column names.
+That is, each row must contain one posterior draw for each arm.
+<code>NA</code>’s are not allowed, so even if no patients have been
+randomised to an arm yet, valid numeric values should be returned (e.g.,
+drawn from the prior or from another very diffuse <em>posterior</em>
+distribution). Even if the outcome is not truly numeric, both the vector
+of outcomes provided to the function (<code>ys</code>) and the returned
+<code>matrix</code> with posterior draws must be encoded as numeric.</p>
 <p>With this in mind, we are ready to specify the function:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">get_draws_binom_custom</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">arms</span>, <span class="va">allocs</span>, <span class="va">ys</span>, <span class="va">control</span>, <span class="va">n_draws</span><span class="op">)</span> <span class="op">{</span></span>
@@ -238,8 +364,10 @@
 <span>  <span class="co"># generate RAW outcome estimates below)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">cbind</span>, <span class="va">draws</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span></span>
 <span><span class="op">}</span></span></code></pre></div>
-<p>We now call the function using the previously generated <code>allocs</code> and <code>ys</code>.</p>
-<p>To avoid cluttering, we only generate 10 posterior draws from each arm in this example:</p>
+<p>We now call the function using the previously generated
+<code>allocs</code> and <code>ys</code>.</p>
+<p>To avoid cluttering, we only generate 10 posterior draws from each
+arm in this example:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">get_draws_binom_custom</span><span class="op">(</span></span>
 <span>  <span class="co"># Only currently ACTIVE arms, but all are considered active at this time</span></span>
@@ -262,18 +390,29 @@
 <span><span class="co">#&gt;  [8,] 25.17899           33.29374           30.87149</span></span>
 <span><span class="co">#&gt;  [9,] 23.72043           27.78537           29.89836</span></span>
 <span><span class="co">#&gt; [10,] 30.50004           28.43694           26.62115</span></span></code></pre></div>
-<p><strong>Importantly</strong>, less than 100 posterior draws from each arm is not allowed when setting up the trial specification, to avoid unstable results (see <code><a href="../reference/setup_trial_binom.html">setup_trial_binom()</a></code>).</p>
+<p><strong>Importantly</strong>, less than 100 posterior draws from each
+arm is not allowed when setting up the trial specification, to avoid
+unstable results (see <code><a href="../reference/setup_trial_binom.html">setup_trial_binom()</a></code>).</p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="specifying-the-function-to-calculate-raw-outcome-estimates">Specifying the function to calculate raw outcome estimates<a class="anchor" aria-label="anchor" href="#specifying-the-function-to-calculate-raw-outcome-estimates"></a>
 </h2>
-<p>Finally, a custom function may be specified to calculate <strong>raw</strong> summary estimates in each arm; these raw estimates are <em>not</em> posterior estimates, but can be considered the maximum likelihood point estimates in this example). This function must take a numeric vector (all outcomes in an arm) and return a single numeric value. This function is called separately for each arm. Because we express results as <em>percentages</em> and not <em>proportions</em> in this example, this function simply calculates the outcome percentage in each arm:</p>
+<p>Finally, a custom function may be specified to calculate
+<strong>raw</strong> summary estimates in each arm; these raw estimates
+are <em>not</em> posterior estimates, but can be considered the maximum
+likelihood point estimates in this example. This function must take a
+numeric vector (all outcomes in an arm) and return a single numeric
+value. This function is called separately for each arm. Because we
+express results as <em>percentages</em> and not <em>proportions</em> in
+this example, this function simply calculates the outcome percentage in
+each arm:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fun_raw_est_custom</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">ys</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">ys</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span></span>
 <span><span class="op">}</span></span></code></pre></div>
-<p>We now call this function on the outcomes in the <code>"Control"</code> arm, as an example:</p>
+<p>We now call this function on the outcomes in the
+<code>"Control"</code> arm, as an example:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span></span>
 <span>  <span class="st">"Raw outcome percentage estimate in the 'Control' group: %.1f%%"</span>, </span>
@@ -284,7 +423,9 @@
 <div class="section level2">
 <h2 id="setup-the-trial-specification">Setup the trial specification<a class="anchor" aria-label="anchor" href="#setup-the-trial-specification"></a>
 </h2>
-<p>With all the functions defined, we can now setup the trial specification - as stated above, some validation of all the custom functions is carried out when the trial is setup:</p>
+<p>With all the functions defined, we can now setup the trial
+specification - as stated above, some validation of all the custom
+functions is carried out when the trial is setup:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/setup_trial.html">setup_trial</a></span><span class="op">(</span></span>
 <span>  arms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Control"</span>, <span class="st">"Experimental arm A"</span>, <span class="st">"Experimental arm B"</span><span class="op">)</span>,</span>
@@ -337,16 +478,27 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Maximum sample size: 2000 </span></span>
 <span><span class="co">#&gt; Maximum number of data looks: 20</span></span>
-<span><span class="co">#&gt; Planned looks after every 100 patients until maximum sample size</span></span>
-<span><span class="co">#&gt; Superiority threshold: 0.99 </span></span>
-<span><span class="co">#&gt; Inferiority threshold: 0.01 </span></span>
-<span><span class="co">#&gt; Equivalence threshold: 0.9 (only checked for first control)</span></span>
+<span><span class="co">#&gt; Planned looks after every 100</span></span>
+<span><span class="co">#&gt;  patients have reached follow-up until final look after 2000 patients</span></span>
+<span><span class="co">#&gt; Number of patients randomised at each look:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Superiority threshold: 0.99 (all analyses)</span></span>
+<span><span class="co">#&gt; Inferiority threshold: 0.01 (all analyses)</span></span>
+<span><span class="co">#&gt; Equivalence threshold: 0.9 (all analyses) (only checked for first control)</span></span>
 <span><span class="co">#&gt; Absolute equivalence difference: 10</span></span>
 <span><span class="co">#&gt; No futility threshold</span></span>
 <span><span class="co">#&gt; Soften power for all analyses: 1 (no softening)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Additional info: Trial using beta-binomial conjugate prior models and beta(15, 45) priors in each arm.</span></span></code></pre></div>
-<p>As <code><a href="../reference/setup_trial.html">setup_trial()</a></code> runs with no errors or warnings, the custom trial has been successfully specified and may be run by <code><a href="../reference/run_trial.html">run_trial()</a></code> or <code><a href="../reference/run_trials.html">run_trials()</a></code>. If the custom functions provided to <code><a href="../reference/setup_trial.html">setup_trial()</a></code> calls other custom functions (or uses objects defined by the user outside these functions) or if functions loaded from non-base R packages are used, please be aware that exporting these objects/functions or prefixing them with their namespace is necessary if simulations are conducted using multiple cores. See <code><a href="../reference/run_trial.html">run_trial()</a></code> for additional details. func</p>
+<p>As <code><a href="../reference/setup_trial.html">setup_trial()</a></code> runs with no errors or warnings, the
+custom trial has been successfully specified and may be run by
+<code><a href="../reference/run_trial.html">run_trial()</a></code> or <code><a href="../reference/run_trials.html">run_trials()</a></code>. If the custom
+functions provided to <code><a href="../reference/setup_trial.html">setup_trial()</a></code> calls other custom
+functions (or uses objects defined by the user outside these functions)
+or if functions loaded from non-base R packages are used, please be
+aware that exporting these objects/functions or prefixing them with
+their namespace is necessary if simulations are conducted using multiple
+cores. See <code><a href="../reference/run_trial.html">run_trial()</a></code> for additional details.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>

@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">adaptr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -70,7 +70,8 @@
 
 
 
-<script src="Basic-examples_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+
+<div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Basic examples</h1>
             
@@ -81,21 +82,41 @@
 
     
     
-<p>This vignette provides examples of various trial specifications using different combinations of settings, including various randomisation strategies including fixed randomisation, response-adaptive randomisation (RAR), and combinations.</p>
-<p>The general-purpose function for specifying a trial is <code>setu_trial()</code>, but because trials with binary, binomially distributed and continuous, normally distributed outcomes are so common, the package comes with two convenience functions for specifying such trial designs: <code><a href="../reference/setup_trial_binom.html">setup_trial_binom()</a></code> and <code><a href="../reference/setup_trial_norm.html">setup_trial_norm()</a></code>.</p>
-<p>To keep things simple, this vignette uses only the <code><a href="../reference/setup_trial_binom.html">setup_trial_binom()</a></code> function and focuses on settings that apply to trial designs regardless of outcome type. The code is heavily annotated, but comments focus on settings not touched on earlier in the vignette (e.g. we do not keep annotating the <code>arm</code> and <code>true_ys</code> arguments).</p>
-<p>For a general overview of how to use the <code>adaptr</code> package, please see <code><a href="../articles/Overview.html">vignette("Overview", "adaptr")</a></code>.</p>
-<p>An <strong>advanced</strong> example on how to specify a trial design with <code><a href="../reference/setup_trial.html">setup_trial()</a></code>, including the use of custom functions for generating outcomes and yielding posterior draws, is provided in <code><a href="../articles/Advanced-example.html">vignette("Advanced-example", "adaptr")</a></code>.</p>
+<p>This vignette provides examples of various trial specifications using
+different combinations of settings, including various randomisation
+strategies including fixed randomisation, response-adaptive
+randomisation (RAR), and combinations.</p>
+<p>The general-purpose function for specifying a trial is
+<code><a href="../reference/setup_trial.html">setup_trial()</a></code>, but because trials with binary, binomially
+distributed and continuous, normally distributed outcomes are so common,
+the package comes with two convenience functions for specifying such
+trial designs: <code><a href="../reference/setup_trial_binom.html">setup_trial_binom()</a></code> and
+<code><a href="../reference/setup_trial_norm.html">setup_trial_norm()</a></code>.</p>
+<p>To keep things simple, this vignette uses only the
+<code><a href="../reference/setup_trial_binom.html">setup_trial_binom()</a></code> function and focuses on settings that
+apply to trial designs regardless of outcome type. The code is heavily
+annotated, but comments focus on settings not touched on earlier in the
+vignette (e.g. we do not keep annotating the <code>arm</code> and
+<code>true_ys</code> arguments).</p>
+<p>For a general overview of how to use the <code>adaptr</code> package,
+please see <code><a href="../articles/Overview.html">vignette("Overview", "adaptr")</a></code>.</p>
+<p>An <strong>advanced</strong> example on how to specify a trial design
+with <code><a href="../reference/setup_trial.html">setup_trial()</a></code>, including the use of custom functions
+for generating outcomes and yielding posterior draws, is provided in
+<code><a href="../articles/Advanced-example.html">vignette("Advanced-example", "adaptr")</a></code>.</p>
 <p>First, the package is loaded:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://incept.dk/" class="external-link">adaptr</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Loading adaptr package (version 1.1.1).</span></span>
+<span><span class="co">#&gt; Loading adaptr package (version 1.2.0).</span></span>
 <span><span class="co">#&gt; See 'help("adaptr")' or 'vignette("Overview", "adaptr")' for help.</span></span>
 <span><span class="co">#&gt; Further information available on https://inceptdk.github.io/adaptr/.</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="trial-designs-without-a-common-control-arm">Trial designs without a common control arm<a class="anchor" aria-label="anchor" href="#trial-designs-without-a-common-control-arm"></a>
 </h2>
-<p>In this section, several examples for trials <em>without</em> a common control arm are provided. General settings applicable for all trial designs (including both trial specifications with and without a common control arm) are covered in this section.</p>
+<p>In this section, several examples for trials <em>without</em> a
+common control arm are provided. General settings applicable for all
+trial designs (including both trial specifications with and without a
+common control arm) are covered in this section.</p>
 <div class="section level3">
 <h3 id="example-1-general-settings">Example 1: general settings<a class="anchor" aria-label="anchor" href="#example-1-general-settings"></a>
 </h3>
@@ -162,10 +183,11 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Maximum sample size: 1000 </span></span>
 <span><span class="co">#&gt; Maximum number of data looks: 8</span></span>
-<span><span class="co">#&gt; Planned data looks after:  300, 400, 500, 600, 700, 800, 900, 1000 patients</span></span>
+<span><span class="co">#&gt; Planned data looks after:  300, 400, 500, 600, 700, 800, 900, 1000 patients have reached follow-up</span></span>
+<span><span class="co">#&gt; Number of patients randomised at each look:  300, 400, 500, 600, 700, 800, 900, 1000</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Superiority threshold: 0.975 </span></span>
-<span><span class="co">#&gt; Inferiority threshold: 0.025 </span></span>
+<span><span class="co">#&gt; Superiority threshold: 0.975 (all analyses)</span></span>
+<span><span class="co">#&gt; Inferiority threshold: 0.025 (all analyses)</span></span>
 <span><span class="co">#&gt; No equivalence threshold</span></span>
 <span><span class="co">#&gt; No futility threshold (not relevant - no common control)</span></span>
 <span><span class="co">#&gt; Soften power for all analyses: 1 (no softening)</span></span></code></pre></div>
@@ -176,7 +198,8 @@
 <ul>
 <li>No common control arm</li>
 <li>Equivalence testing</li>
-<li>Different softening powers (decreasing softening as the trial progresses)</li>
+<li>Different softening powers (decreasing softening as the trial
+progresses)</li>
 <li>Default settings for many unspecified arguments</li>
 </ul>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -218,10 +241,13 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Maximum sample size: 1250 </span></span>
 <span><span class="co">#&gt; Maximum number of data looks: 13</span></span>
-<span><span class="co">#&gt; Planned looks after every 100 patients until maximum sample size</span></span>
-<span><span class="co">#&gt; Superiority threshold: 0.99 </span></span>
-<span><span class="co">#&gt; Inferiority threshold: 0.01 </span></span>
-<span><span class="co">#&gt; Equivalence threshold: 0.9 (no common control)</span></span>
+<span><span class="co">#&gt; Planned looks after every 100</span></span>
+<span><span class="co">#&gt;  patients have reached follow-up until final look after 1250 patients</span></span>
+<span><span class="co">#&gt; Number of patients randomised at each look:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1250</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Superiority threshold: 0.99 (all analyses)</span></span>
+<span><span class="co">#&gt; Inferiority threshold: 0.01 (all analyses)</span></span>
+<span><span class="co">#&gt; Equivalence threshold: 0.9 (all analyses) (no common control)</span></span>
 <span><span class="co">#&gt; Absolute equivalence difference: 0.05</span></span>
 <span><span class="co">#&gt; No futility threshold (not relevant - no common control)</span></span>
 <span><span class="co">#&gt; Soften power for each consequtive analysis: 0, 0.083, 0.167, 0.25, 0.333, 0.417, 0.5, 0.583, 0.667, 0.75, 0.833, 0.917, 1</span></span></code></pre></div>
@@ -230,15 +256,20 @@
 <div class="section level2">
 <h2 id="trial-designs-with-a-common-control-arm">Trial designs with a common control arm<a class="anchor" aria-label="anchor" href="#trial-designs-with-a-common-control-arm"></a>
 </h2>
-<p>In this section, several examples for trials <em>with</em> a common control arm are provided and focus mostly on options specific to trial designs with a common control arm.</p>
+<p>In this section, several examples for trials <em>with</em> a common
+control arm are provided and focus mostly on options specific to trial
+designs with a common control arm.</p>
 <div class="section level3">
 <h3 id="example-3-common-control-and-sqrt-based-fixed-allocation">Example 3: common control and sqrt-based fixed allocation<a class="anchor" aria-label="anchor" href="#example-3-common-control-and-sqrt-based-fixed-allocation"></a>
 </h3>
 <ul>
 <li>A common control arm</li>
 <li>
-<em>square-root-transformation-based</em> fixed allocation probabilities (see description in <code><a href="../reference/setup_trial.html">setup_trial()</a></code>)</li>
-<li>Assessment of both equivalence and futility compared to the initial control only (not assessed for superior arms that become subsequent controls)</li>
+<em>square-root-transformation-based</em> fixed allocation
+probabilities (see description in <code><a href="../reference/setup_trial.html">setup_trial()</a></code>)</li>
+<li>Assessment of both equivalence and futility compared to the initial
+control only (not assessed for superior arms that become subsequent
+controls)</li>
 </ul>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/setup_trial_binom.html">setup_trial_binom</a></span><span class="op">(</span></span>
@@ -286,14 +317,15 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Maximum sample size: 1000 </span></span>
 <span><span class="co">#&gt; Maximum number of data looks: 10</span></span>
-<span><span class="co">#&gt; Planned data looks after:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 patients</span></span>
+<span><span class="co">#&gt; Planned data looks after:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 patients have reached follow-up</span></span>
+<span><span class="co">#&gt; Number of patients randomised at each look:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Superiority threshold: 0.99 </span></span>
-<span><span class="co">#&gt; Inferiority threshold: 0.01 </span></span>
-<span><span class="co">#&gt; Equivalence threshold: 0.9 (only checked for first control)</span></span>
+<span><span class="co">#&gt; Superiority threshold: 0.99 (all analyses)</span></span>
+<span><span class="co">#&gt; Inferiority threshold: 0.01 (all analyses)</span></span>
+<span><span class="co">#&gt; Equivalence threshold: 0.9 (all analyses) (only checked for first control)</span></span>
 <span><span class="co">#&gt; Absolute equivalence difference: 0.03</span></span>
-<span><span class="co">#&gt; Futility threshold: 0.8 (only checked for first control)</span></span>
-<span><span class="co">#&gt; Absolute futility difference (in beneficial direction):  0.1</span></span>
+<span><span class="co">#&gt; Futility threshold: 0.8 (all analyses) (only checked for first control)</span></span>
+<span><span class="co">#&gt; Absolute futility difference (in beneficial direction): 0.1 </span></span>
 <span><span class="co">#&gt; Soften power for all analyses: 1 (no softening - all arms fixed)</span></span></code></pre></div>
 </div>
 <div class="section level3">
@@ -301,10 +333,14 @@
 </h3>
 <ul>
 <li>
-<em>Square-root-transformation-based</em> initial allocation probabilities</li>
+<em>Square-root-transformation-based</em> initial allocation
+probabilities</li>
 <li>
-<em>Square-root-transformation-based</em> allocation to the control arm (including subsequent controls, if a non-control arm is declared superior to the initial control)</li>
-<li>Restricted response-adaptive randomisation to the non-control arms</li>
+<em>Square-root-transformation-based</em> allocation to the control
+arm (including subsequent controls, if a non-control arm is declared
+superior to the initial control)</li>
+<li>Restricted response-adaptive randomisation to the non-control
+arms</li>
 </ul>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/setup_trial_binom.html">setup_trial_binom</a></span><span class="op">(</span></span>
@@ -345,10 +381,11 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Maximum sample size: 1000 </span></span>
 <span><span class="co">#&gt; Maximum number of data looks: 10</span></span>
-<span><span class="co">#&gt; Planned data looks after:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 patients</span></span>
+<span><span class="co">#&gt; Planned data looks after:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 patients have reached follow-up</span></span>
+<span><span class="co">#&gt; Number of patients randomised at each look:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Superiority threshold: 0.99 </span></span>
-<span><span class="co">#&gt; Inferiority threshold: 0.01 </span></span>
+<span><span class="co">#&gt; Superiority threshold: 0.99 (all analyses)</span></span>
+<span><span class="co">#&gt; Inferiority threshold: 0.01 (all analyses)</span></span>
 <span><span class="co">#&gt; No equivalence threshold</span></span>
 <span><span class="co">#&gt; No futility threshold</span></span>
 <span><span class="co">#&gt; Soften power for all analyses: 0.5</span></span></code></pre></div>
@@ -356,7 +393,11 @@
 <div class="section level3">
 <h3 id="example-5-sqrt-based-allocation-only-to-initial-control-arm">Example 5: sqrt-based allocation only to initial control arm<a class="anchor" aria-label="anchor" href="#example-5-sqrt-based-allocation-only-to-initial-control-arm"></a>
 </h3>
-<p>This example is similar to that above (with different restriction settings), but only use <em>square-root-transformation-based</em> allocation probabilities to the <em>initial</em> control arm. Hence, this will not apply if another arm is declared superior and becomes the new control.</p>
+<p>This example is similar to that above (with different restriction
+settings), but only use <em>square-root-transformation-based</em>
+allocation probabilities to the <em>initial</em> control arm. Hence,
+this will not apply if another arm is declared superior and becomes the
+new control.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/setup_trial_binom.html">setup_trial_binom</a></span><span class="op">(</span></span>
 <span>  arms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span><span class="op">)</span>,</span>
@@ -397,10 +438,11 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Maximum sample size: 1000 </span></span>
 <span><span class="co">#&gt; Maximum number of data looks: 10</span></span>
-<span><span class="co">#&gt; Planned data looks after:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 patients</span></span>
+<span><span class="co">#&gt; Planned data looks after:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 patients have reached follow-up</span></span>
+<span><span class="co">#&gt; Number of patients randomised at each look:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Superiority threshold: 0.99 </span></span>
-<span><span class="co">#&gt; Inferiority threshold: 0.01 </span></span>
+<span><span class="co">#&gt; Superiority threshold: 0.99 (all analyses)</span></span>
+<span><span class="co">#&gt; Inferiority threshold: 0.01 (all analyses)</span></span>
 <span><span class="co">#&gt; No equivalence threshold</span></span>
 <span><span class="co">#&gt; No futility threshold</span></span>
 <span><span class="co">#&gt; Soften power for all analyses: 0.75</span></span></code></pre></div>
@@ -410,7 +452,8 @@
 </h3>
 <ul>
 <li>Restricted response-adaptive randomisation</li>
-<li>Control-arm allocation probability <em>matched</em> to that of the highest non-control arm (with re-scaling as necessary)</li>
+<li>Control-arm allocation probability <em>matched</em> to that of the
+highest non-control arm (with re-scaling as necessary)</li>
 <li>Applies to both the initial and subsequent control arms</li>
 </ul>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -454,13 +497,118 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Maximum sample size: 1000 </span></span>
 <span><span class="co">#&gt; Maximum number of data looks: 10</span></span>
-<span><span class="co">#&gt; Planned data looks after:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 patients</span></span>
+<span><span class="co">#&gt; Planned data looks after:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 patients have reached follow-up</span></span>
+<span><span class="co">#&gt; Number of patients randomised at each look:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Superiority threshold: 0.99 </span></span>
-<span><span class="co">#&gt; Inferiority threshold: 0.01 </span></span>
+<span><span class="co">#&gt; Superiority threshold: 0.99 (all analyses)</span></span>
+<span><span class="co">#&gt; Inferiority threshold: 0.01 (all analyses)</span></span>
 <span><span class="co">#&gt; No equivalence threshold</span></span>
 <span><span class="co">#&gt; No futility threshold</span></span>
 <span><span class="co">#&gt; Soften power for all analyses: 0.7</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="example-7-follow-up-or-data-collection-lag">Example 7: follow-up (or data collection) lag<a class="anchor" aria-label="anchor" href="#example-7-follow-up-or-data-collection-lag"></a>
+</h3>
+<p>This example uses the <code>randomised_at_looks</code> argument to
+specify follow-up (or data collection) lag. In real use cases, this
+should usually be considered, as this may affect the relative
+performance of different trial designs and the extent to which the
+‘final’ results after all patients have reached follow-up and are
+analysed may differ from the results when from the adaptive analyses
+with some randomised patients not included due to outcome data not being
+available yet.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/setup_trial_binom.html">setup_trial_binom</a></span><span class="op">(</span></span>
+<span>  arms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span><span class="op">)</span>,</span>
+<span>  control <span class="op">=</span> <span class="st">"A"</span>,</span>
+<span>  true_ys <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.22</span>, <span class="fl">0.24</span>, <span class="fl">0.18</span><span class="op">)</span>, </span>
+<span>  </span>
+<span>  <span class="co"># Analyses conducted every time 100 patients have follow-up data available</span></span>
+<span>  data_looks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">100</span>, to <span class="op">=</span> <span class="fl">1000</span>, by <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>,</span>
+<span>  <span class="co"># Specify the number of patients randomised at each look - in this case, 200</span></span>
+<span>  <span class="co"># more patients are randomised than the number of patients that</span></span>
+<span>  <span class="co"># have follow-up data available at each look</span></span>
+<span>  randomised_at_looks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">300</span>, to <span class="op">=</span> <span class="fl">1200</span>, by <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Trial specification: generic binomially distributed outcome trial</span></span>
+<span><span class="co">#&gt; * Undesirable outcome</span></span>
+<span><span class="co">#&gt; * Common control arm: A </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; * Best arm: D</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Arms, true outcomes, starting allocation probabilities </span></span>
+<span><span class="co">#&gt; and allocation probability limits:</span></span>
+<span><span class="co">#&gt;  arms true_ys start_probs fixed_probs min_probs max_probs</span></span>
+<span><span class="co">#&gt;     A    0.20        0.25          NA        NA        NA</span></span>
+<span><span class="co">#&gt;     B    0.22        0.25          NA        NA        NA</span></span>
+<span><span class="co">#&gt;     C    0.24        0.25          NA        NA        NA</span></span>
+<span><span class="co">#&gt;     D    0.18        0.25          NA        NA        NA</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Maximum sample size: 1200 </span></span>
+<span><span class="co">#&gt; Maximum number of data looks: 10</span></span>
+<span><span class="co">#&gt; Planned data looks after:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 patients have reached follow-up</span></span>
+<span><span class="co">#&gt; Number of patients randomised at each look:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Superiority threshold: 0.99 (all analyses)</span></span>
+<span><span class="co">#&gt; Inferiority threshold: 0.01 (all analyses)</span></span>
+<span><span class="co">#&gt; No equivalence threshold</span></span>
+<span><span class="co">#&gt; No futility threshold</span></span>
+<span><span class="co">#&gt; Soften power for all analyses: 1 (no softening)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="example-8-different-probability-thresholds-over-time">Example 8: different probability thresholds over time<a class="anchor" aria-label="anchor" href="#example-8-different-probability-thresholds-over-time"></a>
+</h3>
+<p>In this example, we specify different probability thresholds for
+superiority and inferiority stopping rules at different adaptive
+analyses. Varying probability thresholds may similarly be specified for
+stopping rules for equivalence and futility. Importantly, all
+probability thresholds must be specified such that each subsequent
+threshold is never stricter than the previous threshold</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/setup_trial_binom.html">setup_trial_binom</a></span><span class="op">(</span></span>
+<span>  arms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span><span class="op">)</span>,</span>
+<span>  control <span class="op">=</span> <span class="st">"A"</span>,</span>
+<span>  true_ys <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.22</span>, <span class="fl">0.24</span>, <span class="fl">0.18</span><span class="op">)</span>, </span>
+<span>  </span>
+<span>  <span class="co"># Analyses conducted every time 100 patients have follow-up data available</span></span>
+<span>  data_looks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">100</span>, to <span class="op">=</span> <span class="fl">1000</span>, by <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>,</span>
+<span></span>
+<span>  <span class="co"># Specify varying inferiority/superiority thresholds</span></span>
+<span>  <span class="co"># When specifying varying thresholds, the number of thresholds must match</span></span>
+<span>  <span class="co"># the number of analyses, and thresholds may never be stricter than the</span></span>
+<span>  <span class="co"># threshold used in the previous analysis</span></span>
+<span>  <span class="co"># Superiority threshold decreasing from 0.99 to 0.95 during the first five</span></span>
+<span>  <span class="co"># analyses, and remains stationary at 0.95 after that</span></span>
+<span>  superiority <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">0.99</span>, to <span class="op">=</span> <span class="fl">0.95</span>, by <span class="op">=</span> <span class="op">-</span><span class="fl">0.01</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.95</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  <span class="co"># Similarly for inferiority thresholds, but in the opposite direction</span></span>
+<span>  inferiority <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">0.01</span>, to <span class="op">=</span> <span class="fl">0.05</span>, by <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.05</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span>,</span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Trial specification: generic binomially distributed outcome trial</span></span>
+<span><span class="co">#&gt; * Undesirable outcome</span></span>
+<span><span class="co">#&gt; * Common control arm: A </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; * Best arm: D</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Arms, true outcomes, starting allocation probabilities </span></span>
+<span><span class="co">#&gt; and allocation probability limits:</span></span>
+<span><span class="co">#&gt;  arms true_ys start_probs fixed_probs min_probs max_probs</span></span>
+<span><span class="co">#&gt;     A    0.20        0.25          NA        NA        NA</span></span>
+<span><span class="co">#&gt;     B    0.22        0.25          NA        NA        NA</span></span>
+<span><span class="co">#&gt;     C    0.24        0.25          NA        NA        NA</span></span>
+<span><span class="co">#&gt;     D    0.18        0.25          NA        NA        NA</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Maximum sample size: 1000 </span></span>
+<span><span class="co">#&gt; Maximum number of data looks: 10</span></span>
+<span><span class="co">#&gt; Planned data looks after:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 patients have reached follow-up</span></span>
+<span><span class="co">#&gt; Number of patients randomised at each look:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Superiority thresholds: </span></span>
+<span><span class="co">#&gt; 0.99, 0.98, 0.97, 0.96, 0.95, 0.95, 0.95, 0.95, 0.95, 0.95</span></span>
+<span><span class="co">#&gt; Inferiority thresholds: </span></span>
+<span><span class="co">#&gt; 0.01, 0.02, 0.03, 0.04, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05</span></span>
+<span><span class="co">#&gt; No equivalence threshold</span></span>
+<span><span class="co">#&gt; No futility threshold</span></span>
+<span><span class="co">#&gt; Soften power for all analyses: 1 (no softening)</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

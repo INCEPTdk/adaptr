@@ -34,7 +34,7 @@
     
     <a class="navbar-brand me-2" href="index.html">adaptr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -80,18 +80,30 @@
 <div class="page-header"><h1 id="adaptr-">adaptr <img src="reference/figures/adaptr.png" align="right" width="120"><a class="anchor" aria-label="anchor" href="#adaptr-"></a>
 </h1></div>
 <!-- badges: start -->
-<p>The <code>adaptr</code> package simulates adaptive clinical trials using adaptive stopping, adaptive arm dropping and/or response-adaptive randomisation.</p>
+
+<p>The <code>adaptr</code> package simulates adaptive (multi-arm, multi-stage) clinical trials using adaptive stopping, adaptive arm dropping and/or response-adaptive randomisation.</p>
 <p>The package has been developed as part of the <a href="https://incept.dk/" class="external-link">INCEPT (Intensive Care Platform Trial) project</a>, which is primarily supported by a grant from <a href="https://www.sygeforsikring.dk/" class="external-link">Sygeforsikringen “danmark”</a>.</p>
-<p>The full package documentation is available as a stand-alone website at <a href="https://inceptdk.github.io/adaptr/">inceptdk.github.io/adaptr</a>.</p>
+<div class="section level2">
+<h2 id="resources">Resources<a class="anchor" aria-label="anchor" href="#resources"></a>
+</h2>
+<ul>
+<li>
+<a href="https://inceptdk.github.io/adaptr/">Website</a> - stand-alone website with full package documentation</li>
+<li>
+<a href="https://doi.org/10.21105/joss.04284" class="external-link">adaptr: an R package for simulating and comparing adaptive clinical trials</a> - article in the Journal of Open Source Software describing the package</li>
+<li>
+<a href="https://doi.org/10.1016/j.jclinepi.2022.11.002" class="external-link">An overview of methodological considerations regarding adaptive stopping, arm dropping and randomisation in clinical trials</a> - article in Journal of Clinical Epidemiology describing key methodological considerations in adaptive trials with description of the workflow and a simulation-based example using the package</li>
+</ul>
+</div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
+<p>The easiest way is to install from CRAN directly:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># The easiest way is to install from CRAN directly</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"adaptr"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># But you can also install the development version from GitHub (requires the remotes package)</span></span>
-<span><span class="co"># install.packages("remotes") </span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"adaptr"</span><span class="op">)</span></span></code></pre></div>
+<p>Alternatively, you can install the <strong>development version</strong> from GitHub - this requires the <em>remotes</em>-package installed. The development version may contain additional features not yet available in the CRAN version (including preliminary functions) and may not be stable or fully documented:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># install.packages("remotes") </span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"INCEPTdk/adaptr@dev"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -99,9 +111,9 @@
 </h2>
 <p>The basic functionality of <code>adaptr</code> is illustrated below.</p>
 <p>First, load the library and setup a trial specification using the general <code><a href="reference/setup_trial.html">setup_trial()</a></code> function, or one of the special case functions, <code><a href="reference/setup_trial_binom.html">setup_trial_binom()</a></code> (used in the example) or <code><a href="reference/setup_trial_norm.html">setup_trial_norm()</a></code>.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://incept.dk/" class="external-link">adaptr</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Loading adaptr package (version 1.1.1).</span></span>
+<span><span class="co">#&gt; Loading adaptr package (version 1.2.0).</span></span>
 <span><span class="co">#&gt; See 'help("adaptr")' or 'vignette("Overview", "adaptr")' for help.</span></span>
 <span><span class="co">#&gt; Further information available on https://inceptdk.github.io/adaptr/.</span></span>
 <span></span>
@@ -133,34 +145,48 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Maximum sample size: 2000 </span></span>
 <span><span class="co">#&gt; Maximum number of data looks: 18</span></span>
-<span><span class="co">#&gt; Planned data looks after:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000 patients</span></span>
+<span><span class="co">#&gt; Planned data looks after:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000 patients have reached follow-up</span></span>
+<span><span class="co">#&gt; Number of patients randomised at each look:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Superiority threshold: 0.99 </span></span>
-<span><span class="co">#&gt; Inferiority threshold: 0.01 </span></span>
-<span><span class="co">#&gt; Equivalence threshold: 0.9 (no common control)</span></span>
+<span><span class="co">#&gt; Superiority threshold: 0.99 (all analyses)</span></span>
+<span><span class="co">#&gt; Inferiority threshold: 0.01 (all analyses)</span></span>
+<span><span class="co">#&gt; Equivalence threshold: 0.9 (all analyses) (no common control)</span></span>
 <span><span class="co">#&gt; Absolute equivalence difference: 0.05</span></span>
 <span><span class="co">#&gt; No futility threshold (not relevant - no common control)</span></span>
 <span><span class="co">#&gt; Soften power for all analyses: 0.5</span></span></code></pre></div>
 <p>Simulate a single trial using a reproducible random seed:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trial_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_trial.html">run_trial</a></span><span class="op">(</span><span class="va">binom_trial</span>, seed <span class="op">=</span> <span class="fl">12345</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/print.html">print</a></span><span class="op">(</span><span class="va">trial_res</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Single simulation result: generic binomially distributed outcome trial</span></span>
 <span><span class="co">#&gt; * Undesirable outcome</span></span>
 <span><span class="co">#&gt; * No common control arm</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Final status: inconclusive, stopped at maximum sample size</span></span>
+<span><span class="co">#&gt; Final status: inconclusive, stopped at final allowed adaptive analysis</span></span>
 <span><span class="co">#&gt; Final/maximum allowed sample sizes: 2000/2000 (100.0%)</span></span>
+<span><span class="co">#&gt; Available outcome data at last adaptive analysis: 2000/2000 (100.0%)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Final trial results:</span></span>
-<span><span class="co">#&gt;   arms true_ys sum_ys  ns raw_ests post_ests post_errs lo_cri hi_cri</span></span>
-<span><span class="co">#&gt;  Arm A    0.25    180 742    0.243     0.243    0.0159  0.213  0.275</span></span>
-<span><span class="co">#&gt;  Arm B    0.20    178 841    0.212     0.212    0.0141  0.185  0.241</span></span>
-<span><span class="co">#&gt;  Arm C    0.30    113 417    0.271     0.271    0.0215  0.230  0.316</span></span>
-<span><span class="co">#&gt;  final_status status_look status_probs final_alloc</span></span>
-<span><span class="co">#&gt;        active          NA           NA       0.194</span></span>
-<span><span class="co">#&gt;        active          NA           NA       0.656</span></span>
-<span><span class="co">#&gt;      inferior        2000        0.007       0.150</span></span>
+<span><span class="co">#&gt; Trial results overview:</span></span>
+<span><span class="co">#&gt;   arms true_ys final_status status_look status_probs final_alloc</span></span>
+<span><span class="co">#&gt;  Arm A    0.25       active          NA           NA       0.194</span></span>
+<span><span class="co">#&gt;  Arm B    0.20       active          NA           NA       0.656</span></span>
+<span><span class="co">#&gt;  Arm C    0.30     inferior        2000        0.007       0.150</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Esimates from final analysis (all patients):</span></span>
+<span><span class="co">#&gt;   arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all</span></span>
+<span><span class="co">#&gt;  Arm A        180    742        0.243         0.243        0.0161      0.213</span></span>
+<span><span class="co">#&gt;  Arm B        178    841        0.212         0.212        0.0141      0.185</span></span>
+<span><span class="co">#&gt;  Arm C        113    417        0.271         0.272        0.0221      0.230</span></span>
+<span><span class="co">#&gt;  hi_cri_all</span></span>
+<span><span class="co">#&gt;       0.274</span></span>
+<span><span class="co">#&gt;       0.240</span></span>
+<span><span class="co">#&gt;       0.316</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Estimates from last adaptive analysis including each arm:</span></span>
+<span><span class="co">#&gt;   arms sum_ys  ns raw_ests post_ests post_errs lo_cri hi_cri</span></span>
+<span><span class="co">#&gt;  Arm A    180 742    0.243     0.243    0.0159  0.213  0.275</span></span>
+<span><span class="co">#&gt;  Arm B    178 841    0.212     0.212    0.0141  0.185  0.241</span></span>
+<span><span class="co">#&gt;  Arm C    113 417    0.271     0.271    0.0215  0.230  0.316</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Simulation details:</span></span>
 <span><span class="co">#&gt; * Random seed: 12345</span></span>
@@ -168,7 +194,7 @@
 <span><span class="co">#&gt; * Number of posterior draws: 5000</span></span>
 <span><span class="co">#&gt; * Posterior estimation method: medians with MAD-SDs</span></span></code></pre></div>
 <p>Simulate multiple trials using a reproducible random seed:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Simulate multiple trials - only 10 simulations for speed in the example</span></span>
 <span><span class="va">trial_res_mult</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_trials.html">run_trials</a></span><span class="op">(</span><span class="va">binom_trial</span>, n_rep <span class="op">=</span> <span class="fl">10</span>, base_seed <span class="op">=</span> <span class="fl">67890</span><span class="op">)</span></span>
 <span></span>
@@ -205,7 +231,7 @@
 <span><span class="co">#&gt; * Selection strategy: no selection if no superior arm</span></span>
 <span><span class="co">#&gt; * Treatment effect compared to: no comparison</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Performance metrics (using posterior estimates):</span></span>
+<span><span class="co">#&gt; Performance metrics (using posterior estimates from last adaptive analysis):</span></span>
 <span><span class="co">#&gt; * Sample sizes: mean 1470.0 (SD: 559.9) | median 1550.0 (IQR: 1025.0 to 2000.0)</span></span>
 <span><span class="co">#&gt; * Total summarised outcomes: mean 323.3 (SD: 110.6) | median 340.0 (IQR: 242.0 to 421.8)</span></span>
 <span><span class="co">#&gt; * Total summarised outcome rates: mean 0.224 (SD: 0.013) | median 0.229 (IQR: 0.214 to 0.233)</span></span>
@@ -220,13 +246,14 @@
 <span><span class="co">#&gt; * Ideal design percentage: 100.0%</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Simulation details:</span></span>
-<span><span class="co">#&gt; * Simulation time: 0.413 secs</span></span>
+<span><span class="co">#&gt; * Simulation time: 0.471 secs</span></span>
 <span><span class="co">#&gt; * Base random seed: 67890</span></span>
 <span><span class="co">#&gt; * Credible interval width: 95%</span></span>
 <span><span class="co">#&gt; * Number of posterior draws: 5000</span></span>
 <span><span class="co">#&gt; * Estimation method: posterior medians with MAD-SDs</span></span></code></pre></div>
+<p>Performance metrics may also be calculated and returned in a tidy <code>data.frame</code> (with bootstrapped uncertainty measures, if requested) by the <code><a href="reference/check_performance.html">check_performance()</a></code> function, and the <code><a href="reference/plot_convergence.html">plot_convergence()</a></code> function may be used to visually assess stability of performance metrics according to the number of simulations.</p>
 <p>Plot trial statuses or history of trial metrics over time:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Simulate multiple trials - 25 simulations only for speed</span></span>
 <span><span class="co"># sparse = FALSE is required for plot_history (but not plot_status)</span></span>
 <span><span class="va">trial_res_mult</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/run_trials.html">run_trials</a></span><span class="op">(</span><span class="va">binom_trial</span>, n_rep <span class="op">=</span> <span class="fl">25</span>, base_seed <span class="op">=</span> <span class="fl">67890</span>, sparse <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
@@ -235,7 +262,7 @@
 <span><span class="co"># of patients randomised</span></span>
 <span><span class="fu"><a href="reference/plot_status.html">plot_status</a></span><span class="op">(</span><span class="va">trial_res_mult</span>, x_value <span class="op">=</span> <span class="st">"total n"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-plot-1.png" width="100%" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Plot allocation probabilities at each adaptive look (requires sparse = FALSE)</span></span>
 <span><span class="fu"><a href="reference/plot_history.html">plot_history</a></span><span class="op">(</span><span class="va">trial_res_mult</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-plot-2.png" width="100%" style="display: block; margin: auto;"></p>
@@ -257,7 +284,7 @@
 <li>
 <a href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-and-deleting-branches-within-your-repository" class="external-link">Make a branch</a> with an appropriate name in your fork</li>
 <li>Implement changes in your fork, make sure it passes R CMD check (with neither errors, warnings, nor notes) and add a bullet at the top of NEWS.md with a short description of the change, your GitHub handle and the id of the pull request implementing the change (check the <code>NEWS.md</code> file to see the formatting)</li>
-<li>Create a <a href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork" class="external-link">pull request</a> into the <code>main</code> branch of <code>adaptr</code>
+<li>Create a <a href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork" class="external-link">pull request</a> into the <code>dev</code> branch of <code>adaptr</code>
 </li>
 </ul>
 </div>
@@ -265,7 +292,7 @@
 <h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
 </h2>
 <p>If using the package, please consider citing it:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"adaptr"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; To cite adaptr in publications use:</span></span>

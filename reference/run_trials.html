@@ -24,7 +24,7 @@ additional simulations to the same file)."><!-- mathjax --><script src="https://
     
     <a class="navbar-brand me-2" href="../index.html">adaptr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -136,10 +136,11 @@ find the number of available cores.</p></dd>
 
 
 <dt>base_seed</dt>
-<dd><p>single integer; a random seed used as the basis for
-simulations; each simulation will set the random seed to a value based on
-this (+ the trial number), without affecting the global random seed after
-the function has been run.</p></dd>
+<dd><p>single integer or <code>NULL</code> (default); a random seed used as
+the basis for simulations. If a number is provided, each single trial
+simulation will set the random seed to a value based on this (+ the trial
+number), without affecting the global random seed after the function has
+been run.</p></dd>
 
 
 <dt>sparse</dt>
@@ -196,13 +197,12 @@ environment from where <code>run_trials()</code> is called.</p></dd>
 <p>A list of a special class <code>"trial_results"</code>, which contains the
 <code>trial_results</code> (results from all simulations), <code>trial_spec</code> (the trial
 specification), <code>n_rep</code>, <code>base_seed</code>, <code>elapsed_time</code> (the total simulation
-run time) and <code>sparse</code> (as described above). These results may be extracted
-using the <code><a href="extract_results.html">extract_results()</a></code> function and summarised using the <code><a href="summary.html">summary()</a></code></p>
-
-
-<p>or print (<code><a href="print.html">print.trial_results()</a></code>) functions; see function documentation
-for details on additional arguments used to select arms in simulations not
-ending in superiority and other summary choices.</p>
+run time), <code>sparse</code> (as described above) and <code>adaptr_version</code> (the version
+of the <code>adaptr</code> package used to run the simulations). These results may be
+extracted using the <code><a href="extract_results.html">extract_results()</a></code> function and summarised using the
+<code><a href="summary.html">summary()</a></code> or print (<code><a href="print.html">print.trial_results()</a></code>) functions; see function
+documentation for details on additional arguments used to select arms in
+simulations not ending in superiority and other summary choices.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>

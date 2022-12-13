@@ -12,7 +12,7 @@ Requires the ggplot2 package installed."><!-- mathjax --><script src="https://cd
     
     <a class="navbar-brand me-2" href="../index.html">adaptr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -70,12 +70,15 @@ Requires the <code>ggplot2</code> package installed.</p>
     <dl><dt>y_value</dt>
 <dd><p>single character string, determining which values are plotted
 on the y-axis. The following options are available: allocation
-probabilities (<code>"prob"</code>, default), the total number of patients allocated
-to each arm (<code>"n"</code>), the percentage of patients allocated to each arm of
-the total number of patients randomised (<code>"pct"</code>), the sum of all outcomes
-in each arm (<code>"sum ys"</code>), the ratio of outcomes (<code>"ratio ys"</code>, the sum of
-outcomes in each arm divided by the number of patients allocated to that
-arm).</p></dd>
+probabilities (<code>"prob"</code>, default), the total number of patients with
+outcome data available (<code>"n"</code>) or allocated (<code>"n all"</code>) to each arm,
+the percentage of patients with outcome data available (<code>"pct"</code>) or
+allocated (<code>"pct all"</code>) to each arm out of the current total, the sum of
+all available (<code>"sum ys"</code>) outcome data or all outcome data for randomised
+patients including outcome data not available at the time of the current
+adaptive analysis (<code>"sum ys all"</code>), the ratio of outcomes as defined for
+<code>"sum ys"</code>/<code>"sum ys all"</code> divided by the corresponding number of patients
+in each arm.</p></dd>
 
 </dl></div>
     <div class="section level2">

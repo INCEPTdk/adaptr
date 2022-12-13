@@ -14,7 +14,7 @@ function."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/m
     
     <a class="navbar-brand me-2" href="../index.html">adaptr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -76,10 +76,11 @@ function.</p>
 
 
 <dt>base_seed</dt>
-<dd><p>single integer; a random seed used as the basis for
-simulations; each simulation will set the random seed to a value based on
-this (+ the trial number), without affecting the global random seed after
-the function has been run.</p></dd>
+<dd><p>single integer or <code>NULL</code> (default); a random seed used as
+the basis for simulations. If a number is provided, each single trial
+simulation will set the random seed to a value based on this (+ the trial
+number), without affecting the global random seed after the function has
+been run.</p></dd>
 
 
 <dt>sparse</dt>
