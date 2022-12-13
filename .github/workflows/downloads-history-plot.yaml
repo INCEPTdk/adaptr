@@ -23,14 +23,12 @@ jobs:
 
       - name: Draw history
         run: |
-          Sys.setenv(NOT_CRAN = "false")
-          install.packages("cranlogs")
+          install.packages("cranlogs", repos = "http://cran.rstudio.com/", dependencies = TRUE)
 
           df <- cranlogs::cran_downloads("adaptr", from = "2022-03-14", to = Sys.Date() - 1)
             # today's stats won't be available
 
-          pdf(file = ".github/workflows/downloads-history.pdf", width = 20/2.54, height = 12/2.54)
-            # convert to inches
+          pdf(file = ".github/workflows/downloads-history.pdf", width = 20/2.54, height = 12/2.54) # cm --> inches
           plot(df$date, df$count,
                xlab = "Dashed line: mean per day",
                ylab = "No. downloads", type = "l", lwd = 0.5,
