@@ -146,7 +146,7 @@
       * Ideal design percentage: 50.0%
       
       Simulation details:
-      * Simulation time: 1.18 secs
+      * Simulation time: 0.727 secs
       * Base random seed: 12345
       * Credible interval width: 95%
       * Number of posterior draws: 5000
@@ -180,7 +180,7 @@
       * Ideal design percentage: 50.0%
       
       Simulation details:
-      * Simulation time: 1.18 secs
+      * Simulation time: 0.727 secs
       * Base random seed: 12345
       * Credible interval width: 95%
       * Number of posterior draws: 5000
