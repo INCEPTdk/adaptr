@@ -125,10 +125,11 @@ dispatch_trial_runs <- function(X, trial_spec, base_seed, sparse, cores, cl = NU
 #'   using the \pkg{parallel} library. Defaults to `1`; may be increased to run
 #'   multiple simulations in parallel. [parallel::detectCores()] may be used to
 #'   find the number of available cores.
-#' @param base_seed single integer; a random seed used as the basis for
-#'   simulations; each simulation will set the random seed to a value based on
-#'   this (+ the trial number), without affecting the global random seed after
-#'   the function has been run.
+#' @param base_seed single integer or `NULL` (default); a random seed used as
+#'   the basis for simulations. If a number is provided, each single trial
+#'   simulation will set the random seed to a value based on this (+ the trial
+#'   number), without affecting the global random seed after the function has
+#'   been run.
 #' @param sparse single logical, as described in [run_trial()]; defaults to
 #'   `TRUE` when running multiple simulations, in which case only the data
 #'   necessary to summarise all simulations are saved for each simulation.
@@ -177,11 +178,12 @@ dispatch_trial_runs <- function(X, trial_spec, base_seed, sparse, cores, cl = NU
 #' @return A list of a special class `"trial_results"`, which contains the
 #'   `trial_results` (results from all simulations), `trial_spec` (the trial
 #'   specification), `n_rep`, `base_seed`, `elapsed_time` (the total simulation
-#'   run time) and `sparse` (as described above). These results may be extracted
-#'   using the [extract_results()] function and summarised using the [summary()]
-#'   or print ([print.trial_results()]) functions; see function documentation
-#'   for details on additional arguments used to select arms in simulations not
-#'   ending in superiority and other summary choices.
+#'   run time), `sparse` (as described above) and `adaptr_version` (the version
+#'   of the `adaptr` package used to run the simulations). These results may be
+#'   extracted using the [extract_results()] function and summarised using the
+#'   [summary()] or print ([print.trial_results()]) functions; see function
+#'   documentation for details on additional arguments used to select arms in
+#'   simulations not ending in superiority and other summary choices.
 #'
 #' @export
 #'
@@ -207,14 +209,14 @@ run_trials <- function(trial_spec, n_rep, path = NULL, overwrite = FALSE,
   # Log starting time and validate inputs
   tic <- Sys.time()
   if (is.null(sparse) | length(sparse) != 1 | any(is.na(sparse)) | !is.logical(sparse)) {
-    stop("sparse must be a single TRUE or FALSE.", call. = FALSE)
+    stop0("sparse must be a single TRUE or FALSE.")
   }
   if ((is.null(path) | overwrite) & !inherits(trial_spec, "trial_spec")) {
-    stop("If a path to a file is not provided or if overwrite = TRUE, ",
-         "a valid trial specifcation must be provided.", call. = FALSE)
+    stop0("If a path to a file is not provided or if overwrite = TRUE, ",
+          "a valid trial specification must be provided.")
   }
   if (!verify_int(n_rep, min_value = 1) | !verify_int(cores, min_value = 1)) {
-    stop("n_rep and cores must be single whole numbers larger than 0.", call. = FALSE)
+    stop0("n_rep and cores must be single whole numbers larger than 0.")
   }
   if (ifelse(!is.null(path), file.exists(path), FALSE)) { # File exists
     prev <- readRDS(path)
@@ -231,54 +233,61 @@ run_trials <- function(trial_spec, n_rep, path = NULL, overwrite = FALSE,
         !equivalent_funs(prev$trial_spec$fun_y_gen, trial_spec$fun_y_gen) |
         !equivalent_funs(prev$trial_spec$fun_draws, trial_spec$fun_draws) |
         !equivalent_funs(prev$trial_spec$fun_raw_est, trial_spec$fun_raw_est)) {
-      stop("The trial specification contained in the object in path is not ",
-           "the same as the one provided; thus the previous result was not loaded.", call. = FALSE)
+        stop0("The trial specification contained in the object in path is not ",
+              "the same as the one provided; thus the previous result was not loaded.")
+    } else {
+      prev_adaptr_version <- prev$adaptr_version
+        if ((is.null(prev_adaptr_version) | isTRUE(prev_adaptr_version < .adaptr_version))) {
+          stop0("The object in path was created by a previous version of adaptr and ",
+                "cannot be used by this version of adaptr unless the object is updated. ",
+                "Type 'help(\"update_saved_trials\")' for help on updating.")
+        }
     }
     if (grow & overwrite) {
-      stop("Both grow and overwrite are TRUE. At least one of them must be ",
-           "FALSE; if grow = TRUE, the object is automatically overwritten.", call. = FALSE)
+      stop0("Both grow and overwrite are TRUE. At least one of them must be ",
+            "FALSE; if grow = TRUE, the object is automatically overwritten.")
     }
     prev_n_rep <- prev$n_rep
     if (prev_n_rep != n_rep) {
       if (!grow | n_rep <= prev_n_rep) {
-        stop(paste0("n_rep is provided in the call and in the loaded object, ",
-                    "but they are not the same (n_rep = ", n_rep, ", previous ",
-                    "n_rep = ", prev_n_rep, ").\n",
-                    "This is only permitted if the provided n_rep is larger ",
-                    "than the n_rep in the loaded object and grow = TRUE."), call. = FALSE)
+        stop0(paste0("n_rep is provided in the call and in the loaded object, ",
+                     "but they are not the same (n_rep = ", n_rep, ", previous ",
+                     "n_rep = ", prev_n_rep, ").\n",
+                     "This is only permitted if the provided n_rep is larger ",
+                     "than the n_rep in the loaded object and grow = TRUE."))
       }
     } else if (grow & prev_n_rep == n_rep) {
-      warning(paste0("grow = TRUE, but the provided n_rep is equal to the ",
-                     "n_rep in the loaded object (both = ", n_rep, ").\n",
-                     "When grow = TRUE, the provided n_rep must be larger ",
-                     "than the n_rep in the loaded object.\n",
-                     "Ignoring grow and returning previous object."), call. = FALSE)
+      warning0(paste0("grow = TRUE, but the provided n_rep is equal to the ",
+                      "n_rep in the loaded object (both = ", n_rep, ").\n",
+                      "When grow = TRUE, the provided n_rep must be larger ",
+                      "than the n_rep in the loaded object.\n",
+                      "Ignoring grow and returning previous object."))
       grow <- FALSE
     }
     prev_base_seed <- prev$base_seed
     if (!is.null(prev_base_seed) & !is.null(base_seed)) {
       if (prev_base_seed != base_seed) {
-        stop(paste0("A base_seed is provided in the call and in the loaded ",
-                    "object, but they are not the same (base_seed = ",
-                    base_seed, ", previous base_seed = ", prev_base_seed, ")."), call. = FALSE)
+        stop0(paste0("A base_seed is provided in the call and in the loaded ",
+                     "object, but they are not the same (base_seed = ",
+                     base_seed, ", previous base_seed = ", prev_base_seed, ")."))
       }
     }
     if (prev$sparse != sparse) {
-      stop(paste0("Identical values must be provided for the sparse argument ",
-                  "in the call and the previous object (sparse = ", sparse,
-                  ", previous sparse = ", prev$sparse, ")."), call. = FALSE)
+      stop0(paste0("Identical values must be provided for the sparse argument ",
+                   "in the call and the previous object (sparse = ", sparse,
+                   ", previous sparse = ", prev$sparse, ")."))
     }
   } else if (grow) {
-    stop("grow = TRUE, but a previous object does not exist.", call. = FALSE)
+    stop0("grow = TRUE, but a previous object does not exist.")
   }
   if (!is.null(base_seed)) {
     if (!verify_int(base_seed)) {
-      stop("base_seed must be either NULL or a single whole number.", call. = FALSE)
+      stop0("base_seed must be either NULL or a single whole number.")
     }
   }
   if (!is.null(progress)) {
     if (!isTRUE(length(progress) == 1 & is.numeric(progress) & !(is.na(progress)) && progress >= 0.01 && progress <= 1)) {
-      stop("progress must be either NULL or a single numeric value >= 0.01 and <= 1.", call. = FALSE)
+      stop0("progress must be either NULL or a single numeric value >= 0.01 and <= 1.")
     }
   }
 
@@ -339,7 +348,7 @@ run_trials <- function(trial_spec, n_rep, path = NULL, overwrite = FALSE,
                           n_rep = n_rep,
                           base_seed = base_seed,
                           elapsed_time = elapsed_time + Sys.time() - tic,
-                          sparse = sparse),
+                          sparse = sparse, adaptr_version = .adaptr_version),
                      class = c("trial_results", "list"))
 
     if (ifelse(!is.null(path), !file.exists(path) | overwrite | grow, FALSE)) {

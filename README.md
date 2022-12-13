@@ -14,24 +14,44 @@ status](https://www.r-pkg.org/badges/version/adaptr)](https://cran.r-project.org
 mirror](https://cranlogs.r-pkg.org/badges/grand-total/adaptr)
 <!-- badges: end -->
 
-The `adaptr` package simulates adaptive clinical trials using adaptive
-stopping, adaptive arm dropping and/or response-adaptive randomisation.
+The `adaptr` package simulates adaptive (multi-arm, multi-stage)
+clinical trials using adaptive stopping, adaptive arm dropping and/or
+response-adaptive randomisation.
 
 The package has been developed as part of the [INCEPT (Intensive Care
 Platform Trial) project](https://incept.dk/), which is primarily
 supported by a grant from [Sygeforsikringen
 “danmark”](https://www.sygeforsikring.dk/).
 
-The full package documentation is available as a stand-alone website at
-[inceptdk.github.io/adaptr](https://inceptdk.github.io/adaptr/).
+## Resources
+
+-   [Website](https://inceptdk.github.io/adaptr/) - stand-alone website
+    with full package documentation
+-   [adaptr: an R package for simulating and comparing adaptive clinical
+    trials](https://doi.org/10.21105/joss.04284) - article in the
+    Journal of Open Source Software describing the package
+-   [An overview of methodological considerations regarding adaptive
+    stopping, arm dropping and randomisation in clinical
+    trials](https://doi.org/10.1016/j.jclinepi.2022.11.002) - article in
+    Journal of Clinical Epidemiology describing key methodological
+    considerations in adaptive trials with description of the workflow
+    and a simulation-based example using the package
 
 ## Installation
 
-``` r
-# The easiest way is to install from CRAN directly
-install.packages("adaptr")
+The easiest way is to install from CRAN directly:
 
-# But you can also install the development version from GitHub (requires the remotes package)
+``` r
+install.packages("adaptr")
+```
+
+Alternatively, you can install the **development version** from GitHub -
+this requires the *remotes*-package installed. The development version
+may contain additional features not yet available in the CRAN version
+(including preliminary functions) and may not be stable or fully
+documented:
+
+``` r
 # install.packages("remotes") 
 remotes::install_github("INCEPTdk/adaptr@dev")
 ```
@@ -46,7 +66,7 @@ general `setup_trial()` function, or one of the special case functions,
 
 ``` r
 library(adaptr)
-#> Loading adaptr package (version 1.1.1).
+#> Loading adaptr package (version 1.2.0).
 #> See 'help("adaptr")' or 'vignette("Overview", "adaptr")' for help.
 #> Further information available on https://inceptdk.github.io/adaptr/.
 
@@ -78,11 +98,12 @@ print(binom_trial, prob_digits = 3)
 #> 
 #> Maximum sample size: 2000 
 #> Maximum number of data looks: 18
-#> Planned data looks after:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000 patients
+#> Planned data looks after:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000 patients have reached follow-up
+#> Number of patients randomised at each look:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000
 #> 
-#> Superiority threshold: 0.99 
-#> Inferiority threshold: 0.01 
-#> Equivalence threshold: 0.9 (no common control)
+#> Superiority threshold: 0.99 (all analyses)
+#> Inferiority threshold: 0.01 (all analyses)
+#> Equivalence threshold: 0.9 (all analyses) (no common control)
 #> Absolute equivalence difference: 0.05
 #> No futility threshold (not relevant - no common control)
 #> Soften power for all analyses: 0.5
@@ -97,18 +118,31 @@ print(trial_res, digits = 3)
 #> * Undesirable outcome
 #> * No common control arm
 #> 
-#> Final status: inconclusive, stopped at maximum sample size
+#> Final status: inconclusive, stopped at final allowed adaptive analysis
 #> Final/maximum allowed sample sizes: 2000/2000 (100.0%)
+#> Available outcome data at last adaptive analysis: 2000/2000 (100.0%)
 #> 
-#> Final trial results:
-#>   arms true_ys sum_ys  ns raw_ests post_ests post_errs lo_cri hi_cri
-#>  Arm A    0.25    180 742    0.243     0.243    0.0159  0.213  0.275
-#>  Arm B    0.20    178 841    0.212     0.212    0.0141  0.185  0.241
-#>  Arm C    0.30    113 417    0.271     0.271    0.0215  0.230  0.316
-#>  final_status status_look status_probs final_alloc
-#>        active          NA           NA       0.194
-#>        active          NA           NA       0.656
-#>      inferior        2000        0.007       0.150
+#> Trial results overview:
+#>   arms true_ys final_status status_look status_probs final_alloc
+#>  Arm A    0.25       active          NA           NA       0.194
+#>  Arm B    0.20       active          NA           NA       0.656
+#>  Arm C    0.30     inferior        2000        0.007       0.150
+#> 
+#> Esimates from final analysis (all patients):
+#>   arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
+#>  Arm A        180    742        0.243         0.243        0.0161      0.213
+#>  Arm B        178    841        0.212         0.212        0.0141      0.185
+#>  Arm C        113    417        0.271         0.272        0.0221      0.230
+#>  hi_cri_all
+#>       0.274
+#>       0.240
+#>       0.316
+#> 
+#> Estimates from last adaptive analysis including each arm:
+#>   arms sum_ys  ns raw_ests post_ests post_errs lo_cri hi_cri
+#>  Arm A    180 742    0.243     0.243    0.0159  0.213  0.275
+#>  Arm B    178 841    0.212     0.212    0.0141  0.185  0.241
+#>  Arm C    113 417    0.271     0.271    0.0215  0.230  0.316
 #> 
 #> Simulation details:
 #> * Random seed: 12345
@@ -156,7 +190,7 @@ print(res_sum, digits = 1)
 #> * Selection strategy: no selection if no superior arm
 #> * Treatment effect compared to: no comparison
 #> 
-#> Performance metrics (using posterior estimates):
+#> Performance metrics (using posterior estimates from last adaptive analysis):
 #> * Sample sizes: mean 1470.0 (SD: 559.9) | median 1550.0 (IQR: 1025.0 to 2000.0)
 #> * Total summarised outcomes: mean 323.3 (SD: 110.6) | median 340.0 (IQR: 242.0 to 421.8)
 #> * Total summarised outcome rates: mean 0.224 (SD: 0.013) | median 0.229 (IQR: 0.214 to 0.233)
@@ -171,12 +205,18 @@ print(res_sum, digits = 1)
 #> * Ideal design percentage: 100.0%
 #> 
 #> Simulation details:
-#> * Simulation time: 0.413 secs
+#> * Simulation time: 0.471 secs
 #> * Base random seed: 67890
 #> * Credible interval width: 95%
 #> * Number of posterior draws: 5000
 #> * Estimation method: posterior medians with MAD-SDs
 ```
+
+Performance metrics may also be calculated and returned in a tidy
+`data.frame` (with bootstrapped uncertainty measures, if requested) by
+the `check_performance()` function, and the `plot_convergence()`
+function may be used to visually assess stability of performance metrics
+according to the number of simulations.
 
 Plot trial statuses or history of trial metrics over time:
 
@@ -228,7 +268,7 @@ Changes to the code base should follow these steps:
     the `NEWS.md` file to see the formatting)
 -   Create a [pull
     request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork)
-    into the `main` branch of `adaptr`
+    into the `dev` branch of `adaptr`
 
 ## Citation
 

@@ -11,22 +11,29 @@ extract_history(object, metric = "prob")
 with argument \code{sparse = FALSE}.}
 
 \item{metric}{either \code{"prob"} (default), in which case allocation
-probabilities at each adaptive analysis are returned; \code{"n"}, in which
-case the total number of patients allocated to each \code{arm} after each
-adaptive analysis are returned; \code{"pct"} in which case the proportions
-of patients allocated to each arm of the total number of patients
-randomised are returned; \code{"sum ys"}, in which case the total summed
-outcomes in each arm after each analysis are returned; or \code{"ratio ys"}, in
-which case the total summed outcomes in each arm divided by the total
-number of patients randomised to that arm after each analysis are returned.}
+probabilities at each adaptive analysis are returned; \code{"n"}/\code{"n all"}, in
+which case the total number of patients with available follow-up data
+(\code{"n"}) or allocated (\code{"n all"}) to each \code{arm} during each adaptive
+analysis are returned; \code{"pct"}/\code{"pct all"} in which case the proportions of
+of patients allocated and having available follow-up data (\code{"pct"}) or
+allocated in total (\code{"pct all"}) to each arm out of the total number of
+patients are returned; \code{"sum ys"}/\code{"sum ys all"}, in which case the total
+summed available outcome data (\code{"sum ys"}) or total summed outcome data
+including outcomes of patients randomised that have not necessarily reached
+follow-up yet (\code{"sum ys all"}) in each arm after each adaptive analysis are
+returned; or \code{"ratio ys"}/\code{"ratio ys all"}, in which case the total summed
+outcomes as specified for \code{"sum ys"}/\code{"sum ys all"} divided by the number
+of patients after each analysis adaptive are returned.}
 }
 \value{
 A tidy \code{data.frame} (one row per arm per look) containing the following
 columns:
 \itemize{
 \item \code{look}: consecutive numbers (integers) of each interim look.
-\item \code{look_ns}: total number of patients (integers) allocated at current
-adaptive analysis look to all arms in the trial.
+\item \code{look_ns}: total number of patients (integers) with outcome data
+available at current adaptive analysis look to all arms in the trial.
+\item \code{look_ns_all}: total number of patients (integers) randomised at
+current adaptive analysis look to all arms in the trial.
 \item \code{arm}: the current \code{arm} in the trial.
 \item \code{value}: as described under \code{metric}.
 }

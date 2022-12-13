@@ -3,7 +3,7 @@
 \name{replace_null}
 \alias{replace_null}
 \alias{\%||\%}
-\title{Helper function for replacing NULL with other value}
+\title{Replace NULL with other value (NULL-OR-operator)}
 \usage{
 a \%||\% b
 }

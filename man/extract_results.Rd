@@ -10,7 +10,8 @@ extract_results(
   select_last_arm = FALSE,
   select_preferences = NULL,
   te_comp = NULL,
-  raw_ests = FALSE
+  raw_ests = FALSE,
+  final_ests = NULL
 )
 }
 \arguments{
@@ -79,6 +80,18 @@ estimated compared to the specified effect in the selected arm) and
 selected arm to the comparator arm, as described for \code{te_comp} and below).
 If \code{TRUE}, the raw estimates (\code{raw_ests}, see \code{\link[=setup_trial]{setup_trial()}} and
 \code{\link[=run_trial]{run_trial()}}) will be used instead of the posterior estimates.}
+
+\item{final_ests}{single logical. If \code{TRUE} (recommended) the final estimates
+calculated using outcome data from all patients randomised when trials are
+stopped is used; if \code{FALSE}, the estimates calculated for each arm when an
+arm is stopped (or at the last adaptive analysis if not before) using data
+from patients having reach followed up at this time point and not all
+patients randomised. If \code{NULL} (the default), this argument will be set to
+\code{FALSE} if outcome data are available immediate after randomisation for all
+patients (for backwards compatibility, as final posterior estimates may
+vary slightly in this situation, even if using the same data); otherwise it
+will be said to \code{TRUE}. See \code{\link[=setup_trial]{setup_trial()}} for more details on how these
+estimates are calculated.}
 }
 \value{
 A \code{data.frame} containing the following columns:
@@ -113,7 +126,8 @@ comparator specified (see \code{te_comp} above).
 \description{
 This function extracts relevant information from multiple simulations of the
 same trial specification in a tidy \code{data.frame} (1 simulation per row).
-See also the \code{\link[=summary]{summary()}} function.
+See also the \code{\link[=check_performance]{check_performance()}} and \code{\link[=summary]{summary()}} functions, that uses the
+output from this function to further summarise simulation results..
 }
 \examples{
 # Setup a trial specification
@@ -129,4 +143,7 @@ res <- run_trials(binom_trial, n_rep = 10, base_seed = 12345)
 # in simulations not ending with superiority
 extract_results(res, select_strategy = "control")
 
+}
+\seealso{
+\code{\link[=check_performance]{check_performance()}}, \code{\link[=summary]{summary()}}, \code{\link[=plot_convergence]{plot_convergence()}}.
 }

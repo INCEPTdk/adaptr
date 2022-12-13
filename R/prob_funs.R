@@ -22,7 +22,7 @@
 prob_best <- function(m, highest_is_best = FALSE) {
   winners <- max.col(if (highest_is_best) m else -m, ties.method = "first")
   setNames(
-    vapply(seq_len(ncol(m)), function(i) mean(winners == i), FUN.VALUE = numeric(1)),
+    vapply_num(seq_len(ncol(m)), function(i) mean(winners == i)),
     colnames(m)
   )
 }
@@ -140,7 +140,7 @@ reallocate_probs <- function(probs_best, fixed_probs, min_probs, max_probs,
     probs_best[match_arm] <- max(probs_best[-match_arm])
 
     # Avoid 0 probabilities for all arms when matching
-    if (all(probs_best == 0)) probs_best <- rep(1, length(probs_best))
+    if (all(probs_best == 0)) probs_best <- setNames(rep(1, length(probs_best)), names(probs_best))
 
     probs_best <- rescale(probs_best)
   }

@@ -9,3 +9,5 @@
 ^cran-comments\.md$
 ^doc$
 ^Meta$
+^\.covrignore$
+^\.Rprofile$

@@ -24,6 +24,11 @@ The package has been developed as part of the
 primarily by a grant from
 [Sygeforsikringen "danmark"](https://www.sygeforsikring.dk/).
 
+Additional guidance on the key methodological considerations when planning and
+comparing adaptive clinical trials can be found in the open access article
+*"[An overview of methodological considerations regarding adaptive stopping, arm dropping and randomisation in clinical trials](https://doi.org/10.1016/j.jclinepi.2022.11.002)"*
+available in Journal of Clinical Epidemiology.
+
 ## Basic example
 First, load the package:
 
@@ -58,7 +63,7 @@ binom_trial <- setup_trial_binom(
 ```
 
 See `?setup_trial()` for more details on these arguments or
-`vignette("Basic-examples", "adaptr")` for basic example trial
+`vignette("Basic-examples", "adaptr")` for **basic** example trial
 specifications and a thorough review of the general settings, and
 `vignette("Advanced-example", "adaptr")` for an **advanced** example including
 details on how to specify user-written functions for generating outcomes and
@@ -79,9 +84,7 @@ print(binom_trial, prob_digits = 2)
 ```
 
 ### Simulate a single trial
-Remember to define the `seed` to ensure reproducible results. The final trial
-results are wrapped here, but when used interactively, you can widen the console
-for non-wrapped output:
+Remember to define the `seed` to ensure reproducible results:
 
 ```{r}
 trial_res <- run_trial(binom_trial, seed = 12345)
@@ -99,14 +102,14 @@ print(trial_res, prob_digits = 2)
 Generally, we want to run many simulations using the same trial specification to
 assess and compare performance metrics of different trial designs. This is the
 job of `run_trials()` (note the final ***s***); again, note the use of a
-`base_seed` for reproducible results. Here we run 25 simulations (for tolerable
-run-time when producing this example), but in practice you will probably want to
-run more simulations.
+`base_seed` for reproducible results. Here we run 25 simulations, but in
+practice you will generally want to run more simulations. The low number of
+simulations in this example have been chosen to make run-time tolerable when
+producing the example, but leads to uncertainty and instability in the results,
+as seen below.
 
 ```{r}
 trial_res_mult <- run_trials(binom_trial, n_rep = 25, base_seed = 67890)
-
-trial_res_mult
 ```
 
 `run_trials()` can run simulations on several CPU cores concurrently: set the
@@ -114,13 +117,35 @@ trial_res_mult
 resulting in serial/non-parallel processing). As an aside, you can see the
 number of available CPU cores by calling `parallel::detectCores()`.
 
-### Get the results of multiple trials
-Just printing the resulting object (as the last line above) is not necessarily
-what you want. `adaptr` has two convenience functions to get the results of
-multiple simulations of the same trial specification, `extract_results()` and
-`summary()`; see their documentation for details, e.g. on arm selection in
-trials not ending with superiority. The `extract_results()` function yields a
-tidy `data.frame` with one simulation per row:
+###  Calculate performance metrics and summmarise results
+The results of multiple simulations may be summarised by printing the resulting
+object:
+
+```{r}
+trial_res_mult
+```
+
+This calls the `summary()` method (as known from, e.g., regression models in
+`R`), which summarises the results, and prints the output from that function in
+a human-friendly manner using the `print()` method for summarised simulations.
+
+The `summary()` function can also be called directly, which allows more control
+of how results are summarised (including which arms are selected in inconclusive
+trials), and allows subsequent extraction of individual key results. In
+addition, the number of digits can be controlled when printed:
+
+```{r}
+res_sum <- summary(trial_res_mult)
+
+print(res_sum, digits = 1)
+```
+
+The `summary()` method, however, may not necessarily be what you want. `adaptr`
+has additional functions that may be used on multiple simulations using the same
+trial specification.
+
+The `extract_results()` function extract key trial results and yields a tidy
+`data.frame` with one simulation per row:
 
 ```{r}
 extr_res <- extract_results(trial_res_mult)
@@ -130,38 +155,56 @@ nrow(extr_res)
 head(extr_res)
 ```
 
-`summary()` (as expected and known from, e.g., regression models in `R`)
-summarises the results in a human-friendly manner. Individual key results can be
-extracted from the resulting object or printed:
+Further, the `check_performance()` function calculates key performance metrics
+and returns them in a tidy `data.frame` with one metric per row, and may also be
+used to assess the uncertainty in these estimates using bootstrapping:
 
 ```{r}
-res_sum <- summary(trial_res_mult)
+perf_res <- check_performance(trial_res_mult, uncertainty = TRUE, n_boot = 1000,
+                              boot_seed = "base")
 
-print(res_sum, digits = 1)
+print(perf_res, digits = 3)
 ```
 
+Finally, the stability of performance metrics according to the number of
+simulations may be assessed visually using the `plot_convergence()` function.
+Note that all `adaptr` plotting functions require the `ggplot2` package.
+
+```{r}
+# Convergence plots for four performance metrics
+plot_convergence(trial_res_mult, metrics = c("size mean", "prob superior",
+                                             "rmse", "idp"))
+```
+
+It is seen that the low number of simulations used in this example leads to
+substantial uncertainty and instability in performance metrics (while the ideal
+design percentage is always at 100% here, it would likely drop somewhat if more
+simulations were conducted).
+
 ### Visualise trial results
-We need non-sparse results for `plot_history()` (but *not* for `plot_status()`),
-so first we re-run `run_trials()`:
+In addition to the convergence plots, results may be visualised using the
+`plot_status()` and `plot_history()` functions.
+We need non-sparse results for `plot_history()` (but *not* for `plot_status()`
+or `plot_convergence()` presented above), so first we re-run `run_trials()` with
+the `sparse` argument set to `FALSE`:
 
 ```{r}
 trial_res_mult <- run_trials(binom_trial, n_rep = 25, base_seed = 67890,
                              sparse = FALSE)
 ```
 
-Note that the `adaptr` plotting functions require the `ggplot2` package. First,
-we plot the overall trial statuses according to the total number of patients
-randomised (this does *not* require `sparse = FALSE`):
+First, we plot the overall trial statuses according to the total number of
+patients randomised (this function does *not* require `sparse = FALSE`):
 
 ```{r}
 plot_status(trial_res_mult, x_value = "total n")
 ```
 
-We can also plot the statuses for specific arms. In this example, *Arm A* is
-increasingly dropped for inferiority as simulations progress:
+We can also plot the statuses for specific arms, or for all arms if supplying
+`NA` to the `arm`-argument:
 
 ```{r}
-plot_status(trial_res_mult, x_value = "total n", arm = "Arm A")
+plot_status(trial_res_mult, x_value = "total n", arm = NA, ncol = 1)
 ```
 
 Next, we plot the history of allocation probabilities at each adaptive

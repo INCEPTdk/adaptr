@@ -153,33 +153,108 @@ test_that("validate setup trial specifications", {
   expect_equal(via_validate, via_setup)
 })
 
-test_that("Growing trial objects works", {
-  setup <- setup_trial_binom(
-    arms = c("Arm A", "Arm B", "Arm C"),
-    true_ys = c(0.25, 0.20, 0.30),
-    min_probs = rep(0.15, 3),
-    data_looks = seq(from = 300, to = 2000, by = 100),
-    equivalence_prob = 0.9,
-    equivalence_diff = 0.05,
-    soften_power = 0.5
-  )
 
-  # Everything run in one go
-  res1 <- run_trials(setup, n_rep = 20, base_seed = 12345)
+test_that("setup/validate_trial functions errors on invalid inputs", {
+  expect_error(validate_trial(arms = NULL))
+  expect_error(validate_trial(arms = c("A", "A", "B")))
+  expect_error(validate_trial(arms = c(1, 2, 3), control = 1))
+  expect_error(validate_trial(arms = c("A", "B", "C"), control_prob_fixed = 0.4))
+  expect_error(validate_trial(arms = c("A", "B", "C"), control = "A",
+                              control_prob_fixed = "sqrt-based", start_probs = rep(1/3, 3)))
+  expect_error(validate_trial(arms = c("A", "B", "C"), control = "A", control_prob_fixed = "sqrt-based fixed",
+                              fixed_probs = rep(1/3, 3)))
+  expect_error(validate_trial(arms = c("A", "B", "C"), control = "A", control_prob_fixed = "sqrt-based start",
+                              fixed_probs = rep(1/3, 3)))
+  expect_error(validate_trial(arms = c("A", "B", "C"), control = "A", control_prob_fixed = "match",
+                              fixed_probs = c(0.3, 0.3, 0.4)))
+  expect_error(validate_trial(arms = c("A", "B", "C"), control = "A", control_prob_fixed = "match",
+                              start_probs = c(0.3, 0.3, 0.4)))
 
-  # Run in two "batches", saving results in a file
-  temp_res_file <- tempfile()
-  on.exit(try(rm(temp_res_file), silent = TRUE), add = TRUE, after = FALSE)
-  res2 <- run_trials(setup, n_rep = 10, base_seed = 12345, path = temp_res_file)
-  res2 <- run_trials(setup, n_rep = 20, base_seed = 12345, path = temp_res_file, grow = TRUE)
+  expect_error(validate_trial(arms = c("A", "B", "C"), start_probs = rep(0.25, 4)))
+  expect_error(validate_trial(arms = 1:3, start_probs = rep(0.32, 3)))
+  expect_error(validate_trial(arms = 1:3, min_probs = rep(-0.01, 3)))
+  expect_error(validate_trial(arms = 1:3, start_probs = c(NA, 0.5, 0.5)))
+  expect_error(validate_trial(arms = 1:3, start_probs = c(0.2, 0.3, 0.5), min_probs = c(0.3, NA, NA)))
+  expect_error(validate_trial(arms = 1:3, start_probs = c(0.2, 0.3, 0.5), max_probs = c(NA, NA, 0.4)))
+  expect_error(validate_trial(arms = 1:3, start_probs = c(0.2, 0.3, 0.5), fixed_probs = c(0.2, NA, NA),
+                              min_probs = c(0.1, NA, NA)))
+  expect_error(validate_trial(arms = 1:3, start_probs = c(0.5, 0.25, 0.25), min_probs = c(0.5, 0.1, 0.1),
+                              max_probs = c(0.5, NA, NA)))
 
-  for (s in c("res1", "res2")) {
-    temp_s <- get(s)
-    temp_s$elapsed_time <- as.difftime(0, units = "secs")
-    for (f in c("fun_y_gen", "fun_draws", "fun_raw_est"))
-      temp_s[[f]] <- deparse(temp_s[[f]])
-    assign(s, temp_s)
-  }
+  expect_error(validate_trial(arms = 1:3, data_looks = c(100, 100, 200)))
+  expect_error(validate_trial(arms = 1:3, data_looks = c(100, 200, 300), look_after_every = 100, max_n = 300))
+  expect_error(validate_trial(arms = 1:3))
+  expect_error(validate_trial(arms = 1:3, data_looks = 1:3 * 100, randomised_at_looks = c(200, 199, 300)))
+  expect_error(validate_trial(arms = 1:3, data_looks = 1:3 * 100, randomised_at_looks = 1:3 * 99))
+  expect_error(validate_trial(arms = 1:3, data_looks = 1:3 * 100, randomised_at_looks = 1:3 * 100 + 2.5))
 
-  expect_equal(res1, res2)
+  expect_error(validate_trial(arms = c("A", "B", "C"), control = "D", data_looks = 1:3 * 100))
+  expect_error(validate_trial(arms = c("A", "B", "C"), control = "A", data_looks = 1:3 * 100,
+                              control_prob_fixed = c(0.3, 0.2, 0.1)))
+
+  expect_error(validate_trial(arms = 1:3, data_looks = 1:3 * 100, inferiority = -0.01))
+  expect_error(validate_trial(arms = 1:3, data_looks = 1:3 * 100, inferiority = 0.01 * 1:2))
+  expect_error(validate_trial(arms = 1:3, data_looks = 1:3 * 100, superiority = 1.01))
+  expect_error(validate_trial(arms = 1:3, data_looks = 1:3 * 100, inferiority = 1 - 0.01 * 1:2))
+  expect_error(validate_trial(arms = 1:3, data_looks = 1:3 * 100, inferiority = 0.99, superiority = 0.95))
+
+  expect_error(validate_trial(arms = 1:3, data_looks = 1:3 * 100, highest_is_best = 0))
+
+  expect_error(validate_trial(arms = 1:3, data_looks = 1:3 * 100, equivalence_prob = 0.9))
+  expect_error(validate_trial(arms = 1:3, data_looks = 1:3 * 100, equivalence_prob = 1 - 0.01 * 1:2,
+                              equivalence_diff = 0.1))
+  expect_error(validate_trial(arms = 1:3, data_looks = 1:3 * 100, equivalence_prob = 1 - 0.01 * 1:3,
+                              equivalence_diff = -0.1))
+  expect_error(validate_trial(arms = 1:3, data_looks = 1:3 * 100, equivalence_only_first = TRUE))
+  expect_error(validate_trial(arms = 1:3, data_looks = 1:3 * 100, equivalence_prob = 0.9,
+                              equivalence_diff = 0.1, equivalence_only_first = TRUE))
+  expect_error(validate_trial(arms = 1:3, data_looks = 1:3 * 100, control = 1,
+                              equivalence_prob = 0.9, equivalence_diff = 0.1))
+
+
+  expect_error(validate_trial(arms = 1:3, data_looks = 1:3 * 100, futility_prob = 0.9))
+  expect_error(validate_trial(arms = 1:3, control = 1, data_looks = 1:3 * 100, futility_prob = 0.9))
+  expect_error(validate_trial(arms = 1:3, control = 1, data_looks = 1:3 * 100,
+                              futility_prob = 1 - 0.01 * 1:2, futility_diff = 0.1, futility_only_first = TRUE))
+  expect_error(validate_trial(arms = 1:3, control = 1, data_looks = 1:3 * 100,
+                              futility_prob = 0.9, futility_diff = 0.1 * 1:3, futility_only_first = TRUE))
+  expect_error(validate_trial(arms = 1:3, control = 1, data_looks = 1:3 * 100,
+                              futility_prob = 0.9, futility_diff = 0.1, futility_only_first = NA))
+
+  expect_error(validate_trial(arms = 1:3, data_looks = 1:3 * 100, soften_power = 1 - 0.01 * 1:2))
+  expect_error(validate_trial(arms = 1:3, data_looks = 1:3 * 100, soften_power = 1.01))
+
+  expect_message(setup_trial_binom(arms = 1:3, data_looks = 1:3 * 100, true_ys = rep(0.5, 3)))
+  expect_error(validate_trial(arms = 1:3, data_looks = 1:3 * 100, true_ys = 0.1 * 1:3,
+                              cri_width = c(1.01, 0.9)))
+  expect_error(validate_trial(arms = 1:3, data_looks = 1:3 * 100, true_ys = 1:3, n_draws = 10))
+  expect_warning(setup_trial_binom(arms = 1:3, data_looks = 1:3 * 100, true_ys = 0.1 * 1:3, n_draws = 500))
+  expect_error(validate_trial(arms = 1:3, data_looks = 1:3 * 100, true_ys = 1:3, robust = NA))
+
+  expect_error(validate_trial(arms = 1:3, data_looks = 1:3 * 100, true_ys = 1:3,
+                              fun_y_gen = function(...) 1))
+  expect_error(validate_trial(arms = 1:3, data_looks = 1:3 * 100, true_ys = 1:3 * 0.1,
+                              fun_y_gen = get_ys_binom(1:3, 1:3 * 0.1), fun_draws = "invalid fun"))
+  expect_error(validate_trial(arms = 1:3, data_looks = 1:3 * 100, true_ys = 1:3 * 0.1,
+                              fun_y_gen = get_ys_binom(1:3, 1:3 * 0.1), fun_draws = function(...) 1))
+  expect_error(validate_trial(arms = 1:3, data_looks = 1:3 * 100, true_ys = 1:3 * 0.1, fun_y_gen = "invalid fun"))
+  expect_error(validate_trial(arms = 1:3, data_looks = 1:3 * 100, true_ys = 1:3 * 0.1,
+                              fun_y_gen = get_ys_binom(1:3, 1:3 * 0.1), fun_draws = get_draws_binom,
+                              fun_raw_est = function(...) NA))
+  expect_error(validate_trial(arms = 1:3, data_looks = 1:3 * 100, true_ys = 1:3 * 0.1,
+                              fun_y_gen = get_ys_binom(1:3, 1:3 * 0.1), fun_draws = get_draws_binom,
+                              fun_raw_est = "invalid fun"))
+  expect_error(setup_trial_binom(arms = 1:3, data_looks = 1:3 * 100, true_ys = 1:3 * 0.1,
+                                 description = TRUE))
+  expect_error(validate_trial(arms = 1:3, data_looks = 1:3 * 100, true_ys = 1:3 * 0.1,
+                              fun_y_gen = get_ys_binom(1:3, 1:3 * 0.1), fun_draws = get_draws_binom,
+                              fun_raw_est = mean, add_info = c("some", "info")))
+
+  expect_error(setup_trial_binom(arms = 1:3, data_looks = 1:3 * 100, true_ys = 1:3))
+  expect_error(setup_trial_binom(arms = 1:3, data_looks = 1:3 * 100, true_ys = 1:3 * 0.1,
+                                 equivalence_prob = 0.9, equivalence_diff = 2))
+  expect_error(setup_trial_binom(arms = 1:3, control = 1, data_looks = 1:3 * 100, true_ys = 1:3 * 0.1,
+                                 futility_prob = 0.9, futility_diff = 2, futility_only_first = TRUE))
+
+  expect_error(setup_trial_norm(arms = 1:3, data_looks = 1:3 * 100, true_ys = 1:3, sds = -1))
 })

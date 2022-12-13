@@ -11,9 +11,9 @@
   \emph{Adaptive Trial Simulator}
 }
 
-The \code{adaptr} package simulates adaptive (multi-arm) trials using adaptive
-stopping, adaptive arm dropping and/or response-adaptive randomisation.
-The package is developed as part of the
+The \code{adaptr} package simulates adaptive (multi-arm, multi-stage) randomised
+clinical trials using adaptive stopping, adaptive arm dropping and/or
+response-adaptive randomisation. The package is developed as part of the
 \href{https://incept.dk/}{INCEPT (Intensive Care Platform Trial) project},
 funded primarily by a grant from
 \href{https://www.sygeforsikring.dk/}{Sygeforsikringen "danmark"}.
@@ -29,8 +29,11 @@ outcomes, respectively, with some limitations in flexibility.
 \item The \code{\link[=run_trial]{run_trial()}} and \code{\link[=run_trials]{run_trials()}} functions are used to conduct single
 or multiple simulations, respectively, according to a trial specification
 setup as described in #1.
-\item The \code{\link[=extract_results]{extract_results()}} and \code{\link[=summary]{summary()}} functions are used to
-extract or summarise the results of multiple trial simulations.
+\item The \code{\link[=extract_results]{extract_results()}}, \code{\link[=check_performance]{check_performance()}} and \code{\link[=summary]{summary()}} functions
+are used to extract results from multiple trial simulations, calculate
+performance metrics, and summarise results. The \code{\link[=plot_convergence]{plot_convergence()}} function
+assesses stability of performance metrics according to the number of
+simulations conducted.
 \item The \code{\link[=plot_status]{plot_status()}} and \code{\link[=plot_history]{plot_history()}} functions are used to plot the
 overall trial/arm statuses for multiple simulated trials or the history of
 trial metrics over time for single/multiple simulated trials, respectively.
@@ -40,7 +43,7 @@ For further information see the function documentation or the \strong{Overview}
 vignette (\code{vignette("Overview", package = "adaptr")}) for an example of how
 the functions work in combination.
 For further examples and guidance on setting up trial specifications, see
-\link{setup_trial} documentation, the \strong{Basic examples} vignette
+\code{\link[=setup_trial]{setup_trial()}} documentation, the \strong{Basic examples} vignette
 (\code{vignette("Basic-examples", package = "adaptr")}) and the
 \strong{Advanced example} vignette
 (\code{vignette("Advanced-example", package = "adaptr")}).
@@ -53,12 +56,17 @@ Granholm A, Jensen AKG, Lange T, Kaas-Hansen BS (2022). adaptr: an R package
 for simulating and comparing adaptive clinical trials. Journal of Open Source
 Software, 7(72), 4284. \doi{10.21105/joss.04284}
 
+Granholm A, Kaas-Hansen BS, Lange T, Schjørring OL, Andersen LW, Perner A,
+Jensen AKG, Møller MH (2022). An overview of methodological considerations
+regarding adaptive stopping, arm dropping and randomisation in clinical
+trials. J Clin Epidemiol. \doi{10.1016/j.jclinepi.2022.11.002}
+
 \href{https://inceptdk.github.io/adaptr/}{Website/manual}
 
 \href{https://github.com/INCEPTdk/adaptr/}{GitHub repository}
 }
 \seealso{
 \code{\link[=setup_trial]{setup_trial()}}, \code{\link[=setup_trial_binom]{setup_trial_binom()}}, \code{\link[=setup_trial_norm]{setup_trial_norm()}}, \code{\link[=run_trial]{run_trial()}},
-\code{\link[=run_trials]{run_trials()}}, \code{\link[=extract_results]{extract_results()}}, \code{\link[=summary]{summary()}}, \code{\link[=print]{print()}}, \code{\link[=plot_status]{plot_status()}}
-and \code{\link[=plot_history]{plot_history()}}.
+\code{\link[=run_trials]{run_trials()}}, \code{\link[=extract_results]{extract_results()}}, \code{\link[=check_performance]{check_performance()}}, \code{\link[=summary]{summary()}},
+\code{\link[=plot_convergence]{plot_convergence()}}, \code{\link[=print]{print()}}, \code{\link[=plot_status]{plot_status()}}, and \code{\link[=plot_history]{plot_history()}}.
 }

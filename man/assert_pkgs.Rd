@@ -14,7 +14,8 @@ assert_pkgs(pkgs = NULL)
 an error.
 }
 \description{
-Used internally, helper to check if SUGGESTED packages are available. Will
-halt execution if any of the queried packages are not available.
+Used internally, helper function to check if SUGGESTED packages are
+available. Will halt execution if any of the queried packages are not
+available and provide installation instructions.
 }
 \keyword{internal}

@@ -1,8 +1,8 @@
 ## Release summary
 
-This is a minor patch release triggered by a CRAN request for updates to the
-package documentation to only use HTML5, which also includes minor bugfixes to
-print methods and messages in the setup_trial function.
+This is a minor release implementing new functionality, updating
+documentation, and fixing multiple minor issues, mostly in validation of
+supplied arguments.
 
 ## R CMD check results
 

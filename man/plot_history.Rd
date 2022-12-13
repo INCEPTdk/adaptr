@@ -24,17 +24,21 @@ plot_history(object, x_value = "look", y_value = "prob", line = NULL, ...)
 function.}
 
 \item{x_value}{single character string, determining whether the number of
-adaptive analysis looks (\code{"look"}, default) or the total cumulated number of
-patients allocated (\code{"total n"}) are plotted on the x-axis.}
+adaptive analysis looks (\code{"look"}, default), the total cumulated number of
+patients randomised (\code{"total n"}) or with outcome data available at each
+analysis (\code{"followed n"}) are plotted on the x-axis.}
 
 \item{y_value}{single character string, determining which values are plotted
 on the y-axis. The following options are available: allocation
-probabilities (\code{"prob"}, default), the total number of patients allocated
-to each arm (\code{"n"}), the percentage of patients allocated to each arm of
-the total number of patients randomised (\code{"pct"}), the sum of all outcomes
-in each arm (\code{"sum ys"}), the ratio of outcomes (\code{"ratio ys"}, the sum of
-outcomes in each arm divided by the number of patients allocated to that
-arm).}
+probabilities (\code{"prob"}, default), the total number of patients with
+outcome data available (\code{"n"}) or allocated (\code{"n all"}) to each arm,
+the percentage of patients with outcome data available (\code{"pct"}) or
+allocated (\code{"pct all"}) to each arm out of the current total, the sum of
+all available (\code{"sum ys"}) outcome data or all outcome data for randomised
+patients including outcome data not available at the time of the current
+adaptive analysis (\code{"sum ys all"}), the ratio of outcomes as defined for
+\code{"sum ys"}/\code{"sum ys all"} divided by the corresponding number of patients
+in each arm.}
 
 \item{line}{list styling the lines as per \pkg{ggplot2} conventions (e.g.,
 \code{linetype}, \code{size}).}

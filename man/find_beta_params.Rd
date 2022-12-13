@@ -42,8 +42,8 @@ unlikely to be used in a beta prior.}
 A single-row \code{data.frame} with five columns: the two shape parameters
 of the beta distribution (\code{alpha}, \code{beta}), rounded according to \code{n_dec},
 and the actual lower and upper boundaries of the interval and the median
-(with appropriate names, e.g. \code{p2.5}, \code{p50}, and \code{p97.5} for a \verb{95\%}
-interval), when using those rounded values.
+(with appropriate names, e.g. \code{p2.5}, \code{p50}, and \code{p97.5} for a
+\verb{95\%} interval), when using those rounded values.
 }
 \description{
 Helper function to find a beta distribution with parameters corresponding

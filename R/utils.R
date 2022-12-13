@@ -88,6 +88,30 @@ summarise_dist <- function(x, robust = TRUE, interval_width = 0.95) {
 }
 
 
+#' Summarise numeric vector
+#'
+#' Used internally, to summarise numeric vectors.
+#'
+#' @param x a numeric vector.
+#'
+#' @return A numeric vector with five named elements: `mean`, `sd`, `median`,
+#'   `p25`, and `p75`, corresponding to the mean, standard deviation, median,
+#'   and 25-/75-percentiles.
+#'
+#' @importFrom stats quantile sd
+#'
+#' @keywords internal
+#'
+summarise_num <- function(x) {
+  ps <- quantile(x, probs = c(0.5, 0.25, 0.75), names = FALSE)
+  c(mean = mean(x),
+    sd = sd(x),
+    median = ps[1],
+    p25 = ps[2],
+    p75 = ps[3])
+}
+
+
 
 #' cat() with sep = ""
 #'
@@ -101,6 +125,27 @@ summarise_dist <- function(x, robust = TRUE, interval_width = 0.95) {
 #' @keywords internal
 #'
 cat0 <- function(...) cat(..., sep = "")
+
+
+
+#' stop() and warning() with call. = FALSE
+#'
+#' Used internally. Calls [stop0()] or [warning()] but enforces `call. = FALSE`,
+#' to suppress the call from the error/warning.
+#'
+#' @inheritParams base::stop
+#'
+#' @return NULL
+#'
+#' @keywords internal
+#'
+#' @name stop0_warning0
+#'
+stop0 <- function(...) stop(..., call. = FALSE)
+
+#' @rdname stop0_warning0
+#' @keywords internal
+warning0 <- function(...) warning(..., call. = FALSE)
 
 
 
@@ -122,7 +167,8 @@ cat0 <- function(...) cat(..., sep = "")
 #'
 verify_int <- function(x, min_value = -Inf, max_value = Inf, open = "no") {
   if (is.null(x)) return(FALSE)
-  is_int <- length(x) == 1 & all(!is.na(x)) & all(is.numeric(x)) & all(floor(x) == x)
+  if (!is.numeric(x)) return(FALSE)
+  is_int <- length(x) == 1 & all(!is.na(x)) & all(floor(x) == x)
   is_above_min <- if (open %in% c("left", "yes")) min_value < x else min_value <= x
   is_below_max <- if (open %in% c("right", "yes")) x < max_value else x <= max_value
   all(is_int) & all(is_above_min) & all(is_below_max)
@@ -130,7 +176,7 @@ verify_int <- function(x, min_value = -Inf, max_value = Inf, open = "no") {
 
 
 
-#' Helper function for replacing NULL with other value
+#' Replace NULL with other value (NULL-OR-operator)
 #'
 #' Used internally, primarily when working with list arguments, because, e.g.,
 #' `list_name$element_name` yields `NULL` when unspecified.
@@ -147,31 +193,55 @@ verify_int <- function(x, min_value = -Inf, max_value = Inf, open = "no") {
 
 
 
+#' Replace non-finite values with other value (finite-OR-operator)
+#'
+#' Used internally, helper function that replaces non-finite (i.e., `NA`, `NaN`,
+#' `Inf`, and `-Inf`) values according to [is.finite()], primarily used to
+#' replace `NaN`/`Inf`/`-Inf` with `NA`.
+#'
+#' @param a atomic vector of any type.
+#'
+#' @param b single value to replace non-finite values with.
+#'
+#' @return If values in `a` are non-finite, they are replaced with `b`,
+#'   otherwise they are left unchanged.
+#'
+#' @keywords internal
+#'
+#' @name replace_nonfinite
+#'
+`%f|%` <- function(x, y) {
+  x[!is.finite(x)] <- y
+  x
+}
+
+
+
 #' Check availability of required packages
 #'
-#' Used internally, helper to check if SUGGESTED packages are available. Will
-#' halt execution if any of the queried packages are not available.
+#' Used internally, helper function to check if SUGGESTED packages are
+#' available. Will halt execution if any of the queried packages are not
+#' available and provide installation instructions.
 #'
 #' @param pkgs, character vector with name(s) of package(s) to check.
 #'
 #' @return `TRUE` if all packages available, otherwise execution is halted with
-#' an error.
+#'   an error.
 #'
 #' @keywords internal
 #'
 assert_pkgs <- function(pkgs = NULL) {
-  checks <- sapply(pkgs, function(p) isFALSE(requireNamespace(p, quietly = TRUE)))
+  checks <- vapply_lgl(pkgs, function(p) isFALSE(requireNamespace(p, quietly = TRUE)))
   unavailable_pkgs <- names(checks[checks])
 
   if (any(checks)) {
-    stop(
-      "The following required packages were unavailable: ",
+    stop0(
+      "The following required package",  ifelse(sum(checks) > 1, "s were", " was"), " unavailable: ",
       paste(unavailable_pkgs, collapse = ", "),
-      ". \nConsider installing them with the following command: ",
+      ". \nConsider installing with the following command: ",
       sprintf("install.packages(%s)", paste0(ifelse(length(unavailable_pkgs) > 1, "c(", ""),
                                              paste(sprintf("\"%s\"", unavailable_pkgs), collapse = ", "),
-                                             ifelse(length(unavailable_pkgs) > 1, ")", ""))),
-      call. = FALSE
+                                             ifelse(length(unavailable_pkgs) > 1, ")", "")))
     )
   }
 
@@ -199,6 +269,10 @@ vapply_int <- function(X, FUN, ...) vapply(X, FUN, FUN.VALUE = integer(1), ...)
 #' @rdname vapply_helpers
 #' @keywords internal
 vapply_str <- function(X, FUN, ...) vapply(X, FUN, FUN.VALUE = character(1), ...)
+
+#' @rdname vapply_helpers
+#' @keywords internal
+vapply_lgl <- function(X, FUN, ...) vapply(X, FUN, FUN.VALUE = logical(1), ...)
 
 
 

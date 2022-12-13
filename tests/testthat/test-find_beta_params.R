@@ -21,3 +21,13 @@ test_that("interval_width works", {
     data.frame(alpha = 2, beta = 7, p25.0 = 0.1206287, p50.0 = 0.2011312, p75.0 = 0.3026997)
   )
 })
+
+
+test_that("find_beta_params checks work", {
+  expect_error(find_beta_params(theta = 0.8, boundary_target = 0.9, n_dec = 0.1))
+  expect_error(find_beta_params(theta = 0.8, boundary_target = 0.9, max_n = NA))
+  expect_error(find_beta_params(theta = -0.8, boundary_target = 0.9))
+  expect_error(find_beta_params(theta = 0.8, boundary_target = -0.9))
+  expect_error(find_beta_params(theta = 0.8, boundary_target = 0.9, interval_width = 95))
+  expect_error(find_beta_params(theta = 0.8, boundary_target = 0.9, boundary = "all"))
+})

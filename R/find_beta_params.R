@@ -31,8 +31,8 @@
 #' @return A single-row `data.frame` with five columns: the two shape parameters
 #'   of the beta distribution (`alpha`, `beta`), rounded according to `n_dec`,
 #'   and the actual lower and upper boundaries of the interval and the median
-#'   (with appropriate names, e.g. `p2.5`, `p50`, and `p97.5` for a `95%`
-#'   interval), when using those rounded values.
+#'   (with appropriate names, e.g. `p2.5`, `p50`, and `p97.5` for a
+#'   `95%` interval), when using those rounded values.
 #'
 #' @importFrom stats qbeta optimise
 #'
@@ -43,21 +43,21 @@ find_beta_params <- function(theta = NULL, boundary_target = NULL,
                              n_dec = 0, max_n = 10000) {
 
   if (!verify_int(n_dec, min_value = 0)) {
-    stop("n_dec must be a single non-negative integer.", .call = FALSE)
+    stop0("n_dec must be a single non-negative integer.")
   }
   if (!verify_int(max_n, min_value = 1)) {
-    stop("max_n must be a single integer > 0.", .call = FALSE)
+    stop0("max_n must be a single integer > 0.")
   }
   if (!isFALSE(is.null(theta) | is.na(theta) | is.null(boundary_target) | is.na(boundary_target) |
-             is.null(interval_width) | is.na(interval_width) |
-             length(theta) != 1 | length(boundary_target) != 1 | length(interval_width) != 1 |
-             !is.numeric(theta) | !is.numeric(boundary_target) | !is.numeric(interval_width) |
-             is.na(theta) | is.na(boundary_target) | is.na(interval_width) |
-             theta <= 0 | theta >= 1 | boundary_target <= 0 | boundary_target >= 1 | interval_width <= 0 | interval_width >= 1)) {
-    stop("theta, boundary_target, and interval_width must all be single numeric values > 0 and < 1", call. = FALSE)
+               is.null(interval_width) | is.na(interval_width) |
+               length(theta) != 1 | length(boundary_target) != 1 | length(interval_width) != 1 |
+               !is.numeric(theta) | !is.numeric(boundary_target) | !is.numeric(interval_width) |
+               is.na(theta) | is.na(boundary_target) | is.na(interval_width) |
+               theta <= 0 | theta >= 1 | boundary_target <= 0 | boundary_target >= 1 | interval_width <= 0 | interval_width >= 1)) {
+    stop0("theta, boundary_target, and interval_width must all be single numeric values > 0 and < 1", call. = FALSE)
   }
   if (isTRUE(is.null(boundary) || is.na(boundary) || !(boundary %in% c("lower", "upper")) || length(boundary) != 1)) {
-    stop("boundary must be either 'lower' or 'upper'.", call. = FALSE)
+    stop0("boundary must be either 'lower' or 'upper'.")
   } else if (boundary == "lower") {
     stopifnot(theta >= boundary_target)
   } else if (boundary == "upper") {
@@ -65,9 +65,9 @@ find_beta_params <- function(theta = NULL, boundary_target = NULL,
   }
 
   n_tot <- optimise(function(n) {abs(boundary_target -
-      qbeta(p = if (boundary == "lower") (1-interval_width)/2 else 1 - (1-interval_width)/2,
-            shape1 = n * theta, shape2 = n - n * theta))},
-      interval = c(0, max_n))$minimum
+                                       qbeta(p = if (boundary == "lower") (1-interval_width)/2 else 1 - (1-interval_width)/2,
+                                             shape1 = n * theta, shape2 = n - n * theta))},
+                    interval = c(0, max_n))$minimum
 
   probs <- c((1-interval_width)/2, 0.5, 1- (1-interval_width)/2)
   res_qs <- qbeta(probs, round(n_tot * theta, n_dec), round(n_tot - n_tot * theta, n_dec))

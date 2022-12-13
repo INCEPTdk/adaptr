@@ -1,3 +1,8 @@
+# Save package version when package is built
+.adaptr_version <- as.character(packageVersion("adaptr"))
+
+
+
 #' Print package startup message
 #'
 #' @param libname not used.
@@ -11,7 +16,7 @@
 #' @noRd
 #'
 .onAttach <- function(libname, pkgname) {
-  packageStartupMessage("Loading adaptr package (version ", packageVersion("adaptr"), ").\n",
+  packageStartupMessage("Loading adaptr package (version ", .adaptr_version, ").\n",
                         "See 'help(\"adaptr\")' or 'vignette(\"Overview\", \"adaptr\")' for help.\n",
                         "Further information available on https://inceptdk.github.io/adaptr/.")
 }
@@ -21,7 +26,7 @@
 #' Handle well-known "problem" of pseudo-global variables
 #'
 #' Handles "Undefined global functions or variables" after R CMD check (in
-#' [plot_status()] and [plot_history()]).
+#' [plot_convergence()], [plot_status()], and [plot_history()]).
 #' See [https://stackoverflow.com/a/12429344].
 #'
 #' @param libname not used.
@@ -35,7 +40,8 @@
 .onLoad <- function(libname, pkgname) {
   if (getRversion() >= "2.15.1") {
     globalVariables(c(
-      "arm", "hi", "lo", "x", "mid", "value", "ns", "look_ns", "p", "status"
+      "arm", "hi", "lo", "x", "mid", "value", "ns", "ns_all", "look_ns",
+      "look_ns_all", "p", "status", "metric", "y", "arm_facet"
     ))
   }
 }

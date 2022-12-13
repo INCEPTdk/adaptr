@@ -16,6 +16,7 @@ setup_trial(
   data_looks = NULL,
   max_n = NULL,
   look_after_every = NULL,
+  randomised_at_looks = NULL,
   control = NULL,
   control_prob_fixed = NULL,
   inferiority = 0.01,
@@ -74,21 +75,37 @@ probabilities, higher probabilities will be rounded down to these values.
 Must be \code{NA} (default for all arms) if no boundary is wanted.}
 
 \item{data_looks}{vector of increasing integers, specifies when to conduct
-adaptive analyses (= the total number of patients randomised at each
-adaptive analysis). The last number in the vector represents the maximum
-sample size. Instead of specifying \code{data_looks}, the \code{max_n} and
-\code{look_after_every} arguments can be used in combination (then \code{data_looks}
-must be \code{NULL}, the default).}
+adaptive analyses (= the total number of patients with available outcome
+data at each adaptive analysis). The last number in the vector represents
+the final adaptive analysis, i.e., the final analysis where superiority,
+inferiority, practical equivalence, or futility can be claimed.
+Instead of specifying \code{data_looks}, the \code{max_n} and \code{look_after_every}
+arguments can be used in combination (then \code{data_looks} must be \code{NULL},
+the default).}
 
-\item{max_n}{single integer, maximum total sample size (defaults to \code{NULL}).
+\item{max_n}{single integer, number of patients with available outcome data
+at the last possible adaptive analysis (defaults to \code{NULL}).
 Must only be specified if \code{data_looks} is \code{NULL}. Requires specification of
 the \code{look_after_every} argument.}
 
 \item{look_after_every}{single integer, specified together with \code{max_n}.
 Adaptive analyses will be conducted after every \code{look_after_every}
-patients randomised, and at the total sample size as specified by \code{max_n}
-(\code{max_n} does not need to be a multiple of \code{look_after_every}). If
-specified, \code{data_looks} must be \code{NULL} (as default).}
+patients have available outcome data, and at the total sample size as
+specified by \code{max_n} (\code{max_n} does not need to be a multiple of
+\code{look_after_every}). If specified, \code{data_looks} must be \code{NULL} (default).}
+
+\item{randomised_at_looks}{vector of increasing integers or \code{NULL},
+specifying the number of patients randomised at the time of each adaptive
+analysis using the current allocation probabilities at said analysis.
+If \code{NULL} (the default), the number of patients randomised at each analysis
+will match the number of patients with available outcome data at said
+analysis, as specified by \code{data_looks} or \code{max_n} and \code{look_after_every},
+i.e., outcome data will be available immediately after randomisation for
+all patients.\cr
+If not \code{NULL}, the vector must be of the same length as the number of
+adaptive analyses specified by \code{data_looks} or \code{max_n} and
+\code{look_after_every}, and all values must be larger than or equal to the
+number of patients with available outcome data at each analysis.}
 
 \item{control}{single character string, name of one of the \code{arms} or \code{NULL}
 (default). If specified, this arm will serve as a common control arm, to
@@ -106,28 +123,37 @@ allocation probability to the first control arm may still be fixed using
 \code{"sqrt-based"}, \code{"sqrt-based start"}, \code{"sqrt-based fixed"} or \code{"match"}.
 See \code{\link[=setup_trial]{setup_trial()}} \strong{Details} below for details in behaviour.}
 
-\item{inferiority}{single numeric (\verb{> 0} and \verb{<1}, default is \code{0.01})
-specifying the inferiority threshold. An arm will be considered inferior
-and dropped if the probability that it is best (when comparing all arms) or
-better than the control arm (when a common \code{control} is used) drops below
-this threshold.}
+\item{inferiority}{single numeric value or vector of numeric values of the
+same length as the maximum number of possible adaptive analyses, specifying
+the probability threshold(s) for inferiority (default is \code{0.01}). All
+values must be \verb{>= 0} and \verb{<= 1}, and if multiple values are supplied, no
+values may be lower than the preceding value. An arm will be considered
+inferior and dropped if the probability that it is best (when comparing all
+arms) or better than the control arm (when a common \code{control} is used)
+drops below the inferiority threshold at an adaptive analysis.}
 
-\item{superiority}{single numeric (\verb{>0} and \verb{<1}, default is \code{0.99})
-specifying the superiority threshold. If the probability that an arm is
-best (when comparing all arms) or better than the control arm (when a
-common \code{control} is used) exceeds this number, said arm will be declared
-the winner and the trial will be stopped (if no common \code{control} is used or
-if the last comparator is dropped in a design with a common control) \emph{or}
-become the new control and the trial will continue (if a common control is
-specified).}
+\item{superiority}{single numeric value or vector of numeric values of the
+same length as the maximum number of possible adaptive analyses, specifying
+the probability threshold(s) for superiority (default is \code{0.99}). All
+values must be \verb{>= 0} and \verb{<= 1}, and if multiple values are supplied, no
+values may be higher than the preceding value. If the probability that an
+arm is best (when comparing all arms) or better than the control arm (when
+a common \code{control} is used) exceeds the superiority threshold at an
+adaptive analysis, said arm will be declared the winner and the trial will
+be stopped (if no common \code{control} is used or if the last comparator is
+dropped in a design with a common control) \emph{or} become the new control and
+the trial will continue (if a common control is specified).}
 
-\item{equivalence_prob}{single numeric (\verb{> 0} and \verb{< 1}) or \code{NULL} (default,
-corresponding to no equivalence assessment). If a numeric value is
-specified, arms will be stopped for equivalence if the probability of
-either \emph{(a)} equivalence compared to a common \code{control} or \emph{(b)}
-equivalence between all arms remaining (designs without a common control)
-exceeds this threshold. Requires specification of \code{equivalence_diff},
-\code{equivalence_only_first}, and a common \code{control} arm.}
+\item{equivalence_prob}{single numeric value, vector of numeric values of the
+same length as the maximum number of possible adaptive analyses or \code{NULL}
+(default, corresponding to no equivalence assessment), specifying the
+probability threshold(s) for equivalence. All values must be \verb{> 0} and
+\verb{< 1}, and if multiple values are supplied, no values may be higher than
+the preceding value. If not \code{NULL}, arms will be dropped for equivalence if
+the probability of either \emph{(a)} equivalence compared to a common \code{control}
+or \emph{(b)} equivalence between all arms remaining (designs without a common
+\code{control}) exceeds the equivalence threshold at an adaptive analysis.
+Requires specification of \code{equivalence_diff}, and \code{equivalence_only_first}.}
 
 \item{equivalence_diff}{single numeric value (\verb{> 0}) or \code{NULL} (default,
 corresponding to no equivalence assessment). If a numeric value is
@@ -146,11 +172,15 @@ be assessed for the first control (if \code{TRUE}) or also for subsequent
 control arms (if \code{FALSE}) if one arm is superior to the first control and
 becomes the new control.}
 
-\item{futility_prob}{single numeric (\verb{> 0} and \verb{< 1}) or \code{NULL} (default,
-corresponds to no futility assessment). If a numeric value is specified,
-\code{arms} will be stopped for futility when the probability for futility
-compared to the common \code{control} exceeds this threshold. Requires a common
-\code{control} arm, specification of \code{futility_diff} and \code{futility_only_first}.}
+\item{futility_prob}{single numeric value, vector of numeric values of the
+same length as the maximum number of possible adaptive analyses or \code{NULL}
+(default, corresponding to no futility assessment), specifying the
+probability threshold(s) for futility. All values must be \verb{> 0} and \verb{< 1},
+and if multiple values are supplied, no values may be higher than
+the preceding value. If not \code{NULL}, arms will be dropped for futility if
+the probability for futility compared to the common \code{control} exceeds the
+futility threshold at an adaptive analysis. Requires a common \code{control}
+arm, specification of \code{futility_diff}, and \code{futility_only_first}.}
 
 \item{futility_diff}{single numeric value (\verb{> 0}) or \code{NULL} (default,
 corresponding to no futility assessment). If a numeric value is specified,
@@ -197,7 +227,7 @@ and warned against.}
 
 \item{robust}{single logical, if \code{TRUE} (default) the medians and median
 absolute deviations (scaled to be comparable to the standard deviation for
-normal distributions; MAD_SD) are used to summarise the posterior
+normal distributions; MAD_SDs) are used to summarise the posterior
 distributions; if \code{FALSE}, the means and standard deviations (SDs) are used
 instead (slightly faster, but may be less appropriate for posteriors skewed
 on the natural scale).}
@@ -216,7 +246,7 @@ values (some combined in a \code{data.frame} called \code{trial_arms}), but its 
 signals that these inputs have been validated and inappropriate
 combinations and settings have been ruled out. Also contains \code{best_arm}
 holding the arm(s) with the best value(s) in \code{true_ys}. Use \code{str()} to
-peruse the actual content of the returned object
+peruse the actual content of the returned object.
 }
 \description{
 Specifies the design of an adaptive trial with any type of outcome and
@@ -241,8 +271,9 @@ since the last adaptive analysis are randomised to.
 The function must return a single numeric vector, corresponding to the
 outcomes for all patients allocated since the last adaptive analysis, in the
 same order as \code{allocs}.\cr
-See the \strong{Examples} vignette (\code{vignette("Examples", "adaptr")}) for an
-example with further details.
+See the \strong{Advanced example} vignette
+(\code{vignette("Advanced-example", package = "adaptr")}) for an example with
+further details.
 
 \strong{How to specify the \code{fun_draws} function}
 
@@ -272,8 +303,9 @@ be transformed to probabilities and similarly for other measures.\cr
 Important: the \code{matrix} cannot contain \code{NA}s, even if no patients have been
 randomised to an arm yet. See the provided example for one way to alleviate
 this.\cr
-See the \strong{Examples} vignette (\code{vignette("Examples", "adaptr")}) for an
-example with further details.
+See the \strong{Advanced examples} vignette
+(\code{vignette("Advanced-example", package = "adaptr")}) for an example with
+further details.
 
 \emph{Notes}
 \itemize{
@@ -302,9 +334,9 @@ custom functions}
 If the \code{fun_y_gen}, \code{fun_draws}, or \code{fun_raw_est} functions calls other
 user-specified functions (or uses objects defined by the user outside these
 functions or the \code{\link[=setup_trial]{setup_trial()}}-call) or functions from external packages
-and simulations are conducted on multiple cores, these objects or functions must
-be exported or prefixed with their namespaces, respectively, as  described in
-\code{\link[=run_trials]{run_trials()}}.
+and simulations are conducted on multiple cores, these objects or functions
+must be exported or prefixed with their namespaces, respectively, as
+described in \code{\link[=run_trials]{run_trials()}}.
 
 \strong{More information on arguments}
 \itemize{
@@ -387,6 +419,15 @@ equivalence have been assessed (and in case of superiority, it will be
 assessed against the new control arm in designs with a common control, if
 specified - see above). Arms will thus be dropped for equivalence before
 futility.
+
+\strong{Varying probability thresholds}
+
+Different probability thresholds (for superiority, inferiority, equivalence,
+and futility) may be specified for different adaptive analyses. This may be
+used, e.g., to apply more strict probability thresholds at earlier analyses,
+similar to the use of alpha-spending functions in conventional,
+frequentist group sequential trial designs. See the \strong{Basic examples}
+vignette (\code{vignette("Basic-examples", package = "adaptr")}) for an example.
 }
 \examples{
 # Setup a custom trial specification with right-skewed, log-normally

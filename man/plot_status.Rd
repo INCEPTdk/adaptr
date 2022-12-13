@@ -5,32 +5,51 @@
 \alias{plot_status.trial_results}
 \title{Plot statuses}
 \usage{
-plot_status(object, x_value = "look", arm = NULL, area = list(alpha = 0.5))
+plot_status(
+  object,
+  x_value = "look",
+  arm = NULL,
+  area = list(alpha = 0.5),
+  nrow = NULL,
+  ncol = NULL
+)
 
-\method{plot_status}{trial_results}(object, x_value = "look", arm = NULL, area = list(alpha = 0.5))
+\method{plot_status}{trial_results}(
+  object,
+  x_value = "look",
+  arm = NULL,
+  area = list(alpha = 0.5),
+  nrow = NULL,
+  ncol = NULL
+)
 }
 \arguments{
 \item{object}{\code{trial_results} object, output from the \code{\link[=run_trials]{run_trials()}}
 function.}
 
 \item{x_value}{single character string, determining whether the number of
-adaptive analysis looks (\code{"look"}, default) or the total cumulated number of
-patients allocated (\code{"total n"}) are plotted on the x-axis.}
+adaptive analysis looks (\code{"look"}, default), the total cumulated number of
+patients randomised (\code{"total n"}) or with outcome data available at each
+analysis (\code{"followed n"}) are plotted on the x-axis.}
 
-\item{arm}{single character string or \code{NULL} (default); can be set to a valid
-trial \code{arm}. If \code{NULL}, the overall trial statuses are plotted, otherwise
-the statuses for a single, specific trial arm are plotted.}
+\item{arm}{character string of one or more unique, valid \code{arm} names, \code{NA},
+or \code{NULL} (default). If \code{NULL}, the overall trial statuses are plotted,
+otherwise the specified arms or all arms (if \code{NA} is specified) are plotted.}
 
 \item{area}{list of styling settings for the area as per \pkg{ggplot2}
 conventions (e.g., \code{alpha}, \code{size}). The default (\code{list(alpha = 0.5)}) sets
 the transparency to 50\% so overlain shaded areas are visible.}
+
+\item{nrow, ncol}{the number of rows and columns when plotting statuses for
+multiple arms in the same plot (using faceting in \code{ggplot2}). Defaults to
+\code{NULL}, in which case this will be determined automatically where relevant.}
 }
 \value{
 A \code{ggplot2} plot object.
 }
 \description{
-Plots the statuses over time of multiple simulated trials (overall or for a
-specific arm). Requires the \code{ggplot2} package installed.
+Plots the statuses over time of multiple simulated trials (overall or for one
+or more specific arms). Requires the \code{ggplot2} package installed.
 }
 \examples{
 #### Only run examples if ggplot2 is installed ####
@@ -47,6 +66,9 @@ if (requireNamespace("ggplot2", quietly = TRUE)){
 
   # Plot trial statuses at each look according to total allocations
   plot_status(res_mult, x_value = "total n")
+
+  # Plot trial statuses for all arms
+  plot_status(res_mult, arm = NA)
 
   # Do not return/print last plot in documentation
   invisible(NULL)

@@ -1,16 +1,19 @@
 #' Plot statuses
 #'
-#' Plots the statuses over time of multiple simulated trials (overall or for a
-#' specific arm). Requires the `ggplot2` package installed.
+#' Plots the statuses over time of multiple simulated trials (overall or for one
+#' or more specific arms). Requires the `ggplot2` package installed.
 #'
 #' @inheritParams extract_results
 #' @inheritParams plot_history
-#' @param arm single character string or `NULL` (default); can be set to a valid
-#'   trial `arm`. If `NULL`, the overall trial statuses are plotted, otherwise
-#'   the statuses for a single, specific trial arm are plotted.
+#' @param arm character string of one or more unique, valid `arm` names, `NA`,
+#'  or `NULL` (default). If `NULL`, the overall trial statuses are plotted,
+#'  otherwise the specified arms or all arms (if `NA` is specified) are plotted.
 #' @param area list of styling settings for the area as per \pkg{ggplot2}
 #'   conventions (e.g., `alpha`, `size`). The default (`list(alpha = 0.5)`) sets
 #'   the transparency to 50% so overlain shaded areas are visible.
+#' @param nrow,ncol the number of rows and columns when plotting statuses for
+#'   multiple arms in the same plot (using faceting in `ggplot2`). Defaults to
+#'   `NULL`, in which case this will be determined automatically where relevant.
 #'
 #' @return A `ggplot2` plot object.
 #'
@@ -32,6 +35,9 @@
 #'   # Plot trial statuses at each look according to total allocations
 #'   plot_status(res_mult, x_value = "total n")
 #'
+#'   # Plot trial statuses for all arms
+#'   plot_status(res_mult, arm = NA)
+#'
 #'   # Do not return/print last plot in documentation
 #'   invisible(NULL)
 #' }
@@ -40,7 +46,7 @@
 #' [plot_history()].
 #'
 plot_status <- function(object, x_value = "look", arm = NULL,
-                        area = list(alpha = 0.5)) {
+                        area = list(alpha = 0.5), nrow = NULL, ncol = NULL) {
   UseMethod("plot_status")
 }
 
@@ -55,35 +61,61 @@ plot_status <- function(object, x_value = "look", arm = NULL,
 #' @export
 #'
 plot_status.trial_results <- function(object, x_value = "look", arm = NULL,
-                                      area = list(alpha = 0.5)) {
+                                      area = list(alpha = 0.5), nrow = NULL, ncol = NULL) {
 
   assert_pkgs("ggplot2")
 
-  if (!isTRUE(x_value %in% c("look", "total n") & length(x_value) == 1)) {
-    stop("x_value must be either 'look' or 'total n'.", call. = FALSE)
+  if (!isTRUE(x_value %in% c("look", "total n", "followed n") & length(x_value) == 1)) {
+    stop0("x_value must be either 'look', 'total n', or 'followed n'.")
   }
 
-  # Validate arm
-  if (!is.null(arm)) {
-    if (!isTRUE(length(arm) == 1 & arm %in% object$trial_spec$trial_arms$arms)) {
-      stop("Arm must be either NULL or a single, valid trial arm.", call. = FALSE)
+  # Validate arm(s)
+  arm_null <- is.null(arm)
+  if (!arm_null) {
+    available_arms <- object$trial_spec$trial_arms$arms
+    if (all(is.na(arm)) & length(arm) == 1) { # Single NA supplied - use all arms
+      arm <- available_arms
+    } else if (!isTRUE(all(arm %in% available_arms) & length(arm) == length(unique(arm)))) { # Multiple values or 1 arm other than NA supplied
+      stop0("arm must be either NULL, NA, or one or multiple unique, valid trial arm(s).")
     }
   }
 
   # Extract data and prepare legend colours
-  dta <- extract_statuses(object, x_value = x_value, arm = arm)
+  if (arm_null) {
+    dta <- extract_statuses(object, x_value = x_value, arm = arm)
+  } else {
+    dta <- list()
+    for (i in seq_along(arm)) {
+      cur_dta <- extract_statuses(object, x_value = x_value, arm = arm[i])
+      cur_dta$arm_facet <- arm[i]
+      dta[[i]] <- cur_dta
+    }
+    dta <- do.call(rbind, dta)
+    dta$arm_facet <- factor(dta$arm_facet, levels = arm)
+  }
+
   colours <- c(Recruiting = "grey50", Inferiority = "darkred", Futility = "#5C3D00",
                Equivalence = "navy", Superiority = "darkgreen")
 
-  fill_name <- if (is.null(arm)) "Overall statuses" else paste("Arm", arm, "statuses")
-
-  ggplot2::ggplot(dta, ggplot2::aes(x = x, y = p, fill = status)) +
+  # Make the base plot
+  p <- ggplot2::ggplot(dta, ggplot2::aes(x = x, y = p, fill = status)) +
     do.call(ggplot2::geom_area, area %||% formals()$area) +
-    ggplot2::scale_fill_manual(values = colours, name = fill_name, breaks = levels(dta$status)) +
+    ggplot2::scale_fill_manual(values = colours, breaks = levels(dta$status)) +
     make_x_scale(x_value) +
     make_y_scale("status") +
     ggplot2::theme_minimal() +
     ggplot2::theme(legend.title = ggplot2::element_blank())
+  # Facet if plotting one or more arms (to add arm labels to the top)
+  if (!arm_null) {
+    if (is.null(nrow) & is.null(ncol)) { # Set nrow if both nrow and ncol are NULL
+      nrow <- ceiling(sqrt(length(arm)))
+    }
+    p <- p +
+      ggplot2::facet_wrap(ggplot2::vars(arm_facet), scales = "free_x", nrow = nrow, ncol = ncol, strip.position = "top") +
+      ggplot2::theme(strip.background = ggplot2::element_blank(), strip.placement = "outside")
+  }
+  # Return
+  p
 }
 
 
@@ -112,17 +144,21 @@ plot_status.trial_results <- function(object, x_value = "look", arm = NULL,
 #' @keywords internal
 #'
 extract_statuses <- function(object, x_value, arm = NULL) {
-  looks <- object$trial_spec$data_looks
+  data_looks <- object$trial_spec$data_looks
+  randomised_at_looks <- object$trial_spec$randomised_at_looks
   overall_final_looks <- vapply_num(object$trial_results, function(x) x$final_n)
+  overall_final_followed <- vapply_num(object$trial_results, function(x) x$followed_n)
   overall_statuses <- vapply_str(object$trial_results, function(x) x$final_status)
 
   if (is.null(arm)) { # Overall statuses
     final_looks <- overall_final_looks
+    final_followed <- overall_final_followed
     statuses <- ifelse(overall_statuses == "max", "active", overall_statuses)
   } else { # Statuses for specific arm
     idx <- which(object$trial_spec$trial_arms$arms == arm)
-    final_looks <- vapply_num(object$trial_results, function(x) x$trial_res$status_look[idx])
-    final_looks <- ifelse(is.na(final_looks), overall_final_looks, final_looks)
+    final_followed <- vapply_num(object$trial_results, function(x) x$trial_res$status_look[idx])
+    final_followed <- ifelse(is.na(final_followed), overall_final_followed, final_followed)
+    final_looks <- vapply_num(final_followed, function(l) randomised_at_looks[which(data_looks == l)])
     statuses <- vapply_str(object$trial_results, function(x) x$trial_res$final_status[idx])
 
     # Correct statuses
@@ -149,32 +185,41 @@ extract_statuses <- function(object, x_value, arm = NULL) {
     )
   }
 
-  looks <- looks[looks <= max(final_looks)]
+  data_looks <- data_looks[data_looks <= max(overall_final_followed)]
+  randomised_at_looks <- randomised_at_looks[randomised_at_looks <= max(overall_final_looks)]
 
   # Create matrix or probabilities, fill values, bind results to data.frame
   status_levels <- c("Recruiting", "Inferiority", "Futility", "Equivalence", "Superiority")
-  m <- matrix(rep(NA, length(looks) * 7), ncol = 7, dimnames = list(NULL, c("i", "n", status_levels)))
-  for (i in seq_along(looks)) {
+  m <- matrix(rep(NA, length(data_looks) * 8), ncol = 8, dimnames = list(NULL, c("i", "nf", "nr", status_levels)))
+  for (i in seq_along(randomised_at_looks)) {
     m[i, 1] <- i
-    m[i, 2] <- looks[i]
-    m[i, 3] <- mean(statuses == "active" | final_looks > looks[i])
-    m[i, 4] <- mean(statuses == "inferiority" & final_looks <= looks[i])
-    m[i, 5] <- mean(statuses == "futility" & final_looks <= looks[i])
-    m[i, 6] <- mean(statuses == "equivalence" & final_looks <= looks[i])
-    m[i, 7] <- mean(statuses == "superiority" & final_looks <= looks[i])
+    m[i, 2] <- data_looks[i]
+    m[i, 3] <- randomised_at_looks[i]
+    # Minor correction factor due to rounding errors which in some cases may make the last area not seen
+    m[i, 4] <- max(mean(statuses == "active" | final_looks > randomised_at_looks[i]) - .Machine$double.eps^0.5, 0)
+    m[i, 5] <- mean(statuses == "inferiority" & final_looks <= randomised_at_looks[i])
+    m[i, 6] <- mean(statuses == "futility" & final_looks <= randomised_at_looks[i])
+    m[i, 7] <- mean(statuses == "equivalence" & final_looks <= randomised_at_looks[i])
+    m[i, 8] <- mean(statuses == "superiority" & final_looks <= randomised_at_looks[i])
   }
   m <- as.data.frame(m)
 
   dta <- do.call(
     rbind,
-    lapply(status_levels, function(s) cbind(m[, c("i", "n")], p = m[[s]], status = s)
+    lapply(status_levels, function(s) cbind(m[, c("i", "nf", "nr")], p = m[[s]], status = s)
     )
   )
 
-  dta$x <- if (x_value == "look") dta$i else dta$n
+  dta$x <- switch(
+    x_value,
+    "look" = dta$i,
+    "total n" = dta$nr,
+    "followed n" = dta$nf
+  )
+
   if (x_value == "look") {
     dta <- dta[, c("x", "status", "p")]
-  } else if (x_value == "total n") {
+  } else if (x_value %in% c("total n", "followed n")) {
     dta <- rbind(
       data.frame(x = rep(0, 5), status = status_levels, p = c(1, rep(0, 4))),
       dta[, c("x", "status", "p")]

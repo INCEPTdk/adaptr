@@ -10,12 +10,13 @@ extract_statuses(object, x_value, arm = NULL)
 \item{object}{\code{trial_results} object from \code{\link[=run_trials]{run_trials()}}.}
 
 \item{x_value}{single character string, determining whether the number of
-adaptive analysis looks (\code{"look"}, default) or the total cumulated number of
-patients allocated (\code{"total n"}) are plotted on the x-axis.}
+adaptive analysis looks (\code{"look"}, default), the total cumulated number of
+patients randomised (\code{"total n"}) or with outcome data available at each
+analysis (\code{"followed n"}) are plotted on the x-axis.}
 
-\item{arm}{single character string or \code{NULL} (default); can be set to a valid
-trial \code{arm}. If \code{NULL}, the overall trial statuses are plotted, otherwise
-the statuses for a single, specific trial arm are plotted.}
+\item{arm}{character string of one or more unique, valid \code{arm} names, \code{NA},
+or \code{NULL} (default). If \code{NULL}, the overall trial statuses are plotted,
+otherwise the specified arms or all arms (if \code{NA} is specified) are plotted.}
 }
 \value{
 A tidy \code{data.frame} (one row possible status per look) containing the

@@ -11,16 +11,20 @@
 #'
 #' @inheritParams extract_results
 #' @param x_value single character string, determining whether the number of
-#'  adaptive analysis looks (`"look"`, default) or the total cumulated number of
-#'  patients allocated (`"total n"`) are plotted on the x-axis.
+#'  adaptive analysis looks (`"look"`, default), the total cumulated number of
+#'  patients randomised (`"total n"`) or with outcome data available at each
+#'  analysis (`"followed n"`) are plotted on the x-axis.
 #' @param y_value single character string, determining which values are plotted
 #'   on the y-axis. The following options are available: allocation
-#'   probabilities (`"prob"`, default), the total number of patients allocated
-#'   to each arm (`"n"`), the percentage of patients allocated to each arm of
-#'   the total number of patients randomised (`"pct"`), the sum of all outcomes
-#'   in each arm (`"sum ys"`), the ratio of outcomes (`"ratio ys"`, the sum of
-#'   outcomes in each arm divided by the number of patients allocated to that
-#'   arm).
+#'   probabilities (`"prob"`, default), the total number of patients with
+#'   outcome data available (`"n"`) or allocated (`"n all"`) to each arm,
+#'   the percentage of patients with outcome data available (`"pct"`) or
+#'   allocated (`"pct all"`) to each arm out of the current total, the sum of
+#'   all available (`"sum ys"`) outcome data or all outcome data for randomised
+#'   patients including outcome data not available at the time of the current
+#'   adaptive analysis (`"sum ys all"`), the ratio of outcomes as defined for
+#'   `"sum ys"`/`"sum ys all"` divided by the corresponding number of patients
+#'   in each arm.
 #' @param line list styling the lines as per \pkg{ggplot2} conventions (e.g.,
 #'   `linetype`, `size`).
 #' @param ... additional arguments, not used.
@@ -82,20 +86,26 @@ plot_history.trial_result <- function(object,
                                       line = NULL, ...) {
   assert_pkgs("ggplot2")
 
-  if (!isTRUE(x_value %in% c("look", "total n") & length(x_value) == 1)) {
-    stop("x_value must be either 'look' or 'total n'.", call. = FALSE)
+  if (!isTRUE(x_value %in% c("look", "total n", "followed n") & length(x_value) == 1)) {
+    stop0("x_value must be either 'look', 'total n', or 'followed n'.")
   }
-  if (!isTRUE(y_value %in% c("prob", "n", "pct", "sum ys", "ratio ys") & length(y_value) == 1)) {
-    stop("y_value must be either 'prob', 'n', 'pct', 'sum ys', or 'ratio ys'.", call. = FALSE)
+  if (!isTRUE(y_value %in% c("prob", "n", "n all", "pct", "pct all", "sum ys",
+                             "sum ys all", "ratio ys", "ratio ys all") & length(y_value) == 1)) {
+    stop0("y_value must be either 'prob', 'n', 'n all', 'pct', 'pct all',
+         'sum ys', 'sum ys all', 'ratio ys', or 'ratio ys all'.")
   }
   if (isTRUE(object$sparse)) {
-    stop("Plotting the history for single trials requires non-sparse results. ",
-         "Please call run_trial() again with sparse = FALSE.", call. = FALSE)
+    stop0("Plotting the history for single trials requires non-sparse results. ",
+          "Please call run_trial() again with sparse = FALSE.")
   }
 
-
   dta <- extract_history(object, metric = y_value)
-  dta$x <- if (x_value == "look") dta$look else dta$look_ns
+  dta$x <- switch(
+    x_value,
+    "look" = dta$look,
+    "total n" = dta$look_ns_all,
+    "followed n" = dta$look_ns
+  )
 
   ggplot2::ggplot(dta, ggplot2::aes(x = x, y = value, colour = arm)) +
     do.call(ggplot2::geom_line, line %||% list(NULL)) +
@@ -125,15 +135,17 @@ plot_history.trial_results <- function(object,
                                        ...) {
   assert_pkgs("ggplot2")
 
-  if (!isTRUE(x_value %in% c("look", "total n") & length(x_value) == 1)) {
-    stop("x_value must be either 'look' or 'total n'.", call. = FALSE)
+  if (!isTRUE(x_value %in% c("look", "total n", "followed n") & length(x_value) == 1)) {
+    stop0("x_value must be either 'look', 'total n', or 'followed n'.")
   }
-  if (!isTRUE(y_value %in% c("prob", "n", "pct", "sum ys", "ratio ys") & length(y_value) == 1)) {
-    stop("y_value must be either 'prob', 'n', 'pct', 'sum ys', 'ratio ys'.", call. = FALSE)
+  if (!isTRUE(y_value %in% c("prob", "n", "n all", "pct", "pct all", "sum ys",
+                             "sum ys all", "ratio ys", "ratio ys all") & length(y_value) == 1)) {
+    stop0("y_value must be either 'prob', 'n', 'n all', 'pct', 'pct all',
+         'sum ys', 'sum ys all', 'ratio ys', or 'ratio ys all'.")
   }
   if (isTRUE(object$sparse)) {
-    stop("Plotting the history for multiple trials requires non-sparse results.",
-         "Please call run_trials() again with sparse = FALSE.", call. = FALSE)
+    stop0("Plotting the history for multiple trials requires non-sparse results.",
+          "Please call run_trials() again with sparse = FALSE.")
   }
 
   # Enforce defaults if ill-defined input
@@ -145,11 +157,16 @@ plot_history.trial_results <- function(object,
   dta <- do.call(rbind, lapply(object$trial_results, extract_history, metric = y_value))
   summarise_alloc_dta <- function(dta) {
     qs <- setNames(quantile(dta$value, 0.5 + (-1:1) * ribbon$width/2), c("lo", "mid", "hi"))
-    cbind(dta[1, c("look", "look_ns", "arm")], as.list(qs))
+    cbind(dta[1, c("look", "look_ns", "look_ns_all", "arm")], as.list(qs))
   }
 
-  dta_agg <- do.call(rbind, by(dta, dta[, c("look", "look_ns", "arm")], summarise_alloc_dta))
-  dta_agg$x <- if (x_value == "look") dta_agg$look else dta_agg$look_ns
+  dta_agg <- do.call(rbind, by(dta, dta[, c("look", "look_ns", "look_ns_all", "arm")], summarise_alloc_dta))
+  dta_agg$x <- switch(
+    x_value,
+    "look" = dta_agg$look,
+    "total n" = dta_agg$look_ns_all,
+    "followed n" = dta_agg$look_ns
+  )
 
   ribbon$width <- NULL # remove invalid geom_ribbon argument
   ribbon_args <- c(list(ggplot2::aes(ymin = lo, ymax = hi, fill = arm)), ribbon)
@@ -175,21 +192,28 @@ plot_history.trial_results <- function(object,
 #' @param object single `trial_result` from [run_trial()], only works if run
 #'   with argument `sparse = FALSE`.
 #' @param metric either `"prob"` (default), in which case allocation
-#'   probabilities at each adaptive analysis are returned; `"n"`, in which
-#'   case the total number of patients allocated to each `arm` after each
-#'   adaptive analysis are returned; `"pct"` in which case the proportions
-#'   of patients allocated to each arm of the total number of patients
-#'   randomised are returned; `"sum ys"`, in which case the total summed
-#'   outcomes in each arm after each analysis are returned; or `"ratio ys"`, in
-#'   which case the total summed outcomes in each arm divided by the total
-#'   number of patients randomised to that arm after each analysis are returned.
+#'   probabilities at each adaptive analysis are returned; `"n"`/`"n all"`, in
+#'   which case the total number of patients with available follow-up data
+#'   (`"n"`) or allocated (`"n all"`) to each `arm` during each adaptive
+#'   analysis are returned; `"pct"`/`"pct all"` in which case the proportions of
+#'   of patients allocated and having available follow-up data (`"pct"`) or
+#'   allocated in total (`"pct all"`) to each arm out of the total number of
+#'   patients are returned; `"sum ys"`/`"sum ys all"`, in which case the total
+#'   summed available outcome data (`"sum ys"`) or total summed outcome data
+#'   including outcomes of patients randomised that have not necessarily reached
+#'   follow-up yet (`"sum ys all"`) in each arm after each adaptive analysis are
+#'   returned; or `"ratio ys"`/`"ratio ys all"`, in which case the total summed
+#'   outcomes as specified for `"sum ys"`/`"sum ys all"` divided by the number
+#'   of patients after each analysis adaptive are returned.
 #'
 #' @return A tidy `data.frame` (one row per arm per look) containing the following
 #'   columns:
 #'   \itemize{
 #'     \item `look`: consecutive numbers (integers) of each interim look.
-#'     \item `look_ns`: total number of patients (integers) allocated at current
-#'     adaptive analysis look to all arms in the trial.
+#'     \item `look_ns`: total number of patients (integers) with outcome data
+#'       available at current adaptive analysis look to all arms in the trial.
+#'     \item `look_ns_all`: total number of patients (integers) randomised at
+#'       current adaptive analysis look to all arms in the trial.
 #'     \item `arm`: the current `arm` in the trial.
 #'     \item `value`: as described under `metric`.
 #'   }
@@ -201,9 +225,13 @@ extract_history <- function(object, metric = "prob") {
     metric,
     "prob" = "old_alloc",
     "n" = "ns",
+    "n all" = "ns_all",
     "pct" = "ns",
+    "pct all" = "ns_all",
     "sum ys" = "sum_ys",
-    "ratio ys" = "sum_ys"
+    "sum ys all" = "sum_ys_all",
+    "ratio ys" = "sum_ys",
+    "ratio ys all" = "sum_ys_all"
   )
 
   history <- lapply(
@@ -211,8 +239,10 @@ extract_history <- function(object, metric = "prob") {
     function(i) {
       with(
         object$all_looks[[i]],
-        data.frame(look = i, look_ns = object$looks[i], arm = arms,
-                   old_alloc = old_alloc, ns = ns, sum_ys = sum_ys)
+        data.frame(look = i, look_ns = object$looks[i],
+                   look_ns_all = object$randomised_at_looks[i], arm = arms,
+                   old_alloc = old_alloc, ns = ns, ns_all = ns_all,
+                   sum_ys = sum_ys, sum_ys_all = sum_ys_all)
       )
     }
   )
@@ -224,7 +254,9 @@ extract_history <- function(object, metric = "prob") {
     metric,
     "prob" = transform(res, value = ifelse(is.na(value), 0, value)), # NA = no allocation
     "pct" = transform(res, value = value / look_ns),
+    "pct all" = transform(res, value = value / look_ns_all),
     "ratio ys" = transform(res, value = value / ns),
+    "ratio ys all" = transform(res, value = value / ns_all),
     res # no transformation of value column
   )
 }

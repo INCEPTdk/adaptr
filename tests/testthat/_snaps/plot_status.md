@@ -3,156 +3,173 @@
     Code
       extract_statuses(results, x_value = "look")
     Output
-          x      status    p
-      1   1  Recruiting 0.85
-      2   2  Recruiting 0.60
-      3   3  Recruiting 0.45
-      4   4  Recruiting 0.40
-      5   5  Recruiting 0.30
-      6   6  Recruiting 0.20
-      7   7  Recruiting 0.20
-      8   8  Recruiting 0.15
-      9   9  Recruiting 0.15
-      10 10  Recruiting 0.15
-      11 11  Recruiting 0.05
-      12 12  Recruiting 0.05
-      13 13  Recruiting 0.05
-      14 14  Recruiting 0.05
-      15 15  Recruiting 0.05
-      16 16  Recruiting 0.05
-      17 17  Recruiting 0.05
-      18 18  Recruiting 0.05
-      37  1    Futility 0.15
-      38  2    Futility 0.40
-      39  3    Futility 0.55
-      40  4    Futility 0.60
-      41  5    Futility 0.70
-      42  6    Futility 0.75
-      43  7    Futility 0.75
-      44  8    Futility 0.75
-      45  9    Futility 0.75
-      46 10    Futility 0.75
-      47 11    Futility 0.80
-      48 12    Futility 0.80
-      49 13    Futility 0.80
-      50 14    Futility 0.80
-      51 15    Futility 0.80
-      52 16    Futility 0.80
-      53 17    Futility 0.80
-      54 18    Futility 0.80
-      55  1 Equivalence 0.00
-      56  2 Equivalence 0.00
-      57  3 Equivalence 0.00
-      58  4 Equivalence 0.00
-      59  5 Equivalence 0.00
-      60  6 Equivalence 0.00
-      61  7 Equivalence 0.00
-      62  8 Equivalence 0.05
-      63  9 Equivalence 0.05
-      64 10 Equivalence 0.05
-      65 11 Equivalence 0.10
-      66 12 Equivalence 0.10
-      67 13 Equivalence 0.10
-      68 14 Equivalence 0.10
-      69 15 Equivalence 0.10
-      70 16 Equivalence 0.10
-      71 17 Equivalence 0.10
-      72 18 Equivalence 0.10
-      73  1 Superiority 0.00
-      74  2 Superiority 0.00
-      75  3 Superiority 0.00
-      76  4 Superiority 0.00
-      77  5 Superiority 0.00
-      78  6 Superiority 0.05
-      79  7 Superiority 0.05
-      80  8 Superiority 0.05
-      81  9 Superiority 0.05
-      82 10 Superiority 0.05
-      83 11 Superiority 0.05
-      84 12 Superiority 0.05
-      85 13 Superiority 0.05
-      86 14 Superiority 0.05
-      87 15 Superiority 0.05
-      88 16 Superiority 0.05
-      89 17 Superiority 0.05
-      90 18 Superiority 0.05
+          x      status          p
+      1   1  Recruiting 0.84999999
+      2   2  Recruiting 0.59999999
+      3   3  Recruiting 0.44999999
+      4   4  Recruiting 0.39999999
+      5   5  Recruiting 0.29999999
+      6   6  Recruiting 0.19999999
+      7   7  Recruiting 0.19999999
+      8   8  Recruiting 0.14999999
+      9   9  Recruiting 0.14999999
+      10 10  Recruiting 0.14999999
+      11 11  Recruiting 0.04999999
+      12 12  Recruiting 0.04999999
+      13 13  Recruiting 0.04999999
+      14 14  Recruiting 0.04999999
+      15 15  Recruiting 0.04999999
+      16 16  Recruiting 0.04999999
+      17 17  Recruiting 0.04999999
+      18 18  Recruiting 0.04999999
+      37  1    Futility 0.15000000
+      38  2    Futility 0.40000000
+      39  3    Futility 0.55000000
+      40  4    Futility 0.60000000
+      41  5    Futility 0.70000000
+      42  6    Futility 0.75000000
+      43  7    Futility 0.75000000
+      44  8    Futility 0.75000000
+      45  9    Futility 0.75000000
+      46 10    Futility 0.75000000
+      47 11    Futility 0.80000000
+      48 12    Futility 0.80000000
+      49 13    Futility 0.80000000
+      50 14    Futility 0.80000000
+      51 15    Futility 0.80000000
+      52 16    Futility 0.80000000
+      53 17    Futility 0.80000000
+      54 18    Futility 0.80000000
+      55  1 Equivalence 0.00000000
+      56  2 Equivalence 0.00000000
+      57  3 Equivalence 0.00000000
+      58  4 Equivalence 0.00000000
+      59  5 Equivalence 0.00000000
+      60  6 Equivalence 0.00000000
+      61  7 Equivalence 0.00000000
+      62  8 Equivalence 0.05000000
+      63  9 Equivalence 0.05000000
+      64 10 Equivalence 0.05000000
+      65 11 Equivalence 0.10000000
+      66 12 Equivalence 0.10000000
+      67 13 Equivalence 0.10000000
+      68 14 Equivalence 0.10000000
+      69 15 Equivalence 0.10000000
+      70 16 Equivalence 0.10000000
+      71 17 Equivalence 0.10000000
+      72 18 Equivalence 0.10000000
+      73  1 Superiority 0.00000000
+      74  2 Superiority 0.00000000
+      75  3 Superiority 0.00000000
+      76  4 Superiority 0.00000000
+      77  5 Superiority 0.00000000
+      78  6 Superiority 0.05000000
+      79  7 Superiority 0.05000000
+      80  8 Superiority 0.05000000
+      81  9 Superiority 0.05000000
+      82 10 Superiority 0.05000000
+      83 11 Superiority 0.05000000
+      84 12 Superiority 0.05000000
+      85 13 Superiority 0.05000000
+      86 14 Superiority 0.05000000
+      87 15 Superiority 0.05000000
+      88 16 Superiority 0.05000000
+      89 17 Superiority 0.05000000
+      90 18 Superiority 0.05000000
 
 ---
 
     Code
       extract_statuses(results, x_value = "n")
     Output
-          i    n    p      status    x
-      1   1  300 0.85  Recruiting  300
-      2   2  400 0.60  Recruiting  400
-      3   3  500 0.45  Recruiting  500
-      4   4  600 0.40  Recruiting  600
-      5   5  700 0.30  Recruiting  700
-      6   6  800 0.20  Recruiting  800
-      7   7  900 0.20  Recruiting  900
-      8   8 1000 0.15  Recruiting 1000
-      9   9 1100 0.15  Recruiting 1100
-      10 10 1200 0.15  Recruiting 1200
-      11 11 1300 0.05  Recruiting 1300
-      12 12 1400 0.05  Recruiting 1400
-      13 13 1500 0.05  Recruiting 1500
-      14 14 1600 0.05  Recruiting 1600
-      15 15 1700 0.05  Recruiting 1700
-      16 16 1800 0.05  Recruiting 1800
-      17 17 1900 0.05  Recruiting 1900
-      18 18 2000 0.05  Recruiting 2000
-      37  1  300 0.15    Futility  300
-      38  2  400 0.40    Futility  400
-      39  3  500 0.55    Futility  500
-      40  4  600 0.60    Futility  600
-      41  5  700 0.70    Futility  700
-      42  6  800 0.75    Futility  800
-      43  7  900 0.75    Futility  900
-      44  8 1000 0.75    Futility 1000
-      45  9 1100 0.75    Futility 1100
-      46 10 1200 0.75    Futility 1200
-      47 11 1300 0.80    Futility 1300
-      48 12 1400 0.80    Futility 1400
-      49 13 1500 0.80    Futility 1500
-      50 14 1600 0.80    Futility 1600
-      51 15 1700 0.80    Futility 1700
-      52 16 1800 0.80    Futility 1800
-      53 17 1900 0.80    Futility 1900
-      54 18 2000 0.80    Futility 2000
-      55  1  300 0.00 Equivalence  300
-      56  2  400 0.00 Equivalence  400
-      57  3  500 0.00 Equivalence  500
-      58  4  600 0.00 Equivalence  600
-      59  5  700 0.00 Equivalence  700
-      60  6  800 0.00 Equivalence  800
-      61  7  900 0.00 Equivalence  900
-      62  8 1000 0.05 Equivalence 1000
-      63  9 1100 0.05 Equivalence 1100
-      64 10 1200 0.05 Equivalence 1200
-      65 11 1300 0.10 Equivalence 1300
-      66 12 1400 0.10 Equivalence 1400
-      67 13 1500 0.10 Equivalence 1500
-      68 14 1600 0.10 Equivalence 1600
-      69 15 1700 0.10 Equivalence 1700
-      70 16 1800 0.10 Equivalence 1800
-      71 17 1900 0.10 Equivalence 1900
-      72 18 2000 0.10 Equivalence 2000
-      73  1  300 0.00 Superiority  300
-      74  2  400 0.00 Superiority  400
-      75  3  500 0.00 Superiority  500
-      76  4  600 0.00 Superiority  600
-      77  5  700 0.00 Superiority  700
-      78  6  800 0.05 Superiority  800
-      79  7  900 0.05 Superiority  900
-      80  8 1000 0.05 Superiority 1000
-      81  9 1100 0.05 Superiority 1100
-      82 10 1200 0.05 Superiority 1200
-      83 11 1300 0.05 Superiority 1300
-      84 12 1400 0.05 Superiority 1400
-      85 13 1500 0.05 Superiority 1500
-      86 14 1600 0.05 Superiority 1600
-      87 15 1700 0.05 Superiority 1700
-      88 16 1800 0.05 Superiority 1800
-      89 17 1900 0.05 Superiority 1900
-      90 18 2000 0.05 Superiority 2000
+          i   nf   nr          p      status
+      1   1  300  300 0.84999999  Recruiting
+      2   2  400  400 0.59999999  Recruiting
+      3   3  500  500 0.44999999  Recruiting
+      4   4  600  600 0.39999999  Recruiting
+      5   5  700  700 0.29999999  Recruiting
+      6   6  800  800 0.19999999  Recruiting
+      7   7  900  900 0.19999999  Recruiting
+      8   8 1000 1000 0.14999999  Recruiting
+      9   9 1100 1100 0.14999999  Recruiting
+      10 10 1200 1200 0.14999999  Recruiting
+      11 11 1300 1300 0.04999999  Recruiting
+      12 12 1400 1400 0.04999999  Recruiting
+      13 13 1500 1500 0.04999999  Recruiting
+      14 14 1600 1600 0.04999999  Recruiting
+      15 15 1700 1700 0.04999999  Recruiting
+      16 16 1800 1800 0.04999999  Recruiting
+      17 17 1900 1900 0.04999999  Recruiting
+      18 18 2000 2000 0.04999999  Recruiting
+      37  1  300  300 0.15000000    Futility
+      38  2  400  400 0.40000000    Futility
+      39  3  500  500 0.55000000    Futility
+      40  4  600  600 0.60000000    Futility
+      41  5  700  700 0.70000000    Futility
+      42  6  800  800 0.75000000    Futility
+      43  7  900  900 0.75000000    Futility
+      44  8 1000 1000 0.75000000    Futility
+      45  9 1100 1100 0.75000000    Futility
+      46 10 1200 1200 0.75000000    Futility
+      47 11 1300 1300 0.80000000    Futility
+      48 12 1400 1400 0.80000000    Futility
+      49 13 1500 1500 0.80000000    Futility
+      50 14 1600 1600 0.80000000    Futility
+      51 15 1700 1700 0.80000000    Futility
+      52 16 1800 1800 0.80000000    Futility
+      53 17 1900 1900 0.80000000    Futility
+      54 18 2000 2000 0.80000000    Futility
+      55  1  300  300 0.00000000 Equivalence
+      56  2  400  400 0.00000000 Equivalence
+      57  3  500  500 0.00000000 Equivalence
+      58  4  600  600 0.00000000 Equivalence
+      59  5  700  700 0.00000000 Equivalence
+      60  6  800  800 0.00000000 Equivalence
+      61  7  900  900 0.00000000 Equivalence
+      62  8 1000 1000 0.05000000 Equivalence
+      63  9 1100 1100 0.05000000 Equivalence
+      64 10 1200 1200 0.05000000 Equivalence
+      65 11 1300 1300 0.10000000 Equivalence
+      66 12 1400 1400 0.10000000 Equivalence
+      67 13 1500 1500 0.10000000 Equivalence
+      68 14 1600 1600 0.10000000 Equivalence
+      69 15 1700 1700 0.10000000 Equivalence
+      70 16 1800 1800 0.10000000 Equivalence
+      71 17 1900 1900 0.10000000 Equivalence
+      72 18 2000 2000 0.10000000 Equivalence
+      73  1  300  300 0.00000000 Superiority
+      74  2  400  400 0.00000000 Superiority
+      75  3  500  500 0.00000000 Superiority
+      76  4  600  600 0.00000000 Superiority
+      77  5  700  700 0.00000000 Superiority
+      78  6  800  800 0.05000000 Superiority
+      79  7  900  900 0.05000000 Superiority
+      80  8 1000 1000 0.05000000 Superiority
+      81  9 1100 1100 0.05000000 Superiority
+      82 10 1200 1200 0.05000000 Superiority
+      83 11 1300 1300 0.05000000 Superiority
+      84 12 1400 1400 0.05000000 Superiority
+      85 13 1500 1500 0.05000000 Superiority
+      86 14 1600 1600 0.05000000 Superiority
+      87 15 1700 1700 0.05000000 Superiority
+      88 16 1800 1800 0.05000000 Superiority
+      89 17 1900 1900 0.05000000 Superiority
+      90 18 2000 2000 0.05000000 Superiority
+
+---
+
+    Code
+      extract_statuses(res, x_value = "look")
+    Output
+         x      status    p
+      1  1  Recruiting 1.00
+      2  2  Recruiting 1.00
+      3  3  Recruiting 0.95
+      4  4  Recruiting 0.95
+      5  5  Recruiting 0.95
+      21 1 Superiority 0.00
+      22 2 Superiority 0.00
+      23 3 Superiority 0.05
+      24 4 Superiority 0.05
+      25 5 Superiority 0.05
 

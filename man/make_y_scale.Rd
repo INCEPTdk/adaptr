@@ -9,12 +9,15 @@ make_y_scale(y_value)
 \arguments{
 \item{y_value}{single character string, determining which values are plotted
 on the y-axis. The following options are available: allocation
-probabilities (\code{"prob"}, default), the total number of patients allocated
-to each arm (\code{"n"}), the percentage of patients allocated to each arm of
-the total number of patients randomised (\code{"pct"}), the sum of all outcomes
-in each arm (\code{"sum ys"}), the ratio of outcomes (\code{"ratio ys"}, the sum of
-outcomes in each arm divided by the number of patients allocated to that
-arm).}
+probabilities (\code{"prob"}, default), the total number of patients with
+outcome data available (\code{"n"}) or allocated (\code{"n all"}) to each arm,
+the percentage of patients with outcome data available (\code{"pct"}) or
+allocated (\code{"pct all"}) to each arm out of the current total, the sum of
+all available (\code{"sum ys"}) outcome data or all outcome data for randomised
+patients including outcome data not available at the time of the current
+adaptive analysis (\code{"sum ys all"}), the ratio of outcomes as defined for
+\code{"sum ys"}/\code{"sum ys all"} divided by the corresponding number of patients
+in each arm.}
 }
 \value{
 An appropriate scale for the \code{ggplot2} plot y-axis according to

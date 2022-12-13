@@ -10,9 +10,9 @@
 #'   \emph{Adaptive Trial Simulator}
 #' }
 #'
-#' The `adaptr` package simulates adaptive (multi-arm) trials using adaptive
-#' stopping, adaptive arm dropping and/or response-adaptive randomisation.
-#' The package is developed as part of the
+#' The `adaptr` package simulates adaptive (multi-arm, multi-stage) randomised
+#' clinical trials using adaptive stopping, adaptive arm dropping and/or
+#' response-adaptive randomisation. The package is developed as part of the
 #' [INCEPT (Intensive Care Platform Trial) project](https://incept.dk/),
 #' funded primarily by a grant from
 #' [Sygeforsikringen "danmark"](https://www.sygeforsikring.dk/).
@@ -28,8 +28,11 @@
 #' 2. The [run_trial()] and [run_trials()] functions are used to conduct single
 #' or multiple simulations, respectively, according to a trial specification
 #' setup as described in #1.
-#' 3. The [extract_results()] and [summary()] functions are used to
-#' extract or summarise the results of multiple trial simulations.
+#' 3. The [extract_results()], [check_performance()] and [summary()] functions
+#' are used to extract results from multiple trial simulations, calculate
+#' performance metrics, and summarise results. The [plot_convergence()] function
+#' assesses stability of performance metrics according to the number of
+#' simulations conducted.
 #' 4. The [plot_status()] and [plot_history()] functions are used to plot the
 #' overall trial/arm statuses for multiple simulated trials or the history of
 #' trial metrics over time for single/multiple simulated trials, respectively.
@@ -38,7 +41,7 @@
 #' vignette (`vignette("Overview", package = "adaptr")`) for an example of how
 #' the functions work in combination.
 #' For further examples and guidance on setting up trial specifications, see
-#' [setup_trial] documentation, the **Basic examples** vignette
+#' [setup_trial()] documentation, the **Basic examples** vignette
 #' (`vignette("Basic-examples", package = "adaptr")`) and the
 #' **Advanced example** vignette
 #' (`vignette("Advanced-example", package = "adaptr")`).
@@ -52,6 +55,11 @@
 #' for simulating and comparing adaptive clinical trials. Journal of Open Source
 #' Software, 7(72), 4284. \doi{10.21105/joss.04284}
 #'
+#' Granholm A, Kaas-Hansen BS, Lange T, Schjørring OL, Andersen LW, Perner A,
+#' Jensen AKG, Møller MH (2022). An overview of methodological considerations
+#' regarding adaptive stopping, arm dropping and randomisation in clinical
+#' trials. J Clin Epidemiol. \doi{10.1016/j.jclinepi.2022.11.002}
+#'
 #' [Website/manual](https://inceptdk.github.io/adaptr/)
 #'
 #' [GitHub repository](https://github.com/INCEPTdk/adaptr/)
@@ -59,7 +67,7 @@
 #'
 #' @seealso
 #' [setup_trial()], [setup_trial_binom()], [setup_trial_norm()], [run_trial()],
-#' [run_trials()], [extract_results()], [summary()], [print()], [plot_status()]
-#' and [plot_history()].
+#' [run_trials()], [extract_results()], [check_performance()], [summary()],
+#' [plot_convergence()], [print()], [plot_status()], and [plot_history()].
 #'
 NULL

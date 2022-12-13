@@ -83,4 +83,18 @@ test_that("reallocate_probs works", {
     reallocate_probs(probs_best, fixed_probs = rep(NA, 3), min_probs = NA, max_probs = NA, match_arm = 3),
     c(A = 0.1428571, B = 0.4285714, C = 0.4285714)
   )
+
+  probs_best0 <- setNames(rep(0, length(probs_best)), names(probs_best))
+  expect_equal(
+    tolerance = 10^-6,
+    reallocate_probs(probs_best0, fixed_probs = rep(NA, 3), min_probs = rep(NA, 3), max_probs = rep(NA, 3),
+                     soften_power = 1, match_arm = 1),
+    c(A = 1/3, B = 1/3, C = 1/3)
+  )
+
+  expect_equal(
+    tolerance = 10^-6,
+    reallocate_probs(probs_best, fixed_probs = c(0.4, 0.3, 0.3), min_probs = rep(NA, 3), max_probs = rep(NA, 3)),
+    c(A = 0.4, B = 0.3, C = 0.3)
+  )
 })

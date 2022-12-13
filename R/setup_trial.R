@@ -14,8 +14,9 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
                            fixed_probs = NULL,
                            min_probs = rep(NA, length(arms)),
                            max_probs = rep(NA, length(arms)),
-                           data_looks = NULL, max_n = NULL,
-                           look_after_every = NULL,
+                           data_looks = NULL,
+                           max_n = NULL, look_after_every = NULL,
+                           randomised_at_looks = NULL,
                            control = NULL, control_prob_fixed = NULL,
                            inferiority = 0.01, superiority = 0.99,
                            equivalence_prob = NULL, equivalence_diff = NULL,
@@ -37,35 +38,35 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
     control <- as.character(control)
   }
   if (length(unique(arms)) != length(arms)) {
-    stop("All arms must have unique names.", call. = FALSE)
+    stop0("All arms must have unique names.")
   }
 
   # If control_prob_fixed is set to a valid non-numeric value, then set according to that
   if (!is.null(control_prob_fixed)) {
     if (is.null(control) | sum(control %in% arms) != 1) {
-      stop("control_prob_fixed is specified, but no single valid control is specified.", call. = FALSE)
+      stop0("control_prob_fixed is specified, but no single valid control is specified.")
     }
-    if (length(control_prob_fixed) == 1 & control_prob_fixed %in% c("sqrt-based", "sqrt-based start", "sqrt-based fixed")) {
+    if (isTRUE(length(control_prob_fixed) == 1 & control_prob_fixed %in% c("sqrt-based", "sqrt-based start", "sqrt-based fixed"))) {
       control_prob_fixed_orig <- control_prob_fixed
       if (!is.null(start_probs)) {
-        stop("When control_prob_fixed is set to 'sqrt-based', 'sqrt-based start', ",
-             "or 'sqrt-based fixed', start_probs must be NULL.", call. = FALSE)
+        stop0("When control_prob_fixed is set to 'sqrt-based', 'sqrt-based start', ",
+              "or 'sqrt-based fixed', start_probs must be NULL.")
       }
       if (control_prob_fixed == "sqrt-based" | control_prob_fixed == "sqrt-based fixed") {
-        control_prob_fixed <- vapply(n_arms:2, function(x) sqrt(x-1)/(sqrt(x-1)+x-1), FUN.VALUE = numeric(1))
+        control_prob_fixed <- vapply_num(n_arms:2, function(x) sqrt(x-1)/(sqrt(x-1)+x-1))
       } else if (control_prob_fixed == "sqrt-based start") {
         control_prob_fixed <- sqrt(n_arms-1)/(sqrt(n_arms-1)+n_arms-1)
       }
       start_probs <- ifelse(arms == control, control_prob_fixed[1], 1/(sqrt(n_arms-1)+n_arms-1))
       if (control_prob_fixed_orig == "sqrt-based fixed") {
         if (!is.null(fixed_probs)) {
-          stop("When control_prob_fixed is set to 'sqrt-based fixed', fixed_probs must be NULL.", call. = FALSE)
+          stop0("When control_prob_fixed is set to 'sqrt-based fixed', fixed_probs must be NULL.")
         }
         fixed_probs <- start_probs
       } else {
         if (!isTRUE(is.null(fixed_probs) | isTRUE(is.na(fixed_probs[arms == control])))) {
-          stop("When control_prob_fixed is set to 'sqrt-based' or 'sqrt-based start', ",
-               "fixed_probs must either be NULL or NA for the control arm.", call. = FALSE)
+          stop0("When control_prob_fixed is set to 'sqrt-based' or 'sqrt-based start', ",
+                "fixed_probs must either be NULL or NA for the control arm.")
         }
         if (is.null(fixed_probs)) {
           fixed_probs <- rep(NA, n_arms)
@@ -80,8 +81,8 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
     start_probs <- rep(1/length(arms), length(arms))
   } else if(match) { # start_probs not null and 'match'
     if (!isTRUE(max(start_probs[!(arms %in% control)], na.rm = TRUE) == start_probs[which(arms %in% control)])) {
-      stop("If control_prob_fixed is set to 'match' and start_probs are specified, the control group starting ",
-           "allocation probability must be similar to the highest specified non-control arm allocation probability.", call. = FALSE)
+      stop0("If control_prob_fixed is set to 'match' and start_probs are specified, the control group starting ",
+            "allocation probability must be similar to the highest specified non-control arm allocation probability.")
     }
   }
 
@@ -95,15 +96,15 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
            length(fixed_probs) == n_arms,
            length(min_probs) == n_arms,
            length(max_probs) == n_arms)) {
-    stop("arms, start_probs, fixed_probs, min_probs and max_probs must of the same length.", call. = FALSE)
+    stop0("arms, start_probs, fixed_probs, min_probs and max_probs must of the same length.")
   }
 
   # Check that start_probs sum to 1 and that start_probs are not missing
   if (any(is.na(start_probs))) {
-    stop("start_probs values cannot be missing.", call. = FALSE)
+    stop0("start_probs values cannot be missing.")
   }
   if (abs(sum(start_probs) - 1) > .Machine$double.eps^0.5) {
-    stop("start_probs values do not sum to 1.", call. = FALSE)
+    stop0("start_probs values do not sum to 1.")
   }
 
   # Check that the specified probabilities are valid
@@ -111,24 +112,24 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
       any(fixed_probs > 1, na.rm = TRUE) | any(fixed_probs < 0, na.rm = TRUE) |
       any(min_probs > 1, na.rm = TRUE) | any(min_probs < 0, na.rm = TRUE) |
       any(max_probs > 1, na.rm = TRUE) | any(max_probs < 0, na.rm = TRUE)) {
-    stop("All allocaiton probability values/limits (start_probs, fixed_probs, ",
-         "min_probs and max_probs) must be between 0 and 1.", call. = FALSE)
+    stop0("All allocation probability values/limits (start_probs, fixed_probs, ",
+          "min_probs and max_probs) must be between 0 and 1.")
   }
 
   # fixed_probs and start_probs must be the same if both are specified, and start_probs must be between min_probs and max_probs if specified
   for (i in 1:n_arms) {
     if (!is.na(fixed_probs[i]) & fixed_probs[i] != start_probs[i]) {
-      stop("When fixed_probs is specified for an arm (including when set by using one of the ",
-           "special arguments to control_prob_fixed), it has to equal start_probs for the same arm.", call. = FALSE)
+      stop0("When fixed_probs is specified for an arm (including when set by using one of the ",
+            "special arguments to control_prob_fixed), it has to equal start_probs for the same arm.")
     }
     if (!is.na(min_probs[i])) {
       if (start_probs[i] < min_probs[i]) {
-        stop("start_probs must be greater than or equal to corresponding min_probs when specified.", call. = FALSE)
+        stop0("start_probs must be greater than or equal to corresponding min_probs when specified.")
       }
     }
     if (!is.na(max_probs[i])){
       if (start_probs[i] > max_probs[i]) {
-        stop("start_probs must be less than or equal to corresponding max_probs when specified.", call. = FALSE)
+        stop0("start_probs must be less than or equal to corresponding max_probs when specified.")
       }
     }
   }
@@ -141,14 +142,14 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
     # If fixed_probs is specified, min_probs and max_probs must be NA for that arm
     if (!is.na(fixed_probs[i])) {
       if (!is.na(min_probs[i] | !is.na(max_probs[i]))) {
-        stop("When fixed_probs is specified, min_probs and/or max_probs cannot be specified for the ",
-             "same arm (also applies if control_prob_fixed is set to 'sqrt-based', 'sqrt-based start', or 'sqrt-based fixed').", call. = FALSE)
+        stop0("When fixed_probs is specified, min_probs and/or max_probs cannot be specified for the ",
+              "same arm (also applies if control_prob_fixed is set to 'sqrt-based', 'sqrt-based start', or 'sqrt-based fixed').")
       }
     }
     # If both min_probs and max_probs are specified, max_probs has to be larger than min_probs
     if (!is.na(min_probs[i]) & !is.na(max_probs[i])) {
       if (!(max_probs[i] > min_probs[i])) {
-        stop("When both min_probs and max_probs are specified, max_probs has to be larger than min_probs.", call. = FALSE)
+        stop0("When both min_probs and max_probs are specified, max_probs has to be larger than min_probs.")
       }
     }
     min_check[i] <- ifelse(is.na(fixed_probs[i]), min_probs[i], fixed_probs[i])
@@ -156,115 +157,154 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
   }
 
   if (sum(min_check, na.rm = TRUE) - 1 > .Machine$double.eps^0.5) {
-    stop("The combined fixed_probs/min_probs values specified exceed 1.", call. = FALSE)
+    stop0("The combined fixed_probs/min_probs values specified exceed 1.")
   }
 
   if (sum(is.na(max_check)) == 0 & sum(max_check) - 1 < -.Machine$double.eps^0.5) {
-    stop("fixed_probs or max_probs specified for all arms, but they sum to less than 1.", call. = FALSE)
+    stop0("fixed_probs or max_probs specified for all arms, but they sum to less than 1.")
   }
 
   # Check or setup data looks
-  if (!is.null(data_looks)) { # data_looks is sepcified, validate that
-    if (!is.numeric(data_looks) | any(data_looks != cummax(data_looks)) | isTRUE(any(data_looks < 1))) {
-      stop("data_looks must be a numeric vector with values > 0 and of increasing size.", call. = FALSE)
+  if (!is.null(data_looks)) { # data_looks is specified, validate that
+    n_data_looks <- length(data_looks)
+    if (!is.numeric(data_looks) | any(data_looks != cummax(data_looks)) | any(data_looks <= c(0, data_looks[-n_data_looks])) | isTRUE(any(data_looks < 1)) | isTRUE(any(is.na(data_looks)))) {
+      stop0("data_looks must be a numeric vector with values > 0 and of increasing size.")
     }
     if (!is.null(max_n) | !is.null(look_after_every)) {
-      stop("If data_looks is specified, both max_n and look_after_every must be NULL.", call. = FALSE)
+      stop0("If data_looks is specified, both max_n and look_after_every must be NULL.")
     }
-    n_data_looks <- length(data_looks)
   } else { # data_looks is not specified, generate from max_n and look_after every and validate those
     if (is.null(max_n) | is.null(look_after_every)) {
-      stop("If data_looks is not specified, max_n and look_after_every each must be specified ",
-           "as whole numbers of size 1.", call. = FALSE)
+      stop0("If data_looks is not specified, max_n and look_after_every each must be specified ",
+            "as whole numbers of size 1.")
     }
     if (!verify_int(max_n, min_value = 1) | !verify_int(look_after_every, min_value = 1)) {
-      stop("If data_looks is not specified, max_n and look_after_every each must be specified ",
-           "as whole numbers of size 1 with values > 0.", call. = FALSE)
+      stop0("If data_looks is not specified, max_n and look_after_every each must be specified ",
+            "as whole numbers of size 1 with values > 0.")
     } else { # Values are OK - create data_looks
       n_data_looks <- ceiling(max_n/look_after_every)
       data_looks <- look_after_every * 1:n_data_looks
       data_looks[n_data_looks] <- ifelse(data_looks[n_data_looks] > max_n, max_n, data_looks[n_data_looks])
     }
   }
+  data_looks <- round(data_looks, digits = 10) # Round to avoid floating point errors
+  if (!all(vapply_lgl(data_looks, verify_int, min_value = 1))) {
+    stop0("data_looks must only include whole numbers > 0.")
+  }
+
+  # Check or setup total number of patients randomised
+  if (is.null(randomised_at_looks)) {
+    randomised_at_looks <- data_looks
+  } else if (!is.numeric(randomised_at_looks) | any(randomised_at_looks != cummax(randomised_at_looks)) | isTRUE(any(randomised_at_looks < 1)) |
+             isTRUE(any(is.na(randomised_at_looks)))) {
+    stop0("randomised_at_looks must be a numeric vector with values > 0 and of increasing size.")
+  } else if (length(randomised_at_looks) != length(data_looks) | isTRUE(any(data_looks > randomised_at_looks))) {
+    stop0("randomised_at_looks must match the number of adaptive analyses specified and ",
+          "all numbers must be >= the number of patients with available outcome data ",
+          "at each analysis, as specified by data_looks or max_n/look_after_every.")
+  }
+  randomised_at_looks <- round(randomised_at_looks, digits = 10) # Round to avoid floating point errors
+  if (!all(vapply_lgl(randomised_at_looks, verify_int, min_value = 1))) {
+    stop0("randomised_at_looks must only include whole numbers > 0.")
+  }
 
   # Common control checks
   if (!is.null(control)) {
     if (!(control) %in% arms | length(control) != 1) {
-      stop("control must be a single character string matching one of the arms.", call. = FALSE)
+      stop0("control must be a single character string matching one of the arms.")
     }
     if (!is.null(control_prob_fixed)) {
       if (!(length(control_prob_fixed) %in% c(1, n_arms - 1)) | any(control_prob_fixed > 1) | any(control_prob_fixed < 0)) {
         if (!isTRUE(control_prob_fixed == "match")) {
-          stop("control_prob_fixed must be either NULL, a numeric vector with values between 0 and 1 of length 1 ",
-               "or (number of arms - 1), or one of the following: 'sqrt-based', 'sqrt-based start', 'sqrt-based fixed' or 'match'.", call. = FALSE)
+          stop0("control_prob_fixed must be either NULL, a numeric vector with values between 0 and 1 of length 1 ",
+                "or (number of arms - 1), or one of the following: 'sqrt-based', 'sqrt-based start', 'sqrt-based fixed' or 'match'.")
         }
       }
       control_index <- arms == control
       if (!is.na(min_probs[control_index]) | !is.na(max_probs[control_index])) {
-        stop("When control_prob_fixed is specified, min_probs or max_probs cannot be specified for the same arm.", call. = FALSE)
+        stop0("When control_prob_fixed is specified, min_probs or max_probs cannot be specified for the same arm.")
       }
       if (!match) {
         if (is.na(fixed_probs[control_index])) {
-          stop("When control_prob_fixed is specified and is not 'match', fixed_probs for ",
-               "the control arm must be set to the first value of control_prob_fixed.", call. = FALSE)
+          stop0("When control_prob_fixed is specified and is not 'match', fixed_probs for ",
+                "the control arm must be set to the first value of control_prob_fixed.")
         } else if (abs(fixed_probs[control_index] - control_prob_fixed[1]) > .Machine$double.eps^0.5) {
-          stop("When control_prob_fixed is specified and is not 'match', fixed_probs for ",
-               "the control arm must be set to the first value of control_prob_fixed.", call. = FALSE)
+          stop0("When control_prob_fixed is specified and is not 'match', fixed_probs for ",
+                "the control arm must be set to the first value of control_prob_fixed.")
         }
       }
     }
   }
 
-  # Check superiority/inferiority thresholds
-  if (length(inferiority) != 1 | length(superiority) != 1 | !is.numeric(inferiority) | !is.numeric(superiority) |
-      inferiority < 0 | superiority < 0 | inferiority > 1 | superiority > 1 | inferiority >= superiority) {
-    stop("Both superiority and inferiority must be single numeric values between 0 and 1, and superiority must be higher than inferiority.", call. = FALSE)
+  # Check superiority/inferiority thresholds and correspondence
+  if (!(length(inferiority) %in% c(1, n_data_looks)) | !all(is.numeric(inferiority)) | any(inferiority < 0) |
+      any(inferiority > 1) | any(inferiority != cummax(inferiority))) {
+    stop0("inferiority must be a single numeric value beween 0 and 1 or a numeric vector of the same length ",
+          "as the maximum possible number of adaptive analyses, with all values between 0 and 1 and no ",
+          "values lower than the previous value.")
+  }
+  if (!(length(superiority) %in% c(1, n_data_looks)) | !all(is.numeric(superiority)) | any(superiority < 0) |
+      any(superiority > 1) | any(superiority != cummin(superiority))) {
+    stop0("superiority must be a single numeric value beween 0 and 1 or a numeric vector of the same length ",
+          "as the maximum possible number of adaptive analyses, with all values between 0 and 1 and no ",
+          "values higher than the previous value.")
+  }
+  if (any(inferiority >= superiority)) {
+    stop0("Invalid combination of inferiority/superiority thresholds - inferiority threshold(s) must be ",
+          "lower than the corresponding superiority threshold(s) at all adaptive analyses.")
   }
 
   # Check that highest_is_best is correct
   if (!(is.logical(highest_is_best) & length(highest_is_best) == 1)) {
-    stop("highest_is_best must be a single logical (TRUE/FALSE).", call. = FALSE)
+    stop0("highest_is_best must be a single logical (TRUE/FALSE).")
   }
 
   # Checks equivalence settings
   if (!is.null(equivalence_prob) | !is.null(equivalence_diff)) {
     if (is.null(equivalence_prob) | is.null(equivalence_diff)) {
-      stop("Either equivalence_prob or equivalence_diff is specified - both need to be specified at the same time.", call. = FALSE)
+      stop0("Either equivalence_prob or equivalence_diff is specified - both need to be specified at the same time.")
     }
-    if (isTRUE(length(equivalence_prob) != 1 | length(equivalence_diff) != 1 | !is.numeric(equivalence_prob) | !is.numeric(equivalence_diff) |
-               equivalence_prob <= 0 | equivalence_prob >= 1 | equivalence_diff <= 0)) {
-      stop("Both equivalence_prob and equivalence_diff must be single numeric values and equivalence_prob must be > 0 and < 1, ",
-           "while equivalence_diff must be > 0.", call. = FALSE)
+    if (!(length(equivalence_prob) %in% c(1, n_data_looks)) | !all(is.numeric(equivalence_prob)) | any(equivalence_prob <= 0) |
+        any(equivalence_prob >= 1) | any(equivalence_prob != cummin(equivalence_prob))) {
+      stop0("equivalence_prob must be a single numeric value > 0 and < 1 or a numeric vector of the same length ",
+            "as the maximum possible number of adaptive analyses, with all values > 0 and < 1 and no values ",
+            "higher than the previous value.")
+    }
+    if (isTRUE(length(equivalence_diff) != 1 | !is.numeric(equivalence_diff) | any(equivalence_diff <= 0))) {
+      stop0("equivalence_diff must be a single numeric value > 0.")
     }
     if (is.null(control)) {
       if (!is.null(equivalence_only_first)) {
-        stop("For trials without a common control arm, equivalence_only_first must be NULL.", call. = FALSE)
+        stop0("For trials without a common control arm, equivalence_only_first must be NULL.")
       }
     } else if (!isTRUE(equivalence_only_first) & !isFALSE(equivalence_only_first)) {
-      stop("equivalence_prob and equivalence_diff are specified for a trial with a common control - ",
-           "equivalence_only_first must be either TRUE or FALSE.", call. = FALSE)
+      stop0("equivalence_prob and equivalence_diff are specified for a trial with a common control - ",
+            "equivalence_only_first must be either TRUE or FALSE.")
     }
   }
   if (isTRUE(is.null(equivalence_prob) | is.null(equivalence_diff)) & !is.null(equivalence_only_first)) {
-    stop("equivalence_only_first specified, this requires that equivalence_prob and equivalence_diff are specified too.", call. = FALSE)
+    stop0("equivalence_only_first specified, this requires that equivalence_prob and equivalence_diff are specified too.")
   }
 
   # Check futility settings
   if (any(!is.null(futility_prob), !is.null(futility_diff), !is.null(futility_only_first))) {
     if (is.null(control)) {
-      stop("Futility can only be assessed in trial designs with a common control.", call. = FALSE)
+      stop0("Futility can only be assessed in trial designs with a common control.")
     }
     if (is.null(futility_prob) | is.null(futility_diff) | is.null(futility_only_first)) {
-      stop("Valid values for futility_prob, futility_diff and futility_only_first must all be specified for futility assessment.", call. = FALSE)
+      stop0("Valid values for futility_prob, futility_diff and futility_only_first must all be specified for futility assessment.")
     }
-    if (isTRUE(length(futility_prob) != 1 | !is.numeric(futility_prob) | futility_prob >= 1 | futility_prob <= 0)) {
-      stop("futility_prob must be a single numeric value > 0 and < 1.", call. = FALSE)
+    if (!(length(futility_prob) %in% c(1, n_data_looks)) | !all(is.numeric(futility_prob)) | any(futility_prob <= 0) |
+        any(futility_prob >= 1) | any(futility_prob != cummin(futility_prob))) {
+      stop0("futility_prob must be a single numeric value > 0 and < 1 or a numeric vector of the same length ",
+            "as the maximum possible number of adaptive analyses, with all values > 0 and < 1 and no values ",
+            "higher than the previous value.")
     }
-    if (isTRUE(length(futility_diff) != 1 | !is.numeric(futility_diff) | futility_diff <= 0)) {
-      stop("futility_diff must be a single numeric value > 0.", call. = FALSE)
+    if (isTRUE(length(futility_diff) != 1 | !is.numeric(futility_diff) | any(futility_diff <= 0))) {
+      stop0("futility_diff must be a single numeric value > 0.")
     }
-    if (isTRUE(length(futility_only_first) > 1 | !is.logical(futility_only_first))) {
-      stop("futility_only_first must be either TRUE or FALSE for futility assessment.", call. = FALSE)
+    if (isTRUE(length(futility_only_first) > 1 | !is.logical(futility_only_first) | is.na(futility_only_first))) {
+      stop0("futility_only_first must be either TRUE or FALSE for futility assessment.")
     }
   }
 
@@ -272,11 +312,11 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
   if (length(soften_power) == 1) {
     soften_power <- rep(soften_power, n_data_looks)
   } else if (length(soften_power) != n_data_looks) {
-    stop("soften_power must be either a single numeric of a numeric vector of the same length as the number of data looks.", call. = FALSE)
+    stop0("soften_power must be either a single numeric of a numeric vector of the same length as the number of data looks.")
   }
 
   if (!is.numeric(soften_power) | any(soften_power > 1) | any(soften_power < 0)) {
-    stop("soften_power must only include numeric values between 0 and 1.", call. = FALSE)
+    stop0("soften_power must only include numeric values between 0 and 1.")
   }
 
   # Get best arm(s)
@@ -288,30 +328,30 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 
   # Validate Bayesian settings
   if (isTRUE(is.null(cri_width) | is.na(cri_width) | !is.numeric(cri_width) | cri_width >= 1 | cri_width < 0) | length(cri_width) != 1) {
-    stop("cri_width must be a single numeric value >= 0 and < 1.", call. = FALSE)
+    stop0("cri_width must be a single numeric value >= 0 and < 1.")
   }
   if (!verify_int(n_draws, min_value = 100)) {
-    stop("n_draws must be a single integer >= 100 (values < 1000 not recommended and will result in a warning).", call. = FALSE)
+    stop0("n_draws must be a single integer >= 100 (values < 1000 not recommended and will result in a warning).")
   } else if (n_draws < 1000) {
-    warning("Values for n_draws < 1000 are not recommended, as they may cause instable results.", call. = FALSE)
+    warning0("Values for n_draws < 1000 are not recommended, as they may cause instable results.")
   }
   if (isTRUE(!is.logical(robust) | is.na(robust)) | length(robust) != 1) {
-    stop("robust must be either TRUE or FALSE.", call. = FALSE)
+    stop0("robust must be either TRUE or FALSE.")
   }
 
   # Validate outcome generator function
   if (isTRUE(is.null(fun_y_gen) | !(class(fun_y_gen) == "function"))) {
-    stop("A valid function to generate outcomes (fun_y_gen) must be specified (see '?setup_trial').", call. = FALSE)
+    stop0("A valid function to generate outcomes (fun_y_gen) must be specified (see '?setup_trial').")
   } else {
     test_y <- fun_y_gen(c(arms, arms))
     if (isTRUE(any(is.na(test_y)) | is.null(test_y) | length(test_y) != length(arms) * 2) | !is.numeric(sum(test_y))) {
-      stop("A valid function to generate outcomes (fun_y_gen) must be specified (see '?setup_trial').", call. = FALSE)
+      stop0("A valid function to generate outcomes (fun_y_gen) must be specified (see '?setup_trial').")
     }
   }
 
   # Validate draws generator function
   if (isTRUE(is.null(fun_draws) | !(class(fun_draws) == "function"))) {
-    stop("A valid function to generate posterior draws (fun_draws) must be specified (see '?setup_trial').", call. = FALSE)
+    stop0("A valid function to generate posterior draws (fun_draws) must be specified (see '?setup_trial').")
   } else {
     test_draws1 <- fun_draws(arms, c(arms, arms), test_y, control, n_draws) # Two patients in each arm
     test_draws2 <- fun_draws(arms, rep(c(arms[2:n_arms], arms[2]), 2), test_y, control, n_draws) # One arm without allocations, but should still work
@@ -319,7 +359,7 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
                is.null(colnames(test_draws1)) | is.null(colnames(test_draws2)) | isTRUE(colnames(test_draws1) != arms) | isTRUE(colnames(test_draws2) != arms) |
                isTRUE(nrow(test_draws1) != n_draws) | isTRUE(nrow(test_draws2) != n_draws) | isTRUE(ncol(test_draws1) != n_arms) | isTRUE(ncol(test_draws2) != n_arms) |
                !is.numeric(test_draws1) | !is.numeric(test_draws2))) {
-      stop("A valid function to generate posterior draws (fun_draws) must be specified (see '?setup_trial').", call. = FALSE)
+      stop0("A valid function to generate posterior draws (fun_draws) must be specified (see '?setup_trial').")
     }
     # For > 2 arms, verify that only columns for active arms are returned (this check is not relevant
     # for 2 arms only, as they will always be included in comparisons, and as this check could then
@@ -329,31 +369,31 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
       test_draws3 <- fun_draws(arms[2:n_arms], c(arms, arms), test_y, control, n_draws)
       if (isTRUE(any(is.na(test_draws3)) | class(test_draws3)[1] != "matrix" | is.null(colnames(test_draws3)) | isTRUE(colnames(test_draws3) != arms[2:n_arms]) |
                  isTRUE(nrow(test_draws3) != n_draws) | isTRUE(ncol(test_draws3) != n_arms-1) | !is.numeric(test_draws3))) {
-        stop("A valid function to generate posterior draws (fun_draws) must be specified (see '?setup_trial').\n",
-             "fun_draws must return a matrix with named columns for currently active arms only.", call. = FALSE)
+        stop0("A valid function to generate posterior draws (fun_draws) must be specified (see '?setup_trial').\n",
+              "fun_draws must return a matrix with named columns for currently active arms only.")
       }
     }
   }
 
   # Validate function that calculates raw summary estimates
   if (isTRUE(is.null(fun_raw_est) | !(class(fun_raw_est) == "function"))) {
-    stop("A valid function to summarise raw outcomes (fun_est_raw) must be specified (see '?setup_trial').", call. = FALSE)
+    stop0("A valid function to summarise raw outcomes (fun_est_raw) must be specified (see '?setup_trial').")
   } else {
-    test_raw_est <- vapply(arms, function(a) fun_raw_est(test_y[which(c(arms, arms) == a)]), numeric(1))
+    test_raw_est <- vapply_num(arms, function(a) fun_raw_est(test_y[which(c(arms, arms) == a)]))
     if (isTRUE(any(is.na(test_raw_est)) | is.null(test_raw_est) | length(test_raw_est) != length(arms)) | !is.numeric(sum(test_y))) {
-      stop("A valid function to summarise raw outcomes (fun_est_raw) must be specified (see '?setup_trial').", call. = FALSE)
+      stop0("A valid function to summarise raw outcomes (fun_est_raw) must be specified (see '?setup_trial').")
     }
   }
 
   # Check description and additional info
   if (!is.null(description)) {
     if (!is.character(description) | length(description) != 1) {
-      stop("description must be either NULL or a single character string.", call. = FALSE)
+      stop0("description must be either NULL or a single character string.")
     }
   }
   if (!is.null(add_info)) {
     if (!is.character(add_info) | length(add_info) != 1) {
-      stop("add_info must be either NULL or a single character string.", call. = FALSE)
+      stop0("add_info must be either NULL or a single character string.")
     }
   }
 
@@ -365,6 +405,7 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
                  max_n = max_n,
                  look_after_every = look_after_every,
                  n_data_looks = n_data_looks,
+                 randomised_at_looks = randomised_at_looks,
                  control = control,
                  control_prob_fixed = if (match) "match" else control_prob_fixed,
                  inferiority = inferiority,
@@ -433,19 +474,34 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #'   probabilities, higher probabilities will be rounded down to these values.
 #'   Must be `NA` (default for all arms) if no boundary is wanted.
 #' @param data_looks vector of increasing integers, specifies when to conduct
-#'   adaptive analyses (= the total number of patients randomised at each
-#'   adaptive analysis). The last number in the vector represents the maximum
-#'   sample size. Instead of specifying `data_looks`, the `max_n` and
-#'   `look_after_every` arguments can be used in combination (then `data_looks`
-#'   must be `NULL`, the default).
-#' @param max_n single integer, maximum total sample size (defaults to `NULL`).
+#'   adaptive analyses (= the total number of patients with available outcome
+#'   data at each adaptive analysis). The last number in the vector represents
+#'   the final adaptive analysis, i.e., the final analysis where superiority,
+#'   inferiority, practical equivalence, or futility can be claimed.
+#'   Instead of specifying `data_looks`, the `max_n` and `look_after_every`
+#'   arguments can be used in combination (then `data_looks` must be `NULL`,
+#'   the default).
+#' @param max_n single integer, number of patients with available outcome data
+#'   at the last possible adaptive analysis (defaults to `NULL`).
 #'   Must only be specified if `data_looks` is `NULL`. Requires specification of
 #'   the `look_after_every` argument.
 #' @param look_after_every single integer, specified together with `max_n`.
 #'   Adaptive analyses will be conducted after every `look_after_every`
-#'   patients randomised, and at the total sample size as specified by `max_n`
-#'   (`max_n` does not need to be a multiple of `look_after_every`). If
-#'   specified, `data_looks` must be `NULL` (as default).
+#'   patients have available outcome data, and at the total sample size as
+#'   specified by `max_n` (`max_n` does not need to be a multiple of
+#'   `look_after_every`). If specified, `data_looks` must be `NULL` (default).
+#' @param randomised_at_looks vector of increasing integers or `NULL`,
+#'   specifying the number of patients randomised at the time of each adaptive
+#'   analysis using the current allocation probabilities at said analysis.
+#'   If `NULL` (the default), the number of patients randomised at each analysis
+#'   will match the number of patients with available outcome data at said
+#'   analysis, as specified by `data_looks` or `max_n` and `look_after_every`,
+#'   i.e., outcome data will be available immediately after randomisation for
+#'   all patients.\cr
+#'   If not `NULL`, the vector must be of the same length as the number of
+#'   adaptive analyses specified by `data_looks` or `max_n` and
+#'   `look_after_every`, and all values must be larger than or equal to the
+#'   number of patients with available outcome data at each analysis.
 #' @param control single character string, name of one of the `arms` or `NULL`
 #'   (default). If specified, this arm will serve as a common control arm, to
 #'   which all other arms will be compared and the
@@ -460,26 +516,35 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #'   `number of arms - 1` can be provided, or one of the special arguments
 #'   `"sqrt-based"`, `"sqrt-based start"`, `"sqrt-based fixed"` or `"match"`.
 #'   See [setup_trial()] **Details** below for details in behaviour.
-#' @param inferiority single numeric (`> 0` and `<1`, default is `0.01`)
-#'   specifying the inferiority threshold. An arm will be considered inferior
-#'   and dropped if the probability that it is best (when comparing all arms) or
-#'   better than the control arm (when a common `control` is used) drops below
-#'   this threshold.
-#' @param superiority single numeric (`>0` and `<1`, default is `0.99`)
-#'   specifying the superiority threshold. If the probability that an arm is
-#'   best (when comparing all arms) or better than the control arm (when a
-#'   common `control` is used) exceeds this number, said arm will be declared
-#'   the winner and the trial will be stopped (if no common `control` is used or
-#'   if the last comparator is dropped in a design with a common control) *or*
-#'   become the new control and the trial will continue (if a common control is
-#'   specified).
-#' @param equivalence_prob single numeric (`> 0` and `< 1`) or `NULL` (default,
-#'   corresponding to no equivalence assessment). If a numeric value is
-#'   specified, arms will be stopped for equivalence if the probability of
-#'   either *(a)* equivalence compared to a common `control` or *(b)*
-#'   equivalence between all arms remaining (designs without a common control)
-#'   exceeds this threshold. Requires specification of `equivalence_diff`,
-#'   `equivalence_only_first`, and a common `control` arm.
+#' @param inferiority single numeric value or vector of numeric values of the
+#'   same length as the maximum number of possible adaptive analyses, specifying
+#'   the probability threshold(s) for inferiority (default is `0.01`). All
+#'   values must be `>= 0` and `<= 1`, and if multiple values are supplied, no
+#'   values may be lower than the preceding value. An arm will be considered
+#'   inferior and dropped if the probability that it is best (when comparing all
+#'   arms) or better than the control arm (when a common `control` is used)
+#'   drops below the inferiority threshold at an adaptive analysis.
+#' @param superiority single numeric value or vector of numeric values of the
+#'   same length as the maximum number of possible adaptive analyses, specifying
+#'   the probability threshold(s) for superiority (default is `0.99`). All
+#'   values must be `>= 0` and `<= 1`, and if multiple values are supplied, no
+#'   values may be higher than the preceding value. If the probability that an
+#'   arm is best (when comparing all arms) or better than the control arm (when
+#'   a common `control` is used) exceeds the superiority threshold at an
+#'   adaptive analysis, said arm will be declared the winner and the trial will
+#'   be stopped (if no common `control` is used or if the last comparator is
+#'   dropped in a design with a common control) *or* become the new control and
+#'   the trial will continue (if a common control is specified).
+#' @param equivalence_prob single numeric value, vector of numeric values of the
+#'   same length as the maximum number of possible adaptive analyses or `NULL`
+#'   (default, corresponding to no equivalence assessment), specifying the
+#'   probability threshold(s) for equivalence. All values must be `> 0` and
+#'   `< 1`, and if multiple values are supplied, no values may be higher than
+#'   the preceding value. If not `NULL`, arms will be dropped for equivalence if
+#'   the probability of either *(a)* equivalence compared to a common `control`
+#'   or *(b)* equivalence between all arms remaining (designs without a common
+#'   `control`) exceeds the equivalence threshold at an adaptive analysis.
+#'   Requires specification of `equivalence_diff`, and `equivalence_only_first`.
 #' @param equivalence_diff single numeric value (`> 0`) or `NULL` (default,
 #'   corresponding to no equivalence assessment). If a numeric value is
 #'   specified, estimated differences below this threshold will be considered
@@ -495,11 +560,15 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #'   be assessed for the first control (if `TRUE`) or also for subsequent
 #'   control arms (if `FALSE`) if one arm is superior to the first control and
 #'   becomes the new control.
-#' @param futility_prob single numeric (`> 0` and `< 1`) or `NULL` (default,
-#'   corresponds to no futility assessment). If a numeric value is specified,
-#'   `arms` will be stopped for futility when the probability for futility
-#'   compared to the common `control` exceeds this threshold. Requires a common
-#'   `control` arm, specification of `futility_diff` and `futility_only_first`.
+#' @param futility_prob single numeric value, vector of numeric values of the
+#'   same length as the maximum number of possible adaptive analyses or `NULL`
+#'   (default, corresponding to no futility assessment), specifying the
+#'   probability threshold(s) for futility. All values must be `> 0` and `< 1`,
+#'   and if multiple values are supplied, no values may be higher than
+#'   the preceding value. If not `NULL`, arms will be dropped for futility if
+#'   the probability for futility compared to the common `control` exceeds the
+#'   futility threshold at an adaptive analysis. Requires a common `control`
+#'   arm, specification of `futility_diff`, and `futility_only_first`.
 #' @param futility_diff single numeric value (`> 0`) or `NULL` (default,
 #'   corresponding to no futility assessment). If a numeric value is specified,
 #'   estimated differences below this threshold in the *beneficial* direction
@@ -541,7 +610,7 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #'   and warned against.
 #' @param robust single logical, if `TRUE` (default) the medians and median
 #'   absolute deviations (scaled to be comparable to the standard deviation for
-#'   normal distributions; MAD_SD) are used to summarise the posterior
+#'   normal distributions; MAD_SDs) are used to summarise the posterior
 #'   distributions; if `FALSE`, the means and standard deviations (SDs) are used
 #'   instead (slightly faster, but may be less appropriate for posteriors skewed
 #'   on the natural scale).
@@ -562,8 +631,9 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' The function must return a single numeric vector, corresponding to the
 #' outcomes for all patients allocated since the last adaptive analysis, in the
 #' same order as `allocs`.\cr
-#' See the **Examples** vignette (`vignette("Examples", "adaptr")`) for an
-#' example with further details.
+#' See the **Advanced example** vignette
+#' (`vignette("Advanced-example", package = "adaptr")`) for an example with
+#' further details.
 #'
 #' \strong{How to specify the `fun_draws` function}
 #'
@@ -591,8 +661,9 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' Important: the `matrix` cannot contain `NA`s, even if no patients have been
 #' randomised to an arm yet. See the provided example for one way to alleviate
 #' this.\cr
-#' See the **Examples** vignette (`vignette("Examples", "adaptr")`) for an
-#' example with further details.
+#' See the **Advanced examples** vignette
+#' (`vignette("Advanced-example", package = "adaptr")`) for an example with
+#' further details.
 #'
 #' _Notes_
 #' - Different estimation methods and prior distributions may be used;
@@ -619,9 +690,9 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' If the `fun_y_gen`, `fun_draws`, or `fun_raw_est` functions calls other
 #' user-specified functions (or uses objects defined by the user outside these
 #' functions or the [setup_trial()]-call) or functions from external packages
-#' and simulations are conducted on multiple cores, these objects or functions must
-#' be exported or prefixed with their namespaces, respectively, as  described in
-#' [run_trials()].
+#' and simulations are conducted on multiple cores, these objects or functions
+#' must be exported or prefixed with their namespaces, respectively, as
+#' described in [run_trials()].
 #'
 #'
 #' \strong{More information on arguments}
@@ -704,13 +775,22 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' specified - see above). Arms will thus be dropped for equivalence before
 #' futility.
 #'
+#' \strong{Varying probability thresholds}
+#'
+#' Different probability thresholds (for superiority, inferiority, equivalence,
+#' and futility) may be specified for different adaptive analyses. This may be
+#' used, e.g., to apply more strict probability thresholds at earlier analyses,
+#' similar to the use of alpha-spending functions in conventional,
+#' frequentist group sequential trial designs. See the **Basic examples**
+#' vignette (`vignette("Basic-examples", package = "adaptr")`) for an example.
+#'
 #' @return A `trial_spec` object used to run simulations by [run_trial()] or
 #'   [run_trials()]. The output is essentially a list containing the input
 #'   values (some combined in a `data.frame` called `trial_arms`), but its class
 #'   signals that these inputs have been validated and inappropriate
 #'   combinations and settings have been ruled out. Also contains `best_arm`
 #'   holding the arm(s) with the best value(s) in `true_ys`. Use `str()` to
-#'   peruse the actual content of the returned object
+#'   peruse the actual content of the returned object.
 #'
 #' @examples
 #' # Setup a custom trial specification with right-skewed, log-normally
@@ -791,8 +871,10 @@ setup_trial <- function(arms, true_ys, fun_y_gen = NULL, fun_draws = NULL,
                         start_probs = NULL, fixed_probs = NULL,
                         min_probs = rep(NA, length(arms)),
                         max_probs = rep(NA, length(arms)),
-                        data_looks = NULL, max_n = NULL,
-                        look_after_every = NULL, control = NULL,
+                        data_looks = NULL,
+                        max_n = NULL, look_after_every = NULL,
+                        randomised_at_looks = NULL,
+                        control = NULL,
                         control_prob_fixed = NULL, inferiority = 0.01,
                         superiority = 0.99, equivalence_prob = NULL,
                         equivalence_diff = NULL, equivalence_only_first = NULL,
@@ -804,8 +886,9 @@ setup_trial <- function(arms, true_ys, fun_y_gen = NULL, fun_draws = NULL,
 
   validate_trial(arms = arms, true_ys = true_ys, start_probs = start_probs, fixed_probs = fixed_probs,
                  min_probs = min_probs, max_probs = max_probs, data_looks = data_looks, max_n = max_n,
-                 look_after_every = look_after_every, control = control, control_prob_fixed = control_prob_fixed,
-                 inferiority = inferiority, superiority = superiority, equivalence_prob = equivalence_prob,
+                 look_after_every = look_after_every, randomised_at_looks = randomised_at_looks,
+                 control = control, control_prob_fixed = control_prob_fixed, inferiority = inferiority,
+                 superiority = superiority, equivalence_prob = equivalence_prob,
                  equivalence_diff = equivalence_diff, equivalence_only_first = equivalence_only_first,
                  futility_prob = futility_prob, futility_diff = futility_diff, futility_only_first = futility_only_first,
                  highest_is_best = highest_is_best, soften_power = soften_power,
@@ -866,10 +949,11 @@ setup_trial_binom <- function(arms, true_ys, start_probs = NULL,
                               fixed_probs = NULL,
                               min_probs = rep(NA, length(arms)),
                               max_probs = rep(NA, length(arms)),
-                              data_looks = NULL, max_n = NULL,
-                              look_after_every = NULL, control = NULL,
-                              control_prob_fixed = NULL, inferiority = 0.01,
-                              superiority = 0.99,
+                              data_looks = NULL,
+                              max_n = NULL, look_after_every = NULL,
+                              randomised_at_looks = NULL,
+                              control = NULL, control_prob_fixed = NULL,
+                              inferiority = 0.01, superiority = 0.99,
                               equivalence_prob = NULL, equivalence_diff = NULL,
                               equivalence_only_first = NULL,
                               futility_prob = NULL, futility_diff = NULL,
@@ -880,15 +964,16 @@ setup_trial_binom <- function(arms, true_ys, start_probs = NULL,
 
   # Validate specific arguments to trials with binary outcomes
   if (!isFALSE(length(arms) != length(true_ys) | any(is.na(true_ys)) | any(true_ys > 1) | any(true_ys < 0) | !is.numeric(true_ys))) {
-    stop("true_ys must be a vector of the same length as the number of arms containing ",
-         "values (event probabilities) between 0 and 1 with no missing values.", call. = FALSE)
+    stop0("true_ys must be a vector of the same length as the number of arms containing ",
+          "values (event probabilities) between 0 and 1 with no missing values.")
   }
 
   # General setup and validation
   trial <- validate_trial(arms = arms, true_ys = true_ys, start_probs = start_probs, fixed_probs = fixed_probs,
                           min_probs = min_probs, max_probs = max_probs, data_looks = data_looks, max_n = max_n,
-                          look_after_every = look_after_every, control = control, control_prob_fixed = control_prob_fixed,
-                          inferiority = inferiority, superiority = superiority, equivalence_prob = equivalence_prob,
+                          look_after_every = look_after_every, randomised_at_looks = randomised_at_looks,
+                          control = control, control_prob_fixed = control_prob_fixed, inferiority = inferiority,
+                          superiority = superiority, equivalence_prob = equivalence_prob,
                           equivalence_diff = equivalence_diff, equivalence_only_first = equivalence_only_first,
                           futility_prob = futility_prob, futility_diff = futility_diff, futility_only_first = futility_only_first,
                           highest_is_best = highest_is_best, soften_power = soften_power,
@@ -901,12 +986,12 @@ setup_trial_binom <- function(arms, true_ys, start_probs = NULL,
   # Additional specific validation
   if (!is.null(equivalence_diff)) {
     if (equivalence_diff <= 0 | equivalence_diff >= 1) {
-      stop("equivalence_diff must be a single numeric value > 0 and < 1.", call. = FALSE)
+      stop0("equivalence_diff must be a single numeric value > 0 and < 1.")
     }
   }
   if (!is.null(futility_diff)) {
     if (futility_diff <= 0 | futility_diff >= 1) {
-      stop("futility_diff must be a single numeric value > 0 and < 1.", call. = FALSE)
+      stop0("futility_diff must be a single numeric value > 0 and < 1.")
     }
   }
 
@@ -979,11 +1064,12 @@ setup_trial_norm <- function(arms, true_ys, sds, start_probs = NULL,
                              fixed_probs = NULL,
                              min_probs = rep(NA, length(arms)),
                              max_probs = rep(NA, length(arms)),
-                             data_looks = NULL, max_n = NULL,
-                             look_after_every = NULL, control = NULL,
-                             control_prob_fixed = NULL, inferiority = 0.01,
-                             superiority = 0.99, equivalence_prob = NULL,
-                             equivalence_diff = NULL,
+                             data_looks = NULL,
+                             max_n = NULL, look_after_every = NULL,
+                             randomised_at_looks = NULL,
+                             control = NULL, control_prob_fixed = NULL,
+                             inferiority = 0.01, superiority = 0.99,
+                             equivalence_prob = NULL, equivalence_diff = NULL,
                              equivalence_only_first = NULL,
                              futility_prob = NULL, futility_diff = NULL,
                              futility_only_first = NULL,
@@ -994,14 +1080,15 @@ setup_trial_norm <- function(arms, true_ys, sds, start_probs = NULL,
   # Validate specific arguments to generic continuous, normally distributed outcome trials
   if (!isFALSE(length(arms) != length(true_ys) | any(is.na(true_ys)) | !is.numeric(true_ys) |
                length(arms) != length(sds) | any(is.na(sds)) | !is.numeric(sds) | any(sds <= 0))) {
-    stop("true_ys and sds must be vectors of the same length as the number of arms and all sds must be > 0.", call. = FALSE)
+    stop0("true_ys and sds must be vectors of the same length as the number of arms and all sds must be > 0.")
   }
 
   # General setup and validation and return
   validate_trial(arms = arms, true_ys = true_ys, start_probs = start_probs, fixed_probs = fixed_probs,
                  min_probs = min_probs, max_probs = max_probs, data_looks = data_looks, max_n = max_n,
-                 look_after_every = look_after_every, control = control, control_prob_fixed = control_prob_fixed,
-                 inferiority = inferiority, superiority = superiority, equivalence_prob = equivalence_prob,
+                 look_after_every = look_after_every, randomised_at_looks = randomised_at_looks,
+                 control = control, control_prob_fixed = control_prob_fixed, inferiority = inferiority,
+                 superiority = superiority, equivalence_prob = equivalence_prob,
                  equivalence_diff = equivalence_diff, equivalence_only_first = equivalence_only_first,
                  futility_prob = futility_prob, futility_diff = futility_diff, futility_only_first = futility_only_first,
                  highest_is_best = highest_is_best, soften_power = soften_power,

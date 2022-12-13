@@ -19,7 +19,7 @@ combinations of settings, including various randomisation strategies including
 fixed randomisation, response-adaptive randomisation (RAR), and combinations.
 
 The general-purpose function for specifying a trial is
-`setu_trial()`, but because trials with binary, binomially distributed and
+`setup_trial()`, but because trials with binary, binomially distributed and
 continuous, normally distributed outcomes are so common, the package comes with
 two convenience functions for specifying such trial designs:
 `setup_trial_binom()` and `setup_trial_norm()`.
@@ -281,3 +281,58 @@ setup_trial_binom(
   soften_power = 0.7
 )
 ```
+
+### Example 7: follow-up (or data collection) lag
+
+This example uses the `randomised_at_looks`
+argument to specify follow-up (or data collection) lag. In real use cases, this
+should usually be considered, as this may affect the relative performance of
+different trial designs and the extent to which the 'final' results after all
+patients have reached follow-up and are analysed may differ from the results when
+from the adaptive analyses with some randomised patients not included due to
+outcome data not being available yet.
+
+```{r}
+setup_trial_binom(
+  arms = c("A", "B", "C", "D"),
+  control = "A",
+  true_ys = c(0.2, 0.22, 0.24, 0.18), 
+  
+  # Analyses conducted every time 100 patients have follow-up data available
+  data_looks = seq(from = 100, to = 1000, by = 100),
+  # Specify the number of patients randomised at each look - in this case, 200
+  # more patients are randomised than the number of patients that
+  # have follow-up data available at each look
+  randomised_at_looks = seq(from = 300, to = 1200, by = 100)
+)
+```
+
+### Example 8: different probability thresholds over time
+
+In this example, we specify different probability thresholds for superiority and
+inferiority stopping rules at different adaptive analyses. Varying probability
+thresholds may similarly be specified for stopping rules for equivalence and
+futility. Importantly, all probability thresholds must be specified such that
+each subsequent threshold is never stricter than the previous threshold
+
+```{r}
+setup_trial_binom(
+  arms = c("A", "B", "C", "D"),
+  control = "A",
+  true_ys = c(0.2, 0.22, 0.24, 0.18), 
+  
+  # Analyses conducted every time 100 patients have follow-up data available
+  data_looks = seq(from = 100, to = 1000, by = 100),
+
+  # Specify varying inferiority/superiority thresholds
+  # When specifying varying thresholds, the number of thresholds must match
+  # the number of analyses, and thresholds may never be stricter than the
+  # threshold used in the previous analysis
+  # Superiority threshold decreasing from 0.99 to 0.95 during the first five
+  # analyses, and remains stationary at 0.95 after that
+  superiority = c(seq(from = 0.99, to = 0.95, by = -0.01), rep(0.95, 5)),
+  # Similarly for inferiority thresholds, but in the opposite direction
+  inferiority = c(seq(from = 0.01, to = 0.05, by = 0.01), rep(0.05, 5)),
+)
+```
+

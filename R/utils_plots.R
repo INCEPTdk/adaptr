@@ -19,6 +19,10 @@ make_x_scale <- function(x_value) {
     ggplot2::scale_x_continuous(name = "Total no. of patients randomised",
                                 limits = c(0, NA),
                                 expand = c(0, 0))
+  } else if (x_value == "followed n") {
+    ggplot2::scale_x_continuous(name = "Total no. of patients with outcome data",
+                                limits = c(0, NA),
+                                expand = c(0, 0))
   }
 }
 
@@ -49,10 +53,14 @@ make_y_scale <- function(y_value) {
   args <- switch(
     y_value,
     "prob" = c(pct_args, name = "Allocation probability"),
-    "pct" = c(pct_args, name = "Percentage randomised"),
-    "n" = c(num_args, name = "No. of patients randomised"),
-    "sum ys" = c(num_args, name = "Sum of outcomes"),
-    "ratio ys" = c(num_args, name = "Ratio of outcomes"),
+    "pct" = c(pct_args, name = "Percentage with outcome data"),
+    "pct all" = c(pct_args, name = "Percentage randomised"),
+    "n" = c(num_args, name = "No. of patients with outcome data"),
+    "n all" = c(num_args, name = "No. of patients randomised"),
+    "sum ys" = c(num_args, name = "Sum of outcomes available"),
+    "sum ys all" = c(num_args, name = "Sum of all outcomes"),
+    "ratio ys" = c(num_args, name = "Ratio of available outcomes"),
+    "ratio ys all" = c(num_args, name = "Ratio of all outcomes"),
     "status" = c(pct_args, name = "Status probabilities")
   )
 
