@@ -333,7 +333,7 @@ setting up the trial specification, to avoid unstable results (see
 
 Finally, a custom function may be specified to calculate **raw** summary
 estimates in each arm; these raw estimates are *not* posterior estimates, but
-can be considered the maximum likelihood point estimates in this example). This
+can be considered the maximum likelihood point estimates in this example. This
 function must take a numeric vector (all outcomes in an arm) and return a single
 numeric value. This function is called separately for each arm. Because we
 express results as *percentages* and not *proportions* in this example, this

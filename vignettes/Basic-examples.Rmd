@@ -288,8 +288,9 @@ This example uses the `randomised_at_looks`
 argument to specify follow-up (or data collection) lag. In real use cases, this
 should usually be considered, as this may affect the relative performance of
 different trial designs and the extent to which the 'final' results after all
-patients have reached follow-up may differ from the result when an adaptive
-analysis is stopped.
+patients have reached follow-up and are analysed may differ from the results when
+from the adaptive analyses with some randomised patients not included due to
+outcome data not being available yet.
 
 ```{r}
 setup_trial_binom(
@@ -300,18 +301,19 @@ setup_trial_binom(
   # Analyses conducted every time 100 patients have follow-up data available
   data_looks = seq(from = 100, to = 1000, by = 100),
   # Specify the number of patients randomised at each look - in this case, 200
-  # more patients are randomised than have follow-up data available at each look
+  # more patients are randomised than the number of patients that
+  # have follow-up data available at each look
   randomised_at_looks = seq(from = 300, to = 1200, by = 100)
 )
 ```
 
 ### Example 8: different probability thresholds over time
 
-In this final example, we specify different probability thresholds for
-superiority and inferiority stopping rules at different adaptive analyses.
-Varying probability thresholds may similarly be specified for stopping rules for
-equivalence and futility. Importantly, all probability thresholds must be
-specified such that each threshold is never stricter than the previous.
+In this example, we specify different probability thresholds for superiority and
+inferiority stopping rules at different adaptive analyses. Varying probability
+thresholds may similarly be specified for stopping rules for equivalence and
+futility. Importantly, all probability thresholds must be specified such that
+each subsequent threshold is never stricter than the previous threshold
 
 ```{r}
 setup_trial_binom(

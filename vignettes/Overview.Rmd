@@ -25,9 +25,9 @@ primarily by a grant from
 [Sygeforsikringen "danmark"](https://www.sygeforsikring.dk/).
 
 Additional guidance on the key methodological considerations when planning and
-comparing adaptive clinical trials can be found in the paper
-*"[An overview of methodological considerations regarding adaptive stopping, arm dropping and randomisation in clinical trials](https://doi.org/10.1016/j.jclinepi.2022.11.002)"* available in Journal
-of Clinical Epidemiology (open access).
+comparing adaptive clinical trials can be found in the open access article
+*"[An overview of methodological considerations regarding adaptive stopping, arm dropping and randomisation in clinical trials](https://doi.org/10.1016/j.jclinepi.2022.11.002)"*
+available in Journal of Clinical Epidemiology.
 
 ## Basic example
 First, load the package:
@@ -63,7 +63,7 @@ binom_trial <- setup_trial_binom(
 ```
 
 See `?setup_trial()` for more details on these arguments or
-`vignette("Basic-examples", "adaptr")` for basic example trial
+`vignette("Basic-examples", "adaptr")` for **basic** example trial
 specifications and a thorough review of the general settings, and
 `vignette("Advanced-example", "adaptr")` for an **advanced** example including
 details on how to specify user-written functions for generating outcomes and
@@ -84,9 +84,7 @@ print(binom_trial, prob_digits = 2)
 ```
 
 ### Simulate a single trial
-Remember to define the `seed` to ensure reproducible results. The final trial
-results are wrapped here, but when used interactively, you can widen the console
-for non-wrapped output:
+Remember to define the `seed` to ensure reproducible results:
 
 ```{r}
 trial_res <- run_trial(binom_trial, seed = 12345)
@@ -105,7 +103,7 @@ Generally, we want to run many simulations using the same trial specification to
 assess and compare performance metrics of different trial designs. This is the
 job of `run_trials()` (note the final ***s***); again, note the use of a
 `base_seed` for reproducible results. Here we run 25 simulations, but in
-practice you will probably want to run more simulations. The low number of
+practice you will generally want to run more simulations. The low number of
 simulations in this example have been chosen to make run-time tolerable when
 producing the example, but leads to uncertainty and instability in the results,
 as seen below.
@@ -127,11 +125,11 @@ object:
 trial_res_mult
 ```
 
-This calls the `summary()`-method (as known from, e.g., regression models in
+This calls the `summary()` method (as known from, e.g., regression models in
 `R`), which summarises the results, and prints the output from that function in
-a human-friendly manner using the `print()`-method for summarised simulations.
+a human-friendly manner using the `print()` method for summarised simulations.
 
-The `summary()`-function can also be called directly, which allows more control
+The `summary()` function can also be called directly, which allows more control
 of how results are summarised (including which arms are selected in inconclusive
 trials), and allows subsequent extraction of individual key results. In
 addition, the number of digits can be controlled when printed:
@@ -142,11 +140,11 @@ res_sum <- summary(trial_res_mult)
 print(res_sum, digits = 1)
 ```
 
-The `summary()`-method, however, may not necessarily be what you want. `adaptr`
+The `summary()` method, however, may not necessarily be what you want. `adaptr`
 has additional functions that may be used on multiple simulations using the same
 trial specification.
 
-The `extract_results()`-function extract key trial results and yields a tidy
+The `extract_results()` function extract key trial results and yields a tidy
 `data.frame` with one simulation per row:
 
 ```{r}
@@ -157,7 +155,7 @@ nrow(extr_res)
 head(extr_res)
 ```
 
-Further, the `check_performance()`-function calculates key performance metrics
+Further, the `check_performance()` function calculates key performance metrics
 and returns them in a tidy `data.frame` with one metric per row, and may also be
 used to assess the uncertainty in these estimates using bootstrapping:
 
@@ -169,7 +167,7 @@ print(perf_res, digits = 3)
 ```
 
 Finally, the stability of performance metrics according to the number of
-simulations may be assessed visually using the `plot_convergence()`-function.
+simulations may be assessed visually using the `plot_convergence()` function.
 Note that all `adaptr` plotting functions require the `ggplot2` package.
 
 ```{r}
@@ -179,13 +177,16 @@ plot_convergence(trial_res_mult, metrics = c("size mean", "prob superior",
 ```
 
 It is seen that the low number of simulations used in this example leads to
-substantial uncertainty and instability in performance metrics (except the ideal
-design percentage, which is at 100% here, but would likely drop somewhat if more
+substantial uncertainty and instability in performance metrics (while the ideal
+design percentage is always at 100% here, it would likely drop somewhat if more
 simulations were conducted).
 
 ### Visualise trial results
+In addition to the convergence plots, results may be visualised using the
+`plot_status()` and `plot_history()` functions.
 We need non-sparse results for `plot_history()` (but *not* for `plot_status()`
-or `plot_convergence()` presented above), so first we re-run `run_trials()`:
+or `plot_convergence()` presented above), so first we re-run `run_trials()` with
+the `sparse` argument set to `FALSE`:
 
 ```{r}
 trial_res_mult <- run_trials(binom_trial, n_rep = 25, base_seed = 67890,
@@ -193,13 +194,13 @@ trial_res_mult <- run_trials(binom_trial, n_rep = 25, base_seed = 67890,
 ```
 
 First, we plot the overall trial statuses according to the total number of
-patients randomised (this does *not* require `sparse = FALSE`):
+patients randomised (this function does *not* require `sparse = FALSE`):
 
 ```{r}
 plot_status(trial_res_mult, x_value = "total n")
 ```
 
-We can also plot the statuses for specific arms, or of all arms if supplying
+We can also plot the statuses for specific arms, or for all arms if supplying
 `NA` to the `arm`-argument:
 
 ```{r}
