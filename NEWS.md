@@ -1,3 +1,7 @@
+# adaptr (development version)
+
+* Minor update to package description text and order of links.
+
 # adaptr 1.2.0
 
 This is a minor release implementing new functionality, updating
