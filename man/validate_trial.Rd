@@ -116,7 +116,8 @@ See \code{\link[=setup_trial]{setup_trial()}} \strong{Details} below for details
 same length as the maximum number of possible adaptive analyses, specifying
 the probability threshold(s) for inferiority (default is \code{0.01}). All
 values must be \verb{>= 0} and \verb{<= 1}, and if multiple values are supplied, no
-values may be lower than the preceding value. An arm will be considered
+values may be lower than the preceding value. If a common \code{control}is not
+used, all values must be \verb{< 1 / number of arms}. An arm will be considered
 inferior and dropped if the probability that it is best (when comparing all
 arms) or better than the control arm (when a common \code{control} is used)
 drops below the inferiority threshold at an adaptive analysis.}

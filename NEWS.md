@@ -16,6 +16,12 @@
     the relevant functions have been updated to clarify the behaviour further.
     This bug did not affect results for simulations without follow-up/data
     collection lag.
+    
+*   Values for `inferiority` must now be less than 1 / number of arms if no
+    common control group is used, and the `setup_trial()` family of functions
+    now throws an error if this is not the case. Larger values are invalid and
+    could lead to simultaneous dropping of all arms, which caused `run_trial()`
+    to crash.
 
 ### Minor changes (including documentation changes):
 

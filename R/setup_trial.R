@@ -253,6 +253,10 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
     stop0("Invalid combination of inferiority/superiority thresholds - inferiority threshold(s) must be ",
           "lower than the corresponding superiority threshold(s) at all adaptive analyses.")
   }
+  if (any(inferiority >= (1 / n_arms)) & is.null(control)) {
+    stop0("All inferiority thresholds must be less than 1 divided by the number of arms when a ",
+          "common control group is not used.")
+  }
 
   # Check that highest_is_best is correct
   if (!(is.logical(highest_is_best) & length(highest_is_best) == 1)) {
@@ -520,7 +524,8 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #'   same length as the maximum number of possible adaptive analyses, specifying
 #'   the probability threshold(s) for inferiority (default is `0.01`). All
 #'   values must be `>= 0` and `<= 1`, and if multiple values are supplied, no
-#'   values may be lower than the preceding value. An arm will be considered
+#'   values may be lower than the preceding value. If a common `control`is not
+#'   used, all values must be `< 1 / number of arms`. An arm will be considered
 #'   inferior and dropped if the probability that it is best (when comparing all
 #'   arms) or better than the control arm (when a common `control` is used)
 #'   drops below the inferiority threshold at an adaptive analysis.
