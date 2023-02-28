@@ -36,7 +36,7 @@ analysis (\code{"followed n"}) are plotted on the x-axis.}
 or \code{NULL} (default). If \code{NULL}, the overall trial statuses are plotted,
 otherwise the specified arms or all arms (if \code{NA} is specified) are plotted.}
 
-\item{area}{list of styling settings for the area as per \pkg{ggplot2}
+\item{area}{list of styling settings for the area as per \code{ggplot2}
 conventions (e.g., \code{alpha}, \code{linewidth}). The default (\code{list(alpha = 0.5)})
 sets the transparency to 50\% so overlain shaded areas are visible.}
 

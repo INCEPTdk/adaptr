@@ -27,7 +27,8 @@ results from these previous simulations to be post-processed (including
 performance metric calculation, printing and plotting) without errors by this
 version of the package. The function should be run only once per saved
 simulation object and will issue a warning if the object is already up to
-date.\cr
+date. And overview of the changes made according to the \code{adaptr} package
+version used to generate the original object is provided in \strong{Details}.\cr
 \strong{NOTE:} some values cannot be updated and will be set to \code{NA} (the
 posterior estimates from the 'final' analysis conducted after the last
 adaptive analysis and including outcome data for all patients), and thus
@@ -42,6 +43,15 @@ returned output from \code{\link[=run_trials]{run_trials()}} should be re-create
 relevant code using the updated version of \code{adaptr}; if manually re-loaded
 from previous sessions, they may cause errors and problems with the updated
 version of the package.
+}
+\details{
+The following changes are made according to the version of \code{adaptr} used to
+generate the original \code{"trial_results"} object:
+\itemize{
+\item \verb{v1.2.0+}: only updates the version number
+\item \verb{v1.1.1 or earlier}: updates version number and everything related
+to follow-up and data collection lag.
+}
 }
 \seealso{
 \code{\link[=run_trials]{run_trials()}}.

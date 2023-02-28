@@ -6,7 +6,8 @@
 #' performance metric calculation, printing and plotting) without errors by this
 #' version of the package. The function should be run only once per saved
 #' simulation object and will issue a warning if the object is already up to
-#' date.\cr
+#' date. And overview of the changes made according to the `adaptr` package
+#' version used to generate the original object is provided in **Details**.\cr
 #' **NOTE:** some values cannot be updated and will be set to `NA` (the
 #' posterior estimates from the 'final' analysis conducted after the last
 #' adaptive analysis and including outcome data for all patients), and thus
@@ -29,6 +30,16 @@
 #'   is used.
 #' @param compress passed to [saveRDS()] when saving the updated object,
 #'   defaults to `TRUE` (as in [saveRDS()]), see [saveRDS()] for other options.
+#'
+#' @details
+#'
+#' The following changes are made according to the version of `adaptr` used to
+#' generate the original `"trial_results"` object:
+#'   \itemize{
+#'     \item `v1.2.0+`: only updates the version number
+#'     \item `v1.1.1 or earlier`: updates version number and everything related
+#'       to follow-up and data collection lag.
+#'    }
 #'
 #' @return Invisibly returns the updated `"trial_results"`-object.
 #'
@@ -104,6 +115,9 @@ update_saved_trials <- function(path, version = NULL, compress = TRUE) {
       }
       class(object$trial_results[[i]]) <- c("trial_result", "list")
     }
+  } else if (.adaptr_version >= "1.2.0") {
+    # Only update the version number in the saved object
+    object$adaptr_version <- .adaptr_version
   }
   # Save and return invisibly
   if (save_object) {

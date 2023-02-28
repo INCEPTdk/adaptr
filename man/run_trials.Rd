@@ -41,7 +41,7 @@ additional number of simulations will be run (appropriately re-using the
 same \code{base_seed}, if specified) and appended to the same file.}
 
 \item{cores}{single integer; the number of cores to run the simulations on
-using the \pkg{parallel} library. Defaults to \code{1}; may be increased to run
+using the \code{parallel} library. Defaults to \code{1}; may be increased to run
 multiple simulations in parallel. \code{\link[parallel:detectCores]{parallel::detectCores()}} may be used to
 find the number of available cores.}
 

@@ -24,7 +24,7 @@ detailed printing of individual trial results and plotting using
 \code{\link[=plot_history]{plot_history()}} (\code{\link[=plot_status]{plot_status()}} does not require non-sparse results).}
 
 \item{cores}{single integer; the number of cores to run the simulations on
-using the \pkg{parallel} library. Defaults to \code{1}; may be increased to run
+using the \code{parallel} library. Defaults to \code{1}; may be increased to run
 multiple simulations in parallel. \code{\link[parallel:detectCores]{parallel::detectCores()}} may be used to
 find the number of available cores.}
 

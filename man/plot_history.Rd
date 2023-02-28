@@ -40,7 +40,7 @@ adaptive analysis (\code{"sum ys all"}), the ratio of outcomes as defined for
 \code{"sum ys"}/\code{"sum ys all"} divided by the corresponding number of patients
 in each arm.}
 
-\item{line}{list styling the lines as per \pkg{ggplot2} conventions (e.g.,
+\item{line}{list styling the lines as per \code{ggplot2} conventions (e.g.,
 \code{linetype}, \code{linewidth}).}
 
 \item{...}{additional arguments, not used.}
