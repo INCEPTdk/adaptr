@@ -8,7 +8,7 @@
 #' @param arm character string of one or more unique, valid `arm` names, `NA`,
 #'  or `NULL` (default). If `NULL`, the overall trial statuses are plotted,
 #'  otherwise the specified arms or all arms (if `NA` is specified) are plotted.
-#' @param area list of styling settings for the area as per \pkg{ggplot2}
+#' @param area list of styling settings for the area as per `ggplot2`
 #'   conventions (e.g., `alpha`, `linewidth`). The default (`list(alpha = 0.5)`)
 #'   sets the transparency to 50% so overlain shaded areas are visible.
 #' @param nrow,ncol the number of rows and columns when plotting statuses for

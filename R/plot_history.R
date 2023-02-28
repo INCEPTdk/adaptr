@@ -25,7 +25,7 @@
 #'   adaptive analysis (`"sum ys all"`), the ratio of outcomes as defined for
 #'   `"sum ys"`/`"sum ys all"` divided by the corresponding number of patients
 #'   in each arm.
-#' @param line list styling the lines as per \pkg{ggplot2} conventions (e.g.,
+#' @param line list styling the lines as per `ggplot2` conventions (e.g.,
 #'   `linetype`, `linewidth`).
 #' @param ... additional arguments, not used.
 #'
