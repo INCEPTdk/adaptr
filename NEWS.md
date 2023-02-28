@@ -20,6 +20,9 @@
 *   Documentation for `plot_convergence()`, `plot_status()`, and
     `plot_history()` now prints all plots when rendering documentation if
     `ggplot2` is installed (to include all example plots on the website).
+    
+*   Various minor changes to `print()` methods (including changed number of
+    digits for stopping rule probability thresholds).
 
 # adaptr 1.2.0
 

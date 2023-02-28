@@ -17,7 +17,8 @@ NULL
 #'
 #' @param x object to print, see **Details** below.
 #' @param prob_digits single integer, the number of digits used when printing
-#'   probabilities, allocation probabilities and softening powers.
+#'   probabilities, allocation probabilities and softening powers (with `2`
+#'   extra digits added for stopping rule probabilities).
 #'
 #' @details
 #' - `trial_spec`: prints a trial specification setup by
@@ -82,15 +83,16 @@ print.trial_spec <- function(x, prob_digits = 3, ...) {
   }
   cat0(paste("Number of patients randomised at each look: ", paste(x$randomised_at_looks, collapse = ", ")), fill = TRUE)
 
+  # Superiority and inferiority specifications
   if (length(x$superiority) == 1) {
-    cat("\nSuperiority threshold:", round(x$superiority, prob_digits), "(all analyses)", fill = TRUE)
+    cat("\nSuperiority threshold:", round(x$superiority, prob_digits + 2), "(all analyses)", fill = TRUE)
   } else {
-    cat("\nSuperiority thresholds:", paste(round(x$superiority, prob_digits), collapse = ", "), fill = TRUE)
+    cat("\nSuperiority thresholds:", paste(round(x$superiority, prob_digits + 2), collapse = ", "), fill = TRUE)
   }
   if (length(x$inferiority) == 1) {
-    cat("Inferiority threshold:", round(x$inferiority, prob_digits), "(all analyses)", fill = TRUE)
+    cat("Inferiority threshold:", round(x$inferiority, prob_digits + 2), "(all analyses)", fill = TRUE)
   } else {
-    cat("Inferiority thresholds:", paste(round(x$inferiority, prob_digits), collapse = ", "), fill = TRUE)
+    cat("Inferiority thresholds:", paste(round(x$inferiority, prob_digits + 2), collapse = ", "), fill = TRUE)
   }
 
 
@@ -108,9 +110,9 @@ print.trial_spec <- function(x, prob_digits = 3, ...) {
       }
     }
     if (length(x$equivalence_prob) == 1) {
-      cat("Equivalence threshold:", round(x$equivalence_prob, prob_digits), "(all analyses)", equi_ctrl, fill = TRUE)
+      cat("Equivalence threshold:", round(x$equivalence_prob, prob_digits + 2), "(all analyses)", equi_ctrl, fill = TRUE)
     } else {
-      cat("Equivalence thresholds:", paste(round(x$equivalence_prob, prob_digits), collapse = ", "), equi_ctrl, fill = TRUE)
+      cat("Equivalence thresholds:", paste(round(x$equivalence_prob, prob_digits + 2), collapse = ", "), equi_ctrl, fill = TRUE)
     }
 
     cat0("Absolute equivalence difference: ", x$equivalence_diff, "\n")
@@ -122,9 +124,9 @@ print.trial_spec <- function(x, prob_digits = 3, ...) {
   } else {
     futility_ctrl <- ifelse(x$futility_only_first, "(only checked for first control)", "(checked for first and eventual new controls)")
     if (length(x$futility_prob) == 1) {
-      cat("Futility threshold:", round(x$futility_prob, prob_digits), "(all analyses)", futility_ctrl, fill = TRUE)
+      cat("Futility threshold:", round(x$futility_prob, prob_digits + 2), "(all analyses)", futility_ctrl, fill = TRUE)
     } else {
-      cat("Futility thresholds:", paste(round(x$futility_prob, prob_digits), collapse = ", "), futility_ctrl, fill = TRUE)
+      cat("Futility thresholds:", paste(round(x$futility_prob, prob_digits + 2), collapse = ", "), futility_ctrl, fill = TRUE)
     }
 
     cat("Absolute futility difference (in beneficial direction):", x$futility_diff, "\n")
@@ -345,7 +347,7 @@ print.trial_results_summary <- function(x, digits = 1, ...) {
       ifelse(x$final_ests, "from final analysis [all patients]", "from last adaptive analysis"), "):\n",
       "* Sample sizes: mean ", fmt_dig(x$size_mean, digits), " (SD: ", fmt_dig(x$size_sd, digits), ") | median ", fmt_dig(x$size_median, digits), " (IQR: ", fmt_dig(x$size_p25, digits), " to ", fmt_dig(x$size_p75, digits), ")", "\n",
       "* Total summarised outcomes: mean ", fmt_dig(x$sum_ys_mean, digits), " (SD: ", fmt_dig(x$sum_ys_sd, digits), ") | median ", fmt_dig(x$sum_ys_median, digits), " (IQR: ", fmt_dig(x$sum_ys_p25, digits), " to ", fmt_dig(x$sum_ys_p75, digits), ")", "\n",
-      "* Total summarised outcome rates: mean ", fmt_dig(x$ratio_ys_mean, digits+2), " (SD: ", fmt_dig(x$ratio_ys_sd, digits+2), ") | median ", fmt_dig(x$ratio_ys_median, digits+2), " (IQR: ", fmt_dig(x$ratio_ys_p25, digits+2), " to ", fmt_dig(x$ratio_ys_p75, digits+2), ")", "\n",
+      "* Total summarised outcome rates: mean ", fmt_dig(x$ratio_ys_mean, digits+  2), " (SD: ", fmt_dig(x$ratio_ys_sd, digits + 2), ") | median ", fmt_dig(x$ratio_ys_median, digits + 2), " (IQR: ", fmt_dig(x$ratio_ys_p25, digits + 2), " to ", fmt_dig(x$ratio_ys_p75, digits + 2), ")", "\n",
       "* Conclusive: ", ifelse(is.null(x$restrict), paste0(fmt_dig(x$prob_conclusive * 100, digits), "%"), "not calculated for restricted summaries"), "\n",
       "* Superiority: ", fmt_dig(x$prob_superior * 100, digits), "%\n",
       "* Equivalence: ", fmt_dig(x$prob_equivalence * 100, digits), "%", ifelse(x$equivalence_assessed, "\n", " [not assessed]\n"),
