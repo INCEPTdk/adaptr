@@ -41,7 +41,7 @@ adaptive analysis (\code{"sum ys all"}), the ratio of outcomes as defined for
 in each arm.}
 
 \item{line}{list styling the lines as per \pkg{ggplot2} conventions (e.g.,
-\code{linetype}, \code{size}).}
+\code{linetype}, \code{linewidth}).}
 
 \item{...}{additional arguments, not used.}
 

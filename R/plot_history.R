@@ -26,7 +26,7 @@
 #'   `"sum ys"`/`"sum ys all"` divided by the corresponding number of patients
 #'   in each arm.
 #' @param line list styling the lines as per \pkg{ggplot2} conventions (e.g.,
-#'   `linetype`, `size`).
+#'   `linetype`, `linewidth`).
 #' @param ... additional arguments, not used.
 #'
 #' @return A `ggplot2` plot object.

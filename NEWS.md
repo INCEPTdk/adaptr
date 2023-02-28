@@ -8,10 +8,14 @@
 
 *   None yet.
 
-### Minor changes:
+### Minor changes (including documentation changes):
 
 *   Various minor updates, corrections, and clarifications to package
     documentation (including package description).
+    
+*   Changed `size` to `linewidth` in the examples in `plot_status()` and
+    `plot_history()` when describing further arguments that may be passed on to
+    `ggplot2` due to deprecation/change of aesthetic names in `ggplot2` 3.4.0.
 
 # adaptr 1.2.0
 

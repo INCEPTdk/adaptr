@@ -37,8 +37,8 @@ or \code{NULL} (default). If \code{NULL}, the overall trial statuses are plotted
 otherwise the specified arms or all arms (if \code{NA} is specified) are plotted.}
 
 \item{area}{list of styling settings for the area as per \pkg{ggplot2}
-conventions (e.g., \code{alpha}, \code{size}). The default (\code{list(alpha = 0.5)}) sets
-the transparency to 50\% so overlain shaded areas are visible.}
+conventions (e.g., \code{alpha}, \code{linewidth}). The default (\code{list(alpha = 0.5)})
+sets the transparency to 50\% so overlain shaded areas are visible.}
 
 \item{nrow, ncol}{the number of rows and columns when plotting statuses for
 multiple arms in the same plot (using faceting in \code{ggplot2}). Defaults to

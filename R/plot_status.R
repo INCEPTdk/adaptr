@@ -9,8 +9,8 @@
 #'  or `NULL` (default). If `NULL`, the overall trial statuses are plotted,
 #'  otherwise the specified arms or all arms (if `NA` is specified) are plotted.
 #' @param area list of styling settings for the area as per \pkg{ggplot2}
-#'   conventions (e.g., `alpha`, `size`). The default (`list(alpha = 0.5)`) sets
-#'   the transparency to 50% so overlain shaded areas are visible.
+#'   conventions (e.g., `alpha`, `linewidth`). The default (`list(alpha = 0.5)`)
+#'   sets the transparency to 50% so overlain shaded areas are visible.
 #' @param nrow,ncol the number of rows and columns when plotting statuses for
 #'   multiple arms in the same plot (using faceting in `ggplot2`). Defaults to
 #'   `NULL`, in which case this will be determined automatically where relevant.
