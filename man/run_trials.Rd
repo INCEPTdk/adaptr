@@ -26,8 +26,8 @@ run_trials(
 
 \item{n_rep}{single integer; the number of simulations to run.}
 
-\item{path}{single character; if specified (defaults to \code{NULL}), files will
-be written to and  loaded from this path using the \code{\link[=saveRDS]{saveRDS()}} /
+\item{path}{single character string; if specified (defaults to \code{NULL}), files
+will be written to and  loaded from this path using the \code{\link[=saveRDS]{saveRDS()}} /
 \code{\link[=readRDS]{readRDS()}} functions.}
 
 \item{overwrite}{single logical; defaults to \code{FALSE}, in which case previous
@@ -130,6 +130,7 @@ binom_trial <- setup_trial_binom(arms = c("A", "B", "C", "D"),
 # Run 10 simulations with a specified random base seed
 res <- run_trials(binom_trial, n_rep = 10, base_seed = 12345)
 
-# See ?summary and ?print for details on summarising and printing
+# See ?extract_results, ?check_performance, ?summary and ?print for details
+# on extracting resutls, summarising and printing
 
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/update_saved_trials.R
 \name{update_saved_trials}
 \alias{update_saved_trials}
-\title{Update previously saved simulations}
+\title{Update previously saved simulation results}
 \usage{
 update_saved_trials(path, version = NULL, compress = TRUE)
 }

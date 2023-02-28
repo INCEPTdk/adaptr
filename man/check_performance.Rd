@@ -72,26 +72,29 @@ available in the trial.}
 
 \item{te_comp}{character string, treatment-effect comparator. Can be either
 \code{NULL} (the default) in which case the \strong{first} \code{control} arm is used for
-trial designs with a common control arm, or a single trial \code{arm}. Will be
-used when calculating \code{sq_err_te} (the squared error of the treatment
-effect comparing the selected arm to the comparator arm, as described
-below).}
+trial designs with a common control arm, or a string naming a single trial
+\code{arm}. Will be used when calculating \code{sq_err_te} (the squared error of the
+treatment effect comparing the selected arm to the comparator arm, as
+described below).}
 
 \item{raw_ests}{single logical. If \code{FALSE} (default), the
-posterior estimates (\code{post_ests}, see \code{\link[=setup_trial]{setup_trial()}} and
-\code{\link[=run_trial]{run_trial()}}) will be used to calculate \code{sq_err} (the squared error of the
-estimated compared to the specified effect in the selected arm) and
+posterior estimates (\code{post_ests} or \code{post_ests_all}, see \code{\link[=setup_trial]{setup_trial()}}
+and \code{\link[=run_trial]{run_trial()}}) will be used to calculate \code{sq_err} (the squared error of
+the estimated compared to the specified effect in the selected arm) and
 \code{sq_err_te} (the squared error of the treatment effect comparing the
 selected arm to the comparator arm, as described for \code{te_comp} and below).
-If \code{TRUE}, the raw estimates (\code{raw_ests}, see \code{\link[=setup_trial]{setup_trial()}} and
-\code{\link[=run_trial]{run_trial()}}) will be used instead of the posterior estimates.}
+If \code{TRUE}, the raw estimates (\code{raw_ests} or \code{raw_ests_all}, see
+\code{\link[=setup_trial]{setup_trial()}} and \code{\link[=run_trial]{run_trial()}}) will be used instead of the posterior
+estimates.}
 
 \item{final_ests}{single logical. If \code{TRUE} (recommended) the final estimates
 calculated using outcome data from all patients randomised when trials are
-stopped is used; if \code{FALSE}, the estimates calculated for each arm when an
+stopped is used (\code{post_ests_all} or \code{raw_ests_all}, see \code{\link[=setup_trial]{setup_trial()}} and
+\code{\link[=run_trial]{run_trial()}}); if \code{FALSE}, the estimates calculated for each arm when an
 arm is stopped (or at the last adaptive analysis if not before) using data
 from patients having reach followed up at this time point and not all
-patients randomised. If \code{NULL} (the default), this argument will be set to
+patients randomised (\code{post_ests} or \code{raw_ests}, see \code{\link[=setup_trial]{setup_trial()}} and
+\code{\link[=run_trial]{run_trial()}}). If \code{NULL} (the default), this argument will be set to
 \code{FALSE} if outcome data are available immediate after randomisation for all
 patients (for backwards compatibility, as final posterior estimates may
 vary slightly in this situation, even if using the same data); otherwise it
@@ -128,9 +131,9 @@ in \code{\link[=run_trials]{run_trials()}} is used.}
 }
 \value{
 A tidy \code{data.frame} with added class \code{trial_performance} (to control
-the number of digits printed, see \code{\link[=print]{print()}}), with the columns \code{"metric"}
-(described below), \code{"est"} (the estimates of each metric), and the
-following four columns if \code{uncertainty = TRUE}: \code{"err_sd"} (bootstrapped
+the number of digits printed, see \code{\link[=print]{print()}}), with the columns
+\code{"metric"} (described below), \code{"est"} (estimates of each metric), and the
+following four columns if \code{uncertainty = TRUE}: \code{"err_sd"}(bootstrapped
 SDs), \code{"err_mad"} (bootstrapped MAD-SDs, as described in \code{\link[=setup_trial]{setup_trial()}}
 and \code{\link[=mad]{mad()}}), \code{"lo_ci"}, and \code{"hi_ci"}, the latter two corresponding to the
 lower/upper limits of the percentile-based bootstrapped confidence
@@ -180,7 +183,7 @@ calculate the performance metrics presented by that function.
 }
 \details{
 The ideal design percentage (IDP) returned (described below) is based on
-\emph{Viele et al, 2020} \doi{10.1177/1740774519877836}  (also described in
+\emph{Viele et al, 2020} \doi{10.1177/1740774519877836}  (and also described in
 \emph{Granholm et al, 2022} \doi{10.1016/j.jclinepi.2022.11.002}, which also
 describes the other performance measures) and has been adapted to work for
 trials with both desirable/undesirable outcomes and non-binary outcomes.
@@ -188,9 +191,9 @@ Briefly, the expected outcome is calculated as the sum of the true outcomes
 in each arm multiplied by the corresponding selection probabilities (ignoring
 simulations with no selected arm). The IDP is then calculated as:
 \itemize{
-\item For desirable outcomes:\cr
+\item For desirable outcomes (\code{highest_is_best} is \code{TRUE}):\cr
 \verb{100 * (expected outcome - lowest true outcome) / (highest true outcome - lowest true outcome)}
-\item For undesirable outcomes:\cr
+\item For undesirable outcomes (\code{highest_is_best} is \code{FALSE}):\cr
 \verb{100 - IDP calculated for desirable outcomes}
 }
 }

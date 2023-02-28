@@ -67,26 +67,29 @@ available in the trial.}
 
 \item{te_comp}{character string, treatment-effect comparator. Can be either
 \code{NULL} (the default) in which case the \strong{first} \code{control} arm is used for
-trial designs with a common control arm, or a single trial \code{arm}. Will be
-used when calculating \code{sq_err_te} (the squared error of the treatment
-effect comparing the selected arm to the comparator arm, as described
-below).}
+trial designs with a common control arm, or a string naming a single trial
+\code{arm}. Will be used when calculating \code{sq_err_te} (the squared error of the
+treatment effect comparing the selected arm to the comparator arm, as
+described below).}
 
 \item{raw_ests}{single logical. If \code{FALSE} (default), the
-posterior estimates (\code{post_ests}, see \code{\link[=setup_trial]{setup_trial()}} and
-\code{\link[=run_trial]{run_trial()}}) will be used to calculate \code{sq_err} (the squared error of the
-estimated compared to the specified effect in the selected arm) and
+posterior estimates (\code{post_ests} or \code{post_ests_all}, see \code{\link[=setup_trial]{setup_trial()}}
+and \code{\link[=run_trial]{run_trial()}}) will be used to calculate \code{sq_err} (the squared error of
+the estimated compared to the specified effect in the selected arm) and
 \code{sq_err_te} (the squared error of the treatment effect comparing the
 selected arm to the comparator arm, as described for \code{te_comp} and below).
-If \code{TRUE}, the raw estimates (\code{raw_ests}, see \code{\link[=setup_trial]{setup_trial()}} and
-\code{\link[=run_trial]{run_trial()}}) will be used instead of the posterior estimates.}
+If \code{TRUE}, the raw estimates (\code{raw_ests} or \code{raw_ests_all}, see
+\code{\link[=setup_trial]{setup_trial()}} and \code{\link[=run_trial]{run_trial()}}) will be used instead of the posterior
+estimates.}
 
 \item{final_ests}{single logical. If \code{TRUE} (recommended) the final estimates
 calculated using outcome data from all patients randomised when trials are
-stopped is used; if \code{FALSE}, the estimates calculated for each arm when an
+stopped is used (\code{post_ests_all} or \code{raw_ests_all}, see \code{\link[=setup_trial]{setup_trial()}} and
+\code{\link[=run_trial]{run_trial()}}); if \code{FALSE}, the estimates calculated for each arm when an
 arm is stopped (or at the last adaptive analysis if not before) using data
 from patients having reach followed up at this time point and not all
-patients randomised. If \code{NULL} (the default), this argument will be set to
+patients randomised (\code{post_ests} or \code{raw_ests}, see \code{\link[=setup_trial]{setup_trial()}} and
+\code{\link[=run_trial]{run_trial()}}). If \code{NULL} (the default), this argument will be set to
 \code{FALSE} if outcome data are available immediate after randomisation for all
 patients (for backwards compatibility, as final posterior estimates may
 vary slightly in this situation, even if using the same data); otherwise it
