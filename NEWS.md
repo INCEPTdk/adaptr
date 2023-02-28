@@ -17,6 +17,10 @@
     `plot_history()` when describing further arguments that may be passed on to
     `ggplot2` due to deprecation/change of aesthetic names in `ggplot2` 3.4.0.
 
+*   Documentation for `plot_convergence()`, `plot_status()`, and
+    `plot_history()` now prints all plots when rendering documentation if
+    `ggplot2` is installed (to include all example plots on the website).
+
 # adaptr 1.2.0
 
 This is a minor release implementing new functionality, updating

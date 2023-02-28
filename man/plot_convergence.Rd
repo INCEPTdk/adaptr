@@ -167,12 +167,14 @@ if (requireNamespace("ggplot2", quietly = TRUE)){
   # Convergence plot of mean sample sizes
   plot_convergence(res_mult, metrics = "size mean")
 
+}
+
+if (requireNamespace("ggplot2", quietly = TRUE)){
+
   # Convergence plot of mean sample sizes and ideal design percentages,
   # with simulations split in 2 batches
   plot_convergence(res_mult, metrics = c("size mean", "idp"), n_split = 2)
 
-  # Do not return/print last plot in documentation
-  invisible(NULL)
 }
 
 }

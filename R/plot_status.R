@@ -35,11 +35,13 @@
 #'   # Plot trial statuses at each look according to total allocations
 #'   plot_status(res_mult, x_value = "total n")
 #'
+#' }
+#'
+#' if (requireNamespace("ggplot2", quietly = TRUE)){
+#'
 #'   # Plot trial statuses for all arms
 #'   plot_status(res_mult, arm = NA)
 #'
-#'   # Do not return/print last plot in documentation
-#'   invisible(NULL)
 #' }
 #'
 #' @seealso

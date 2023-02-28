@@ -81,7 +81,9 @@ if (requireNamespace("ggplot2", quietly = TRUE)){
   # Plot total allocations to each arm according to overall total allocations
   plot_history(res, x_value = "total n", y_value = "n")
 
+}
 
+if (requireNamespace("ggplot2", quietly = TRUE)){
 
   # Run multiple simulation with a fixed random base seed
   # Notice that sparse = FALSE is required
@@ -92,8 +94,6 @@ if (requireNamespace("ggplot2", quietly = TRUE)){
 
   # Other y_value options are available but not shown in these examples
 
-  # Do not return/print last plot in documentation
-  invisible(NULL)
 }
 
 }
