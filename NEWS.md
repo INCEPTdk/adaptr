@@ -23,7 +23,11 @@
     could lead to simultaneous dropping of all arms, which caused `run_trial()`
     to crash.
 
-### Minor changes (including documentation changes):
+### Minor changes:
+
+*   When `overwrite` is `TRUE` in `run_trials()`, the previous object will be
+    overwritten, even if the previous object used a different trial
+    specification.
 
 *   Various minor updates, corrections, and clarifications to package
     documentation (including package description).

@@ -115,8 +115,9 @@ dispatch_trial_runs <- function(X, trial_spec, base_seed, sparse, cores, cl = NU
 #'   [readRDS()] functions.
 #' @param overwrite single logical; defaults to `FALSE`, in which case previous
 #'   simulations saved in the same `path` will be re-loaded (if the same trial
-#'   specification was used). If `TRUE`, the previous file is overwritten. If
-#'   `grow` is `TRUE`, this argument must be set to `FALSE`.
+#'   specification was used). If `TRUE`, the previous file is overwritten (even
+#'   if the the same trial specification was not used). If `grow` is `TRUE`,
+#'   this argument must be set to `FALSE`.
 #' @param grow single logical; defaults to `FALSE`. If `TRUE` and a valid `path`
 #'   to a valid previous file containing less simulations than `n_rep`, the
 #'   additional number of simulations will be run (appropriately re-using the
@@ -219,7 +220,8 @@ run_trials <- function(trial_spec, n_rep, path = NULL, overwrite = FALSE,
   if (!verify_int(n_rep, min_value = 1) | !verify_int(cores, min_value = 1)) {
     stop0("n_rep and cores must be single whole numbers larger than 0.")
   }
-  if (ifelse(!is.null(path), file.exists(path), FALSE)) { # File exists
+  if (ifelse(!is.null(path), file.exists(path), FALSE) & !overwrite) {
+    # File exists and overwrite is FALSE
     prev <- readRDS(path)
     # To avoid complicated errors with previous functions related to byte-compiling
     # and environments and not easily solved by using identical(), create two

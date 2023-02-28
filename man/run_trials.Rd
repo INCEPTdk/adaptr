@@ -32,8 +32,9 @@ will be written to and  loaded from this path using the \code{\link[=saveRDS]{sa
 
 \item{overwrite}{single logical; defaults to \code{FALSE}, in which case previous
 simulations saved in the same \code{path} will be re-loaded (if the same trial
-specification was used). If \code{TRUE}, the previous file is overwritten. If
-\code{grow} is \code{TRUE}, this argument must be set to \code{FALSE}.}
+specification was used). If \code{TRUE}, the previous file is overwritten (even
+if the the same trial specification was not used). If \code{grow} is \code{TRUE},
+this argument must be set to \code{FALSE}.}
 
 \item{grow}{single logical; defaults to \code{FALSE}. If \code{TRUE} and a valid \code{path}
 to a valid previous file containing less simulations than \code{n_rep}, the
