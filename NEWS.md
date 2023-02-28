@@ -1,6 +1,17 @@
 # adaptr (development version)
 
-* Minor update to package description text and order of links.
+### New features:
+
+*   None yet.
+
+### Bug fixes:
+
+*   None yet.
+
+### Minor changes:
+
+*   Various minor updates, corrections, and clarifications to package
+    documentation (including package description).
 
 # adaptr 1.2.0
 

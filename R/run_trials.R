@@ -110,8 +110,8 @@ dispatch_trial_runs <- function(X, trial_spec, base_seed, sparse, cores, cl = NU
 #'
 #' @inheritParams run_trial
 #' @param n_rep single integer; the number of simulations to run.
-#' @param path single character; if specified (defaults to `NULL`), files will
-#'   be written to and  loaded from this path using the [saveRDS()] /
+#' @param path single character string; if specified (defaults to `NULL`), files
+#'   will be written to and  loaded from this path using the [saveRDS()] /
 #'   [readRDS()] functions.
 #' @param overwrite single logical; defaults to `FALSE`, in which case previous
 #'   simulations saved in the same `path` will be re-loaded (if the same trial
@@ -198,7 +198,8 @@ dispatch_trial_runs <- function(X, trial_spec, base_seed, sparse, cores, cl = NU
 #' # Run 10 simulations with a specified random base seed
 #' res <- run_trials(binom_trial, n_rep = 10, base_seed = 12345)
 #'
-#' # See ?summary and ?print for details on summarising and printing
+#' # See ?extract_results, ?check_performance, ?summary and ?print for details
+#' # on extracting resutls, summarising and printing
 #'
 run_trials <- function(trial_spec, n_rep, path = NULL, overwrite = FALSE,
                        grow = FALSE, cores = 1, base_seed = NULL,

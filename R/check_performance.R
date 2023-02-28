@@ -54,9 +54,9 @@ calculate_idp <- function(sels, arms, true_ys, highest_is_best) {
 #'   in [run_trials()] is used.
 #'
 #' @return A tidy `data.frame` with added class `trial_performance` (to control
-#'   the number of digits printed, see [print()]), with the columns `"metric"`
-#'   (described below), `"est"` (the estimates of each metric), and the
-#'   following four columns if `uncertainty = TRUE`: `"err_sd"` (bootstrapped
+#'   the number of digits printed, see [print()]), with the columns
+#'   `"metric"` (described below), `"est"` (estimates of each metric), and the
+#'   following four columns if `uncertainty = TRUE`: `"err_sd"`(bootstrapped
 #'   SDs), `"err_mad"` (bootstrapped MAD-SDs, as described in [setup_trial()]
 #'   and [mad()]), `"lo_ci"`, and `"hi_ci"`, the latter two corresponding to the
 #'   lower/upper limits of the percentile-based bootstrapped confidence
@@ -99,16 +99,16 @@ calculate_idp <- function(sels, arms, true_ys, highest_is_best) {
 #'
 #' @details
 #' The ideal design percentage (IDP) returned (described below) is based on
-#' *Viele et al, 2020* \doi{10.1177/1740774519877836}  (also described in
+#' *Viele et al, 2020* \doi{10.1177/1740774519877836}  (and also described in
 #' *Granholm et al, 2022* \doi{10.1016/j.jclinepi.2022.11.002}, which also
 #' describes the other performance measures) and has been adapted to work for
 #' trials with both desirable/undesirable outcomes and non-binary outcomes.
 #' Briefly, the expected outcome is calculated as the sum of the true outcomes
 #' in each arm multiplied by the corresponding selection probabilities (ignoring
 #' simulations with no selected arm). The IDP is then calculated as:
-#' - For desirable outcomes:\cr
+#' - For desirable outcomes (`highest_is_best` is `TRUE`):\cr
 #'   `100 * (expected outcome - lowest true outcome) / (highest true outcome - lowest true outcome)`
-#' - For undesirable outcomes:\cr
+#' - For undesirable outcomes (`highest_is_best` is `FALSE`):\cr
 #'   `100 - IDP calculated for desirable outcomes`
 #'
 #' @export

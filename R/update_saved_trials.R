@@ -1,4 +1,4 @@
-#' Update previously saved simulations
+#' Update previously saved simulation results
 #'
 #' This function updates a previously saved `"trial_results"`-object created and
 #' saved by [run_trials()] using a previous version of `adaptr`, allowing the

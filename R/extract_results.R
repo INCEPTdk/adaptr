@@ -53,24 +53,27 @@
 #'   available in the trial.
 #' @param te_comp character string, treatment-effect comparator. Can be either
 #'   `NULL` (the default) in which case the **first** `control` arm is used for
-#'   trial designs with a common control arm, or a single trial `arm`. Will be
-#'   used when calculating `sq_err_te` (the squared error of the treatment
-#'   effect comparing the selected arm to the comparator arm, as described
-#'   below).
+#'   trial designs with a common control arm, or a string naming a single trial
+#'   `arm`. Will be used when calculating `sq_err_te` (the squared error of the
+#'   treatment effect comparing the selected arm to the comparator arm, as
+#'   described below).
 #' @param raw_ests single logical. If `FALSE` (default), the
-#'   posterior estimates (`post_ests`, see [setup_trial()] and
-#'   [run_trial()]) will be used to calculate `sq_err` (the squared error of the
-#'   estimated compared to the specified effect in the selected arm) and
+#'   posterior estimates (`post_ests` or `post_ests_all`, see [setup_trial()]
+#'   and [run_trial()]) will be used to calculate `sq_err` (the squared error of
+#'   the estimated compared to the specified effect in the selected arm) and
 #'   `sq_err_te` (the squared error of the treatment effect comparing the
 #'   selected arm to the comparator arm, as described for `te_comp` and below).
-#'   If `TRUE`, the raw estimates (`raw_ests`, see [setup_trial()] and
-#'   [run_trial()]) will be used instead of the posterior estimates.
+#'   If `TRUE`, the raw estimates (`raw_ests` or `raw_ests_all`, see
+#'   [setup_trial()] and [run_trial()]) will be used instead of the posterior
+#'   estimates.
 #' @param final_ests single logical. If `TRUE` (recommended) the final estimates
 #'   calculated using outcome data from all patients randomised when trials are
-#'   stopped is used; if `FALSE`, the estimates calculated for each arm when an
+#'   stopped is used (`post_ests_all` or `raw_ests_all`, see [setup_trial()] and
+#'   [run_trial()]); if `FALSE`, the estimates calculated for each arm when an
 #'   arm is stopped (or at the last adaptive analysis if not before) using data
 #'   from patients having reach followed up at this time point and not all
-#'   patients randomised. If `NULL` (the default), this argument will be set to
+#'   patients randomised (`post_ests` or `raw_ests`, see [setup_trial()] and
+#'   [run_trial()]). If `NULL` (the default), this argument will be set to
 #'   `FALSE` if outcome data are available immediate after randomisation for all
 #'   patients (for backwards compatibility, as final posterior estimates may
 #'   vary slightly in this situation, even if using the same data); otherwise it
