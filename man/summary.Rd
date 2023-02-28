@@ -123,7 +123,10 @@ A \code{"trial_results_summary"} object containing the following values:
 \code{ratio_ys_p75}, \code{prob_conclusive}, \code{prob_superior}, \code{prob_equivalence},
 \code{prob_futility}, \code{prob_max}, \verb{prob_select_*} (with \code{*} being all \code{arm}
 names), \code{rmse}, \code{rmse_te}, and \code{idp}: performance metrics as described in
-\code{\link[=check_performance]{check_performance()}}.
+\code{\link[=check_performance]{check_performance()}}. Note that all \code{sum_ys_} and \code{ratio_ys_} measures
+uses the total events across all randomised patients, regardless of
+whether they had outcome data available at the last analysis or not, as
+described in \code{\link[=extract_results]{extract_results()}}.
 \item \code{select_strategy}, \code{select_last_arm}, \code{select_preferences},
 \code{te_comp}, \code{raw_ests}, \code{final_ests}, \code{restrict}: as specified above.
 \item \code{control}: the control arm specified by \code{\link[=setup_trial]{setup_trial()}},

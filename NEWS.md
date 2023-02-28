@@ -6,7 +6,16 @@
 
 ### Bug fixes:
 
-*   None yet.
+*   Fixed a bug in `extract_results()` (and thus also in functions relying on
+    it, i.e., `check_performance()`, `plot_convergence()`, and the `summary()`
+    method for multiple simulated trials) that lead too incorrect total event
+    counts and event rates being calculated for trial specification with
+    follow-up/data collection lag (the total event count from the last adaptive
+    analysis was incorrectly used, and for ratios this was divided by the total
+    number of patients randomised). This has been fixed and the documentation of
+    the relevant functions have been updated to clarify the behaviour further.
+    This bug did not affect results for simulations without follow-up/data
+    collection lag.
 
 ### Minor changes (including documentation changes):
 

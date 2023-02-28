@@ -150,11 +150,15 @@ the summarised trial simulations.
 75-percentiles of the total \code{sum_ys} (e.g., the total number of events in
 trials with a binary outcome, or the sums of continuous values for all
 patients across all arms in trials with a continuous outcome) across all
-arms in the summarised trial simulations.
+arms in the summarised trial simulations. Always uses all outcomes
+from all randomised patients regardless of whether or not all patients
+had outcome data available at the time of trial stopping (corresponding
+to \code{sum_ys_all} in results from \code{\link[=run_trial]{run_trial()}}).
 \item \code{ratio_ys_mean}, \code{ratio_ys_sd}, \code{ratio_ys_median}, \code{ratio_ys_p25},
 \code{ratio_ys_p75}: the mean, standard deviation, median as well as 25- and
-75-percentiles of the final \code{ratio_ys} (\code{sum_ys/final_n}) across all arms
-in the summarised trial simulations.
+75-percentiles of the final \code{ratio_ys} (\code{sum_ys} as described above
+divided by the total number of patients randomised) across all arms in
+the summarised trial simulations.
 \item \code{prob_conclusive}: the proportion (\code{0} to \code{1}) of conclusive trial
 simulations (simulations not stopped at the maximum sample size without a
 superiority, equivalence or futility decision).

@@ -87,8 +87,11 @@
 #'     \item `sum_ys`: the sum of the total counts in all arms, e.g., the total
 #'       number of events in trials with a binary outcome
 #'       ([setup_trial_binom()]) or the sum of the arm totals in trials with a
-#'       continuous outcome ([setup_trial_norm()]).
-#'     \item `ratio_ys`: calculated as `sum_ys/final_n`.
+#'       continuous outcome ([setup_trial_norm()]). Always uses all outcomes
+#'       from all randomised patients regardless of whether or not all patients
+#'       had outcome data available at the time of trial stopping (corresponding
+#'       to `sum_ys_all` in results from [run_trial()]).
+#'     \item `ratio_ys`: calculated as `sum_ys/final_n` (as described above).
 #'     \item `final_status`: the final trial status for each simulation, either
 #'       `"superiority"`, `"equivalence"`, `"futility"`, or `"max"`, as
 #'       described in [run_trial()].
@@ -202,8 +205,8 @@ extract_results <- function(object,
   # Start data extraction
   df <- data.frame(sim = 1:n_rep,
                    final_n = vapply_num(1:n_rep, function(x) object$trial_results[[x]]$final_n),
-                   sum_ys = vapply_num(1:n_rep, function(x) sum(object$trial_results[[x]]$trial_res$sum_ys)),
-                   ratio_ys = vapply_num(1:n_rep, function(x) sum(object$trial_results[[x]]$trial_res$sum_ys)/object$trial_results[[x]]$final_n),
+                   sum_ys = vapply_num(1:n_rep, function(x) sum(object$trial_results[[x]]$trial_res$sum_ys_all)),
+                   ratio_ys = vapply_num(1:n_rep, function(x) sum(object$trial_results[[x]]$trial_res$sum_ys_all)/object$trial_results[[x]]$final_n),
                    final_status = vapply_str(1:n_rep, function(x) object$trial_results[[x]]$final_status),
                    superior_arm = NA,
                    selected_arm = NA,

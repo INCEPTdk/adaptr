@@ -73,11 +73,15 @@ calculate_idp <- function(sels, arms, true_ys, highest_is_best) {
 #'     75-percentiles of the total `sum_ys` (e.g., the total number of events in
 #'     trials with a binary outcome, or the sums of continuous values for all
 #'     patients across all arms in trials with a continuous outcome) across all
-#'     arms in the summarised trial simulations.
+#'     arms in the summarised trial simulations. Always uses all outcomes
+#'     from all randomised patients regardless of whether or not all patients
+#'     had outcome data available at the time of trial stopping (corresponding
+#'     to `sum_ys_all` in results from [run_trial()]).
 #'   \item `ratio_ys_mean`, `ratio_ys_sd`, `ratio_ys_median`, `ratio_ys_p25`,
 #'     `ratio_ys_p75`: the mean, standard deviation, median as well as 25- and
-#'     75-percentiles of the final `ratio_ys` (`sum_ys/final_n`) across all arms
-#'     in the summarised trial simulations.
+#'     75-percentiles of the final `ratio_ys` (`sum_ys` as described above
+#'     divided by the total number of patients randomised) across all arms in
+#'     the summarised trial simulations.
 #'   \item `prob_conclusive`: the proportion (`0` to `1`) of conclusive trial
 #'     simulations (simulations not stopped at the maximum sample size without a
 #'     superiority, equivalence or futility decision).

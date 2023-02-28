@@ -104,8 +104,11 @@ A \code{data.frame} containing the following columns:
 \item \code{sum_ys}: the sum of the total counts in all arms, e.g., the total
 number of events in trials with a binary outcome
 (\code{\link[=setup_trial_binom]{setup_trial_binom()}}) or the sum of the arm totals in trials with a
-continuous outcome (\code{\link[=setup_trial_norm]{setup_trial_norm()}}).
-\item \code{ratio_ys}: calculated as \code{sum_ys/final_n}.
+continuous outcome (\code{\link[=setup_trial_norm]{setup_trial_norm()}}). Always uses all outcomes
+from all randomised patients regardless of whether or not all patients
+had outcome data available at the time of trial stopping (corresponding
+to \code{sum_ys_all} in results from \code{\link[=run_trial]{run_trial()}}).
+\item \code{ratio_ys}: calculated as \code{sum_ys/final_n} (as described above).
 \item \code{final_status}: the final trial status for each simulation, either
 \code{"superiority"}, \code{"equivalence"}, \code{"futility"}, or \code{"max"}, as
 described in \code{\link[=run_trial]{run_trial()}}.
