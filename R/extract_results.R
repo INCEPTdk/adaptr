@@ -252,6 +252,8 @@ extract_results_batch <- function(trial_results,
 #'
 #' @export
 #'
+#' @import parallel
+#'
 #' @seealso
 #' [check_performance()], [summary()], [plot_convergence()].
 #'
