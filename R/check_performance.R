@@ -63,28 +63,34 @@ calculate_idp <- function(sels, arms, true_ys, highest_is_best) {
 #'   SDs), `"err_mad"` (bootstrapped MAD-SDs, as described in [setup_trial()]
 #'   and [mad()]), `"lo_ci"`, and `"hi_ci"`, the latter two corresponding to the
 #'   lower/upper limits of the percentile-based bootstrapped confidence
-#'   intervals.\cr
+#'   intervals. Bootstrap estimates are **not** calculated for the mininum
+#'   (`_p0`) and maximum values (`_p100`) of `size`, `sum_ys`, and `ratio_ys`,
+#'   as non-parametric bootstrapping for mininum/maximum values is not sensible
+#'   - bootstrap estimates for these values will be `NA`.\cr
 #'   The following performance metrics are calculated:
 #' \itemize{
 #'   \item `n_summarised`: the number of simulations summarised.
-#'   \item `size_mean`, `size_sd`, `size_median`, `size_p25`, `size_p75`: the
-#'     mean, standard deviation, median as well as 25- and 75-percentiles of the
-#'     sample sizes (number of patients randomised in each simulated trial) of
-#'     the summarised trial simulations.
+#'   \item `size_mean`, `size_sd`, `size_median`, `size_p25`, `size_p75`,
+#'     `size_p0`, `size_p100`: the
+#'     mean, standard deviation, median as well as 25-, 75-, 0- (min), and 100-
+#'     (max) percentiles of the sample sizes (number of patients randomised in
+#'     each simulated trial) of the summarised trial simulations.
 #'   \item `sum_ys_mean`, `sum_ys_sd`, `sum_ys_median`, `sum_ys_p25`,
-#'     `sum_ys_p75`: the mean, standard deviation, median as well as 25- and
-#'     75-percentiles of the total `sum_ys` (e.g., the total number of events in
-#'     trials with a binary outcome, or the sums of continuous values for all
-#'     patients across all arms in trials with a continuous outcome) across all
-#'     arms in the summarised trial simulations. Always uses all outcomes
-#'     from all randomised patients regardless of whether or not all patients
-#'     had outcome data available at the time of trial stopping (corresponding
-#'     to `sum_ys_all` in results from [run_trial()]).
+#'     `sum_ys_p75`, `sum_ys_p0`, `sum_ys_p100`: the mean, standard deviation,
+#'     median as well as 25-, 75-, 0- (min), and 100- (max) percentiles of the
+#'     total `sum_ys` (e.g., the total number of events in trials with a binary
+#'     outcome, or the sums of continuous values for all patients across all
+#'     arms in trials with a continuous outcome) across all arms in the
+#'     summarised trial simulations. Always uses all outcomes from all
+#'     randomised patients regardless of whether or not all patients had outcome
+#'     data available at the time of trial stopping (corresponding to
+#'     `sum_ys_all` in results from [run_trial()]).
 #'   \item `ratio_ys_mean`, `ratio_ys_sd`, `ratio_ys_median`, `ratio_ys_p25`,
-#'     `ratio_ys_p75`: the mean, standard deviation, median as well as 25- and
-#'     75-percentiles of the final `ratio_ys` (`sum_ys` as described above
-#'     divided by the total number of patients randomised) across all arms in
-#'     the summarised trial simulations.
+#'     `ratio_ys_p75`, `ratio_ys_p0`, `ratio_ys_p100`: the mean, standard
+#'     deviation, median as well as 25-, 75-, 0- (min), and 100- (max)
+#'     percentiles of the final `ratio_ys` (`sum_ys` as described above divided
+#'     by the total number of patients randomised) across all arms in the
+#'     summarised trial simulations.
 #'   \item `prob_conclusive`: the proportion (`0` to `1`) of conclusive trial
 #'     simulations (simulations not stopped at the maximum sample size without a
 #'     superiority, equivalence or futility decision).
@@ -201,18 +207,18 @@ check_performance <- function(object, select_strategy = "control if available",
   n_rep <- object$n_rep
 
   # Prepare output object
-  res <- data.frame(metric = c("n_summarised", "size_mean", "size_sd",
-                               "size_median", "size_p25", "size_p75",
-                               "sum_ys_mean", "sum_ys_sd",
-                               "sum_ys_median", "sum_ys_p25", "sum_ys_p75",
-                               "ratio_ys_mean", "ratio_ys_sd",
-                               "ratio_ys_median", "ratio_ys_p25", "ratio_ys_p75",
+  res <- data.frame(metric = c("n_summarised", "size_mean", "size_sd", "size_median",
+                               "size_p25", "size_p75", "size_p0", "size_p100",
+                               "sum_ys_mean", "sum_ys_sd", "sum_ys_median",
+                               "sum_ys_p25", "sum_ys_p75", "sum_ys_p0", "sum_ys_p100",
+                               "ratio_ys_mean", "ratio_ys_sd", "ratio_ys_median",
+                               "ratio_ys_p25", "ratio_ys_p75", "ratio_ys_p0", "ratio_ys_p100",
                                "prob_conclusive", "prob_superior", "prob_equivalence",
                                "prob_futility", "prob_max", paste0("prob_select_", c(paste0("arm_", arms), "none")),
                                "rmse", "rmse_te", "idp"),
                     est = NA, err_sd = NA, err_mad = NA, lo_ci = NA, hi_ci = NA)
 
-  # Restrict simulations summerised
+  # Restrict simulations summarised
   if (is.null(restrict)) {
     restrict_idx <- rep(TRUE, n_rep)
   } else if (restrict == "superior") {
@@ -320,6 +326,9 @@ check_performance <- function(object, select_strategy = "control if available",
     res$err_mad <- apply(boot_mat, 1, function(x) median(abs(x - median(x, na.rm = TRUE)), na.rm = TRUE) * 1.4826 ) %f|% NA
     res$lo_ci <- apply(boot_mat, 1, quantile, probs = (1 - ci_width)/2, na.rm = TRUE, names = FALSE) %f|% NA
     res$hi_ci <- apply(boot_mat, 1, quantile, probs = 1 - (1 - ci_width)/2, na.rm = TRUE, names = FALSE) %f|% NA
+    # NAs for p0-/p100-bootstrap estimates
+    res[res$metric %in% c("size_p0", "size_p100", "sum_ys_p0", "sum_ys_p100", "ratio_ys_p0", "ratio_ys_p100"),
+        c("err_sd", "err_mad", "lo_ci", "hi_ci")] <- NA
   }
 
   # Return result

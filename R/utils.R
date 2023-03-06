@@ -94,21 +94,23 @@ summarise_dist <- function(x, robust = TRUE, interval_width = 0.95) {
 #'
 #' @param x a numeric vector.
 #'
-#' @return A numeric vector with five named elements: `mean`, `sd`, `median`,
-#'   `p25`, and `p75`, corresponding to the mean, standard deviation, median,
-#'   and 25-/75-percentiles.
+#' @return A numeric vector with seven named elements: `mean`, `sd`, `median`,
+#'   `p25`, `p75`, `p0`, and `p100` corresponding to the mean, standard
+#'   deviation, median, and 25-/75-/0-/100-percentiles.
 #'
 #' @importFrom stats quantile sd
 #'
 #' @keywords internal
 #'
 summarise_num <- function(x) {
-  ps <- quantile(x, probs = c(0.5, 0.25, 0.75), names = FALSE)
+  ps <- quantile(x, probs = c(0.5, 0.25, 0.75, 0, 1), names = FALSE)
   c(mean = mean(x),
     sd = sd(x),
     median = ps[1],
     p25 = ps[2],
-    p75 = ps[3])
+    p75 = ps[3],
+    p0 = ps[4],
+    p100 = ps[5])
 }
 
 

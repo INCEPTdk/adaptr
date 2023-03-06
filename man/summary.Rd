@@ -125,15 +125,16 @@ A \code{"trial_results_summary"} object containing the following values:
 \item \code{highest_is_best}: as specified in \code{\link[=setup_trial]{setup_trial()}}.
 \item \code{elapsed_time}: the total simulation time.
 \item \code{size_mean}, \code{size_sd}, \code{size_median}, \code{size_p25}, \code{size_p75},
-\code{sum_ys_mean}, \code{sum_ys_sd}, \code{sum_ys_median}, \code{sum_ys_p25}, \code{sum_ys_p75},
-\code{ratio_ys_mean}, \code{ratio_ys_sd}, \code{ratio_ys_median}, \code{ratio_ys_p25},
-\code{ratio_ys_p75}, \code{prob_conclusive}, \code{prob_superior}, \code{prob_equivalence},
-\code{prob_futility}, \code{prob_max}, \verb{prob_select_*} (with \code{*} being all \code{arm}
-names), \code{rmse}, \code{rmse_te}, and \code{idp}: performance metrics as described in
-\code{\link[=check_performance]{check_performance()}}. Note that all \code{sum_ys_} and \code{ratio_ys_} measures
-uses the total events across all randomised patients, regardless of
-whether they had outcome data available at the last analysis or not, as
-described in \code{\link[=extract_results]{extract_results()}}.
+\code{size_p0}, \code{size_p100}, \code{sum_ys_mean}, \code{sum_ys_sd}, \code{sum_ys_median},
+\code{sum_ys_p25}, \code{sum_ys_p75}, \code{sum_ys_p0}, \code{sum_ys_p100}, \code{ratio_ys_mean},
+\code{ratio_ys_sd}, \code{ratio_ys_median}, \code{ratio_ys_p25}, \code{ratio_ys_p75},
+\code{ratio_ys_p0}, \code{ratio_ys_p100}, \code{prob_conclusive}, \code{prob_superior},
+\code{prob_equivalence}, \code{prob_futility}, \code{prob_max}, \verb{prob_select_*} (with
+\code{*} being all \code{arm} names), \code{rmse}, \code{rmse_te}, and \code{idp}: performance
+metrics as described in \code{\link[=check_performance]{check_performance()}}. Note that all \code{sum_ys_}
+and \code{ratio_ys_} measures uses the total events across all randomised
+patients, regardless of whether they had outcome data available at the
+last analysis or not, as described in \code{\link[=extract_results]{extract_results()}}.
 \item \code{select_strategy}, \code{select_last_arm}, \code{select_preferences},
 \code{te_comp}, \code{raw_ests}, \code{final_ests}, \code{restrict}: as specified above.
 \item \code{control}: the control arm specified by \code{\link[=setup_trial]{setup_trial()}},

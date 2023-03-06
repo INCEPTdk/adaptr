@@ -10,9 +10,9 @@ summarise_num(x)
 \item{x}{a numeric vector.}
 }
 \value{
-A numeric vector with five named elements: \code{mean}, \code{sd}, \code{median},
-\code{p25}, and \code{p75}, corresponding to the mean, standard deviation, median,
-and 25-/75-percentiles.
+A numeric vector with seven named elements: \code{mean}, \code{sd}, \code{median},
+\code{p25}, \code{p75}, \code{p0}, and \code{p100} corresponding to the mean, standard
+deviation, median, and 25-/75-/0-/100-percentiles.
 }
 \description{
 Used internally, to summarise numeric vectors.

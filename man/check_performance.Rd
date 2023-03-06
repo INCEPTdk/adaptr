@@ -147,28 +147,35 @@ following four columns if \code{uncertainty = TRUE}: \code{"err_sd"}(bootstrappe
 SDs), \code{"err_mad"} (bootstrapped MAD-SDs, as described in \code{\link[=setup_trial]{setup_trial()}}
 and \code{\link[=mad]{mad()}}), \code{"lo_ci"}, and \code{"hi_ci"}, the latter two corresponding to the
 lower/upper limits of the percentile-based bootstrapped confidence
-intervals.\cr
+intervals. Bootstrap estimates are \strong{not} calculated for the mininum
+(\verb{_p0}) and maximum values (\verb{_p100}) of \code{size}, \code{sum_ys}, and \code{ratio_ys},
+as non-parametric bootstrapping for mininum/maximum values is not sensible
+\itemize{
+\item bootstrap estimates for these values will be \code{NA}.\cr
 The following performance metrics are calculated:
 \itemize{
 \item \code{n_summarised}: the number of simulations summarised.
-\item \code{size_mean}, \code{size_sd}, \code{size_median}, \code{size_p25}, \code{size_p75}: the
-mean, standard deviation, median as well as 25- and 75-percentiles of the
-sample sizes (number of patients randomised in each simulated trial) of
-the summarised trial simulations.
+\item \code{size_mean}, \code{size_sd}, \code{size_median}, \code{size_p25}, \code{size_p75},
+\code{size_p0}, \code{size_p100}: the
+mean, standard deviation, median as well as 25-, 75-, 0- (min), and 100-
+(max) percentiles of the sample sizes (number of patients randomised in
+each simulated trial) of the summarised trial simulations.
 \item \code{sum_ys_mean}, \code{sum_ys_sd}, \code{sum_ys_median}, \code{sum_ys_p25},
-\code{sum_ys_p75}: the mean, standard deviation, median as well as 25- and
-75-percentiles of the total \code{sum_ys} (e.g., the total number of events in
-trials with a binary outcome, or the sums of continuous values for all
-patients across all arms in trials with a continuous outcome) across all
-arms in the summarised trial simulations. Always uses all outcomes
-from all randomised patients regardless of whether or not all patients
-had outcome data available at the time of trial stopping (corresponding
-to \code{sum_ys_all} in results from \code{\link[=run_trial]{run_trial()}}).
+\code{sum_ys_p75}, \code{sum_ys_p0}, \code{sum_ys_p100}: the mean, standard deviation,
+median as well as 25-, 75-, 0- (min), and 100- (max) percentiles of the
+total \code{sum_ys} (e.g., the total number of events in trials with a binary
+outcome, or the sums of continuous values for all patients across all
+arms in trials with a continuous outcome) across all arms in the
+summarised trial simulations. Always uses all outcomes from all
+randomised patients regardless of whether or not all patients had outcome
+data available at the time of trial stopping (corresponding to
+\code{sum_ys_all} in results from \code{\link[=run_trial]{run_trial()}}).
 \item \code{ratio_ys_mean}, \code{ratio_ys_sd}, \code{ratio_ys_median}, \code{ratio_ys_p25},
-\code{ratio_ys_p75}: the mean, standard deviation, median as well as 25- and
-75-percentiles of the final \code{ratio_ys} (\code{sum_ys} as described above
-divided by the total number of patients randomised) across all arms in
-the summarised trial simulations.
+\code{ratio_ys_p75}, \code{ratio_ys_p0}, \code{ratio_ys_p100}: the mean, standard
+deviation, median as well as 25-, 75-, 0- (min), and 100- (max)
+percentiles of the final \code{ratio_ys} (\code{sum_ys} as described above divided
+by the total number of patients randomised) across all arms in the
+summarised trial simulations.
 \item \code{prob_conclusive}: the proportion (\code{0} to \code{1}) of conclusive trial
 simulations (simulations not stopped at the maximum sample size without a
 superiority, equivalence or futility decision).
@@ -186,6 +193,7 @@ element per \code{arm}, named as \verb{prob_select_arm_<arm name>} and
 the selected arm and for the treatment effect, as described further in
 \code{\link[=extract_results]{extract_results()}}.
 \item \code{idp}: the ideal design percentage (IDP; 0-100\%), see \strong{Details}.
+}
 }
 }
 \description{
