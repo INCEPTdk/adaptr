@@ -247,7 +247,8 @@ check_performance <- function(object, select_strategy = "control if available",
     performance_bootstrap_batch <- function(cur_seeds,
                                             extr_res,
                                             restrict,
-                                            n_rep) {
+                                            n_rep,
+                                            rows) {
       # Restore seed afterwards if existing
       if (exists(".Random.seed", envir = globalenv())) {
         oldseed <- get(".Random.seed", envir = globalenv())
@@ -257,7 +258,7 @@ check_performance <- function(object, select_strategy = "control if available",
 
       # Prepare matrix
       n_boot <- length(cur_seeds)
-      boot_mat <- matrix(rep(NA, 28 * n_boot), ncol = n_boot)
+      boot_mat <- matrix(rep(NA, rows * n_boot), ncol = n_boot)
 
       # Bootstrap loop
       for (b in 1:n_boot) {
@@ -297,7 +298,7 @@ check_performance <- function(object, select_strategy = "control if available",
     # Get bootstrap estimates
     if (cores == 1) { # Single core
       boot_mat <- performance_bootstrap_batch(cur_seeds = seeds, extr_res = extr_res,
-                                              restrict = restrict, n_rep = n_rep)
+                                              restrict = restrict, n_rep = n_rep, rows = nrow(res))
     } else { # Multiple cores
       # Setup cores
       cl <- makeCluster(cores)
@@ -311,7 +312,7 @@ check_performance <- function(object, select_strategy = "control if available",
       # Bootstrap
       boot_mat <- do.call(cbind,
                           clusterApply(cl = cl, x = seed_chunks, fun = performance_bootstrap_batch,
-                                       extr_res = extr_res, restrict = restrict, n_rep = n_rep))
+                                       extr_res = extr_res, restrict = restrict, n_rep = n_rep, rows = nrow(res)))
     }
 
     # Summarise bootstrap results
