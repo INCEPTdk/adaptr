@@ -2,7 +2,8 @@
 
 ### New features:
 
-*   None yet.
+*   Increased parallelisation of functions `extract_results()`, <more coming>,
+    via the `cores` argument.
 
 ### Bug fixes:
 
@@ -24,6 +25,9 @@
     to crash.
 
 ### Minor changes:
+
+*   All parallelised functions now defaults to using the global option
+    `"mc.cores"`, if set by `options(mc.cores = <number>)` (otherwise `1`). 
 
 *   When `overwrite` is `TRUE` in `run_trials()`, the previous object will be
     overwritten, even if the previous object used a different trial

@@ -56,4 +56,7 @@ test_that("Extract results erors correctly on invalid inputs", {
   expect_error(extract_results(res, select_last_arm = NA))
   expect_error(extract_results(res_no_cont, select_last_arm = TRUE))
   expect_error(extract_results(res_no_cont, te_comp = "Wrong arm"))
+
+  # Wrong number of cores
+  expect_error(extract_results(res, cores = 0.9))
 })

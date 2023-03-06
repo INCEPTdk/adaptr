@@ -11,7 +11,8 @@ extract_results(
   select_preferences = NULL,
   te_comp = NULL,
   raw_ests = FALSE,
-  final_ests = NULL
+  final_ests = NULL,
+  cores = getOption("mc.cores", 1)
 )
 }
 \arguments{
@@ -95,6 +96,12 @@ patients (for backwards compatibility, as final posterior estimates may
 vary slightly in this situation, even if using the same data); otherwise it
 will be said to \code{TRUE}. See \code{\link[=setup_trial]{setup_trial()}} for more details on how these
 estimates are calculated.}
+
+\item{cores}{single integer; the number of cores used to extract simulation
+results using the \code{parallel} library. Defaults to use the \code{"mc.cores"}
+global option if set (\verb{options(mc.cores = <number>)}) and \code{1} otherwise;
+more cores may be used to extract large simulation results quicker. Use
+\code{parallel::detectCores()} to find the number of available cores.}
 }
 \value{
 A \code{data.frame} containing the following columns:

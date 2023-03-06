@@ -1,3 +1,122 @@
+#' Extract results from a batch of trials from an object with multiple trials
+#'
+#' Used internally by [extract_results()]. Extracts results from a batch of
+#' simulations from a simulation object with multiple simulation results
+#' returned by [run_trials()], used to facilitate easy parallelisation.
+#'
+#' @inheritParams extract_results
+#' @param trial_results list of trial results to summarise, the current batch.
+#' @param control single character string, the common `control` arm from the
+#'   trial (`NULL` if none).
+#' @param which_ests single character string, a combination of the `raw_ests`
+#'   and `final_ests` arguments from [extract_results()].
+#' @param te_comp_index single integer, index of the treatment effect comparator
+#'   arm (`NULL` if none).
+#' @param te_comp_true_y single numeric value, true `y` value in the treatment
+#'   effect comparator arm (`NULL` if none).
+#'
+#' @return A `data.frame` containing all columns returned by [extract_results()]
+#'   and described in that function (`sim` will start from `1`, but this is
+#'   changed where relevant by [extract_results()]).
+#'
+#' @keywords internal
+#'
+extract_results_batch <- function(trial_results,
+                                  control = control,
+                                  select_strategy = select_strategy,
+                                  select_last_arm = select_last_arm,
+                                  select_preferences = select_preferences,
+                                  te_comp = te_comp,
+                                  which_ests = which_ests,
+                                  te_comp_index = te_comp_index,
+                                  te_comp_true_y = te_comp_true_y) {
+  # Start data extraction
+  n_rep <- length(trial_results)
+  df <- data.frame(sim = 1:n_rep,
+                   final_n = vapply_num(1:n_rep, function(x) trial_results[[x]]$final_n),
+                   sum_ys = vapply_num(1:n_rep, function(x) sum(trial_results[[x]]$trial_res$sum_ys_all)),
+                   ratio_ys = vapply_num(1:n_rep, function(x) sum(trial_results[[x]]$trial_res$sum_ys_all)/trial_results[[x]]$final_n),
+                   final_status = vapply_str(1:n_rep, function(x) trial_results[[x]]$final_status),
+                   superior_arm = NA,
+                   selected_arm = NA,
+                   sq_err = NA,
+                   sq_err_te = NA,
+                   stringsAsFactors = FALSE)
+
+  # Loop: selection and error estimation
+  for (i in 1:n_rep) {
+    tmp_res <- trial_results[[i]]$trial_res
+    cur_status <- df$final_status[i]
+    cur_select <- NA
+    # Superiority
+    if (cur_status == "superiority") {
+      tmp_arm <- tmp_res$arms[tmp_res$final_status == "superior"]
+      df$superior_arm[i] <- tmp_arm
+      cur_select <- tmp_arm
+    } else { # Stopped for equivalence, futility or at max
+      tmp_sel <- tmp_res[tmp_res$final_status != "inferior", ] # Remove inferior arms
+      tmp_sel <- tmp_sel[tmp_sel$final_status != "futile", ] # Remove futile arms
+      # Do not consider arms dropped for equivalence before final stop
+      if (cur_status == "equivalence") { # Stopped for equivalence
+        # Only consider equivalent arms declared equivalent at final look
+        tmp_sel <- tmp_sel[tmp_sel$final_status %in% c("equivalence", "control") & tmp_sel$status_look == df$final_n[[i]], ]
+      } else {
+        # Only consider arms not stopped for equivalence
+        tmp_sel <- tmp_sel[tmp_sel$final_status != "equivalence", ]
+      }
+
+      # Select arm in trials not ending in superiority
+
+      # Select last remaining arm, even if not superior, if specified (designs with common control only)
+      if (select_last_arm & sum(tmp_sel$final_status %in% c("control", "active")) == 1) {
+        cur_select <- tmp_sel$arms[tmp_sel$final_status == "control"]
+
+        # Otherwise select according to selection strategy
+      } else if (isTRUE(select_strategy == "none")) {
+        cur_select <- NA
+      } else if (isTRUE(select_strategy == "control")) {
+        cur_select <- ifelse(control %in% tmp_sel$arms, control, NA)
+      } else if (isTRUE(select_strategy == "final control")) {
+        cur_select <- tmp_sel$arms[tmp_sel$final_status == "control"]
+      } else if (isTRUE(select_strategy == "control or best")) {
+        best <- tmp_sel$arms[which.max(tmp_sel$probs_best_last)]
+        cur_select <- ifelse(control %in% tmp_sel$arms, control, best)
+      } else if (isTRUE(select_strategy == "best")) {
+        best <- tmp_sel$arms[which.max(tmp_sel$probs_best_last)]
+        cur_select <- best
+      } else if (isTRUE(select_strategy %in% c("list", "list or best"))) {
+        tmp_in <- select_preferences %in% tmp_sel$arms
+        cur_select <- ifelse(any(tmp_in), select_preferences[which(tmp_in)[1]], NA)
+        if (is.na(cur_select) & select_strategy == "list or best") {
+          # None on the list found, choose best remaining
+          best <- tmp_sel$arms[which.max(tmp_sel$probs_best_last)]
+          cur_select <- best
+        }
+      }
+    }
+    df$selected_arm[i] <- cur_select  # End arm selection
+
+    # Calculate errors
+    if (!is.na(cur_select)){ # An arm has been selected
+      selected_index <- which(tmp_res$arms == cur_select)
+      selected_est_y <- tmp_res[[which_ests]][selected_index]
+      selected_true_y <- tmp_res$true_ys[selected_index]
+      df$sq_err[i] <- (selected_est_y - selected_true_y)^2
+      if (!is.null(te_comp)){
+        if (cur_select != te_comp){
+          te_comp_est_y <- tmp_res[[which_ests]][te_comp_index]
+          df$sq_err_te[i] <- ( (selected_est_y - te_comp_est_y) - (selected_true_y - te_comp_true_y) )^2
+        }
+      }
+    }
+  }
+
+  # Return
+  df
+}
+
+
+
 #' Extract simulation results
 #'
 #' This function extracts relevant information from multiple simulations of the
@@ -79,6 +198,11 @@
 #'   vary slightly in this situation, even if using the same data); otherwise it
 #'   will be said to `TRUE`. See [setup_trial()] for more details on how these
 #'   estimates are calculated.
+#' @param cores single integer; the number of cores used to extract simulation
+#'   results using the `parallel` library. Defaults to use the `"mc.cores"`
+#'   global option if set (`options(mc.cores = <number>)`) and `1` otherwise;
+#'   more cores may be used to extract large simulation results quicker. Use
+#'   `parallel::detectCores()` to find the number of available cores.
 #'
 #' @return A `data.frame` containing the following columns:
 #'   \itemize{
@@ -131,14 +255,14 @@
 #' @seealso
 #' [check_performance()], [summary()], [plot_convergence()].
 #'
-
 extract_results <- function(object,
                             select_strategy = "control if available",
                             select_last_arm = FALSE,
                             select_preferences = NULL,
                             te_comp = NULL,
                             raw_ests = FALSE,
-                            final_ests = NULL) {
+                            final_ests = NULL,
+                            cores = getOption("mc.cores", 1)) {
 
   # Validate input (only checks class)
   if (!inherits(object, "trial_results")){
@@ -202,89 +326,43 @@ extract_results <- function(object,
   te_comp_index <- if (is.null(te_comp)) NULL else which(te_comp == object$trial_spec$trial_arms$arms)
   te_comp_true_y <- if (is.null(te_comp)) NULL else object$trial_spec$trial_arms$true_ys[te_comp_index]
 
-  # Start data extraction
-  df <- data.frame(sim = 1:n_rep,
-                   final_n = vapply_num(1:n_rep, function(x) object$trial_results[[x]]$final_n),
-                   sum_ys = vapply_num(1:n_rep, function(x) sum(object$trial_results[[x]]$trial_res$sum_ys_all)),
-                   ratio_ys = vapply_num(1:n_rep, function(x) sum(object$trial_results[[x]]$trial_res$sum_ys_all)/object$trial_results[[x]]$final_n),
-                   final_status = vapply_str(1:n_rep, function(x) object$trial_results[[x]]$final_status),
-                   superior_arm = NA,
-                   selected_arm = NA,
-                   sq_err = NA,
-                   sq_err_te = NA,
-                   stringsAsFactors = FALSE)
+  # Validate cores
+  if (!verify_int(cores, min_value = 1)) {
+    stop0("cores must be single whole number larger than 0.")
+  }
 
   # Define which estimates to use
   which_ests <- paste0(ifelse(raw_ests, "raw", "post"), "_ests", ifelse(final_ests, "_all", ""))
 
-  # Loop: selection and error estimation
-  for (i in 1:n_rep) {
-    tmp_res <- object$trial_results[[i]]$trial_res
-    cur_status <- df$final_status[i]
-    cur_select <- NA
-    # Superiority
-    if (cur_status == "superiority"){
-      tmp_arm <- tmp_res$arms[tmp_res$final_status == "superior"]
-      df$superior_arm[i] <- tmp_arm
-      cur_select <- tmp_arm
-    } else { # Stopped for equivalence, futility or at max
-      tmp_sel <- tmp_res[tmp_res$final_status != "inferior", ] # Remove inferior arms
-      tmp_sel <- tmp_sel[tmp_sel$final_status != "futile", ] # Remove futile arms
-      # Do not consider arms dropped for equivalence before final stop
-      if (cur_status == "equivalence") { # Stopped for equivalence
-        # Only consider equivalent arms declared equivalent at final look
-        tmp_sel <- tmp_sel[tmp_sel$final_status %in% c("equivalence", "control") & tmp_sel$status_look == df$final_n[[i]], ]
-      } else {
-        # Only consider arms not stopped for equivalence
-        tmp_sel <- tmp_sel[tmp_sel$final_status != "equivalence", ]
-      }
-
-      # Select arm in trials not ending in superiority
-
-      # Select last remaining arm, even if not superior, if specified (designs with common control only)
-      if (select_last_arm & sum(tmp_sel$final_status %in% c("control", "active")) == 1) {
-        cur_select <- tmp_sel$arms[tmp_sel$final_status == "control"]
-
-        # Otherwise select according to selection strategy
-      } else if (isTRUE(select_strategy == "none")) {
-        cur_select <- NA
-      } else if (isTRUE(select_strategy == "control")) {
-        cur_select <- ifelse(control %in% tmp_sel$arms, control, NA)
-      } else if (isTRUE(select_strategy == "final control")) {
-        cur_select <- tmp_sel$arms[tmp_sel$final_status == "control"]
-      } else if (isTRUE(select_strategy == "control or best")) {
-        best <- tmp_sel$arms[which.max(tmp_sel$probs_best_last)]
-        cur_select <- ifelse(control %in% tmp_sel$arms, control, best)
-      } else if (isTRUE(select_strategy == "best")) {
-        best <- tmp_sel$arms[which.max(tmp_sel$probs_best_last)]
-        cur_select <- best
-      } else if (isTRUE(select_strategy %in% c("list", "list or best"))) {
-        tmp_in <- select_preferences %in% tmp_sel$arms
-        cur_select <- ifelse(any(tmp_in), select_preferences[which(tmp_in)[1]], NA)
-        if (is.na(cur_select) & select_strategy == "list or best") {
-          # None on the list found, choose best remaining
-          best <- tmp_sel$arms[which.max(tmp_sel$probs_best_last)]
-          cur_select <- best
-        }
-      }
-    }
-    df$selected_arm[i] <- cur_select  # End arm selection
-
-    # Calculate errors
-    if (!is.na(cur_select)){ # An arm has been selected
-      selected_index <- which(tmp_res$arms == cur_select)
-      selected_est_y <- tmp_res[[which_ests]][selected_index]
-      selected_true_y <- tmp_res$true_ys[selected_index]
-      df$sq_err[i] <- (selected_est_y - selected_true_y)^2
-      if (!is.null(te_comp)){
-        if (cur_select != te_comp){
-          te_comp_est_y <- tmp_res[[which_ests]][te_comp_index]
-          df$sq_err_te[i] <- ( (selected_est_y - te_comp_est_y) - (selected_true_y - te_comp_true_y) )^2
-        }
-      }
-    }
+  # Extract data using multiple cores if requested
+  if (cores == 1) { # Single core
+    res <- extract_results_batch(trial_results = object$trial_results,
+                                 control = control, select_strategy = select_strategy,
+                                 select_last_arm = select_last_arm,
+                                 select_preferences = select_preferences,
+                                 te_comp = te_comp, which_ests = which_ests,
+                                 te_comp_index = te_comp_index,
+                                 te_comp_true_y = te_comp_true_y)
+  } else { # Multiple cores
+    # Setup cores
+    cl <- makeCluster(cores)
+    on.exit(stopCluster(cl), add = TRUE, after = FALSE)
+    # Derive chunks
+    chunks <- lapply(1:cores, function(x) {
+      size <- ceiling(n_rep / cores)
+      start <- (size * (x-1) + 1)
+      object$trial_results[start:min(start - 1 + size, n_rep)]
+    })
+    # Extract
+    res <- do.call(rbind,
+                   clusterApply(cl = cl, x = chunks, fun = extract_results_batch,
+                                control = control, select_strategy = select_strategy,
+                                select_last_arm = select_last_arm,
+                                select_preferences = select_preferences,
+                                te_comp = te_comp, which_ests = which_ests,
+                                te_comp_index = te_comp_index,
+                                te_comp_true_y = te_comp_true_y))
+    res$sim <- 1:n_rep # Overwrite simulation numbers
   }
-
-  # Return
-  df
+  res
 }
