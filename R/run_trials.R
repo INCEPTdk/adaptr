@@ -123,9 +123,10 @@ dispatch_trial_runs <- function(X, trial_spec, base_seed, sparse, cores, cl = NU
 #'   additional number of simulations will be run (appropriately re-using the
 #'   same `base_seed`, if specified) and appended to the same file.
 #' @param cores single integer; the number of cores to run the simulations on
-#'   using the `parallel` library. Defaults to `1`; may be increased to run
-#'   multiple simulations in parallel. [parallel::detectCores()] may be used to
-#'   find the number of available cores.
+#'   using the `parallel` library. Defaults to use the `"mc.cores"` global
+#'   option if set (`options(mc.cores = <number>)`) and `1` otherwise; may be
+#'   increased to run multiple simulations in parallel. Use
+#'   [parallel::detectCores()] to find the number of available cores.
 #' @param base_seed single integer or `NULL` (default); a random seed used as
 #'   the basis for simulations. If a number is provided, each single trial
 #'   simulation will set the random seed to a value based on this (+ the trial
@@ -203,8 +204,8 @@ dispatch_trial_runs <- function(X, trial_spec, base_seed, sparse, cores, cl = NU
 #' # on extracting resutls, summarising and printing
 #'
 run_trials <- function(trial_spec, n_rep, path = NULL, overwrite = FALSE,
-                       grow = FALSE, cores = 1, base_seed = NULL,
-                       sparse = TRUE, progress = NULL,
+                       grow = FALSE, cores = getOption("mc.cores", 1),
+                       base_seed = NULL, sparse = TRUE, progress = NULL,
                        version = NULL, compress = TRUE,
                        export = NULL, export_envir = parent.frame()) {
 
