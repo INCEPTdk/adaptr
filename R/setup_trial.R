@@ -785,9 +785,10 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' Different probability thresholds (for superiority, inferiority, equivalence,
 #' and futility) may be specified for different adaptive analyses. This may be
 #' used, e.g., to apply more strict probability thresholds at earlier analyses,
-#' similar to the use of alpha-spending functions in conventional,
-#' frequentist group sequential trial designs. See the **Basic examples**
-#' vignette (`vignette("Basic-examples", package = "adaptr")`) for an example.
+#' similar to the use of monitoring boundaries with different thresholds used
+#' for interim analyses in conventional, frequentist group sequential trial
+#' designs. See the **Basic examples** vignette
+#' (`vignette("Basic-examples", package = "adaptr")`) for an example.
 #'
 #' @return A `trial_spec` object used to run simulations by [run_trial()] or
 #'   [run_trials()]. The output is essentially a list containing the input

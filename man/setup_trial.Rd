@@ -426,9 +426,10 @@ futility.
 Different probability thresholds (for superiority, inferiority, equivalence,
 and futility) may be specified for different adaptive analyses. This may be
 used, e.g., to apply more strict probability thresholds at earlier analyses,
-similar to the use of alpha-spending functions in conventional,
-frequentist group sequential trial designs. See the \strong{Basic examples}
-vignette (\code{vignette("Basic-examples", package = "adaptr")}) for an example.
+similar to the use of monitoring boundaries with different thresholds used
+for interim analyses in conventional, frequentist group sequential trial
+designs. See the \strong{Basic examples} vignette
+(\code{vignette("Basic-examples", package = "adaptr")}) for an example.
 }
 \examples{
 # Setup a custom trial specification with right-skewed, log-normally
