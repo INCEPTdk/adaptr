@@ -17,7 +17,8 @@ plot_convergence(
   restrict = NULL,
   n_split = 1,
   nrow = NULL,
-  ncol = NULL
+  ncol = NULL,
+  cores = getOption("mc.cores", 1)
 )
 }
 \arguments{
@@ -27,12 +28,14 @@ function.}
 \item{metrics}{the performance metrics to plot, as described in
 \code{\link[=check_performance]{check_performance()}}. Multiple metrics may be plotted at the same time.
 Valid metrics include: \code{size_mean}, \code{size_sd}, \code{size_median}, \code{size_p25},
-\code{size_p75}, \code{sum_ys_mean}, \code{sum_ys_sd}, \code{sum_ys_median}, \code{sum_ys_p25},
-\code{sum_ys_p75}, \code{ratio_ys_mean}, \code{ratio_ys_sd}, \code{ratio_ys_median},
-\code{ratio_ys_p25}, \code{ratio_ys_p75}, \code{prob_conclusive}, \code{prob_superior},
-\code{prob_equivalence}, \code{prob_futility}, \code{prob_max}, \verb{prob_select_*} (with \code{*}
-being an \code{arm} name), \code{rmse}, \code{rmse_te}, and \code{idp}. All may be specified
-with either spaces or underlines. Defaults to \code{"size mean"}.}
+\code{size_p75}, \code{size_p0}, \code{size_p100}, \code{sum_ys_mean}, \code{sum_ys_sd},
+\code{sum_ys_median}, \code{sum_ys_p25}, \code{sum_ys_p75}, \code{sum_ys_p0}, \code{sum_ys_p100},
+\code{ratio_ys_mean}, \code{ratio_ys_sd}, \code{ratio_ys_median}, \code{ratio_ys_p25},
+\code{ratio_ys_p75}, \code{ratio_ys_p0}, \code{ratio_ys_p100}, \code{prob_conclusive},
+\code{prob_superior}, \code{prob_equivalence}, \code{prob_futility}, \code{prob_max},
+\verb{prob_select_*} (with \code{*} being an \code{arm} name), \code{rmse}, \code{rmse_te}, and
+\code{idp}. All may be specified with either spaces or underlines. Defaults to
+\code{"size mean"}.}
 
 \item{resolution}{single positive integer, the number of points calculated
 and plotted, defaults to \code{100} and must be \verb{>= 10}. Higher numbers lead to
@@ -135,6 +138,12 @@ summarised (after restrictions) divided by 10.}
 \item{nrow, ncol}{the number of rows and columns when plotting multiple
 metrics in the same plot (using faceting in \code{ggplot2}). Defaults to \code{NULL},
 in which case this will be determined automatically.}
+
+\item{cores}{single integer; the number of cores used to extract simulation
+results using the \code{parallel} library. Defaults to use the \code{"mc.cores"}
+global option if set (\verb{options(mc.cores = <number>)}) and \code{1} otherwise;
+more cores may be used to extract large simulation results quicker. Use
+\code{parallel::detectCores()} to find the number of available cores.}
 }
 \value{
 A \code{ggplot2} plot object.

@@ -3,8 +3,8 @@
 ### New features:
 
 *   Parallelisation of functions `extract_results()`, `check_performance()`, and
-    the `summary()` and `print()` methods for `trial_results` objects via the
-    `cores` argument.
+    consequently also of `plot_convergence()` and the `summary()` and `print()`
+    methods for `trial_results` objects via the `cores` argument.
     Note that random number generator seeds used by the bootstrapping process in
     `check_performance()` are set on an ad hoc basis for each bootstrap sample
     to ensure similar results regardless of the number of cores; random number
@@ -32,6 +32,10 @@
     to crash.
 
 ### Minor changes:
+
+*   Now includes min/max values when summarising numerical performance metrics
+    in `check_performance()` and `summary()`, and these may be plotted using
+    `plot_convergence()` as well.
 
 *   All parallelised functions now defaults to using the global option
     `"mc.cores"` if set by `options(mc.cores = <number>)` and otherwise `1`. 
