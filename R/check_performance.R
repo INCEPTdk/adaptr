@@ -48,10 +48,13 @@ calculate_idp <- function(sels, arms, true_ys, highest_is_best) {
 #'   percentile-based bootstrapped confidence intervals. Defaults to `0.95`,
 #'   corresponding to 95% confidence intervals.
 #' @param boot_seed single integer, `NULL` (default), or `"base"`. If a value is
-#'   provided, this value will be used as the random seed when bootstrapping and
+#'   provided, this value will be used to initiate random seeds when bootstrapping and
 #'   the global random seed will be restored after the function has run,
 #'   so it is not affected. If `"base"` is specified, the `base_seed` specified
-#'   in [run_trials()] is used.
+#'   in [run_trials()] is used. **NOTE:** random number generation is managed
+#'   on an ad hoc basis during bootstrapping (to ensure the same results
+#'   regardless of the number of `cores`); random number streams are not truly
+#'   managed in parallel but set separately for each bootstrap sample.
 #'
 #' @return A tidy `data.frame` with added class `trial_performance` (to control
 #'   the number of digits printed, see [print()]), with the columns
@@ -117,6 +120,8 @@ calculate_idp <- function(sels, arms, true_ys, highest_is_best) {
 #'
 #' @export
 #'
+#' @import parallel
+#'
 #' @importFrom stats sd median quantile
 #'
 #' @seealso
@@ -143,8 +148,8 @@ check_performance <- function(object, select_strategy = "control if available",
                               select_last_arm = FALSE, select_preferences = NULL,
                               te_comp = NULL, raw_ests = FALSE, final_ests = NULL,
                               restrict = NULL, uncertainty = FALSE, n_boot = 5000,
-                              ci_width = 0.95, boot_seed = NULL) {
-
+                              ci_width = 0.95, boot_seed = NULL,
+                              cores = getOption("mc.cores", 1)) {
   # Check validity of restrict argument
   if (!is.null(restrict)) {
     if (!restrict %in% c("superior", "selected")) {
@@ -166,7 +171,7 @@ check_performance <- function(object, select_strategy = "control if available",
       stop0("ci_width must be a single numeric value >= 0 and < 1 if n_boot is not NULL.")
     }
 
-    # Check and set seed if relevant, restore afterwards if set (only done if bootstrapping)
+    # Check and prepare seeds if relevant (only done if bootstrapping)
     if (!is.null(boot_seed)) {
       if (boot_seed == "base" & length(boot_seed) == 1) {
         boot_seed <- object$base_seed
@@ -176,13 +181,10 @@ check_performance <- function(object, select_strategy = "control if available",
       }
       if (!verify_int(boot_seed)) {
         stop0("boot_seed must be either NULL, 'base' or a single whole number.")
-      }
-      if (exists(".Random.seed", envir = globalenv())) {
-        oldseed <- get(".Random.seed", envir = globalenv())
-        on.exit(assign(".Random.seed", value = oldseed,
-                       envir = globalenv()), add = TRUE, after = FALSE)
-      }
-      set.seed(boot_seed)
+      } # Generate random seeds
+      seeds <- sample(1:n_boot)
+    } else { # Missing seeds if not used
+      seeds <- rep(NA, n_boot)
     }
   }
 
@@ -191,7 +193,7 @@ check_performance <- function(object, select_strategy = "control if available",
                               select_last_arm = select_last_arm,
                               select_preferences = select_preferences,
                               te_comp = te_comp, raw_ests = raw_ests,
-                              final_ests = final_ests)
+                              final_ests = final_ests, cores = cores)
 
   arms <- object$trial_spec$trial_arms$arms
   true_ys <- object$trial_spec$trial_arms$true_ys
@@ -240,35 +242,76 @@ check_performance <- function(object, select_strategy = "control if available",
   if (!uncertainty) { # No bootstrapping
     res <- res[, 1:2]
   } else { # Bootstrapping
-    boot_mat <- matrix(rep(NA, nrow(res) * n_boot), ncol = n_boot)
 
-    # Bootstrap loop
-    for (b in 1:n_boot) {
-      # Bootstrap resampling and restriction
-      extr_boot <- extr_res[sample(n_rep, size = n_rep, replace = TRUE), ]
-      if (is.null(restrict)) {
-        restrict_idx <- rep(TRUE, n_rep)
-      } else if (restrict == "superior") {
-        restrict_idx <- !is.na(extr_boot$superior_arm)
-      } else {
-        restrict_idx <- !is.na(extr_boot$selected_arm)
+    # Define bootstrap function
+    performance_bootstrap_batch <- function(cur_seeds,
+                                            extr_res,
+                                            restrict,
+                                            n_rep) {
+      # Restore seed afterwards if existing
+      if (exists(".Random.seed", envir = globalenv())) {
+        oldseed <- get(".Random.seed", envir = globalenv())
+        on.exit(assign(".Random.seed", value = oldseed,
+                       envir = globalenv()), add = TRUE, after = FALSE)
       }
-      n_restrict <- sum(restrict_idx)
 
-      boot_mat[, b] <- c(n_restrict,
-                         summarise_num(extr_boot$final_n[restrict_idx]),
-                         summarise_num(extr_boot$sum_ys[restrict_idx]),
-                         summarise_num(extr_boot$ratio_ys[restrict_idx]),
-                         mean(extr_boot$final_status != "max"),
-                         mean(extr_boot$final_status[restrict_idx] == "superiority"),
-                         mean(extr_boot$final_status[restrict_idx] == "equivalence"),
-                         mean(extr_boot$final_status[restrict_idx] == "futility"),
-                         mean(extr_boot$final_status[restrict_idx] == "max"),
-                         vapply_num(arms, function(a) sum(extr_boot$selected_arm[restrict_idx] == a, na.rm = TRUE) / n_restrict),
-                         mean(is.na(extr_boot$selected_arm[restrict_idx])),
-                         sqrt(mean(extr_boot$sq_err[restrict_idx], na.rm = TRUE)) %f|% NA,
-                         sqrt(mean(extr_boot$sq_err_te[restrict_idx], na.rm = TRUE)) %f|% NA,
-                         calculate_idp(extr_boot$selected_arm[restrict_idx], arms, true_ys, highest_is_best) %f|% NA)
+      # Prepare matrix
+      n_boot <- length(cur_seeds)
+      boot_mat <- matrix(rep(NA, 28 * n_boot), ncol = n_boot)
+
+      # Bootstrap loop
+      for (b in 1:n_boot) {
+        # Set seed (if wanted) and bootstrap re-sample
+        if (!is.na(cur_seeds[b])) {
+          set.seed(cur_seeds[b])
+        }
+        extr_boot <- extr_res[sample(n_rep, size = n_rep, replace = TRUE), ]
+        # Restriction
+        if (is.null(restrict)) {
+          restrict_idx <- rep(TRUE, n_rep)
+        } else if (restrict == "superior") {
+          restrict_idx <- !is.na(extr_boot$superior_arm)
+        } else {
+          restrict_idx <- !is.na(extr_boot$selected_arm)
+        }
+        n_restrict <- sum(restrict_idx)
+
+        boot_mat[, b] <- c(n_restrict,
+                           summarise_num(extr_boot$final_n[restrict_idx]),
+                           summarise_num(extr_boot$sum_ys[restrict_idx]),
+                           summarise_num(extr_boot$ratio_ys[restrict_idx]),
+                           mean(extr_boot$final_status != "max"),
+                           mean(extr_boot$final_status[restrict_idx] == "superiority"),
+                           mean(extr_boot$final_status[restrict_idx] == "equivalence"),
+                           mean(extr_boot$final_status[restrict_idx] == "futility"),
+                           mean(extr_boot$final_status[restrict_idx] == "max"),
+                           vapply_num(arms, function(a) sum(extr_boot$selected_arm[restrict_idx] == a, na.rm = TRUE) / n_restrict),
+                           mean(is.na(extr_boot$selected_arm[restrict_idx])),
+                           sqrt(mean(extr_boot$sq_err[restrict_idx], na.rm = TRUE)) %f|% NA,
+                           sqrt(mean(extr_boot$sq_err_te[restrict_idx], na.rm = TRUE)) %f|% NA,
+                           calculate_idp(extr_boot$selected_arm[restrict_idx], arms, true_ys, highest_is_best) %f|% NA)
+      }
+      boot_mat
+    }
+
+    # Get bootstrap estimates
+    if (cores == 1) { # Single core
+      boot_mat <- performance_bootstrap_batch(cur_seeds = seeds, extr_res = extr_res,
+                                              restrict = restrict, n_rep = n_rep)
+    } else { # Multiple cores
+      # Setup cores
+      cl <- makeCluster(cores)
+      on.exit(stopCluster(cl), add = TRUE, after = FALSE)
+      # Derive chunks
+      seed_chunks <- lapply(1:cores, function(x) {
+        size <- ceiling(n_boot / cores)
+        start <- (size * (x-1) + 1)
+        seeds[start:min(start - 1 + size, n_boot)]
+      })
+      # Bootstrap
+      boot_mat <- do.call(cbind,
+                          clusterApply(cl = cl, x = seed_chunks, fun = performance_bootstrap_batch,
+                                       extr_res = extr_res, restrict = restrict, n_rep = n_rep))
     }
 
     # Summarise bootstrap results

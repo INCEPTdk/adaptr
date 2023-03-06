@@ -16,7 +16,8 @@ check_performance(
   uncertainty = FALSE,
   n_boot = 5000,
   ci_width = 0.95,
-  boot_seed = NULL
+  boot_seed = NULL,
+  cores = getOption("mc.cores", 1)
 )
 }
 \arguments{
@@ -124,10 +125,19 @@ percentile-based bootstrapped confidence intervals. Defaults to \code{0.95},
 corresponding to 95\% confidence intervals.}
 
 \item{boot_seed}{single integer, \code{NULL} (default), or \code{"base"}. If a value is
-provided, this value will be used as the random seed when bootstrapping and
+provided, this value will be used to initiate random seeds when bootstrapping and
 the global random seed will be restored after the function has run,
 so it is not affected. If \code{"base"} is specified, the \code{base_seed} specified
-in \code{\link[=run_trials]{run_trials()}} is used.}
+in \code{\link[=run_trials]{run_trials()}} is used. \strong{NOTE:} random number generation is managed
+on an ad hoc basis during bootstrapping (to ensure the same results
+regardless of the number of \code{cores}); random number streams are not truly
+managed in parallel but set separately for each bootstrap sample.}
+
+\item{cores}{single integer; the number of cores used to extract simulation
+results using the \code{parallel} library. Defaults to use the \code{"mc.cores"}
+global option if set (\verb{options(mc.cores = <number>)}) and \code{1} otherwise;
+more cores may be used to extract large simulation results quicker. Use
+\code{parallel::detectCores()} to find the number of available cores.}
 }
 \value{
 A tidy \code{data.frame} with added class \code{trial_performance} (to control

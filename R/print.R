@@ -286,10 +286,12 @@ print.trial_results <- function(x,
                                 select_preferences = NULL, te_comp = NULL,
                                 raw_ests = FALSE, final_ests = NULL,
                                 restrict = NULL, digits = 1,
+                                cores = getOption("mc.cores", 1),
                                 ...) {
   print(summary(object = x, select_strategy = select_strategy,
                 select_preferences = select_preferences, te_comp = te_comp,
-                raw_ests = raw_ests, final_ests = final_ests, restrict = restrict),
+                raw_ests = raw_ests, final_ests = final_ests, restrict = restrict,
+                cores = cores),
         digits = digits)
 
   # Return invisibly

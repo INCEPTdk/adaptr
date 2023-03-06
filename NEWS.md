@@ -2,8 +2,15 @@
 
 ### New features:
 
-*   Increased parallelisation of functions `extract_results()`, <more coming>,
-    via the `cores` argument.
+*   Parallelisation of functions `extract_results()`, `check_performance()`, and
+    the `summary()` and `print()` methods for `trial_results` objects via the
+    `cores` argument.
+    Note that random number generator seeds used by the bootstrapping process in
+    `check_performance()` are set on an ad hoc basis for each bootstrap sample
+    to ensure similar results regardless of the number of cores; random number
+    streams are not truly parallelised. Due to this change, bootstrapped results
+    from `check_performance()` between this version and the previous version of
+    the package will not be identical.
 
 ### Bug fixes:
 
@@ -27,7 +34,7 @@
 ### Minor changes:
 
 *   All parallelised functions now defaults to using the global option
-    `"mc.cores"`, if set by `options(mc.cores = <number>)` (otherwise `1`). 
+    `"mc.cores"` if set by `options(mc.cores = <number>)` and otherwise `1`. 
 
 *   When `overwrite` is `TRUE` in `run_trials()`, the previous object will be
     overwritten, even if the previous object used a different trial

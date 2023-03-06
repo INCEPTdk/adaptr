@@ -25,6 +25,7 @@
   final_ests = NULL,
   restrict = NULL,
   digits = 1,
+  cores = getOption("mc.cores", 1),
   ...
 )
 
@@ -127,6 +128,12 @@ results are summarised for simulations ending with a selected arm
 ending with superiority). Some summary measures (e.g., \code{prob_conclusive})
 have substantially different interpretations if restricted, but are
 calculated nonetheless.}
+
+\item{cores}{single integer; the number of cores used to extract simulation
+results using the \code{parallel} library. Defaults to use the \code{"mc.cores"}
+global option if set (\verb{options(mc.cores = <number>)}) and \code{1} otherwise;
+more cores may be used to extract large simulation results quicker. Use
+\code{parallel::detectCores()} to find the number of available cores.}
 }
 \value{
 Invisibly returns \code{x}.

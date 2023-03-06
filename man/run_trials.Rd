@@ -10,7 +10,7 @@ run_trials(
   path = NULL,
   overwrite = FALSE,
   grow = FALSE,
-  cores = 1,
+  cores = getOption("mc.cores", 1),
   base_seed = NULL,
   sparse = TRUE,
   progress = NULL,
@@ -42,9 +42,10 @@ additional number of simulations will be run (appropriately re-using the
 same \code{base_seed}, if specified) and appended to the same file.}
 
 \item{cores}{single integer; the number of cores to run the simulations on
-using the \code{parallel} library. Defaults to \code{1}; may be increased to run
-multiple simulations in parallel. \code{\link[parallel:detectCores]{parallel::detectCores()}} may be used to
-find the number of available cores.}
+using the \code{parallel} library. Defaults to use the \code{"mc.cores"} global
+option if set (\verb{options(mc.cores = <number>)}) and \code{1} otherwise; may be
+increased to run multiple simulations in parallel. Use
+\code{\link[parallel:detectCores]{parallel::detectCores()}} to find the number of available cores.}
 
 \item{base_seed}{single integer or \code{NULL} (default); a random seed used as
 the basis for simulations. If a number is provided, each single trial

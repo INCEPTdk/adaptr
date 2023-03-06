@@ -24,9 +24,10 @@ simulation times.}
 simulations if \code{grow} is used in \code{\link[=run_trials]{run_trials()}}).}
 
 \item{cores}{single integer; the number of cores to run the simulations on
-using the \code{parallel} library. Defaults to \code{1}; may be increased to run
-multiple simulations in parallel. \code{\link[parallel:detectCores]{parallel::detectCores()}} may be used to
-find the number of available cores.}
+using the \code{parallel} library. Defaults to use the \code{"mc.cores"} global
+option if set (\verb{options(mc.cores = <number>)}) and \code{1} otherwise; may be
+increased to run multiple simulations in parallel. Use
+\code{\link[parallel:detectCores]{parallel::detectCores()}} to find the number of available cores.}
 }
 \value{
 List containing \code{breaks} (the number of patients at each break),

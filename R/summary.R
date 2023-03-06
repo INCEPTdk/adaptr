@@ -65,9 +65,12 @@
 summary.trial_results <- function(object,
                                   select_strategy = "control if available",
                                   select_last_arm = FALSE,
-                                  select_preferences = NULL, te_comp = NULL,
-                                  raw_ests = FALSE, final_ests = NULL,
-                                  restrict = NULL, ...) {
+                                  select_preferences = NULL,
+                                  te_comp = NULL,
+                                  raw_ests = FALSE,
+                                  final_ests = NULL,
+                                  restrict = NULL,
+                                  cores = getOption("mc.cores", 1), ...) {
 
   # Set final_ests
   if (is.null(final_ests)) {
@@ -80,7 +83,8 @@ summary.trial_results <- function(object,
                                    select_preferences = select_preferences,
                                    te_comp = te_comp,
                                    raw_ests = raw_ests, final_ests = final_ests,
-                                   restrict = restrict)
+                                   restrict = restrict,
+                                   cores = cores)
 
   # Prepare and return summary object
   performance_vec <- as.list(performance$est)
