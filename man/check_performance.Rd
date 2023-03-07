@@ -238,5 +238,6 @@ n_boot = 1000, boot_seed = "base")
 
 }
 \seealso{
-\code{\link[=extract_results]{extract_results()}}, \code{\link[=summary]{summary()}}, \code{\link[=plot_convergence]{plot_convergence()}}.
+\code{\link[=extract_results]{extract_results()}}, \code{\link[=summary]{summary()}}, \code{\link[=plot_convergence]{plot_convergence()}},
+\code{\link[=plot_metrics_ecdf]{plot_metrics_ecdf()}}.
 }

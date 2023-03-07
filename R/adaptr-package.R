@@ -32,7 +32,8 @@
 #' are used to extract results from multiple trial simulations, calculate
 #' performance metrics, and summarise results. The [plot_convergence()] function
 #' assesses stability of performance metrics according to the number of
-#' simulations conducted.
+#' simulations conducted. The [plot_metrics_ecdf()] function plots empirical
+#' cumulative distribution functions for numerical performance metrics.
 #' 4. The [plot_status()] and [plot_history()] functions are used to plot the
 #' overall trial/arm statuses for multiple simulated trials or the history of
 #' trial metrics over time for single/multiple simulated trials, respectively.

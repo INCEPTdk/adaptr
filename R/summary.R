@@ -61,7 +61,8 @@
 #' @export
 #'
 #' @seealso
-#' [extract_results()], [check_performance()], [plot_convergence()].
+#' [extract_results()], [check_performance()], [plot_convergence()],
+#' [plot_metrics_ecdf()].
 #'
 summary.trial_results <- function(object,
                                   select_strategy = "control if available",

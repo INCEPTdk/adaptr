@@ -33,7 +33,8 @@ setup as described in #1.
 are used to extract results from multiple trial simulations, calculate
 performance metrics, and summarise results. The \code{\link[=plot_convergence]{plot_convergence()}} function
 assesses stability of performance metrics according to the number of
-simulations conducted.
+simulations conducted. The \code{\link[=plot_metrics_ecdf]{plot_metrics_ecdf()}} function plots empirical
+cumulative distribution functions for numerical performance metrics.
 \item The \code{\link[=plot_status]{plot_status()}} and \code{\link[=plot_history]{plot_history()}} functions are used to plot the
 overall trial/arm statuses for multiple simulated trials or the history of
 trial metrics over time for single/multiple simulated trials, respectively.

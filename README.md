@@ -66,7 +66,7 @@ general `setup_trial()` function, or one of the special case functions,
 
 ``` r
 library(adaptr)
-#> Loading adaptr package (version 1.2.0).
+#> Loading adaptr package (version 1.2.0.9000).
 #> See 'help("adaptr")' or 'vignette("Overview", "adaptr")' for help.
 #> Further information available on https://inceptdk.github.io/adaptr/.
 
@@ -191,9 +191,9 @@ print(res_sum, digits = 1)
 #> * Treatment effect compared to: no comparison
 #> 
 #> Performance metrics (using posterior estimates from last adaptive analysis):
-#> * Sample sizes: mean 1470.0 (SD: 559.9) | median 1550.0 (IQR: 1025.0 to 2000.0)
-#> * Total summarised outcomes: mean 323.3 (SD: 110.6) | median 340.0 (IQR: 242.0 to 421.8)
-#> * Total summarised outcome rates: mean 0.224 (SD: 0.013) | median 0.229 (IQR: 0.214 to 0.233)
+#> * Sample sizes: mean 1470.0 (SD: 559.9) | median 1550.0 (IQR: 1025.0 to 2000.0) [range: 600.0 to 2000.0]
+#> * Total summarised outcomes: mean 323.3 (SD: 110.6) | median 340.0 (IQR: 242.0 to 421.8) [range: 139.0 to 441.0]
+#> * Total summarised outcome rates: mean 0.224 (SD: 0.013) | median 0.229 (IQR: 0.214 to 0.233) [range: 0.199 to 0.237]
 #> * Conclusive: 70.0%
 #> * Superiority: 50.0%
 #> * Equivalence: 20.0%
@@ -205,7 +205,7 @@ print(res_sum, digits = 1)
 #> * Ideal design percentage: 100.0%
 #> 
 #> Simulation details:
-#> * Simulation time: 0.471 secs
+#> * Simulation time: 0.419 secs
 #> * Base random seed: 67890
 #> * Credible interval width: 95%
 #> * Number of posterior draws: 5000
@@ -214,7 +214,9 @@ print(res_sum, digits = 1)
 
 Performance metrics may also be calculated and returned in a tidy
 `data.frame` (with bootstrapped uncertainty measures, if requested) by
-the `check_performance()` function, and the `plot_convergence()`
+the `check_performance()` function, and the empirical cumulative
+distribution functions of numerical performance metrics may be plotted
+by the `plot_metrics_ecdf()` function. Finally, the `plot_convergence()`
 function may be used to visually assess stability of performance metrics
 according to the number of simulations.
 

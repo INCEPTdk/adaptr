@@ -255,7 +255,8 @@ extract_results_batch <- function(trial_results,
 #' @import parallel
 #'
 #' @seealso
-#' [check_performance()], [summary()], [plot_convergence()].
+#' [check_performance()], [summary()], [plot_convergence()],
+#' [plot_metrics_ecdf()].
 #'
 extract_results <- function(object,
                             select_strategy = "control if available",

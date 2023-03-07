@@ -75,9 +75,9 @@ We can print an overview of the trial specification by simply running:
 binom_trial
 ```
 
-By default, probabilities are shown with 3 decimals. This can be changed by
-explicitly `print()`ing the specification with the `prob_digits` arguments, for
-example:
+By default, (most) probabilities are shown with 3 decimals. This can be changed
+by explicitly `print()`ing the specification with the `prob_digits` arguments,
+for example:
 
 ```{r}
 print(binom_trial, prob_digits = 2)
@@ -165,6 +165,12 @@ perf_res <- check_performance(trial_res_mult, uncertainty = TRUE, n_boot = 1000,
                               boot_seed = "base")
 
 print(perf_res, digits = 3)
+```
+
+The `plot_metrics_ecdf()` function plots empirical cumulative distribution
+functions of numerical performance metrics:
+```{r}
+plot_metrics_ecdf(trial_res_mult)
 ```
 
 Finally, the stability of performance metrics according to the number of
