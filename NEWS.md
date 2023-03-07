@@ -11,6 +11,10 @@
     streams are not truly parallelised. Due to this change, bootstrapped results
     from `check_performance()` between this version and the previous version of
     the package will not be identical.
+    
+*   Added the `plot_metrics_ecdf()` function, which plots empirical cumulative
+    distributions of numerical performance metrics across multiple trial
+    simulations.
 
 ### Bug fixes:
 
