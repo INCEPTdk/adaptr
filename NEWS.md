@@ -59,6 +59,9 @@
     `plot_history()` now prints all plots when rendering documentation if
     `ggplot2` is installed (to include all example plots on the website).
     
+*   The `setup_trial()` functions no longer prints a message informing that
+    there is no single best arm.
+    
 *   Various minor changes to `print()` methods (including changed number of
     digits for stopping rule probability thresholds).
 
