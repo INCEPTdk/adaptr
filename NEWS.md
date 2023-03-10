@@ -41,15 +41,15 @@
     in `check_performance()` and `summary()`, and these may be plotted using
     `plot_convergence()` as well.
 
-*   All parallelised functions now defaults to using the global option
+*   All parallelised functions now default to using the global option
     `"mc.cores"` if set by `options(mc.cores = <number>)` and otherwise `1`. 
 
 *   When `overwrite` is `TRUE` in `run_trials()`, the previous object will be
     overwritten, even if the previous object used a different trial
     specification.
 
-*   Various minor updates, corrections, and clarifications to package
-    documentation (including package description).
+*   Various minor updates, corrections, clarifications, and structural changes
+    to package documentation (including package description and website).
     
 *   Changed `size` to `linewidth` in the examples in `plot_status()` and
     `plot_history()` when describing further arguments that may be passed on to
