@@ -132,9 +132,9 @@
       * Treatment effect compared to: no comparison
       
       Performance metrics (using posterior estimates from last adaptive analysis):
-      * Sample sizes: mean 680.0 (SD: 433.6) | median 500.0 (IQR: 400.0 to 800.0)
-      * Total summarised outcomes: mean 176.6 (SD: 115.0) | median 133.0 (IQR: 102.2 to 210.8)
-      * Total summarised outcome rates: mean 0.258 (SD: 0.015) | median 0.260 (IQR: 0.248 to 0.268)
+      * Sample sizes: mean 680.0 (SD: 433.6) | median 500.0 (IQR: 400.0 to 800.0) [range: 300.0 to 2000.0]
+      * Total summarised outcomes: mean 176.6 (SD: 115.0) | median 133.0 (IQR: 102.2 to 210.8) [range: 69.0 to 524.0]
+      * Total summarised outcome rates: mean 0.258 (SD: 0.015) | median 0.260 (IQR: 0.248 to 0.268) [range: 0.230 to 0.283]
       * Conclusive: 95.0%
       * Superiority: 5.0%
       * Equivalence: 10.0%
@@ -166,9 +166,9 @@
       * Treatment effect compared to: no comparison
       
       Performance metrics (using posterior estimates from last adaptive analysis):
-      * Sample sizes: mean 680.0 (SD: 433.6) | median 500.0 (IQR: 400.0 to 800.0)
-      * Total summarised outcomes: mean 176.6 (SD: 115.0) | median 133.0 (IQR: 102.2 to 210.8)
-      * Total summarised outcome rates: mean 0.258 (SD: 0.015) | median 0.260 (IQR: 0.248 to 0.268)
+      * Sample sizes: mean 680.0 (SD: 433.6) | median 500.0 (IQR: 400.0 to 800.0) [range: 300.0 to 2000.0]
+      * Total summarised outcomes: mean 176.6 (SD: 115.0) | median 133.0 (IQR: 102.2 to 210.8) [range: 69.0 to 524.0]
+      * Total summarised outcome rates: mean 0.258 (SD: 0.015) | median 0.260 (IQR: 0.248 to 0.268) [range: 0.230 to 0.283]
       * Conclusive: 95.0%
       * Superiority: 5.0%
       * Equivalence: 10.0%
