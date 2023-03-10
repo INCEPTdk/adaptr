@@ -112,7 +112,7 @@ plot_metrics_ecdf <- function(object, metrics = c("size", "sum_ys", "ratio_ys"),
   # Add y-label or facet
   if (length(metrics) == 1) { # Only 1 metric
     p <- p +
-      ggplot2::scale_y_continuous(name = metricss, breaks = 0:5 * 0.2, labels = paste0(0:5 * 20, "%"), limits = 0:1, expand = c(0, 0))
+      ggplot2::scale_y_continuous(name = metrics, breaks = 0:5 * 0.2, labels = paste0(0:5 * 20, "%"), limits = 0:1, expand = c(0, 0))
   } else { # Multiple metrics plotted
     if (is.null(nrow) & is.null(ncol)) { # Set nrow if both nrow and ncol are NULL
       nrow <- length(metrics)
