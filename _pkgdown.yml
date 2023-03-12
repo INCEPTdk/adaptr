@@ -21,13 +21,13 @@ reference:
   - run_trial
   - run_trials
 
-- title: Extract or summarise results
+- title: Extract and summarise results
   contents:
   - extract_results
   - check_performance
   - summary
 
-- title: Plot results
+- title: Plotting functions
   contents:
   - plot_convergence
   - plot_metrics_ecdf
