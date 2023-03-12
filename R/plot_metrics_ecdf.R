@@ -46,8 +46,8 @@
 #' [plot_convergence()].
 #'
 plot_metrics_ecdf <- function(object, metrics = c("size", "sum_ys", "ratio_ys"),
-                                  restrict = NULL, nrow = NULL, ncol = NULL,
-                                  cores = getOption("mc.cores", 1)) {
+                              restrict = NULL, nrow = NULL, ncol = NULL,
+                              cores = getOption("mc.cores", 1)) {
 
   # Check packages
   assert_pkgs("ggplot2")
