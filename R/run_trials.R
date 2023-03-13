@@ -131,7 +131,8 @@ dispatch_trial_runs <- function(X, trial_spec, base_seed, sparse, cores, cl = NU
 #'   the basis for simulations. If a number is provided, each single trial
 #'   simulation will set the random seed to a value based on this (+ the trial
 #'   number), without affecting the global random seed after the function has
-#'   been run.
+#'   been run. If running on multiple cores, `[RNGkind()]` is called on each
+#'   core to use the currently used kind from the main process.
 #' @param sparse single logical, as described in [run_trial()]; defaults to
 #'   `TRUE` when running multiple simulations, in which case only the data
 #'   necessary to summarise all simulations are saved for each simulation.
@@ -316,6 +317,8 @@ run_trials <- function(trial_spec, n_rep, path = NULL, overwrite = FALSE,
     if (cores > 1) {
       cl <- makeCluster(cores)
       on.exit(stopCluster(cl), add = TRUE, after = FALSE)
+      .rng_kind <- RNGkind()
+      clusterCall(cl, RNGkind, kind = .rng_kind[1], normal.kind = .rng_kind[2], sample.kind = .rng_kind[3])
       if (!is.null(export)) clusterExport(cl = cl, varlist = export, envir = export_envir)
     }
 

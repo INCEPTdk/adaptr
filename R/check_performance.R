@@ -54,7 +54,9 @@ calculate_idp <- function(sels, arms, true_ys, highest_is_best) {
 #'   in [run_trials()] is used. **NOTE:** random number generation is managed
 #'   on an ad hoc basis during bootstrapping (to ensure the same results
 #'   regardless of the number of `cores`); random number streams are not truly
-#'   managed in parallel but set separately for each bootstrap sample.
+#'   managed in parallel but set separately for each bootstrap sample. If
+#'   running on multiple cores, `[RNGkind()]` is called on each core to use the
+#'   currently used kind from the main process.
 #'
 #' @return A tidy `data.frame` with added class `trial_performance` (to control
 #'   the number of digits printed, see [print()]), with the columns
@@ -310,6 +312,8 @@ check_performance <- function(object, select_strategy = "control if available",
       # Setup cores
       cl <- makeCluster(cores)
       on.exit(stopCluster(cl), add = TRUE, after = FALSE)
+      .rng_kind <- RNGkind()
+      clusterCall(cl, RNGkind, kind = .rng_kind[1], normal.kind = .rng_kind[2], sample.kind = .rng_kind[3])
       # Derive chunks
       seed_chunks <- lapply(1:cores, function(x) {
         size <- ceiling(n_boot / cores)
