@@ -8,6 +8,8 @@
 #' are validated by [run_trials()].
 #'
 #' @inheritParams run_trials
+#' @param prev_n_rep single integer, the previous number of simulations run (to
+#'   add to the indices generated and used).
 #' @param n_rep_new single integers, number of new simulations to run (i.e.,
 #'   `n_rep` as supplied to [run_trials()] minus the number of previously run
 #'   simulations if `grow` is used in [run_trials()]).
@@ -19,7 +21,7 @@
 #'
 #' @keywords internal
 #'
-prog_breaks <- function(progress, n_rep_new, cores) {
+prog_breaks <- function(progress, prev_n_rep, n_rep_new, cores) {
   # Calculate the breakpoints and probabilities; only allow unique breakpoints
   prog_seq <- unique(c(seq(from = 0, to = 1, by = progress), 1))[-1] # Always end at 1, ignore first
   breaks <- rep(NA_real_, length(prog_seq))
@@ -27,7 +29,7 @@ prog_breaks <- function(progress, n_rep_new, cores) {
   # End at the final number of new simulations, regardless of the above
   breaks[length(breaks)] <- n_rep_new
   # For all other breakpoints, add as multiples of the number of cores
-  valid_breaks <- (2:(n_rep_new-1))[(2:(n_rep_new-1)) %% cores == 0]
+  valid_breaks <- (2:(n_rep_new - 1))[(2:(n_rep_new - 1)) %% cores == 0]
   for (i in seq_along(breaks)[-length(breaks)]) {
     # Select first valid break value which is a multiple of the number of cores
     tmp_break <- valid_breaks[valid_breaks >= base_breaks[i]][1]
@@ -38,7 +40,7 @@ prog_breaks <- function(progress, n_rep_new, cores) {
   # Match valid breaks and matching percentages
   breaks <- breaks[!is.na(breaks)]
   # Final proportion of breaks
-  prog_prop <- rep(NA_real_, length(breaks)-1)
+  prog_prop <- rep(NA_real_, length(breaks) - 1)
   for (i in seq_along(prog_prop)) {
     prog_prop[i] <- prog_seq[which.min(abs(base_breaks - breaks[i]))]
   }
@@ -53,7 +55,7 @@ prog_breaks <- function(progress, n_rep_new, cores) {
   batches <- list()
   prog_prev_n <- 0
   for (i in seq_along(prog_prop)) {
-    batches[[i]] <- (prog_prev_n+1):breaks[i]
+    batches[[i]] <- ((prog_prev_n + 1):breaks[i]) + prev_n_rep
     prog_prev_n <- breaks[i]
   }
 
@@ -69,29 +71,35 @@ prog_breaks <- function(progress, n_rep_new, cores) {
 #' Simulate single trial after setting seed
 #'
 #' Helper function to dispatch the running of several trials to [lapply()] or
-#' [parallel::parLapply()]. Used internally in calls by the [run_trials()]
+#' [parallel::parLapply()], seeting seeds correctly if a `base_seed` was used
+#' when calling [run_trials()]. Used internally in calls by the [run_trials()]
 #' function.
 #'
-#' @param i single integer, the simulation number.
+#' @inheritParams run_trials
+#' @param is vector of integers, the simulation numbers/indices.
 #' @param trial_spec trial specification as provided by [setup_trial()],
 #'   [setup_trial_binom()] or [setup_trial_norm()].
-#' @inheritParams run_trials
+#' @param cl `NULL` (default) for running sequentially, otherwise a `parallel`
+#'   cluster for parallel computation if `cores > 1`.
 #'
 #' @return Single trial simulation object, as described in [run_trial()].
 #'
 #' @keywords internal
 #'
-dispatch_trial_runs <- function(X, trial_spec, base_seed, sparse, cores, cl = NULL) {
-  common_args <- list(X = X, trial_spec = trial_spec, base_seed = base_seed, sparse = sparse)
+dispatch_trial_runs <- function(is, trial_spec, seeds, sparse, cores, cl = NULL) {
+  common_args <- list(X = seeds[is], trial_spec = trial_spec, sparse = sparse)
 
-  run_trial_seed <- function(i, trial_spec, base_seed, sparse) {
-    run_trial(trial_spec, seed = if (is.null(base_seed)) NULL else base_seed + i, sparse = sparse)
+  run_trial_seeds <- function(seeds, trial_spec, sparse) {
+    if (!is.null(seeds)) {
+      assign(".Random.seed", value = seeds, envir = globalenv())
+    }
+    run_trial(trial_spec, sparse = sparse)
   }
 
   if (cores == 1) {
-    do.call(lapply, c(common_args, FUN = run_trial_seed))
+    do.call(lapply, c(common_args, FUN = run_trial_seeds))
   } else {
-    do.call(parLapply, c(common_args, fun = run_trial_seed, cl = list(cl)))
+    do.call(parLapply, c(common_args, fun = run_trial_seeds, cl = list(cl)))
   }
 }
 
@@ -131,8 +139,8 @@ dispatch_trial_runs <- function(X, trial_spec, base_seed, sparse, cores, cl = NU
 #'   the basis for simulations. If a number is provided, each single trial
 #'   simulation will set the random seed to a value based on this (+ the trial
 #'   number), without affecting the global random seed after the function has
-#'   been run. If running on multiple cores, `[RNGkind()]` is called on each
-#'   core to use the currently used kind from the main process.
+#'   been run. Regardless of whether simulations are run sequentially or in
+#'   parallel, random number streams will be identical and appropriate.
 #' @param sparse single logical, as described in [run_trial()]; defaults to
 #'   `TRUE` when running multiple simulations, in which case only the data
 #'   necessary to summarise all simulations are saved for each simulation.
@@ -179,7 +187,8 @@ dispatch_trial_runs <- function(X, trial_spec, base_seed, sparse, cores, cl = NU
 #' the [parallel::clusterExport()]-function.
 #'
 #' @return A list of a special class `"trial_results"`, which contains the
-#'   `trial_results` (results from all simulations), `trial_spec` (the trial
+#'   `trial_results` (results from all simulations; note that `seed` will be
+#'   `NULL` in the individual simulations), `trial_spec` (the trial
 #'   specification), `n_rep`, `base_seed`, `elapsed_time` (the total simulation
 #'   run time), `sparse` (as described above) and `adaptr_version` (the version
 #'   of the `adaptr` package used to run the simulations). These results may be
@@ -238,15 +247,15 @@ run_trials <- function(trial_spec, n_rep, path = NULL, overwrite = FALSE,
         !equivalent_funs(prev$trial_spec$fun_y_gen, trial_spec$fun_y_gen) |
         !equivalent_funs(prev$trial_spec$fun_draws, trial_spec$fun_draws) |
         !equivalent_funs(prev$trial_spec$fun_raw_est, trial_spec$fun_raw_est)) {
-        stop0("The trial specification contained in the object in path is not ",
-              "the same as the one provided; thus the previous result was not loaded.")
+      stop0("The trial specification contained in the object in path is not ",
+            "the same as the one provided; thus the previous result was not loaded.")
     } else {
       prev_adaptr_version <- prev$adaptr_version
-        if ((is.null(prev_adaptr_version) | isTRUE(prev_adaptr_version < .adaptr_version))) {
-          stop0("The object in path was created by a previous version of adaptr and ",
-                "cannot be used by this version of adaptr unless the object is updated. ",
-                "Type 'help(\"update_saved_trials\")' for help on updating.")
-        }
+      if ((is.null(prev_adaptr_version) | isTRUE(prev_adaptr_version < .adaptr_version))) {
+        stop0("The object in path was created by a previous version of adaptr and ",
+              "cannot be used by this version of adaptr unless the object is updated. ",
+              "Type 'help(\"update_saved_trials\")' for help on updating.")
+      }
     }
     if (grow & overwrite) {
       stop0("Both grow and overwrite are TRUE. At least one of them must be ",
@@ -309,27 +318,44 @@ run_trials <- function(trial_spec, n_rep, path = NULL, overwrite = FALSE,
     elapsed_time <- prev$elapsed_time
   }
 
-  if (action < 3) { # Grow or add new
-    new_base_seed <- if (is.null(base_seed)) NULL else base_seed + prev_n_rep
+  if (action < 3) { # Grow or new
     n_rep_new <- n_rep - prev_n_rep
+
+    # Create random seeds
+    if (!is.null(base_seed)) {
+      if (exists(".Random.seed", envir = globalenv())){ # A global random seed exists (not the case when called from parallel::parLapply)
+        oldseed <- get(".Random.seed", envir = globalenv())
+        on.exit(assign(".Random.seed", value = oldseed, envir = globalenv()), add = TRUE, after = FALSE)
+      }
+      old_rngkind <- RNGkind("L'Ecuyer-CMRG", "default", "default")
+      on.exit(RNGkind(kind = old_rngkind[1], normal.kind = old_rngkind[2], sample.kind = old_rngkind[3]), add = TRUE, after = FALSE)
+      set.seed(base_seed)
+      seeds <- list(get(".Random.seed", envir = globalenv()))
+      if (n_rep > 1) {
+        for (i in 2:n_rep) {
+          seeds[[i]] <- nextRNGStream(seeds[[i - 1]])
+        }
+      }
+    } else {
+      seeds <- rep(list(NULL), n_rep)
+    }
 
     # Setup cluster if using multiple cores
     if (cores > 1) {
       cl <- makeCluster(cores)
       on.exit(stopCluster(cl), add = TRUE, after = FALSE)
-      .rng_kind <- RNGkind()
-      clusterCall(cl, RNGkind, kind = .rng_kind[1], normal.kind = .rng_kind[2], sample.kind = .rng_kind[3])
+      clusterEvalQ(cl, RNGkind("L'Ecuyer-CMRG", "default", "default"))
       if (!is.null(export)) clusterExport(cl = cl, varlist = export, envir = export_envir)
     }
 
     # Run simulations
     if (is.null(progress)) { # No progress printed
-      trials <- dispatch_trial_runs(X = 1:n_rep_new, trial_spec = trial_spec,
-                                    base_seed = new_base_seed, sparse = sparse, cores = cores,
+      trials <- dispatch_trial_runs(is = (prev_n_rep + 1):n_rep, trial_spec = trial_spec,
+                                    seeds = seeds, sparse = sparse, cores = cores,
                                     cl = if (cores > 1) cl else NULL)
     } else { # Print progress
       # Prepare
-      prog_vals <- prog_breaks(progress = progress, n_rep_new = n_rep_new, cores = cores)
+      prog_vals <- prog_breaks(progress = progress, prev_n_rep = prev_n_rep, n_rep_new = n_rep_new, cores = cores)
       trials <- list()
       prog_prev_n <- 0
       if (prev_n_rep > 0) cat0("run_trials: loaded ", prev_n_rep, " previous simulations, running ", n_rep_new, " new\n")
@@ -337,8 +363,8 @@ run_trials <- function(trial_spec, n_rep, path = NULL, overwrite = FALSE,
       # Loop
       for (i in seq_along(prog_vals$breaks)) {
         # Run simulations
-        trials[[i]] <- dispatch_trial_runs(X = prog_vals$batches[[i]], trial_spec = trial_spec,
-                                           base_seed = new_base_seed, sparse = sparse, cores = cores,
+        trials[[i]] <- dispatch_trial_runs(is = prog_vals$batches[[i]], trial_spec = trial_spec,
+                                           seeds = seeds, sparse = sparse, cores = cores,
                                            cl = if (cores > 1) cl else NULL)
         # Print status including timestamp
         tmdf <- Sys.time() - tic

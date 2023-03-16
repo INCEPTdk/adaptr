@@ -128,10 +128,9 @@ corresponding to 95\% confidence intervals.}
 provided, this value will be used to initiate random seeds when bootstrapping and
 the global random seed will be restored after the function has run,
 so it is not affected. If \code{"base"} is specified, the \code{base_seed} specified
-in \code{\link[=run_trials]{run_trials()}} is used. \strong{NOTE:} random number generation is managed
-on an ad hoc basis during bootstrapping (to ensure the same results
-regardless of the number of \code{cores}); random number streams are not truly
-managed in parallel but set separately for each bootstrap sample.}
+in \code{\link[=run_trials]{run_trials()}} is used. Regardless of whether simulations are run
+sequentially or in parallel, random number streams will be identical and
+appropriate.}
 
 \item{cores}{single integer; the number of cores used to extract simulation
 results using the \code{parallel} library. Defaults to use the \code{"mc.cores"}

@@ -21,7 +21,7 @@ defaults to \code{TRUE} (as in \code{\link[=saveRDS]{saveRDS()}}), see \code{\li
 Invisibly returns the updated \code{"trial_results"}-object.
 }
 \description{
-This function updates a previously saved \code{"trial_results"}-object created and
+This function updates a previously saved \code{"trial_results"} object created and
 saved by \code{\link[=run_trials]{run_trials()}} using a previous version of \code{adaptr}, allowing the
 results from these previous simulations to be post-processed (including
 performance metric calculation, printing and plotting) without errors by this

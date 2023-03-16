@@ -4,7 +4,7 @@
 \alias{prog_breaks}
 \title{Generate breakpoints and other values for printing progress}
 \usage{
-prog_breaks(progress, n_rep_new, cores)
+prog_breaks(progress, prev_n_rep, n_rep_new, cores)
 }
 \arguments{
 \item{progress}{single numeric \verb{> 0} and \verb{<= 1} or \code{NULL}. If \code{NULL}
@@ -18,6 +18,9 @@ finish running their current assigned batches before the other cores may
 proceed with the next batch. If there is substantial differences in the
 simulation speeds across cores, using \code{progress} may thus increase total
 simulation times.}
+
+\item{prev_n_rep}{single integer, the previous number of simulations run (to
+add to the indices generated and used).}
 
 \item{n_rep_new}{single integers, number of new simulations to run (i.e.,
 \code{n_rep} as supplied to \code{\link[=run_trials]{run_trials()}} minus the number of previously run

@@ -51,7 +51,8 @@ increased to run multiple simulations in parallel. Use
 the basis for simulations. If a number is provided, each single trial
 simulation will set the random seed to a value based on this (+ the trial
 number), without affecting the global random seed after the function has
-been run.}
+been run. Regardless of whether simulations are run sequentially or in
+parallel, random number streams will be identical and appropriate.}
 
 \item{sparse}{single logical, as described in \code{\link[=run_trial]{run_trial()}}; defaults to
 \code{TRUE} when running multiple simulations, in which case only the data
@@ -91,7 +92,8 @@ environment from where \code{\link[=run_trials]{run_trials()}} is called.}
 }
 \value{
 A list of a special class \code{"trial_results"}, which contains the
-\code{trial_results} (results from all simulations), \code{trial_spec} (the trial
+\code{trial_results} (results from all simulations; note that \code{seed} will be
+\code{NULL} in the individual simulations), \code{trial_spec} (the trial
 specification), \code{n_rep}, \code{base_seed}, \code{elapsed_time} (the total simulation
 run time), \code{sparse} (as described above) and \code{adaptr_version} (the version
 of the \code{adaptr} package used to run the simulations). These results may be

@@ -51,12 +51,9 @@ calculate_idp <- function(sels, arms, true_ys, highest_is_best) {
 #'   provided, this value will be used to initiate random seeds when bootstrapping and
 #'   the global random seed will be restored after the function has run,
 #'   so it is not affected. If `"base"` is specified, the `base_seed` specified
-#'   in [run_trials()] is used. **NOTE:** random number generation is managed
-#'   on an ad hoc basis during bootstrapping (to ensure the same results
-#'   regardless of the number of `cores`); random number streams are not truly
-#'   managed in parallel but set separately for each bootstrap sample. If
-#'   running on multiple cores, `[RNGkind()]` is called on each core to use the
-#'   currently used kind from the main process.
+#'   in [run_trials()] is used. Regardless of whether simulations are run
+#'   sequentially or in parallel, random number streams will be identical and
+#'   appropriate.
 #'
 #' @return A tidy `data.frame` with added class `trial_performance` (to control
 #'   the number of digits printed, see [print()]), with the columns
@@ -191,9 +188,21 @@ check_performance <- function(object, select_strategy = "control if available",
       if (!verify_int(boot_seed)) {
         stop0("boot_seed must be either NULL, 'base' or a single whole number.")
       } # Generate random seeds
-      seeds <- sample(1:n_boot)
-    } else { # Missing seeds if not used
-      seeds <- rep(NA, n_boot)
+      if (exists(".Random.seed", envir = globalenv())){ # A global random seed exists (not the case when called from parallel::parLapply)
+        oldseed <- get(".Random.seed", envir = globalenv())
+        on.exit(assign(".Random.seed", value = oldseed, envir = globalenv()), add = TRUE, after = FALSE)
+      }
+      old_rngkind <- RNGkind("L'Ecuyer-CMRG", "default", "default")
+      on.exit(RNGkind(kind = old_rngkind[1], normal.kind = old_rngkind[2], sample.kind = old_rngkind[3]), add = TRUE, after = FALSE)
+      set.seed(boot_seed)
+      seeds <- list(get(".Random.seed", envir = globalenv()))
+      if (n_boot > 1) {
+        for (i in 2:n_boot) {
+          seeds[[i]] <- nextRNGStream(seeds[[i - 1]])
+        }
+      }
+    } else { # NULL seeds if not used
+      seeds <- rep(list(NULL), n_boot)
     }
   }
 
@@ -272,8 +281,8 @@ check_performance <- function(object, select_strategy = "control if available",
       # Bootstrap loop
       for (b in 1:n_boot) {
         # Set seed (if wanted) and bootstrap re-sample
-        if (!is.na(cur_seeds[b])) {
-          set.seed(cur_seeds[b])
+        if (!is.null(cur_seeds[[b]])) {
+          assign(".Random.seed", value = cur_seeds[[b]], envir = globalenv())
         }
         extr_boot <- extr_res[sample(n_rep, size = n_rep, replace = TRUE), ]
         # Restriction
@@ -312,8 +321,7 @@ check_performance <- function(object, select_strategy = "control if available",
       # Setup cores
       cl <- makeCluster(cores)
       on.exit(stopCluster(cl), add = TRUE, after = FALSE)
-      .rng_kind <- RNGkind()
-      clusterCall(cl, RNGkind, kind = .rng_kind[1], normal.kind = .rng_kind[2], sample.kind = .rng_kind[3])
+      clusterEvalQ(cl, RNGkind("L'Ecuyer-CMRG", "default", "default"))
       # Derive chunks
       seed_chunks <- lapply(1:cores, function(x) {
         size <- ceiling(n_boot / cores)

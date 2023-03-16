@@ -69,5 +69,6 @@ trials. J Clin Epidemiol. \doi{10.1016/j.jclinepi.2022.11.002}
 \seealso{
 \code{\link[=setup_trial]{setup_trial()}}, \code{\link[=setup_trial_binom]{setup_trial_binom()}}, \code{\link[=setup_trial_norm]{setup_trial_norm()}}, \code{\link[=run_trial]{run_trial()}},
 \code{\link[=run_trials]{run_trials()}}, \code{\link[=extract_results]{extract_results()}}, \code{\link[=check_performance]{check_performance()}}, \code{\link[=summary]{summary()}},
-\code{\link[=plot_convergence]{plot_convergence()}}, \code{\link[=print]{print()}}, \code{\link[=plot_status]{plot_status()}}, and \code{\link[=plot_history]{plot_history()}}.
+\code{\link[=plot_convergence]{plot_convergence()}}, \code{\link[=plot_metrics_ecdf]{plot_metrics_ecdf()}}, \code{\link[=print]{print()}}, \code{\link[=plot_status]{plot_status()}}, and
+\code{\link[=plot_history]{plot_history()}}.
 }

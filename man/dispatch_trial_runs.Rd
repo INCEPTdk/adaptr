@@ -4,17 +4,13 @@
 \alias{dispatch_trial_runs}
 \title{Simulate single trial after setting seed}
 \usage{
-dispatch_trial_runs(X, trial_spec, base_seed, sparse, cores, cl = NULL)
+dispatch_trial_runs(is, trial_spec, seeds, sparse, cores, cl = NULL)
 }
 \arguments{
+\item{is}{vector of integers, the simulation numbers/indices.}
+
 \item{trial_spec}{trial specification as provided by \code{\link[=setup_trial]{setup_trial()}},
 \code{\link[=setup_trial_binom]{setup_trial_binom()}} or \code{\link[=setup_trial_norm]{setup_trial_norm()}}.}
-
-\item{base_seed}{single integer or \code{NULL} (default); a random seed used as
-the basis for simulations. If a number is provided, each single trial
-simulation will set the random seed to a value based on this (+ the trial
-number), without affecting the global random seed after the function has
-been run.}
 
 \item{sparse}{single logical, as described in \code{\link[=run_trial]{run_trial()}}; defaults to
 \code{TRUE} when running multiple simulations, in which case only the data
@@ -29,14 +25,16 @@ option if set (\verb{options(mc.cores = <number>)}) and \code{1} otherwise; may 
 increased to run multiple simulations in parallel. Use
 \code{\link[parallel:detectCores]{parallel::detectCores()}} to find the number of available cores.}
 
-\item{i}{single integer, the simulation number.}
+\item{cl}{\code{NULL} (default) for running sequentially, otherwise a \code{parallel}
+cluster for parallel computation if \code{cores > 1}.}
 }
 \value{
 Single trial simulation object, as described in \code{\link[=run_trial]{run_trial()}}.
 }
 \description{
 Helper function to dispatch the running of several trials to \code{\link[=lapply]{lapply()}} or
-\code{\link[parallel:clusterApply]{parallel::parLapply()}}. Used internally in calls by the \code{\link[=run_trials]{run_trials()}}
+\code{\link[parallel:clusterApply]{parallel::parLapply()}}, seeting seeds correctly if a \code{base_seed} was used
+when calling \code{\link[=run_trials]{run_trials()}}. Used internally in calls by the \code{\link[=run_trials]{run_trials()}}
 function.
 }
 \keyword{internal}
