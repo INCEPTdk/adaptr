@@ -72,7 +72,7 @@ summary.trial_results <- function(object,
                                   raw_ests = FALSE,
                                   final_ests = NULL,
                                   restrict = NULL,
-                                  cores = getOption("mc.cores", 1), ...) {
+                                  cores = NULL, ...) {
 
   # Set final_ests
   if (is.null(final_ests)) {

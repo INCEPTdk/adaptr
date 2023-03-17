@@ -155,7 +155,7 @@ check_performance <- function(object, select_strategy = "control if available",
                               te_comp = NULL, raw_ests = FALSE, final_ests = NULL,
                               restrict = NULL, uncertainty = FALSE, n_boot = 5000,
                               ci_width = 0.95, boot_seed = NULL,
-                              cores = getOption("mc.cores", 1)) {
+                              cores = NULL) {
   # Check validity of restrict argument
   if (!is.null(restrict)) {
     if (!restrict %in% c("superior", "selected")) {
@@ -313,15 +313,26 @@ check_performance <- function(object, select_strategy = "control if available",
       boot_mat
     }
 
+    # If cores is NULL, use defaults
+    if (is.null(cores)) {
+      cl <- .adaptr_cluster_env$cl # Load default cluster if existing
+      # If cores is not specified by setup_cluster(), use global option or 1
+      cores <- .adaptr_cluster_env$cores %||% getOption("mc.cores", 1)
+    } else { # cores specified, ignore defaults
+      cl <- NULL
+    }
+
     # Get bootstrap estimates
     if (cores == 1) { # Single core
       boot_mat <- performance_bootstrap_batch(cur_seeds = seeds, extr_res = extr_res,
                                               restrict = restrict, n_rep = n_rep, rows = nrow(res))
     } else { # Multiple cores
-      # Setup cores
-      cl <- makeCluster(cores)
-      on.exit(stopCluster(cl), add = TRUE, after = FALSE)
-      clusterEvalQ(cl, RNGkind("L'Ecuyer-CMRG", "default", "default"))
+      # Setup new temporary cluster if needed
+      if (is.null(cl)) { # Set up new, temporary cluster
+        cl <- makePSOCKcluster(cores)
+        on.exit(stopCluster(cl), add = TRUE, after = FALSE)
+        clusterEvalQ(cl, RNGkind("L'Ecuyer-CMRG", "default", "default"))
+      }
       # Derive chunks
       seed_chunks <- lapply(1:cores, function(x) {
         size <- ceiling(n_boot / cores)

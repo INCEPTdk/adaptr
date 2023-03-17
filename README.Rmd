@@ -140,6 +140,13 @@ plot_history(trial_res_mult)
 Plotting statuses for individual trial arms and other summary metrics is
 possible, too.
 
+Running simulations and extracting and processing results may be done in
+parallel by either using the `setup_cluster()` function to set up a cluster of
+parallel workers that may be used throughout the session, or with new clusters
+each time parallel computation is done by setting the `"mc.cores"` global option
+via `options(mc.cores = <number>)` or by using the `cores` argument of many
+functions in the package.
+
 ## Issues and enhancements
 
 We use the [GitHub issue tracker](https://github.com/INCEPTdk/adaptr/issues) for

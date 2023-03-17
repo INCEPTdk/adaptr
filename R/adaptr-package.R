@@ -37,6 +37,10 @@
 #' 4. The [plot_status()] and [plot_history()] functions are used to plot the
 #' overall trial/arm statuses for multiple simulated trials or the history of
 #' trial metrics over time for single/multiple simulated trials, respectively.
+#' 5. The [setup_cluster()] initiates a parallel computation cluster that can
+#' be used to run simulations and post-processing in parallel, increasing speed,
+#' and details on parallelisation and other options for running `adaptr`
+#' functions in parallel are described in that function.
 #'
 #' For further information see the function documentation or the **Overview**
 #' vignette (`vignette("Overview", package = "adaptr")`) for an example of how
@@ -69,7 +73,7 @@
 #' @seealso
 #' [setup_trial()], [setup_trial_binom()], [setup_trial_norm()], [run_trial()],
 #' [run_trials()], [extract_results()], [check_performance()], [summary()],
-#' [plot_convergence()], [plot_metrics_ecdf()], [print()], [plot_status()], and
-#' [plot_history()].
+#' [plot_convergence()], [plot_metrics_ecdf()], [print()], [plot_status()],
+#' [plot_history()], [setup_cluster()].
 #'
 NULL

@@ -66,9 +66,9 @@ general `setup_trial()` function, or one of the special case functions,
 
 ``` r
 library(adaptr)
-#> Loading adaptr package (version 1.2.0.9000).
-#> See 'help("adaptr")' or 'vignette("Overview", "adaptr")' for help.
-#> Further information available on https://inceptdk.github.io/adaptr/.
+#> Loading 'adaptr' package v1.2.0.9000.
+#> For instructions, type 'help("adaptr")'
+#> or see https://inceptdk.github.io/adaptr/.
 
 # Setup a trial using a binary, binomially distributed, undesirable outcome
 binom_trial <- setup_trial_binom(
@@ -163,19 +163,19 @@ trial_res_mult <- run_trials(binom_trial, n_rep = 10, base_seed = 67890)
 extr_res <- extract_results(trial_res_mult)
 head(extr_res)
 #>   sim final_n sum_ys  ratio_ys final_status superior_arm selected_arm
-#> 1   1    2000    415 0.2075000          max         <NA>         <NA>
-#> 2   2     600    139 0.2316667  superiority        Arm B        Arm B
-#> 3   3    1000    237 0.2370000  superiority        Arm B        Arm B
-#> 4   4     900    209 0.2322222  equivalence         <NA>         <NA>
-#> 5   5    2000    441 0.2205000  superiority        Arm B        Arm B
-#> 6   6    1900    431 0.2268421  superiority        Arm B        Arm B
+#> 1   1    1400    332 0.2371429  superiority        Arm B        Arm B
+#> 2   2     900    196 0.2177778  equivalence         <NA>         <NA>
+#> 3   3    2000    441 0.2205000          max         <NA>         <NA>
+#> 4   4    1300    274 0.2107692  superiority        Arm B        Arm B
+#> 5   5    1400    354 0.2528571  equivalence         <NA>         <NA>
+#> 6   6    1700    373 0.2194118  superiority        Arm B        Arm B
 #>         sq_err sq_err_te
-#> 1           NA        NA
-#> 2 7.853843e-04        NA
-#> 3 4.190319e-05        NA
-#> 4           NA        NA
-#> 5 3.422824e-06        NA
-#> 6 4.852161e-05        NA
+#> 1 8.118136e-06        NA
+#> 2           NA        NA
+#> 3           NA        NA
+#> 4 3.801078e-04        NA
+#> 5           NA        NA
+#> 6 3.871855e-05        NA
 
 # Summarise trial results
 # See function documentation for details, including on arm selection in trials
@@ -191,21 +191,21 @@ print(res_sum, digits = 1)
 #> * Treatment effect compared to: no comparison
 #> 
 #> Performance metrics (using posterior estimates from last adaptive analysis):
-#> * Sample sizes: mean 1470.0 (SD: 559.9) | median 1550.0 (IQR: 1025.0 to 2000.0) [range: 600.0 to 2000.0]
-#> * Total summarised outcomes: mean 323.3 (SD: 110.6) | median 340.0 (IQR: 242.0 to 421.8) [range: 139.0 to 441.0]
-#> * Total summarised outcome rates: mean 0.224 (SD: 0.013) | median 0.229 (IQR: 0.214 to 0.233) [range: 0.199 to 0.237]
-#> * Conclusive: 70.0%
-#> * Superiority: 50.0%
-#> * Equivalence: 20.0%
+#> * Sample sizes: mean 1350.0 (SD: 445.3) | median 1350.0 (IQR: 1025.0 to 1625.0) [range: 700.0 to 2000.0]
+#> * Total summarised outcomes: mean 305.3 (SD: 103.8) | median 303.0 (IQR: 231.0 to 368.2) [range: 156.0 to 463.0]
+#> * Total summarised outcome rates: mean 0.226 (SD: 0.013) | median 0.222 (IQR: 0.218 to 0.231) [range: 0.211 to 0.253]
+#> * Conclusive: 80.0%
+#> * Superiority: 40.0%
+#> * Equivalence: 40.0%
 #> * Futility: 0.0% [not assessed]
-#> * Inconclusive at max sample size: 30.0%
-#> * Selection probabilities: Arm A: 0.0% | Arm B: 50.0% | Arm C: 0.0% | None: 50.0%
-#> * RMSE: 0.01330
+#> * Inconclusive at max sample size: 20.0%
+#> * Selection probabilities: Arm A: 0.0% | Arm B: 40.0% | Arm C: 0.0% | None: 60.0%
+#> * RMSE: 0.01675
 #> * RMSE treatment effect: not estimated
 #> * Ideal design percentage: 100.0%
 #> 
 #> Simulation details:
-#> * Simulation time: 0.419 secs
+#> * Simulation time: 0.46 secs
 #> * Base random seed: 67890
 #> * Credible interval width: 95%
 #> * Number of posterior draws: 5000
@@ -243,6 +243,13 @@ plot_history(trial_res_mult)
 
 Plotting statuses for individual trial arms and other summary metrics is
 possible, too.
+
+Running simulations and extracting and processing results may be done in
+parallel by either using the `setup_cluster()` function to set up a
+cluster of parallel workers that may be used throughout the session, or
+with new clusters each time parallel computation is done by setting the
+`"mc.cores"` global option via `options(mc.cores = <number>)` or by
+using the `cores` argument of many functions in the package.
 
 ## Issues and enhancements
 

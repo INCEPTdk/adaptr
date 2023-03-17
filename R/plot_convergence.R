@@ -77,7 +77,7 @@ plot_convergence <- function(object, metrics = "size mean", resolution = 100,
                              select_last_arm = FALSE, select_preferences = NULL,
                              te_comp = NULL, raw_ests = FALSE, final_ests = NULL,
                              restrict = NULL, n_split = 1, nrow = NULL, ncol = NULL,
-                             cores = getOption("mc.cores", 1)) {
+                             cores = NULL) {
 
   # Check packages
   assert_pkgs("ggplot2")

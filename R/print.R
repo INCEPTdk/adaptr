@@ -286,7 +286,7 @@ print.trial_results <- function(x,
                                 select_preferences = NULL, te_comp = NULL,
                                 raw_ests = FALSE, final_ests = NULL,
                                 restrict = NULL, digits = 1,
-                                cores = getOption("mc.cores", 1),
+                                cores = NULL,
                                 ...) {
   print(summary(object = x, select_strategy = select_strategy,
                 select_preferences = select_preferences, te_comp = te_comp,

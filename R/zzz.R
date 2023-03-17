@@ -1,4 +1,4 @@
-# Save package version when package is built
+# Save package version
 .adaptr_version <- as.character(packageVersion("adaptr"))
 
 

@@ -700,7 +700,7 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' functions or the [setup_trial()]-call) or functions from external packages
 #' and simulations are conducted on multiple cores, these objects or functions
 #' must be exported or prefixed with their namespaces, respectively, as
-#' described in [run_trials()].
+#' described in [setup_cluster()] and [run_trials()].
 #'
 #'
 #' \strong{More information on arguments}

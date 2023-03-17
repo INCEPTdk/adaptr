@@ -36,6 +36,12 @@ First, load the package:
 library(adaptr)
 ```
 
+Parallelisation is supported in many `adaptr` functions, and a cluster of
+parallel workers may be setup for the entire session using `setup_cluster()`,
+which is ideally called early in a script. Alternatively, parallelisation
+can be controlled by the global `"mc.cores"` option (set by calling
+`options(mc.cores = <number>)`) or the `cores` argument of many functions.
+
 ### Set up trial
 Then, setup a trial with the desired specifications. `adaptr` offers the
 general purpose function `setup_trial()`, but here we use the built-in

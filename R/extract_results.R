@@ -198,11 +198,18 @@ extract_results_batch <- function(trial_results,
 #'   vary slightly in this situation, even if using the same data); otherwise it
 #'   will be said to `TRUE`. See [setup_trial()] for more details on how these
 #'   estimates are calculated.
-#' @param cores single integer; the number of cores used to extract simulation
-#'   results using the `parallel` library. Defaults to use the `"mc.cores"`
-#'   global option if set (`options(mc.cores = <number>)`) and `1` otherwise;
-#'   more cores may be used to extract large simulation results quicker. Use
-#'   `parallel::detectCores()` to find the number of available cores.
+#' @param cores `NULL` or single integer. If `NULL`, a default value set by
+#'   [setup_cluster()] will be used to control whether extractions of simulation
+#'   results are done in parallel on a default cluster or sequentially in the
+#'   main process; if a value has not been specified by [setup_cluster()],
+#'   `cores` will then be set to the value stored in the global `"mc.cores"`
+#'   option (if previously set by `options(mc.cores = <number of cores>`), and
+#'   `1` if that option has not been specified.\cr
+#'   If `cores = 1`, computations
+#'   will be run sequentially in the primary process, and if `cores > 1`, a new
+#'   parallel cluster will be setup using the `parallel` library and removed
+#'   once the function completes. See [setup_cluster()] for details. Use
+#'   [parallel::detectCores()] to find the number of available cores.
 #'
 #' @return A `data.frame` containing the following columns:
 #'   \itemize{
@@ -265,7 +272,7 @@ extract_results <- function(object,
                             te_comp = NULL,
                             raw_ests = FALSE,
                             final_ests = NULL,
-                            cores = getOption("mc.cores", 1)) {
+                            cores = NULL) {
 
   # Validate input (only checks class)
   if (!inherits(object, "trial_results")){
@@ -330,12 +337,21 @@ extract_results <- function(object,
   te_comp_true_y <- if (is.null(te_comp)) NULL else object$trial_spec$trial_arms$true_ys[te_comp_index]
 
   # Validate cores
-  if (!verify_int(cores, min_value = 1)) {
-    stop0("cores must be single whole number larger than 0.")
+  if (!(verify_int(cores, min_value = 1) | is.null(cores))) {
+    stop0("cores must be NULL or a single whole number > 0.")
   }
 
   # Define which estimates to use
   which_ests <- paste0(ifelse(raw_ests, "raw", "post"), "_ests", ifelse(final_ests, "_all", ""))
+
+  # If cores is NULL, use defaults
+  if (is.null(cores)) {
+    cl <- .adaptr_cluster_env$cl # Load default cluster if existing
+    # If cores is not specified by setup_cluster(), use global option or 1
+    cores <- .adaptr_cluster_env$cores %||% getOption("mc.cores", 1)
+  } else { # cores specified, ignore defaults
+    cl <- NULL
+  }
 
   # Extract data using multiple cores if requested
   if (cores == 1) { # Single core
@@ -347,9 +363,12 @@ extract_results <- function(object,
                                  te_comp_index = te_comp_index,
                                  te_comp_true_y = te_comp_true_y)
   } else { # Multiple cores
-    # Setup cores
-    cl <- makeCluster(cores)
-    on.exit(stopCluster(cl), add = TRUE, after = FALSE)
+    # Setup cores if needed
+    if (is.null(cl)) { # Set up new, temporary cluster
+      cl <- makePSOCKcluster(cores)
+      on.exit(stopCluster(cl), add = TRUE, after = FALSE)
+      # Not necessary to set RNG kind here
+    }
     # Derive chunks
     chunks <- lapply(1:cores, function(x) {
       size <- ceiling(n_rep / cores)

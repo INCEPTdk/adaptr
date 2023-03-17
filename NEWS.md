@@ -2,12 +2,22 @@
 
 ### New features and major changes:
 
-*   Increased and better parallelisation. The functions `extract_results()`,
+*   More and better parallelisation. The functions `extract_results()`,
     `check_performance()`, and thus also `plot_convergence()` and the
     `summary()` and `print()` methods for `trial_results` objects may now be run
-    in parallel via the `cores` argument. In addition, all parallelised
-    functions now default to using the global option `"mc.cores"` if set by
-    `options(mc.cores = <number>)` and otherwise `1`. 
+    in parallel via the `cores` argument or as described below.
+    
+*   The `setup_cluster()` function has been added, and can now be used to setup
+    and use the same parallel cluster throughout a session, avoiding the
+    overhead of setting up and stopping new clusters each time. The default
+    value for the `cores` argument in all functions is now `NULL`; if an actual
+    value is supplied, it will always be used to initiate a new, temporary
+    cluster of that size, but if left at `NULL` the defaults defined by
+    `setup_cluster()` will be used (if any), otherwise the `"mc.cores"` global
+    option will be used (for new, temporary clusters of that size) if specified
+    by `options(mc.cores = <number>)`, and otherwise `1`. 
+    Finally, `adaptr` now always uses parallel (not forked) clusters (as is the
+    default in `parallel` and which works on all operating systems).
     
 *   Better (safer, more correct) random number generation. Previously, random
     number generation was managed in an *ad hoc*-fashion to produce similar

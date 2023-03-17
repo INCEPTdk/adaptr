@@ -26,11 +26,18 @@ add to the indices generated and used).}
 \code{n_rep} as supplied to \code{\link[=run_trials]{run_trials()}} minus the number of previously run
 simulations if \code{grow} is used in \code{\link[=run_trials]{run_trials()}}).}
 
-\item{cores}{single integer; the number of cores to run the simulations on
-using the \code{parallel} library. Defaults to use the \code{"mc.cores"} global
-option if set (\verb{options(mc.cores = <number>)}) and \code{1} otherwise; may be
-increased to run multiple simulations in parallel. Use
-\code{\link[parallel:detectCores]{parallel::detectCores()}} to find the number of available cores.}
+\item{cores}{\code{NULL} or single integer. If \code{NULL}, a default value set by
+\code{\link[=setup_cluster]{setup_cluster()}} will be used to control whether simulations are run in
+parallel on a default cluster or sequentially in the main process; if a
+value has not been specified by \code{\link[=setup_cluster]{setup_cluster()}}, \code{cores} will then be set
+to the value stored in the global \code{"mc.cores"} option (if previously set by
+\verb{options(mc.cores = <number of cores>}), and \code{1} if that option has not been
+specified.\cr
+If \code{cores = 1}, computations will be run sequentially in the
+primary process, and if \code{cores > 1}, a new parallel cluster will be setup
+using the \code{parallel} library and removed once the function completes.
+See \code{\link[=setup_cluster]{setup_cluster()}} for details. Use \code{\link[parallel:detectCores]{parallel::detectCores()}} to find
+the number of available cores.}
 }
 \value{
 List containing \code{breaks} (the number of patients at each break),

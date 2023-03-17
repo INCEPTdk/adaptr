@@ -40,5 +40,6 @@ reference:
 
 - title: Helper functions
   contents:
+  - setup_cluster
   - update_saved_trials
   - find_beta_params

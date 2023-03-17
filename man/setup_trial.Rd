@@ -338,7 +338,7 @@ user-specified functions (or uses objects defined by the user outside these
 functions or the \code{\link[=setup_trial]{setup_trial()}}-call) or functions from external packages
 and simulations are conducted on multiple cores, these objects or functions
 must be exported or prefixed with their namespaces, respectively, as
-described in \code{\link[=run_trials]{run_trials()}}.
+described in \code{\link[=setup_cluster]{setup_cluster()}} and \code{\link[=run_trials]{run_trials()}}.
 
 \strong{More information on arguments}
 \itemize{

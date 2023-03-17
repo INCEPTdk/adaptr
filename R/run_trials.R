@@ -130,17 +130,22 @@ dispatch_trial_runs <- function(is, trial_spec, seeds, sparse, cores, cl = NULL)
 #'   to a valid previous file containing less simulations than `n_rep`, the
 #'   additional number of simulations will be run (appropriately re-using the
 #'   same `base_seed`, if specified) and appended to the same file.
-#' @param cores single integer; the number of cores to run the simulations on
-#'   using the `parallel` library. Defaults to use the `"mc.cores"` global
-#'   option if set (`options(mc.cores = <number>)`) and `1` otherwise; may be
-#'   increased to run multiple simulations in parallel. Use
-#'   [parallel::detectCores()] to find the number of available cores.
+#' @param cores `NULL` or single integer. If `NULL`, a default value set by
+#'   [setup_cluster()] will be used to control whether simulations are run in
+#'   parallel on a default cluster or sequentially in the main process; if a
+#'   value has not been specified by [setup_cluster()], `cores` will then be set
+#'   to the value stored in the global `"mc.cores"` option (if previously set by
+#'   `options(mc.cores = <number of cores>`), and `1` if that option has not been
+#'   specified.\cr
+#'   If `cores = 1`, computations will be run sequentially in the
+#'   primary process, and if `cores > 1`, a new parallel cluster will be setup
+#'   using the `parallel` library and removed once the function completes.
+#'   See [setup_cluster()] for details. Use [parallel::detectCores()] to find
+#'   the number of available cores.
 #' @param base_seed single integer or `NULL` (default); a random seed used as
-#'   the basis for simulations. If a number is provided, each single trial
-#'   simulation will set the random seed to a value based on this (+ the trial
-#'   number), without affecting the global random seed after the function has
-#'   been run. Regardless of whether simulations are run sequentially or in
-#'   parallel, random number streams will be identical and appropriate.
+#'   the basis for simulations. Regardless of whether simulations are run
+#'   sequentially or in parallel, random number streams will be identical and
+#'   appropriate (see [setup_cluster()] for details).
 #' @param sparse single logical, as described in [run_trial()]; defaults to
 #'   `TRUE` when running multiple simulations, in which case only the data
 #'   necessary to summarise all simulations are saved for each simulation.
@@ -165,12 +170,12 @@ dispatch_trial_runs <- function(is, trial_spec, seeds, sparse, cores, cl = NULL)
 #'   `TRUE` (as in [saveRDS()]), see [saveRDS()] for other options. Ignored if
 #'   simulations are not saved.
 #' @param export character vector of names of objects to export to each
-#'   parallel core if `cores > 1`; passed as the `varlist` argument to
+#'   parallel core when running in perallel; passed as the `varlist` argument to
 #'   [parallel::clusterExport()]. Defaults to `NULL` (no objects exported),
 #'   ignored if `cores == 1`. See **Details** below.
 #' @param export_envir `environment` where to look for the objects defined
-#'   in `export` if `cores > 1` and `export` is not `NULL`. Defaults to the
-#'   environment from where [run_trials()] is called.
+#'   in `export` when running in parallel and `export` is not `NULL`. Defaults
+#'   to the environment from where [run_trials()] is called.
 #'
 #' @details
 #'
@@ -184,7 +189,9 @@ dispatch_trial_runs <- function(is, trial_spec, seeds, sparse, cores, cl = NULL)
 #' from external packages loaded using [library()] or [require()] must be
 #' exported or called prefixed with the namespace, i.e., `package::function`.
 #' The `export` and `export_envir` arguments are used to export objects calling
-#' the [parallel::clusterExport()]-function.
+#' the [parallel::clusterExport()]-function. See also [setup_cluster()], which
+#' may be used to setup a cluster and export required objects only once per
+#' session.
 #'
 #' @return A list of a special class `"trial_results"`, which contains the
 #'   `trial_results` (results from all simulations; note that `seed` will be
@@ -214,7 +221,7 @@ dispatch_trial_runs <- function(is, trial_spec, seeds, sparse, cores, cl = NULL)
 #' # on extracting resutls, summarising and printing
 #'
 run_trials <- function(trial_spec, n_rep, path = NULL, overwrite = FALSE,
-                       grow = FALSE, cores = getOption("mc.cores", 1),
+                       grow = FALSE, cores = NULL,
                        base_seed = NULL, sparse = TRUE, progress = NULL,
                        version = NULL, compress = TRUE,
                        export = NULL, export_envir = parent.frame()) {
@@ -228,8 +235,11 @@ run_trials <- function(trial_spec, n_rep, path = NULL, overwrite = FALSE,
     stop0("If a path to a file is not provided or if overwrite = TRUE, ",
           "a valid trial specification must be provided.")
   }
-  if (!verify_int(n_rep, min_value = 1) | !verify_int(cores, min_value = 1)) {
-    stop0("n_rep and cores must be single whole numbers larger than 0.")
+  if (!verify_int(n_rep, min_value = 1)) {
+    stop0("n_rep must be a single whole number > 0.")
+  }
+  if (!(verify_int(cores, min_value = 1) | is.null(cores))) {
+    stop0("cores must be NULL or a single whole number > 0.")
   }
   if (ifelse(!is.null(path), file.exists(path), FALSE) & !overwrite) {
     # File exists and overwrite is FALSE
@@ -340,11 +350,22 @@ run_trials <- function(trial_spec, n_rep, path = NULL, overwrite = FALSE,
       seeds <- rep(list(NULL), n_rep)
     }
 
-    # Setup cluster if using multiple cores
+    # If cores is NULL, use defaults
+    if (is.null(cores)) {
+      cl <- .adaptr_cluster_env$cl # Load default cluster if existing
+      # If cores is not specified by setup_cluster(), use global option or 1
+      cores <- .adaptr_cluster_env$cores %||% getOption("mc.cores", 1)
+    } else { # cores specified, ignore defaults
+      cl <- NULL
+    }
+
+    # If parallel, export and setup new cluster if needed
     if (cores > 1) {
-      cl <- makeCluster(cores)
-      on.exit(stopCluster(cl), add = TRUE, after = FALSE)
-      clusterEvalQ(cl, RNGkind("L'Ecuyer-CMRG", "default", "default"))
+      if (is.null(cl)) { # Set up new, temporary cluster
+        cl <- makePSOCKcluster(cores)
+        on.exit(stopCluster(cl), add = TRUE, after = FALSE)
+        clusterEvalQ(cl, RNGkind("L'Ecuyer-CMRG", "default", "default"))
+      }
       if (!is.null(export)) clusterExport(cl = cl, varlist = export, envir = export_envir)
     }
 

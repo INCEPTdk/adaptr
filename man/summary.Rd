@@ -14,7 +14,7 @@
   raw_ests = FALSE,
   final_ests = NULL,
   restrict = NULL,
-  cores = getOption("mc.cores", 1),
+  cores = NULL,
   ...
 )
 }
@@ -109,11 +109,18 @@ ending with superiority). Some summary measures (e.g., \code{prob_conclusive})
 have substantially different interpretations if restricted, but are
 calculated nonetheless.}
 
-\item{cores}{single integer; the number of cores used to extract simulation
-results using the \code{parallel} library. Defaults to use the \code{"mc.cores"}
-global option if set (\verb{options(mc.cores = <number>)}) and \code{1} otherwise;
-more cores may be used to extract large simulation results quicker. Use
-\code{parallel::detectCores()} to find the number of available cores.}
+\item{cores}{\code{NULL} or single integer. If \code{NULL}, a default value set by
+\code{\link[=setup_cluster]{setup_cluster()}} will be used to control whether extractions of simulation
+results are done in parallel on a default cluster or sequentially in the
+main process; if a value has not been specified by \code{\link[=setup_cluster]{setup_cluster()}},
+\code{cores} will then be set to the value stored in the global \code{"mc.cores"}
+option (if previously set by \verb{options(mc.cores = <number of cores>}), and
+\code{1} if that option has not been specified.\cr
+If \code{cores = 1}, computations
+will be run sequentially in the primary process, and if \code{cores > 1}, a new
+parallel cluster will be setup using the \code{parallel} library and removed
+once the function completes. See \code{\link[=setup_cluster]{setup_cluster()}} for details. Use
+\code{\link[parallel:detectCores]{parallel::detectCores()}} to find the number of available cores.}
 
 \item{...}{additional arguments, not used.}
 }

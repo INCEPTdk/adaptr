@@ -10,7 +10,7 @@ run_trials(
   path = NULL,
   overwrite = FALSE,
   grow = FALSE,
-  cores = getOption("mc.cores", 1),
+  cores = NULL,
   base_seed = NULL,
   sparse = TRUE,
   progress = NULL,
@@ -41,18 +41,23 @@ to a valid previous file containing less simulations than \code{n_rep}, the
 additional number of simulations will be run (appropriately re-using the
 same \code{base_seed}, if specified) and appended to the same file.}
 
-\item{cores}{single integer; the number of cores to run the simulations on
-using the \code{parallel} library. Defaults to use the \code{"mc.cores"} global
-option if set (\verb{options(mc.cores = <number>)}) and \code{1} otherwise; may be
-increased to run multiple simulations in parallel. Use
-\code{\link[parallel:detectCores]{parallel::detectCores()}} to find the number of available cores.}
+\item{cores}{\code{NULL} or single integer. If \code{NULL}, a default value set by
+\code{\link[=setup_cluster]{setup_cluster()}} will be used to control whether simulations are run in
+parallel on a default cluster or sequentially in the main process; if a
+value has not been specified by \code{\link[=setup_cluster]{setup_cluster()}}, \code{cores} will then be set
+to the value stored in the global \code{"mc.cores"} option (if previously set by
+\verb{options(mc.cores = <number of cores>}), and \code{1} if that option has not been
+specified.\cr
+If \code{cores = 1}, computations will be run sequentially in the
+primary process, and if \code{cores > 1}, a new parallel cluster will be setup
+using the \code{parallel} library and removed once the function completes.
+See \code{\link[=setup_cluster]{setup_cluster()}} for details. Use \code{\link[parallel:detectCores]{parallel::detectCores()}} to find
+the number of available cores.}
 
 \item{base_seed}{single integer or \code{NULL} (default); a random seed used as
-the basis for simulations. If a number is provided, each single trial
-simulation will set the random seed to a value based on this (+ the trial
-number), without affecting the global random seed after the function has
-been run. Regardless of whether simulations are run sequentially or in
-parallel, random number streams will be identical and appropriate.}
+the basis for simulations. Regardless of whether simulations are run
+sequentially or in parallel, random number streams will be identical and
+appropriate (see \code{\link[=setup_cluster]{setup_cluster()}} for details).}
 
 \item{sparse}{single logical, as described in \code{\link[=run_trial]{run_trial()}}; defaults to
 \code{TRUE} when running multiple simulations, in which case only the data
@@ -82,13 +87,13 @@ used. Ignored if simulations are not saved.}
 simulations are not saved.}
 
 \item{export}{character vector of names of objects to export to each
-parallel core if \code{cores > 1}; passed as the \code{varlist} argument to
+parallel core when running in perallel; passed as the \code{varlist} argument to
 \code{\link[parallel:clusterApply]{parallel::clusterExport()}}. Defaults to \code{NULL} (no objects exported),
 ignored if \code{cores == 1}. See \strong{Details} below.}
 
 \item{export_envir}{\code{environment} where to look for the objects defined
-in \code{export} if \code{cores > 1} and \code{export} is not \code{NULL}. Defaults to the
-environment from where \code{\link[=run_trials]{run_trials()}} is called.}
+in \code{export} when running in parallel and \code{export} is not \code{NULL}. Defaults
+to the environment from where \code{\link[=run_trials]{run_trials()}} is called.}
 }
 \value{
 A list of a special class \code{"trial_results"}, which contains the
@@ -123,7 +128,9 @@ by the user outside the function definitions provided. Similarly, functions
 from external packages loaded using \code{\link[=library]{library()}} or \code{\link[=require]{require()}} must be
 exported or called prefixed with the namespace, i.e., \verb{package::function}.
 The \code{export} and \code{export_envir} arguments are used to export objects calling
-the \code{\link[parallel:clusterApply]{parallel::clusterExport()}}-function.
+the \code{\link[parallel:clusterApply]{parallel::clusterExport()}}-function. See also \code{\link[=setup_cluster]{setup_cluster()}}, which
+may be used to setup a cluster and export required objects only once per
+session.
 }
 \examples{
 # Setup a trial specification

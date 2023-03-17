@@ -38,6 +38,10 @@ cumulative distribution functions for numerical performance metrics.
 \item The \code{\link[=plot_status]{plot_status()}} and \code{\link[=plot_history]{plot_history()}} functions are used to plot the
 overall trial/arm statuses for multiple simulated trials or the history of
 trial metrics over time for single/multiple simulated trials, respectively.
+\item The \code{\link[=setup_cluster]{setup_cluster()}} initiates a parallel computation cluster that can
+be used to run simulations and post-processing in parallel, increasing speed,
+and details on parallelisation and other options for running \code{adaptr}
+functions in parallel are described in that function.
 }
 
 For further information see the function documentation or the \strong{Overview}
@@ -69,6 +73,6 @@ trials. J Clin Epidemiol. \doi{10.1016/j.jclinepi.2022.11.002}
 \seealso{
 \code{\link[=setup_trial]{setup_trial()}}, \code{\link[=setup_trial_binom]{setup_trial_binom()}}, \code{\link[=setup_trial_norm]{setup_trial_norm()}}, \code{\link[=run_trial]{run_trial()}},
 \code{\link[=run_trials]{run_trials()}}, \code{\link[=extract_results]{extract_results()}}, \code{\link[=check_performance]{check_performance()}}, \code{\link[=summary]{summary()}},
-\code{\link[=plot_convergence]{plot_convergence()}}, \code{\link[=plot_metrics_ecdf]{plot_metrics_ecdf()}}, \code{\link[=print]{print()}}, \code{\link[=plot_status]{plot_status()}}, and
-\code{\link[=plot_history]{plot_history()}}.
+\code{\link[=plot_convergence]{plot_convergence()}}, \code{\link[=plot_metrics_ecdf]{plot_metrics_ecdf()}}, \code{\link[=print]{print()}}, \code{\link[=plot_status]{plot_status()}},
+\code{\link[=plot_history]{plot_history()}}, \code{\link[=setup_cluster]{setup_cluster()}}.
 }
