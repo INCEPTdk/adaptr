@@ -47,12 +47,13 @@ probabilities, mean values, etc.) for all trial \code{arms}.}
 \strong{Details}
 for information on how to specify this function.\cr
 \strong{Note:} this function is called once during setup to validate the output
-structure.}
+structure  (with the global random seed restored afterwards).}
 
 \item{fun_draws}{function, generates posterior draws. See \code{\link[=setup_trial]{setup_trial()}}
 \strong{Details} for information on how to specify this function.\cr
 \strong{Note:} this function is called up to three times during setup to
-validate the output structure.}
+validate the output structure (with the global random seed restored
+afterwards).}
 
 \item{start_probs}{numeric vector, allocation probabilities for each arm at
 the beginning of the trial. The default (\code{NULL}) is automatically

@@ -226,12 +226,13 @@ functions if not \code{NULL} (the default).}
 \strong{Details}
 for information on how to specify this function.\cr
 \strong{Note:} this function is called once during setup to validate the output
-structure.}
+structure  (with the global random seed restored afterwards).}
 
 \item{fun_draws}{function, generates posterior draws. See \code{\link[=setup_trial]{setup_trial()}}
 \strong{Details} for information on how to specify this function.\cr
 \strong{Note:} this function is called up to three times during setup to
-validate the output structure.}
+validate the output structure (with the global random seed restored
+afterwards).}
 
 \item{fun_raw_est}{function that takes a numeric vector and returns a
 single numeric value, used to calculate a raw summary estimate of the
