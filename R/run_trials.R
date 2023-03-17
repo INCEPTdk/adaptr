@@ -323,7 +323,7 @@ run_trials <- function(trial_spec, n_rep, path = NULL, overwrite = FALSE,
 
     # Create random seeds
     if (!is.null(base_seed)) {
-      if (exists(".Random.seed", envir = globalenv())){ # A global random seed exists (not the case when called from parallel::parLapply)
+      if (exists(".Random.seed", envir = globalenv())) { # A global random seed exists (not the case when called from parallel::parLapply)
         oldseed <- get(".Random.seed", envir = globalenv())
         on.exit(assign(".Random.seed", value = oldseed, envir = globalenv()), add = TRUE, after = FALSE)
       }

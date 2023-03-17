@@ -53,11 +53,11 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
               "or 'sqrt-based fixed', start_probs must be NULL.")
       }
       if (control_prob_fixed == "sqrt-based" | control_prob_fixed == "sqrt-based fixed") {
-        control_prob_fixed <- vapply_num(n_arms:2, function(x) sqrt(x-1)/(sqrt(x-1)+x-1))
+        control_prob_fixed <- vapply_num(n_arms:2, function(x) sqrt(x - 1) / (sqrt(x - 1) + x - 1))
       } else if (control_prob_fixed == "sqrt-based start") {
-        control_prob_fixed <- sqrt(n_arms-1)/(sqrt(n_arms-1)+n_arms-1)
+        control_prob_fixed <- sqrt(n_arms - 1) / (sqrt(n_arms - 1) + n_arms - 1)
       }
-      start_probs <- ifelse(arms == control, control_prob_fixed[1], 1/(sqrt(n_arms-1)+n_arms-1))
+      start_probs <- ifelse(arms == control, control_prob_fixed[1], 1 / (sqrt(n_arms - 1) + n_arms - 1))
       if (control_prob_fixed_orig == "sqrt-based fixed") {
         if (!is.null(fixed_probs)) {
           stop0("When control_prob_fixed is set to 'sqrt-based fixed', fixed_probs must be NULL.")
@@ -78,7 +78,7 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 
   # Equal initial allocation if start_probs is not specified or set above
   if (is.null(start_probs)) {
-    start_probs <- rep(1/length(arms), length(arms))
+    start_probs <- rep(1 / length(arms), length(arms))
   } else if(match) { # start_probs not null and 'match'
     if (!isTRUE(max(start_probs[!(arms %in% control)], na.rm = TRUE) == start_probs[which(arms %in% control)])) {
       stop0("If control_prob_fixed is set to 'match' and start_probs are specified, the control group starting ",
@@ -339,6 +339,12 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
     stop0("robust must be either TRUE or FALSE.")
   }
 
+  # Ensure that global random seed is not affected by function validation below
+  if (exists(".Random.seed", envir = globalenv())) {
+    oldseed <- get(".Random.seed", envir = globalenv())
+    on.exit(assign(".Random.seed", value = oldseed, envir = globalenv()), add = TRUE, after = FALSE)
+  }
+
   # Validate outcome generator function
   if (isTRUE(is.null(fun_y_gen) | !(class(fun_y_gen) == "function"))) {
     stop0("A valid function to generate outcomes (fun_y_gen) must be specified (see '?setup_trial').")
@@ -452,11 +458,12 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #'   **Details**
 #'   for information on how to specify this function.\cr
 #'   **Note:** this function is called once during setup to validate the output
-#'   structure.
+#'   structure  (with the global random seed restored afterwards).
 #' @param fun_draws function, generates posterior draws. See [setup_trial()]
 #'   **Details** for information on how to specify this function.\cr
 #'   **Note:** this function is called up to three times during setup to
-#'   validate the output structure.
+#'   validate the output structure (with the global random seed restored
+#'   afterwards).
 #' @param start_probs numeric vector, allocation probabilities for each arm at
 #'   the beginning of the trial. The default (`NULL`) is automatically
 #'   changed to equal randomisation.

@@ -73,15 +73,11 @@
 *   Various minor changes to `print()` methods (including changed number of
     digits for stopping rule probability thresholds).
     
-*   Now calls `RNGkind()` on each core when using multiple cores in
-    `run_trials()` and `check_performance()` to ensure similar results from
-    parallel and non-parallel computation if a different random number generator
-    than the default is used (note, however, that `RNGversion()` is not called,
-    so only the newest versions of the random number generators are used, as
-    generally recommended). These values are not saved in trial simulation
-    objects, so it is the user's own responsibility to change the random number
-    generator each time it is relevant if running/growing simulations based on
-    previous seed values.
+*   The `setup_trial()` family of functions now restores the global random seed
+    after being run as the outcome generator/draws generator functions are
+    called during validation, involving random number generation. While this was
+    always documented, it seems preferable that to restore the global random
+    seed during trial setup when functions are only validated.
 
 # adaptr 1.2.0
 
