@@ -8,30 +8,30 @@
       * Initial/final common control arms: B/C
       
       Final status: conclusive, stopped for futility
-      Final/maximum allowed sample sizes: 900/2000 (45.0%)
-      Available outcome data at last adaptive analysis: 900/900 (100.0%)
+      Final/maximum allowed sample sizes: 500/2000 (25.0%)
+      Available outcome data at last adaptive analysis: 500/500 (100.0%)
       
       Trial results overview:
        arms true_ys final_status status_look status_probs final_alloc
-          A    0.25       futile         900       1.0000        0.15
-          B    0.20     inferior         900       0.0012        0.15
-          C    0.30      control         900           NA        0.70
+          A    0.25       futile         500        0.953       0.466
+          B    0.20     inferior         500        0.006       0.150
+          C    0.30      control         500           NA       0.384
       
       Esimates from final analysis (all patients):
        arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
-          A         48    244        0.197         0.198        0.0258      0.151
-          B         41    223        0.184         0.186        0.0257      0.138
-          C        126    433        0.291         0.292        0.0222      0.249
+          A         44    182        0.242         0.243        0.0309     0.1855
+          B         18    123        0.146         0.151        0.0321     0.0962
+          C         52    195        0.267         0.269        0.0312     0.2087
        hi_cri_all
-            0.250
-            0.238
-            0.336
+            0.307
+            0.221
+            0.333
       
       Estimates from last adaptive analysis including each arm:
        arms sum_ys  ns raw_ests post_ests post_errs lo_cri hi_cri
-          A     48 244    0.197     0.198    0.0253  0.153  0.252
-          B     41 223    0.184     0.186    0.0259  0.138  0.239
-          C    126 433    0.291     0.291    0.0221  0.251  0.335
+          A     44 182    0.242     0.244    0.0308 0.1834  0.308
+          B     18 123    0.146     0.150    0.0314 0.0957  0.218
+          C     52 195    0.267     0.268    0.0318 0.2103  0.333
       
       Simulation details:
       * Random seed: 12345
@@ -46,31 +46,31 @@
     Output
       Single simulation result [saved/printed with sparse details]
       
-      Final status: inconclusive, stopped at final allowed adaptive analysis
-      Final sample size: 2000
-      Available outcome data at last adaptive analysis: 2000/2000 (100.0%)
+      Final status: conclusive, stopped for superiority
+      Final sample size: 500
+      Available outcome data at last adaptive analysis: 500/500 (100.0%)
       
       Trial results overview:
        arms true_ys final_status status_look status_probs final_alloc
-          A    0.25       active          NA           NA       0.194
-          B    0.20       active          NA           NA       0.656
-          C    0.30     inferior        2000        0.007       0.150
+          A    0.25     inferior         500        0.004        0.15
+          B    0.20     superior         500        1.000        0.85
+          C    0.30     inferior         400        0.008        0.15
       
       Esimates from final analysis (all patients):
        arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
-          A        180    742        0.243         0.243        0.0161      0.213
-          B        178    841        0.212         0.212        0.0141      0.185
-          C        113    417        0.271         0.272        0.0221      0.230
+          A         34    125        0.272         0.274        0.0399      0.202
+          B         41    255        0.161         0.162        0.0227      0.121
+          C         35    120        0.292         0.294        0.0417      0.220
        hi_cri_all
-            0.274
-            0.240
-            0.316
+            0.357
+            0.210
+            0.379
       
       Estimates from last adaptive analysis including each arm:
        arms sum_ys  ns raw_ests post_ests post_errs lo_cri hi_cri
-          A    180 742    0.243     0.243    0.0159  0.213  0.275
-          B    178 841    0.212     0.212    0.0141  0.185  0.241
-          C    113 417    0.271     0.271    0.0215  0.230  0.316
+          A     34 125    0.272     0.274    0.0397  0.202  0.357
+          B     41 255    0.161     0.163    0.0234  0.120  0.211
+          C     35 120    0.292     0.294    0.0412  0.220  0.379
       
       Simulation details:
       * Random seed: 12345
@@ -96,19 +96,19 @@
       
       Esimates from final analysis (all patients):
        arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
-          A       81.8    355        0.230         0.229        0.0550      0.120
-          B       69.9    328        0.213         0.213        0.0560      0.105
-          C       72.1    317        0.228         0.228        0.0565      0.119
+          A      113.9    335        0.340         0.341        0.0518      0.241
+          B      118.5    336        0.353         0.353        0.0548      0.247
+          C       96.1    329        0.292         0.292        0.0498      0.194
        hi_cri_all
-            0.337
-            0.325
-            0.338
+            0.445
+            0.461
+            0.389
       
       Estimates from last adaptive analysis including each arm:
        arms sum_ys  ns raw_ests post_ests post_errs lo_cri hi_cri
-          A   81.8 355    0.230     0.231    0.0541  0.123  0.337
-          B   69.9 328    0.213     0.213    0.0551  0.104  0.320
-          C   72.1 317    0.228     0.228    0.0559  0.119  0.338
+          A  113.9 335    0.340     0.340    0.0523  0.236  0.441
+          B  118.5 336    0.353     0.351    0.0551  0.243  0.463
+          C   96.1 329    0.292     0.292    0.0490  0.196  0.388
       
       Simulation details:
       * Random seed: 12345
@@ -132,21 +132,21 @@
       * Treatment effect compared to: no comparison
       
       Performance metrics (using posterior estimates from last adaptive analysis):
-      * Sample sizes: mean 680.0 (SD: 433.6) | median 500.0 (IQR: 400.0 to 800.0) [range: 300.0 to 2000.0]
-      * Total summarised outcomes: mean 176.6 (SD: 115.0) | median 133.0 (IQR: 102.2 to 210.8) [range: 69.0 to 524.0]
-      * Total summarised outcome rates: mean 0.258 (SD: 0.015) | median 0.260 (IQR: 0.248 to 0.268) [range: 0.230 to 0.283]
-      * Conclusive: 95.0%
-      * Superiority: 5.0%
-      * Equivalence: 10.0%
-      * Futility: 80.0%
-      * Inconclusive at max sample size: 5.0%
-      * Selection probabilities: A: 0.0% | B: 5.0% | C: 5.0% | None: 90.0%
-      * RMSE: 0.02360
-      * RMSE treatment effect: 0.00487
-      * Ideal design percentage: 50.0%
+      * Sample sizes: mean 800.0 (SD: 432.9) | median 700.0 (IQR: 475.0 to 1100.0) [range: 300.0 to 1900.0]
+      * Total summarised outcomes: mean 206.8 (SD: 117.6) | median 183.5 (IQR: 117.0 to 271.8) [range: 69.0 to 523.0]
+      * Total summarised outcome rates: mean 0.257 (SD: 0.022) | median 0.253 (IQR: 0.238 to 0.277) [range: 0.228 to 0.295]
+      * Conclusive: 100.0%
+      * Superiority: 25.0%
+      * Equivalence: 0.0%
+      * Futility: 75.0%
+      * Inconclusive at max sample size: 0.0%
+      * Selection probabilities: A: 0.0% | B: 0.0% | C: 25.0% | None: 75.0%
+      * RMSE: 0.02621
+      * RMSE treatment effect: 0.02309
+      * Ideal design percentage: 100.0%
       
       Simulation details:
-      * Simulation time: 0.727 secs
+      * Simulation time: 0.788 secs
       * Base random seed: 12345
       * Credible interval width: 95%
       * Number of posterior draws: 5000
@@ -166,21 +166,21 @@
       * Treatment effect compared to: no comparison
       
       Performance metrics (using posterior estimates from last adaptive analysis):
-      * Sample sizes: mean 680.0 (SD: 433.6) | median 500.0 (IQR: 400.0 to 800.0) [range: 300.0 to 2000.0]
-      * Total summarised outcomes: mean 176.6 (SD: 115.0) | median 133.0 (IQR: 102.2 to 210.8) [range: 69.0 to 524.0]
-      * Total summarised outcome rates: mean 0.258 (SD: 0.015) | median 0.260 (IQR: 0.248 to 0.268) [range: 0.230 to 0.283]
-      * Conclusive: 95.0%
-      * Superiority: 5.0%
-      * Equivalence: 10.0%
-      * Futility: 80.0%
-      * Inconclusive at max sample size: 5.0%
-      * Selection probabilities: A: 0.0% | B: 5.0% | C: 5.0% | None: 90.0%
-      * RMSE: 0.02360
-      * RMSE treatment effect: 0.00487
-      * Ideal design percentage: 50.0%
+      * Sample sizes: mean 800.0 (SD: 432.9) | median 700.0 (IQR: 475.0 to 1100.0) [range: 300.0 to 1900.0]
+      * Total summarised outcomes: mean 206.8 (SD: 117.6) | median 183.5 (IQR: 117.0 to 271.8) [range: 69.0 to 523.0]
+      * Total summarised outcome rates: mean 0.257 (SD: 0.022) | median 0.253 (IQR: 0.238 to 0.277) [range: 0.228 to 0.295]
+      * Conclusive: 100.0%
+      * Superiority: 25.0%
+      * Equivalence: 0.0%
+      * Futility: 75.0%
+      * Inconclusive at max sample size: 0.0%
+      * Selection probabilities: A: 0.0% | B: 0.0% | C: 25.0% | None: 75.0%
+      * RMSE: 0.02621
+      * RMSE treatment effect: 0.02309
+      * Ideal design percentage: 100.0%
       
       Simulation details:
-      * Simulation time: 0.727 secs
+      * Simulation time: 0.788 secs
       * Base random seed: 12345
       * Credible interval width: 95%
       * Number of posterior draws: 5000
@@ -193,31 +193,31 @@
     Output
       Single simulation result [saved/printed with sparse details]
       
-      Final status: inconclusive, stopped at final allowed adaptive analysis
-      Final sample size: 2000
-      Available outcome data at last adaptive analysis: 2000/2000 (100.0%)
+      Final status: conclusive, stopped for superiority
+      Final sample size: 500
+      Available outcome data at last adaptive analysis: 500/500 (100.0%)
       
       Trial results overview:
        arms true_ys final_status status_look status_probs final_alloc
-          A    0.25       active          NA           NA       0.194
-          B    0.20       active          NA           NA       0.656
-          C    0.30     inferior        2000        0.007       0.150
+          A    0.25     inferior         500        0.004        0.15
+          B    0.20     superior         500        1.000        0.85
+          C    0.30     inferior         400        0.008        0.15
       
       Esimates from final analysis (all patients):
        arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
-          A        180    742        0.243         0.243        0.0161      0.213
-          B        178    841        0.212         0.212        0.0141      0.185
-          C        113    417        0.271         0.272        0.0221      0.230
+          A         34    125        0.272         0.274        0.0399      0.202
+          B         41    255        0.161         0.162        0.0227      0.121
+          C         35    120        0.292         0.294        0.0417      0.220
        hi_cri_all
-            0.274
-            0.240
-            0.316
+            0.357
+            0.210
+            0.379
       
       Estimates from last adaptive analysis including each arm:
        arms sum_ys  ns raw_ests post_ests post_errs lo_cri hi_cri
-          A    180 742    0.243     0.243    0.0159  0.213  0.275
-          B    178 841    0.212     0.212    0.0141  0.185  0.241
-          C    113 417    0.271     0.271    0.0215  0.230  0.316
+          A     34 125    0.272     0.274    0.0397  0.202  0.357
+          B     41 255    0.161     0.163    0.0234  0.120  0.211
+          C     35 120    0.292     0.294    0.0412  0.220  0.379
       
       Simulation details:
       * Random seed: 12345

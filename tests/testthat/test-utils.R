@@ -99,7 +99,7 @@ test_that("stop0, warning0 and cat0 work", {
 test_that("summarise_num works", {
   expect_equal(
     summarise_num(1:100),
-    c(mean = 50.5, sd = 29.011492, median = 50.5, p25 = 25.75, p75 = 75.25)
+    c(mean = 50.5, sd = 29.011492, median = 50.5, p25 = 25.75, p75 = 75.25, p0 = 1, p100 = 100)
   )
   expect_error(summarise_num(c(NA, 1:100)))
 })

@@ -52,9 +52,20 @@ test_that("Single trial simulation errors on invalid inputs", {
 test_that("dispatch_trial_runs works", {
      setup <- read_testdata("binom__setup__3_arms__common_control__equivalence__futility__softened")
 
+     # Manage random seeds
+     oldseed <- get(".Random.seed", envir = globalenv())
+     on.exit(assign(".Random.seed", value = oldseed, envir = globalenv()), add = TRUE, after = FALSE)
+     old_rngkind <- RNGkind("L'Ecuyer-CMRG", "default", "default")
+     on.exit(RNGkind(kind = old_rngkind[1], normal.kind = old_rngkind[2], sample.kind = old_rngkind[3]), add = TRUE, after = FALSE)
+     set.seed(12345)
+     seeds <- list(get(".Random.seed", envir = globalenv()))
+     for (i in 2:5) {
+       seeds[[i]] <- nextRNGStream(seeds[[i - 1]])
+     }
+
      # Serial run
      expect_snapshot(
-       dispatch_trial_runs(1:5, setup, base_seed = 12345, sparse = FALSE, cores = 1)
+       dispatch_trial_runs(1:5, setup, seeds = seeds, sparse = FALSE, cores = 1)
      )
 
      # Parallel run
@@ -62,9 +73,10 @@ test_that("dispatch_trial_runs works", {
      # explanation.
      cl <- parallel::makeCluster(2)
      on.exit(parallel::stopCluster(cl))
+     parallel::clusterEvalQ(cl, RNGkind("L'Ecuyer-CMRG", "default", "default"))
      if (check_cluster_version(cl)) {
        expect_snapshot(
-         dispatch_trial_runs(1:5, setup, base_seed = 12345, sparse = TRUE, cores = 2, cl = cl)
+         dispatch_trial_runs(1:5, setup, seeds = seeds, sparse = TRUE, cores = 2, cl = cl)
        )
      }
 })
@@ -95,8 +107,8 @@ test_that("Multiple trials simulation works", {
 })
 
 test_that("prog_breaks", {
-  expect_snapshot(prog_breaks(0.1, n_rep_new = 10, cores = 1))
-  expect_snapshot(prog_breaks(0.1, n_rep_new = 10, cores = 2))
+  expect_snapshot(prog_breaks(0.1, prev_n_rep = 10, n_rep_new = 20, cores = 1))
+  expect_snapshot(prog_breaks(0.1, prev_n_rep = 0, n_rep_new = 10, cores = 2))
 })
 
 # This test also uses extract_results, to avoid the issue mentioned at the top
@@ -106,7 +118,7 @@ test_that("Multiple trials simulation works on multiple cores", {
   expect_snapshot(extract_results(res)) # Avoid empty test
 
   # Tests only run conditionally, see check_cluster_version() function for
-  # explanation.
+  # explanation. This cluster is only used to check version of adaptr on the cluster
   cl <- parallel::makeCluster(2)
   on.exit(parallel::stopCluster(cl))
 
