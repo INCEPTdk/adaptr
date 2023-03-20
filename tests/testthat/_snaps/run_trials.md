@@ -19,19 +19,19 @@
       
       Esimates from final analysis (all patients):
        arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
-          A         32    163        0.196         0.199        0.0309      0.142
-          B         35    159        0.220         0.222        0.0326      0.164
-          C        127    178        0.713         0.711        0.0343      0.644
+          A         39    195        0.200         0.202        0.0286      0.151
+          B         25    152        0.164         0.168        0.0294      0.115
+          C        114    153        0.745         0.743        0.0358      0.668
        hi_cri_all
-            0.264
-            0.291
-            0.774
+            0.262
+            0.230
+            0.807
       
       Estimates from last adaptive analysis including each arm:
        arms sum_ys  ns raw_ests post_ests post_errs lo_cri hi_cri
-          A     32 163    0.196     0.199    0.0302  0.144  0.265
-          B     35 159    0.220     0.223    0.0323  0.164  0.290
-          C    127 178    0.713     0.711    0.0342  0.642  0.773
+          A     39 195    0.200     0.202    0.0282  0.149  0.261
+          B     25 152    0.164     0.167    0.0295  0.113  0.231
+          C    114 153    0.745     0.744    0.0346  0.669  0.807
       
       Simulation details:
       * Random seed: 12345
@@ -60,19 +60,19 @@
       
       Esimates from final analysis (all patients):
        arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
-          A         32    163        0.196         0.199        0.0309      0.142
-          B         35    159        0.220         0.222        0.0326      0.164
-          C        127    178        0.713         0.711        0.0343      0.644
+          A         39    195        0.200         0.202        0.0286      0.151
+          B         25    152        0.164         0.168        0.0294      0.115
+          C        114    153        0.745         0.743        0.0358      0.668
        hi_cri_all
-            0.264
-            0.291
-            0.774
+            0.262
+            0.230
+            0.807
       
       Estimates from last adaptive analysis including each arm:
        arms sum_ys  ns raw_ests post_ests post_errs lo_cri hi_cri
-          A     32 163    0.196     0.199    0.0302  0.144  0.265
-          B     35 159    0.220     0.223    0.0323  0.164  0.290
-          C    127 178    0.713     0.711    0.0342  0.642  0.773
+          A     39 195    0.200     0.202    0.0282  0.149  0.261
+          B     25 152    0.164     0.167    0.0295  0.113  0.231
+          C    114 153    0.745     0.744    0.0346  0.669  0.807
       
       Simulation details:
       * Random seed: 12345

@@ -53,10 +53,10 @@ test_that("dispatch_trial_runs works", {
      setup <- read_testdata("binom__setup__3_arms__common_control__equivalence__futility__softened")
 
      # Manage random seeds
-     oldseed <- get(".Random.seed", envir = globalenv())
-     on.exit(assign(".Random.seed", value = oldseed, envir = globalenv()), add = TRUE, after = FALSE)
+     #oldseed <- get(".Random.seed", envir = globalenv())
+     #on.exit(assign(".Random.seed", value = oldseed, envir = globalenv()), add = TRUE, after = FALSE)
      old_rngkind <- RNGkind("L'Ecuyer-CMRG", "default", "default")
-     on.exit(RNGkind(kind = old_rngkind[1], normal.kind = old_rngkind[2], sample.kind = old_rngkind[3]), add = TRUE, after = FALSE)
+     #on.exit(RNGkind(kind = old_rngkind[1], normal.kind = old_rngkind[2], sample.kind = old_rngkind[3]), add = TRUE, after = FALSE)
      set.seed(12345)
      seeds <- list(get(".Random.seed", envir = globalenv()))
      for (i in 2:5) {
@@ -79,6 +79,8 @@ test_that("dispatch_trial_runs works", {
          dispatch_trial_runs(1:5, setup, seeds = seeds, sparse = TRUE, cores = 2, cl = cl)
        )
      }
+
+     RNGkind(kind = old_rngkind[1], normal.kind = old_rngkind[2], sample.kind = old_rngkind[3])
 })
 
 test_that("Multiple trials simulation works", {
