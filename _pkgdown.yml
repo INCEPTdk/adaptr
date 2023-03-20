@@ -15,9 +15,10 @@ reference:
   contents:
   - 'adaptr-package'
 
-- title: Setup and run trials
+- title: Setup, calibrate, and run trials
   contents:
   - starts_with("setup_trial")
+  - calibrate_trial
   - run_trial
   - run_trials
 

@@ -2,6 +2,17 @@
 
 ### New features and major changes:
 
+*   Added the `calibrate_trial()` function, which can be used to calibrate a
+    trial specification to obtain (approximately) a desired value for a certain
+    performance characteristic. Typically, this will be used to calibrate trial
+    specifications to control the overall Bayesian type 1 error rates in a
+    scenario with no between-arm differences, but the function is extendible and
+    may be used to calibrate trial specifications to other performance metrics.
+    The function uses a quite efficient Gaussian process-based Bayesian
+    optimisation algorithm, based in part on code by Robert Gramacy (Surrogates
+    chapter 5, see: https://bookdown.org/rbg/surrogates/chap5.html), with
+    permission.
+
 *   More and better parallelisation. The functions `extract_results()`,
     `check_performance()`, and thus also `plot_convergence()` and the
     `summary()` and `print()` methods for `trial_results` objects may now be run

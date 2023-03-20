@@ -30,6 +30,11 @@ outcome type. The code is heavily annotated, but comments focus on settings not
 touched on earlier in the vignette (e.g. we do not keep annotating the `arm` and
 `true_ys` arguments).
 
+Keep in mind that the `calibrate_trial()` function can be used to calibrate a
+trial specification to obtain a specific value for a certain performance metric
+(e.g., the Bayesian type 1 error rate for trial specifications with no
+between-arm differences). 
+
 For a general overview of how to use the `adaptr` package, please see
 `vignette("Overview", "adaptr")`.
 

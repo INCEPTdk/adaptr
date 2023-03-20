@@ -285,7 +285,7 @@ vapply_lgl <- function(X, FUN, ...) vapply(X, FUN, FUN.VALUE = logical(1), ...)
 #'
 #' @param fun1,fun2 names of functions (unquoted)
 #'
-#' @return single logical.
+#' @return Single logical.
 #'
 #' @keywords internal
 #'
@@ -296,4 +296,37 @@ equivalent_funs <- function(fun1, fun2) {
       deparse(fun2)
     )
   )
+}
+
+
+
+#' Find the index of value nearest to a target value
+#'
+#' Used internally, to find the index of the value in a vector nearest to a
+#' target value, possibly in a specific preferred direction.
+#'
+#' @param values numeric vector, the values considered.
+#' @param target single numeric value, the target to find the value closest to.
+#' @param dir single numeric value. If `0` (the default), finds the index of the
+#'   value closest to the target, regardless of the direction. If `< 0` or
+#'   `> 0`, finds the index of the value closest to the target, but only
+#'   considers values at or below/above target, respectfully, if any (otherwise
+#'   returns the closest value regardless of direction).
+#'
+#' @return Single integer, the index of the value closest to `target` according
+#'   to `dir`.
+#'
+#' @keywords internal
+#'
+which_nearest <- function(values, target, dir) {
+  # Nearest to target is the default and used if dir == 0 or as fall-back
+  idx <- which.min(abs(target - values))
+  if (dir != 0) {
+    diffs <- sign(dir) * (target - values)
+    if (sum(diffs <= 0) > 0) {
+      diffs[diffs > 0] <- -Inf
+      idx <- which.max(diffs)
+    }
+  }
+  idx
 }

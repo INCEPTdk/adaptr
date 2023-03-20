@@ -252,10 +252,12 @@ peruse the actual content of the returned object.
 }
 \description{
 Specifies the design of an adaptive trial with any type of outcome and
-validates all inputs. Use \code{\link[=run_trial]{run_trial()}} or \code{\link[=run_trials]{run_trials()}} to conduct
-single/multiple simulations of the specified trial, respectively.\cr
-See \code{\link[=setup_trial_binom]{setup_trial_binom()}} and \code{\link[=setup_trial_norm]{setup_trial_norm()}} for simplified setup of
-trial designs common outcome types. For additional trial specification
+validates all inputs. Use \code{\link[=calibrate_trial]{calibrate_trial()}} to calibrate the trial
+specification to obtain a specific value for a certain performance metric
+(e.g., the Bayesian type 1 error rate). Use \code{\link[=run_trial]{run_trial()}} or \code{\link[=run_trials]{run_trials()}}
+to conduct single/multiple simulations of the specified trial, respectively.
+\cr See \code{\link[=setup_trial_binom]{setup_trial_binom()}} and \code{\link[=setup_trial_norm]{setup_trial_norm()}} for simplified setup
+of trial designs common outcome types. For additional trial specification
 examples, see the the \strong{Basic examples} vignette
 (\code{vignette("Basic-examples", package = "adaptr")}) and the
 \strong{Advanced example} vignette
@@ -333,6 +335,7 @@ relative scale.
 
 \strong{Using additional custom or functions from loaded packages in the
 custom functions}
+
 If the \code{fun_y_gen}, \code{fun_draws}, or \code{fun_raw_est} functions calls other
 user-specified functions (or uses objects defined by the user outside these
 functions or the \code{\link[=setup_trial]{setup_trial()}}-call) or functions from external packages

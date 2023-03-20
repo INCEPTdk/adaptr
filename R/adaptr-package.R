@@ -18,29 +18,33 @@
 #' [Sygeforsikringen "danmark"](https://www.sygeforsikring.dk/).
 #'
 #' @details
-#' The `adaptr` package contains the following primary functions:
+#' The `adaptr` package contains the following primary functions (in order of
+#' typical use):
 #'
-#' 1. [setup_trial()] is the general function that sets up a trial
+#' 1. The [setup_cluster()] initiates a parallel computation cluster that can
+#' be used to run simulations and post-processing in parallel, increasing speed,
+#' and details on parallelisation and other options for running `adaptr`
+#' functions in parallel are described in that function.
+#' 2. The [setup_trial()] function is the general function that sets up a trial
 #' specification. The simpler, special-case functions [setup_trial_binom()] and
 #' [setup_trial_norm()] may be used for easier specification of trial designs
 #' using binary, binomially distributed or continuous, normally distributed
 #' outcomes, respectively, with some limitations in flexibility.
-#' 2. The [run_trial()] and [run_trials()] functions are used to conduct single
+#' 3. The [calibrate_trial()] function calibrates a trial specification to
+#' obtain a certain value for a performance metric (typically, to calibrate the
+#' Bayesian type 1 error rate), using the functions below.
+#' 4. The [run_trial()] and [run_trials()] functions are used to conduct single
 #' or multiple simulations, respectively, according to a trial specification
 #' setup as described in #1.
-#' 3. The [extract_results()], [check_performance()] and [summary()] functions
+#' 5. The [extract_results()], [check_performance()] and [summary()] functions
 #' are used to extract results from multiple trial simulations, calculate
 #' performance metrics, and summarise results. The [plot_convergence()] function
 #' assesses stability of performance metrics according to the number of
 #' simulations conducted. The [plot_metrics_ecdf()] function plots empirical
 #' cumulative distribution functions for numerical performance metrics.
-#' 4. The [plot_status()] and [plot_history()] functions are used to plot the
+#' 6. The [plot_status()] and [plot_history()] functions are used to plot the
 #' overall trial/arm statuses for multiple simulated trials or the history of
 #' trial metrics over time for single/multiple simulated trials, respectively.
-#' 5. The [setup_cluster()] initiates a parallel computation cluster that can
-#' be used to run simulations and post-processing in parallel, increasing speed,
-#' and details on parallelisation and other options for running `adaptr`
-#' functions in parallel are described in that function.
 #'
 #' For further information see the function documentation or the **Overview**
 #' vignette (`vignette("Overview", package = "adaptr")`) for an example of how
@@ -71,9 +75,10 @@
 #'
 #'
 #' @seealso
-#' [setup_trial()], [setup_trial_binom()], [setup_trial_norm()], [run_trial()],
-#' [run_trials()], [extract_results()], [check_performance()], [summary()],
+#' [setup_cluster()], [setup_trial()], [setup_trial_binom()],
+#' [setup_trial_norm()], [calibrate_trial()], [run_trial()], [run_trials()],
+#' [extract_results()], [check_performance()], [summary()],
 #' [plot_convergence()], [plot_metrics_ecdf()], [print()], [plot_status()],
-#' [plot_history()], [setup_cluster()].
+#' [plot_history()].
 #'
 NULL

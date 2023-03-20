@@ -19,13 +19,21 @@ funded primarily by a grant from
 \href{https://www.sygeforsikring.dk/}{Sygeforsikringen "danmark"}.
 }
 \details{
-The \code{adaptr} package contains the following primary functions:
+The \code{adaptr} package contains the following primary functions (in order of
+typical use):
 \enumerate{
-\item \code{\link[=setup_trial]{setup_trial()}} is the general function that sets up a trial
+\item The \code{\link[=setup_cluster]{setup_cluster()}} initiates a parallel computation cluster that can
+be used to run simulations and post-processing in parallel, increasing speed,
+and details on parallelisation and other options for running \code{adaptr}
+functions in parallel are described in that function.
+\item The \code{\link[=setup_trial]{setup_trial()}} function is the general function that sets up a trial
 specification. The simpler, special-case functions \code{\link[=setup_trial_binom]{setup_trial_binom()}} and
 \code{\link[=setup_trial_norm]{setup_trial_norm()}} may be used for easier specification of trial designs
 using binary, binomially distributed or continuous, normally distributed
 outcomes, respectively, with some limitations in flexibility.
+\item The \code{\link[=calibrate_trial]{calibrate_trial()}} function calibrates a trial specification to
+obtain a certain value for a performance metric (typically, to calibrate the
+Bayesian type 1 error rate), using the functions below.
 \item The \code{\link[=run_trial]{run_trial()}} and \code{\link[=run_trials]{run_trials()}} functions are used to conduct single
 or multiple simulations, respectively, according to a trial specification
 setup as described in #1.
@@ -38,10 +46,6 @@ cumulative distribution functions for numerical performance metrics.
 \item The \code{\link[=plot_status]{plot_status()}} and \code{\link[=plot_history]{plot_history()}} functions are used to plot the
 overall trial/arm statuses for multiple simulated trials or the history of
 trial metrics over time for single/multiple simulated trials, respectively.
-\item The \code{\link[=setup_cluster]{setup_cluster()}} initiates a parallel computation cluster that can
-be used to run simulations and post-processing in parallel, increasing speed,
-and details on parallelisation and other options for running \code{adaptr}
-functions in parallel are described in that function.
 }
 
 For further information see the function documentation or the \strong{Overview}
@@ -71,8 +75,9 @@ trials. J Clin Epidemiol. \doi{10.1016/j.jclinepi.2022.11.002}
 \href{https://github.com/INCEPTdk/adaptr/}{GitHub repository}
 }
 \seealso{
-\code{\link[=setup_trial]{setup_trial()}}, \code{\link[=setup_trial_binom]{setup_trial_binom()}}, \code{\link[=setup_trial_norm]{setup_trial_norm()}}, \code{\link[=run_trial]{run_trial()}},
-\code{\link[=run_trials]{run_trials()}}, \code{\link[=extract_results]{extract_results()}}, \code{\link[=check_performance]{check_performance()}}, \code{\link[=summary]{summary()}},
+\code{\link[=setup_cluster]{setup_cluster()}}, \code{\link[=setup_trial]{setup_trial()}}, \code{\link[=setup_trial_binom]{setup_trial_binom()}},
+\code{\link[=setup_trial_norm]{setup_trial_norm()}}, \code{\link[=calibrate_trial]{calibrate_trial()}}, \code{\link[=run_trial]{run_trial()}}, \code{\link[=run_trials]{run_trials()}},
+\code{\link[=extract_results]{extract_results()}}, \code{\link[=check_performance]{check_performance()}}, \code{\link[=summary]{summary()}},
 \code{\link[=plot_convergence]{plot_convergence()}}, \code{\link[=plot_metrics_ecdf]{plot_metrics_ecdf()}}, \code{\link[=print]{print()}}, \code{\link[=plot_status]{plot_status()}},
-\code{\link[=plot_history]{plot_history()}}, \code{\link[=setup_cluster]{setup_cluster()}}.
+\code{\link[=plot_history]{plot_history()}}.
 }

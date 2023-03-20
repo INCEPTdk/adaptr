@@ -10,7 +10,7 @@ equivalent_funs(fun1, fun2)
 \item{fun1, fun2}{names of functions (unquoted)}
 }
 \value{
-single logical.
+Single logical.
 }
 \description{
 Used internally. Compares the definitions of two functions (ignoring

@@ -236,8 +236,10 @@ trial arm; technically, no priors are used (as using \emph{normal-normal}
 conjugate prior models with extremely wide or uniform priors gives similar
 results for these simple, unadjusted estimates). Technically, this thus
 corresponds to using improper, flat priors, although not explicitly specified
-as such. Use \code{\link[=run_trial]{run_trial()}} or \code{\link[=run_trials]{run_trials()}} to conduct single/multiple
-simulations of the specified trial, respectively.\cr
+as such. Use \code{\link[=calibrate_trial]{calibrate_trial()}} to calibrate the trial specification to
+obtain a specific value for a certain performance metric (e.g., the Bayesian
+type 1 error rate).  Use \code{\link[=run_trial]{run_trial()}} or \code{\link[=run_trials]{run_trials()}} to conduct
+single/multiple simulations of the specified trial, respectively.\cr
 \strong{Note:} \code{add_info} as specified in \code{\link[=setup_trial]{setup_trial()}} is set to the arms and
 standard deviations used for trials specified using this function.\cr
 \strong{Further details:} please see \code{\link[=setup_trial]{setup_trial()}}. See \code{\link[=setup_trial_binom]{setup_trial_binom()}}

@@ -441,10 +441,12 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' Setup a generic trial specification
 #'
 #' Specifies the design of an adaptive trial with any type of outcome and
-#' validates all inputs. Use [run_trial()] or [run_trials()] to conduct
-#' single/multiple simulations of the specified trial, respectively.\cr
-#' See [setup_trial_binom()] and [setup_trial_norm()] for simplified setup of
-#' trial designs common outcome types. For additional trial specification
+#' validates all inputs. Use [calibrate_trial()] to calibrate the trial
+#' specification to obtain a specific value for a certain performance metric
+#' (e.g., the Bayesian type 1 error rate). Use [run_trial()] or [run_trials()]
+#' to conduct single/multiple simulations of the specified trial, respectively.
+#' \cr See [setup_trial_binom()] and [setup_trial_norm()] for simplified setup
+#' of trial designs common outcome types. For additional trial specification
 #' examples, see the the **Basic examples** vignette
 #' (`vignette("Basic-examples", package = "adaptr")`) and the
 #' **Advanced example** vignette
@@ -695,6 +697,7 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #'
 #' \strong{Using additional custom or functions from loaded packages in the
 #' custom functions}
+#'
 #' If the `fun_y_gen`, `fun_draws`, or `fun_raw_est` functions calls other
 #' user-specified functions (or uses objects defined by the user outside these
 #' functions or the [setup_trial()]-call) or functions from external packages
@@ -914,8 +917,10 @@ setup_trial <- function(arms, true_ys, fun_y_gen = NULL, fun_draws = NULL,
 #' distributed outcome and validates all inputs. Uses *beta-binomial*
 #' conjugate models with `beta(1, 1)` prior distributions, corresponding to a
 #' uniform prior (or the addition of 2 patients, 1 with an event and 1 without)
-#' to the trial. Use [run_trial()] or [run_trials()] to conduct single/multiple
-#' simulations of the specified trial, respectively.\cr
+#' to the trial. Use [calibrate_trial()] to calibrate the trial specification to
+#' obtain a specific value for a certain performance metric (e.g., the Bayesian
+#' type 1 error rate). Use [run_trial()] or [run_trials()] to conduct
+#' single/multiple simulations of the specified trial, respectively.\cr
 #' **Note:** `add_info` as specified in [setup_trial()] is set to `NULL` for
 #' trial specifications setup by this function.\cr
 #' **Further details:** please see [setup_trial()]. See [setup_trial_norm()] for
@@ -1019,8 +1024,10 @@ setup_trial_binom <- function(arms, true_ys, start_probs = NULL,
 #' conjugate prior models with extremely wide or uniform priors gives similar
 #' results for these simple, unadjusted estimates). Technically, this thus
 #' corresponds to using improper, flat priors, although not explicitly specified
-#' as such. Use [run_trial()] or [run_trials()] to conduct single/multiple
-#' simulations of the specified trial, respectively.\cr
+#' as such. Use [calibrate_trial()] to calibrate the trial specification to
+#' obtain a specific value for a certain performance metric (e.g., the Bayesian
+#' type 1 error rate).  Use [run_trial()] or [run_trials()] to conduct
+#' single/multiple simulations of the specified trial, respectively.\cr
 #' **Note:** `add_info` as specified in [setup_trial()] is set to the arms and
 #' standard deviations used for trials specified using this function.\cr
 #' **Further details:** please see [setup_trial()]. See [setup_trial_binom()]

@@ -89,6 +89,11 @@ for example:
 print(binom_trial, prob_digits = 2)
 ```
 
+Finally, a trial specification may be calibrated to obtain a specific value for
+a certain performance metric (e.g., the Bayesian type 1 error rate for trial
+specifications with no between-arm differences) by using the `calibrate_trial()`
+function. 
+
 ### Simulate a single trial
 Remember to define the `seed` to ensure reproducible results:
 

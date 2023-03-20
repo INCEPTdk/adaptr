@@ -41,7 +41,8 @@
   if (getRversion() >= "2.15.1") {
     globalVariables(c(
       "arm", "hi", "lo", "x", "mid", "value", "ns", "ns_all", "look_ns",
-      "look_ns_all", "p", "status", "metric", "y", "arm_facet"
+      "look_ns_all", "p", "status", "metric", "y", "arm_facet",
+      "lub", "uub", "y_hat"
     ))
   }
 }

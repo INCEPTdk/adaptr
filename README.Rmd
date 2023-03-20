@@ -88,6 +88,11 @@ binom_trial <- setup_trial_binom(
 print(binom_trial, prob_digits = 3)
 ```
 
+The resulting trial specification may be calibrated to obtain a specific value
+for a certain performance metric (e.g., the Bayesian type 1 error rate for
+trial specifications with no between-arm differences) by using the
+`calibrate_trial()` function.
+
 Simulate a single trial using a reproducible random seed:
 
 ```{r}

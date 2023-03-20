@@ -229,8 +229,10 @@ Specifies the design of an adaptive trial with a binary, binomially
 distributed outcome and validates all inputs. Uses \emph{beta-binomial}
 conjugate models with \code{beta(1, 1)} prior distributions, corresponding to a
 uniform prior (or the addition of 2 patients, 1 with an event and 1 without)
-to the trial. Use \code{\link[=run_trial]{run_trial()}} or \code{\link[=run_trials]{run_trials()}} to conduct single/multiple
-simulations of the specified trial, respectively.\cr
+to the trial. Use \code{\link[=calibrate_trial]{calibrate_trial()}} to calibrate the trial specification to
+obtain a specific value for a certain performance metric (e.g., the Bayesian
+type 1 error rate). Use \code{\link[=run_trial]{run_trial()}} or \code{\link[=run_trials]{run_trials()}} to conduct
+single/multiple simulations of the specified trial, respectively.\cr
 \strong{Note:} \code{add_info} as specified in \code{\link[=setup_trial]{setup_trial()}} is set to \code{NULL} for
 trial specifications setup by this function.\cr
 \strong{Further details:} please see \code{\link[=setup_trial]{setup_trial()}}. See \code{\link[=setup_trial_norm]{setup_trial_norm()}} for

@@ -379,3 +379,46 @@ print.trial_results_summary <- function(x, digits = 1, ...) {
   # Return invisibly
   invisible(x)
 }
+
+
+
+#' Print method for calibrated trial objects
+#'
+#' @param x object to print, output from [calibrate_trial()].
+#'
+#' @describeIn print Trial calibration
+#' @export
+#'
+print.trial_calibration <- function(x, ...) {
+  cat0("Trial calibration:",
+       "\n* Result: calibration ", ifelse(x$success, "successful", "unsuccessful"),
+       "\n* Best x: ", x$best_x,
+       "\n* Best y: ", x$best_y,
+
+       "\n\nCentral settings:",
+       "\n* Target: ", x$control$target,
+       "\n* Tolerance: ", x$control$tol, " (",
+       ifelse(x$control$dir == 0, "in both directions", ifelse(x$control$dir < 0, "at or below target", "at or above target")),
+       ", range: ", paste(x$control$target + x$control$tol * c(-1 * (x$control$dir <= 0), x$control$dir >= 0), collapse = " to "), ")",
+       "\n* Search range: ", x$control$search_range[1], " to ", x$control$search_range[2],
+       "\n* Gaussian process controls:",
+       "\n* - resolution: ", x$control$resolution,
+       "\n* - kappa: ", x$control$kappa,
+       "\n* - pow: ", x$control$pow,
+       "\n* - lengthscale: ", paste(x$control$lengthscale, collapse = " to "),
+       ifelse(length(x$control$lengthscale) == 1, " (constant)", " (search range)"),
+       "\n* - x scaled: ", ifelse(x$control$scale_x, "yes", "no"),
+       "\n* Noisy: ", ifelse(x$control$noisy, "yes", "no"),
+       "\n* Narrowing: ", ifelse(x$control$narrow, "yes", "no"),
+
+       "\n\nCalibration/simulation details:",
+       "\n* Total evaluations: ", nrow(x$evaluations), " (previous + grid + iterations)",
+       "\n* Repetitions: ", x$control$n_rep,
+       "\n* Calibration time: ", format(unclass(x$elapsed_time), digits = 3), " ", attr(x$elapsed_time, "units"),
+       "\n* Base random seed: ", x$control$base_seed %||% "none specified",
+
+       "\n\nSee 'help(\"calibrate_trial\")' for details.")
+
+  # Return invisibly
+  invisible(x)
+}

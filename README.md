@@ -109,6 +109,11 @@ print(binom_trial, prob_digits = 3)
 #> Soften power for all analyses: 0.5
 ```
 
+The resulting trial specification may be calibrated to obtain a specific
+value for a certain performance metric (e.g., the Bayesian type 1 error
+rate for trial specifications with no between-arm differences) by using
+the `calibrate_trial()` function.
+
 Simulate a single trial using a reproducible random seed:
 
 ``` r
@@ -205,7 +210,7 @@ print(res_sum, digits = 1)
 #> * Ideal design percentage: 100.0%
 #> 
 #> Simulation details:
-#> * Simulation time: 0.46 secs
+#> * Simulation time: 0.428 secs
 #> * Base random seed: 67890
 #> * Credible interval width: 95%
 #> * Number of posterior draws: 5000
