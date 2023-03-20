@@ -372,7 +372,7 @@ extract_results <- function(object,
     # Derive chunks
     chunks <- lapply(1:cores, function(x) {
       size <- ceiling(n_rep / cores)
-      start <- (size * (x-1) + 1)
+      start <- (size * (x - 1) + 1)
       object$trial_results[start:min(start - 1 + size, n_rep)]
     })
     # Extract

@@ -14,7 +14,7 @@
     permission.
 
 *   More and better parallelisation. The functions `extract_results()`,
-    `check_performance()`, and thus also `plot_convergence()` and the
+    `check_performance()`, `plot_convergence()`, `plot_history()`, and the
     `summary()` and `print()` methods for `trial_results` objects may now be run
     in parallel via the `cores` argument or as described below.
     

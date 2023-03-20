@@ -119,6 +119,7 @@ plot_history.trial_result <- function(object,
 
 #' Plot history for multiple trial simulations
 #'
+#' @inheritParams extract_results
 #' @param ribbon list, as `line` but only appropriate for `trial_results`
 #'   objects (i.e., when multiple simulations are run). Also allows to specify
 #'   the `width` of the interval: must be between 0 and 1, with `0.5` (default)
@@ -132,6 +133,7 @@ plot_history.trial_results <- function(object,
                                        x_value = "look", y_value = "prob",
                                        line = NULL,
                                        ribbon = list(width = 0.5, alpha = 0.2),
+                                       cores = NULL,
                                        ...) {
   assert_pkgs("ggplot2")
 
@@ -144,8 +146,11 @@ plot_history.trial_results <- function(object,
          'sum ys', 'sum ys all', 'ratio ys', or 'ratio ys all'.")
   }
   if (isTRUE(object$sparse)) {
-    stop0("Plotting the history for multiple trials requires non-sparse results.",
+    stop0("Plotting the history for multiple trials requires non-sparse results. ",
           "Please call run_trials() again with sparse = FALSE.")
+  }
+  if (!(verify_int(cores, min_value = 1) | is.null(cores))) {
+    stop0("cores must be NULL or a single whole number > 0.")
   }
 
   # Enforce defaults if ill-defined input
@@ -153,10 +158,29 @@ plot_history.trial_results <- function(object,
   ribbon$width <- ribbon$width %||% 0.5
   ribbon$alpha <- ribbon$alpha %||% 0.2
 
-  # Data extraction and aggregation
-  dta <- do.call(rbind, lapply(object$trial_results, extract_history, metric = y_value))
+  # Do extraction and aggregation across cores
+  if (is.null(cores)) {
+    cl <- .adaptr_cluster_env$cl # Load default cluster if existing
+    # If cores is not specified by setup_cluster(), use global option or 1
+    cores <- .adaptr_cluster_env$cores %||% getOption("mc.cores", 1)
+  } else { # cores specified, ignore defaults
+    cl <- NULL
+  }
+
+  if (cores == 1) {
+    dta <- do.call(rbind, lapply(object$trial_results, extract_history, metric = y_value))
+  } else {
+    if (is.null(cl)) { # Set up new, temporary cluster
+      cl <- makePSOCKcluster(cores)
+      on.exit(stopCluster(cl), add = TRUE, after = FALSE)
+      # Not necessary to set RNG kind here
+    }
+    dta <- do.call(rbind, parLapply(cl, object$trial_results, extract_history, metric = y_value))
+  }
+
+  # Summarise data
   summarise_alloc_dta <- function(dta) {
-    qs <- setNames(quantile(dta$value, 0.5 + (-1:1) * ribbon$width/2), c("lo", "mid", "hi"))
+    qs <- setNames(quantile(dta$value, 0.5 + (-1:1) * ribbon$width / 2), c("lo", "mid", "hi"))
     cbind(dta[1, c("look", "look_ns", "look_ns_all", "arm")], as.list(qs))
   }
 
