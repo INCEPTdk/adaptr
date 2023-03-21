@@ -1,4 +1,9 @@
 test_that("calibrate_trial works", {
+  # Store seed - check that the entire process
+  # from trial spec to running to calibration does not change it
+  set.seed(12345)
+  oldseed <- get(".Random.seed", envir = globalenv())
+
   spec <- setup_trial_binom(arms = 1:2, true_ys = rep(0.35, 2), data_looks = 500 * 1:5)
 
   # Run and save
@@ -31,6 +36,9 @@ test_that("calibrate_trial works", {
                                                prev_x = 1, prev_y = 0,
                                                path = tmp_file))
   expect_equal(res$evaluations, res_load$evaluations)
+
+  # Check that seed is unchanged
+  expect_identical(oldseed, get(".Random.seed", envir = globalenv()))
 })
 
 test_that("calibrate_trial errors/warns/messages correctly", {

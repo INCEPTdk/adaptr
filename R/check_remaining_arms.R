@@ -44,8 +44,8 @@
 #'                                  equivalence_diff = 0.03,
 #'                                  equivalence_only_first = FALSE)
 #'
-#' # Run 50 simulations with a specified random base seed
-#' res <- run_trials(binom_trial, n_rep = 50, base_seed = 12345)
+#' # Run 35 simulations with a specified random base seed
+#' res <- run_trials(binom_trial, n_rep = 35, base_seed = 12345)
 #'
 #' # Check remaining arms
 #' check_remaining_arms(res)

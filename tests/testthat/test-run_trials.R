@@ -1,4 +1,8 @@
 test_that("single trial simulation works", {
+  # Store seed - check that the entire process does not change it
+  set.seed(12345)
+  oldseed <- get(".Random.seed", envir = globalenv())
+
   setup <- read_testdata("binom__setup__3_arms__no_control__equivalence__softened")
   res <- read_testdata("binom__result__3_arms__no_control__equivalence__softened")
   expect_equal(run_trial(setup, seed = 12345, sparse = FALSE), res)
@@ -38,6 +42,9 @@ test_that("single trial simulation works", {
     futility_only_first = TRUE
   )
   expect_snapshot(run_trial(setup_equi_futil_only_first, seed = 12345))
+
+  # Check that seed is unchanged
+  expect_identical(oldseed, get(".Random.seed", envir = globalenv()))
 })
 
 test_that("Single trial simulation errors on invalid inputs", {
@@ -53,10 +60,7 @@ test_that("dispatch_trial_runs works", {
      setup <- read_testdata("binom__setup__3_arms__common_control__equivalence__futility__softened")
 
      # Manage random seeds
-     #oldseed <- get(".Random.seed", envir = globalenv())
-     #on.exit(assign(".Random.seed", value = oldseed, envir = globalenv()), add = TRUE, after = FALSE)
      old_rngkind <- RNGkind("L'Ecuyer-CMRG", "default", "default")
-     #on.exit(RNGkind(kind = old_rngkind[1], normal.kind = old_rngkind[2], sample.kind = old_rngkind[3]), add = TRUE, after = FALSE)
      set.seed(12345)
      seeds <- list(get(".Random.seed", envir = globalenv()))
      for (i in 2:5) {
@@ -84,6 +88,10 @@ test_that("dispatch_trial_runs works", {
 })
 
 test_that("Multiple trials simulation works", {
+  # Store seed - check that the entire process does not change it
+  set.seed(12345)
+  oldseed <- get(".Random.seed", envir = globalenv())
+
   setup <- read_testdata("binom__setup__3_arms__no_control__equivalence__softened")
   res <- run_trials(setup, n_rep = 20, base_seed = 12345, sparse = FALSE)
 
@@ -106,6 +114,9 @@ test_that("Multiple trials simulation works", {
 
   expect_equal(res, loaded_res)
   expect_equal(res, res_with_progress)
+
+  # Check that seed is unchanged
+  expect_identical(oldseed, get(".Random.seed", envir = globalenv()))
 })
 
 test_that("prog_breaks", {
