@@ -29,6 +29,12 @@ test_that("Tidy results of simulations from binomial-outcome trial without commo
   expect_snapshot(extract_results(res, raw_ests = TRUE))
 })
 
+test_that("Sequential and parallel extraction works similarly", {
+  res <- read_testdata("binom__results__3_arms__common_control__equivalence__futility__softened")
+  expect_identical(extract_results(res, cores = 1),
+                   extract_results(res, cores = 2))
+})
+
 test_that("Metric history of specific trial works", {
   res <- read_testdata("binom__result__3_arms__common_control__equivalence__futility__softened")
   expect_snapshot(extract_history(res))

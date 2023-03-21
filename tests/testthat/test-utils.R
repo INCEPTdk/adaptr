@@ -108,3 +108,10 @@ test_that("assert_pkgs works", {
   expect_true(assert_pkgs(c("base", "stats")))
   expect_error(assert_pkgs("!*?")) # Invalid package name used
 })
+
+test_that("which_nearest works", {
+  expect_equal(which_nearest(1:10 + 0.01, 5, dir = 0), 5)
+  expect_equal(which_nearest(1:10 + 0.01, 5, dir = -1), 4)
+  expect_equal(which_nearest(1:10 + 0.01, 5, dir = 1), 5)
+  expect_equal(which_nearest(1:10, 12, dir = 1), which_nearest(1:10, 12, dir = -1))
+})

@@ -12,6 +12,11 @@ test_that("valid parameters work", {
 
   expect_snapshot(check_performance(res, restrict = "superior", uncertainty = TRUE, boot_seed = "base", n_boot = 100))
   expect_snapshot(check_performance(res, restrict = "selected", uncertainty = TRUE, boot_seed = "base", n_boot = 100))
+
+  # Same for sequential and parallel computation
+  res1 <- suppressWarnings(check_performance(res, uncertainty = TRUE, boot_seed = "base", n_boot = 100))
+  res2 <- suppressWarnings(check_performance(res, uncertainty = TRUE, boot_seed = "base", n_boot = 100, cores = 2))
+  expect_identical(res1, res2)
 })
 
 test_that("invalid parameters handled correctly", {
@@ -31,6 +36,6 @@ test_that("invalid parameters handled correctly", {
   res_no_seed <- res
   res_no_seed$base_seed <- NULL
   expect_error(check_performance(res_no_seed, uncertainty = TRUE, n_boot = 1000, boot_seed = "base"))
-  expect_error(check_performance(res, uncertainty = TRUE, n_boot = 1000, boot_seed == 0.5))
+  expect_error(check_performance(res, uncertainty = TRUE, n_boot = 1000, boot_seed = 0.5))
 
 })

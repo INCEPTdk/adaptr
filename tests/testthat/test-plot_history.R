@@ -12,6 +12,9 @@ test_that("history of multiple binom trials works", {
 
   p <- plot_history(res, y_value = "pct", x_value = "followed n")
   vdiffr::expect_doppelganger("history plot, binomial, multiple, pct, followed n", p)
+
+  p <- plot_history(res, y_value = "pct", x_value = "followed n", cores = 2)
+  vdiffr::expect_doppelganger("history plot, binomial, multiple, pct, followed n, 2 cores", p)
 })
 
 test_that("history of single trial works", {
@@ -55,4 +58,6 @@ test_that("history plot produces errors with invalid input", {
   expect_error(plot_history(results, y_value = "mean ys"))
   results <- read_testdata("binom__results__3_arms__no_control__equivalence__softened__sparse")
   expect_error(plot_history(results)) # error due to sparse object
+
+  expect_error(plot_history(results, cores = 0.27))
 })

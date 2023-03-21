@@ -255,4 +255,13 @@ test_that("setup/validate_trial functions errors on invalid inputs", {
                                  futility_prob = 0.9, futility_diff = 2, futility_only_first = TRUE))
 
   expect_error(setup_trial_norm(arms = 1:3, data_looks = 1:3 * 100, true_ys = 1:3, sds = -1))
+
+  expect_error(setup_trial_binom(arms = 1:3, max_n = 28.9, look_after_every = 1.23, true_ys = 1:3 * 0.1))
+  expect_error(setup_trial_binom(arms = 1:3, true_ys = 1:3 * 0.1, data_looks = 100 / 3 * 1:3))
+
+  expect_error(setup_trial_binom(arms = 1:3, data_looks = 1:3 * 100, true_ys = 1:3 * 0.1, inferiority = 0.35))
+
+  expect_error(setup_trial(arms = 1:3, true_ys = 1:3, data_looks = 1:3 * 100,
+                           fun_y_gen = function(x) rnorm(length(x)),
+                           fun_draws = function(...) matrix(1:9, ncol = 3)))
 })
