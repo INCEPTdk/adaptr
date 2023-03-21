@@ -2,11 +2,13 @@ test_that("plot_metrics_ecdf works and errors correctly", {
   # Works
   res <- read_testdata("binom__results__3_arms__no_control__equivalence__softened__sparse")
   p <- plot_metrics_ecdf(res)
-  vdiffr::expect_doppelganger("plot_metrics_ecdf, binom, 3 arms, no control, equivalence, softened, sparse, no restriction", res)
+  vdiffr::expect_doppelganger("no restriction", p)
   p <- plot_metrics_ecdf(res, restrict = "superior")
-  vdiffr::expect_doppelganger("plot_metrics_ecdf, binom, 3 arms, no control, equivalence, softened, sparse, superior", res)
+  vdiffr::expect_doppelganger("superior", p)
   p <- plot_metrics_ecdf(res, restrict = "selected")
-  vdiffr::expect_doppelganger("plot_metrics_ecdf, binom, 3 arms, no control, equivalence, softened, sparse, selected", res)
+  vdiffr::expect_doppelganger("selected", p)
+  p <- plot_metrics_ecdf(res, metrics = "size")
+  vdiffr::expect_doppelganger("size only", p)
 
   # Errors
   expect_error(plot_metrics_ecdf(res, metrics = TRUE))
