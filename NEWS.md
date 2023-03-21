@@ -16,11 +16,11 @@
 *   More and better parallelisation. The functions `extract_results()`,
     `check_performance()`, `plot_convergence()`, `plot_history()`, and the
     `summary()` and `print()` methods for `trial_results` objects may now be run
-    in parallel via the `cores` argument or as described below (note: the
-    `plot_status()` and `update_saved_trial()` functions have not been
-    parallelised, as this does not speed up the functions for most reasonably
-    sized number of results, but actually may cause slowdowns due to the time
-    it takes to copy data to the cluster).
+    in parallel via the `cores` argument or as described below (note: some
+    other functions have not been parallelised, as they were already fast and
+    the time it took to copy data to the clusters meant that the parallelised
+    versions of those functions were actually slower than the original ones,
+    even when run on results from 10-100K simulations).
     
 *   The `setup_cluster()` function has been added, and can now be used to setup
     and use the same parallel cluster throughout a session, avoiding the
@@ -51,6 +51,9 @@
 *   Added the `plot_metrics_ecdf()` function, which plots empirical cumulative
     distributions of numerical performance metrics across multiple trial
     simulations.
+    
+*   Added the `check_remaining_arms()` function, which summarises all
+    combinations of remaining arms from multiple simulations.
 
 ### Bug fixes:
 
@@ -76,6 +79,13 @@
 *   Now includes min/max values when summarising numerical performance metrics
     in `check_performance()` and `summary()`, and these may be plotted using
     `plot_convergence()` as well.
+    
+*   The `setup_trial()` functions now accepts `equivalence_prob` and
+    `futility_prob` thresholds of `1`. As `run_trial()` only stops or drops arms
+    for equivalence/futility if the probabilities exceed the current threshold,
+    values of `1` makes stopping impossible, however, these values may be used
+    in a sequence of thresholds to effectively prevent early stopping for
+    equivalence/futility but allowing stopping later.
 
 *   When `overwrite` is `TRUE` in `run_trials()`, the previous object will be
     overwritten, even if the previous object used a different trial

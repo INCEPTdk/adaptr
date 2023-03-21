@@ -81,5 +81,5 @@ if (requireNamespace("ggplot2", quietly = TRUE)){
 }
 \seealso{
 \code{\link[=check_performance]{check_performance()}}, \code{\link[=summary]{summary()}}, \code{\link[=extract_results]{extract_results()}},
-\code{\link[=plot_convergence]{plot_convergence()}}.
+\code{\link[=plot_convergence]{plot_convergence()}}, \code{\link[=check_remaining_arms]{check_remaining_arms()}}.
 }

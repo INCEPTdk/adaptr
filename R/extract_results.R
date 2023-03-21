@@ -263,7 +263,7 @@ extract_results_batch <- function(trial_results,
 #'
 #' @seealso
 #' [check_performance()], [summary()], [plot_convergence()],
-#' [plot_metrics_ecdf()].
+#' [plot_metrics_ecdf()], [check_remaining_arms()].
 #'
 extract_results <- function(object,
                             select_strategy = "control if available",

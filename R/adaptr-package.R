@@ -41,7 +41,9 @@
 #' performance metrics, and summarise results. The [plot_convergence()] function
 #' assesses stability of performance metrics according to the number of
 #' simulations conducted. The [plot_metrics_ecdf()] function plots empirical
-#' cumulative distribution functions for numerical performance metrics.
+#' cumulative distribution functions for numerical performance metrics. The
+#' [check_remaining_arms()] function summarises all combinations of remaining
+#' arms across multiple trials simulations.
 #' 6. The [plot_status()] and [plot_history()] functions are used to plot the
 #' overall trial/arm statuses for multiple simulated trials or the history of
 #' trial metrics over time for single/multiple simulated trials, respectively.
@@ -78,7 +80,7 @@
 #' [setup_cluster()], [setup_trial()], [setup_trial_binom()],
 #' [setup_trial_norm()], [calibrate_trial()], [run_trial()], [run_trials()],
 #' [extract_results()], [check_performance()], [summary()],
-#' [plot_convergence()], [plot_metrics_ecdf()], [print()], [plot_status()],
-#' [plot_history()].
+#' [check_remaining_arms()], [plot_convergence()], [plot_metrics_ecdf()],
+#' [print()], [plot_status()], [plot_history()].
 #'
 NULL

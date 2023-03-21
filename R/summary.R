@@ -62,7 +62,7 @@
 #'
 #' @seealso
 #' [extract_results()], [check_performance()], [plot_convergence()],
-#' [plot_metrics_ecdf()].
+#' [plot_metrics_ecdf()], [check_remaining_arms()].
 #'
 summary.trial_results <- function(object,
                                   select_strategy = "control if available",

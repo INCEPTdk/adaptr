@@ -182,5 +182,5 @@ print(res_sum, digits = 1)
 }
 \seealso{
 \code{\link[=extract_results]{extract_results()}}, \code{\link[=check_performance]{check_performance()}}, \code{\link[=plot_convergence]{plot_convergence()}},
-\code{\link[=plot_metrics_ecdf]{plot_metrics_ecdf()}}.
+\code{\link[=plot_metrics_ecdf]{plot_metrics_ecdf()}}, \code{\link[=check_remaining_arms]{check_remaining_arms()}}.
 }

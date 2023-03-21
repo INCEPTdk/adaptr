@@ -27,6 +27,7 @@ reference:
   - extract_results
   - check_performance
   - summary
+  - check_remaining_arms
 
 - title: Plotting functions
   contents:

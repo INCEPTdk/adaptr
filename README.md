@@ -210,7 +210,7 @@ print(res_sum, digits = 1)
 #> * Ideal design percentage: 100.0%
 #> 
 #> Simulation details:
-#> * Simulation time: 0.428 secs
+#> * Simulation time: 0.438 secs
 #> * Base random seed: 67890
 #> * Credible interval width: 95%
 #> * Number of posterior draws: 5000
@@ -223,7 +223,9 @@ the `check_performance()` function, and the empirical cumulative
 distribution functions of numerical performance metrics may be plotted
 by the `plot_metrics_ecdf()` function. Finally, the `plot_convergence()`
 function may be used to visually assess stability of performance metrics
-according to the number of simulations.
+according to the number of simulations. The `check_remaining_arms()`
+function may be used to summarise all combinations of remaining arms
+across multiple simulations.
 
 Plot trial statuses or history of trial metrics over time:
 

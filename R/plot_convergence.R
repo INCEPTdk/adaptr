@@ -70,7 +70,8 @@
 #' }
 #'
 #' @seealso
-#' [check_performance()], [summary()], [extract_results()].
+#' [check_performance()], [summary()], [extract_results()],
+#' [check_remaining_arms()].
 #'
 plot_convergence <- function(object, metrics = "size mean", resolution = 100,
                              select_strategy = "control if available",

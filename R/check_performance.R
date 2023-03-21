@@ -64,8 +64,8 @@ calculate_idp <- function(sels, arms, true_ys, highest_is_best) {
 #'   lower/upper limits of the percentile-based bootstrapped confidence
 #'   intervals. Bootstrap estimates are **not** calculated for the mininum
 #'   (`_p0`) and maximum values (`_p100`) of `size`, `sum_ys`, and `ratio_ys`,
-#'   as non-parametric bootstrapping for mininum/maximum values is not sensible
-#'   - bootstrap estimates for these values will be `NA`.\cr
+#'   as non-parametric bootstrapping for mininum/maximum values is not
+#'   sensible - bootstrap estimates for these values will be `NA`.\cr
 #'   The following performance metrics are calculated:
 #' \itemize{
 #'   \item `n_summarised`: the number of simulations summarised.
@@ -131,7 +131,7 @@ calculate_idp <- function(sels, arms, true_ys, highest_is_best) {
 #'
 #' @seealso
 #' [extract_results()], [summary()], [plot_convergence()],
-#' [plot_metrics_ecdf()].
+#' [plot_metrics_ecdf()], [check_remaining_arms()].
 #'
 #' @examples
 #' # Setup a trial specification

@@ -102,9 +102,11 @@ A list of a special class \code{"trial_results"}, which contains the
 specification), \code{n_rep}, \code{base_seed}, \code{elapsed_time} (the total simulation
 run time), \code{sparse} (as described above) and \code{adaptr_version} (the version
 of the \code{adaptr} package used to run the simulations). These results may be
-extracted using the \code{\link[=extract_results]{extract_results()}} function and summarised using the
-\code{\link[=summary]{summary()}} or print (\code{\link[=print.trial_results]{print.trial_results()}}) functions; see function
-documentation for details on additional arguments used to select arms in
+extracted, summarised, and plotted using the \code{\link[=extract_results]{extract_results()}},
+\code{\link[=check_performance]{check_performance()}}, \code{\link[=summary]{summary()}}, \code{\link[=print.trial_results]{print.trial_results()}},
+\code{\link[=plot_convergence]{plot_convergence()}}, \code{\link[=check_remaining_arms]{check_remaining_arms()}}, \code{\link[=plot_status]{plot_status()}}, and
+\code{\link[=plot_history]{plot_history()}} functions. See these functions' definitions for additional
+details and details on additional arguments used to select arms in
 simulations not ending in superiority and other summary choices.
 }
 \description{

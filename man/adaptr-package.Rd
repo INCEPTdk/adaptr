@@ -42,7 +42,9 @@ are used to extract results from multiple trial simulations, calculate
 performance metrics, and summarise results. The \code{\link[=plot_convergence]{plot_convergence()}} function
 assesses stability of performance metrics according to the number of
 simulations conducted. The \code{\link[=plot_metrics_ecdf]{plot_metrics_ecdf()}} function plots empirical
-cumulative distribution functions for numerical performance metrics.
+cumulative distribution functions for numerical performance metrics. The
+\code{\link[=check_remaining_arms]{check_remaining_arms()}} function summarises all combinations of remaining
+arms across multiple trials simulations.
 \item The \code{\link[=plot_status]{plot_status()}} and \code{\link[=plot_history]{plot_history()}} functions are used to plot the
 overall trial/arm statuses for multiple simulated trials or the history of
 trial metrics over time for single/multiple simulated trials, respectively.
@@ -78,6 +80,6 @@ trials. J Clin Epidemiol. \doi{10.1016/j.jclinepi.2022.11.002}
 \code{\link[=setup_cluster]{setup_cluster()}}, \code{\link[=setup_trial]{setup_trial()}}, \code{\link[=setup_trial_binom]{setup_trial_binom()}},
 \code{\link[=setup_trial_norm]{setup_trial_norm()}}, \code{\link[=calibrate_trial]{calibrate_trial()}}, \code{\link[=run_trial]{run_trial()}}, \code{\link[=run_trials]{run_trials()}},
 \code{\link[=extract_results]{extract_results()}}, \code{\link[=check_performance]{check_performance()}}, \code{\link[=summary]{summary()}},
-\code{\link[=plot_convergence]{plot_convergence()}}, \code{\link[=plot_metrics_ecdf]{plot_metrics_ecdf()}}, \code{\link[=print]{print()}}, \code{\link[=plot_status]{plot_status()}},
-\code{\link[=plot_history]{plot_history()}}.
+\code{\link[=check_remaining_arms]{check_remaining_arms()}}, \code{\link[=plot_convergence]{plot_convergence()}}, \code{\link[=plot_metrics_ecdf]{plot_metrics_ecdf()}},
+\code{\link[=print]{print()}}, \code{\link[=plot_status]{plot_status()}}, \code{\link[=plot_history]{plot_history()}}.
 }

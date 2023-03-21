@@ -199,9 +199,11 @@ dispatch_trial_runs <- function(is, trial_spec, seeds, sparse, cores, cl = NULL)
 #'   specification), `n_rep`, `base_seed`, `elapsed_time` (the total simulation
 #'   run time), `sparse` (as described above) and `adaptr_version` (the version
 #'   of the `adaptr` package used to run the simulations). These results may be
-#'   extracted using the [extract_results()] function and summarised using the
-#'   [summary()] or print ([print.trial_results()]) functions; see function
-#'   documentation for details on additional arguments used to select arms in
+#'   extracted, summarised, and plotted using the [extract_results()],
+#'   [check_performance()], [summary()], [print.trial_results()],
+#'   [plot_convergence()], [check_remaining_arms()], [plot_status()], and
+#'   [plot_history()] functions. See these functions' definitions for additional
+#'   details and details on additional arguments used to select arms in
 #'   simulations not ending in superiority and other summary choices.
 #'
 #' @export

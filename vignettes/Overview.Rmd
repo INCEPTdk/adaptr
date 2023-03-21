@@ -184,8 +184,8 @@ functions of numerical performance metrics:
 plot_metrics_ecdf(trial_res_mult)
 ```
 
-Finally, the stability of performance metrics according to the number of
-simulations may be assessed visually using the `plot_convergence()` function.
+The stability of performance metrics according to the number of simulations may
+be assessed visually using the `plot_convergence()` function.
 Note that all `adaptr` plotting functions require the `ggplot2` package.
 
 ```{r}
@@ -198,6 +198,14 @@ It is seen that the low number of simulations used in this example leads to
 substantial uncertainty and instability in performance metrics (while the ideal
 design percentage is always at 100% here, it would likely drop somewhat if more
 simulations were conducted).
+
+Finally, all combinations of remaining arms after trial completion may be
+summarised using `check_remaining_arms()`:
+
+```{r}
+check_remaining_arms(trial_res_mult)
+```
+
 
 ### Visualise trial results
 In addition to the convergence plots, results may be visualised using the

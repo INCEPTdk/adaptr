@@ -134,7 +134,7 @@ the trial will continue (if a common control is specified).}
 same length as the maximum number of possible adaptive analyses or \code{NULL}
 (default, corresponding to no equivalence assessment), specifying the
 probability threshold(s) for equivalence. All values must be \verb{> 0} and
-\verb{< 1}, and if multiple values are supplied, no values may be higher than
+\verb{<= 1}, and if multiple values are supplied, no values may be higher than
 the preceding value. If not \code{NULL}, arms will be dropped for equivalence if
 the probability of either \emph{(a)} equivalence compared to a common \code{control}
 or \emph{(b)} equivalence between all arms remaining (designs without a common
@@ -161,7 +161,7 @@ becomes the new control.}
 \item{futility_prob}{single numeric value, vector of numeric values of the
 same length as the maximum number of possible adaptive analyses or \code{NULL}
 (default, corresponding to no futility assessment), specifying the
-probability threshold(s) for futility. All values must be \verb{> 0} and \verb{< 1},
+probability threshold(s) for futility. All values must be \verb{> 0} and \verb{<= 1},
 and if multiple values are supplied, no values may be higher than
 the preceding value. If not \code{NULL}, arms will be dropped for futility if
 the probability for futility compared to the common \code{control} exceeds the

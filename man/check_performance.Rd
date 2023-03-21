@@ -155,9 +155,8 @@ and \code{\link[=mad]{mad()}}), \code{"lo_ci"}, and \code{"hi_ci"}, the latter t
 lower/upper limits of the percentile-based bootstrapped confidence
 intervals. Bootstrap estimates are \strong{not} calculated for the mininum
 (\verb{_p0}) and maximum values (\verb{_p100}) of \code{size}, \code{sum_ys}, and \code{ratio_ys},
-as non-parametric bootstrapping for mininum/maximum values is not sensible
-\itemize{
-\item bootstrap estimates for these values will be \code{NA}.\cr
+as non-parametric bootstrapping for mininum/maximum values is not
+sensible - bootstrap estimates for these values will be \code{NA}.\cr
 The following performance metrics are calculated:
 \itemize{
 \item \code{n_summarised}: the number of simulations summarised.
@@ -199,7 +198,6 @@ element per \code{arm}, named as \verb{prob_select_arm_<arm name>} and
 the selected arm and for the treatment effect, as described further in
 \code{\link[=extract_results]{extract_results()}}.
 \item \code{idp}: the ideal design percentage (IDP; 0-100\%), see \strong{Details}.
-}
 }
 }
 \description{
@@ -245,5 +243,5 @@ n_boot = 1000, boot_seed = "base")
 }
 \seealso{
 \code{\link[=extract_results]{extract_results()}}, \code{\link[=summary]{summary()}}, \code{\link[=plot_convergence]{plot_convergence()}},
-\code{\link[=plot_metrics_ecdf]{plot_metrics_ecdf()}}.
+\code{\link[=plot_metrics_ecdf]{plot_metrics_ecdf()}}, \code{\link[=check_remaining_arms]{check_remaining_arms()}}.
 }

@@ -43,7 +43,7 @@
 #'
 #' @seealso
 #' [check_performance()], [summary()], [extract_results()],
-#' [plot_convergence()].
+#' [plot_convergence()], [check_remaining_arms()].
 #'
 plot_metrics_ecdf <- function(object, metrics = c("size", "sum_ys", "ratio_ys"),
                               restrict = NULL, nrow = NULL, ncol = NULL,

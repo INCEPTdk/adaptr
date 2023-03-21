@@ -269,8 +269,8 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
       stop0("Either equivalence_prob or equivalence_diff is specified - both need to be specified at the same time.")
     }
     if (!(length(equivalence_prob) %in% c(1, n_data_looks)) | !all(is.numeric(equivalence_prob)) | any(equivalence_prob <= 0) |
-        any(equivalence_prob >= 1) | any(equivalence_prob != cummin(equivalence_prob))) {
-      stop0("equivalence_prob must be a single numeric value > 0 and < 1 or a numeric vector of the same length ",
+        any(equivalence_prob > 1) | any(equivalence_prob != cummin(equivalence_prob))) {
+      stop0("equivalence_prob must be a single numeric value > 0 and <= 1 or a numeric vector of the same length ",
             "as the maximum possible number of adaptive analyses, with all values > 0 and < 1 and no values ",
             "higher than the previous value.")
     }
@@ -299,8 +299,8 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
       stop0("Valid values for futility_prob, futility_diff and futility_only_first must all be specified for futility assessment.")
     }
     if (!(length(futility_prob) %in% c(1, n_data_looks)) | !all(is.numeric(futility_prob)) | any(futility_prob <= 0) |
-        any(futility_prob >= 1) | any(futility_prob != cummin(futility_prob))) {
-      stop0("futility_prob must be a single numeric value > 0 and < 1 or a numeric vector of the same length ",
+        any(futility_prob > 1) | any(futility_prob != cummin(futility_prob))) {
+      stop0("futility_prob must be a single numeric value > 0 and <= 1 or a numeric vector of the same length ",
             "as the maximum possible number of adaptive analyses, with all values > 0 and < 1 and no values ",
             "higher than the previous value.")
     }
@@ -549,7 +549,7 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #'   same length as the maximum number of possible adaptive analyses or `NULL`
 #'   (default, corresponding to no equivalence assessment), specifying the
 #'   probability threshold(s) for equivalence. All values must be `> 0` and
-#'   `< 1`, and if multiple values are supplied, no values may be higher than
+#'   `<= 1`, and if multiple values are supplied, no values may be higher than
 #'   the preceding value. If not `NULL`, arms will be dropped for equivalence if
 #'   the probability of either *(a)* equivalence compared to a common `control`
 #'   or *(b)* equivalence between all arms remaining (designs without a common
@@ -573,7 +573,7 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' @param futility_prob single numeric value, vector of numeric values of the
 #'   same length as the maximum number of possible adaptive analyses or `NULL`
 #'   (default, corresponding to no futility assessment), specifying the
-#'   probability threshold(s) for futility. All values must be `> 0` and `< 1`,
+#'   probability threshold(s) for futility. All values must be `> 0` and `<= 1`,
 #'   and if multiple values are supplied, no values may be higher than
 #'   the preceding value. If not `NULL`, arms will be dropped for futility if
 #'   the probability for futility compared to the common `control` exceeds the
@@ -1042,7 +1042,7 @@ setup_trial_binom <- function(arms, true_ys, start_probs = NULL,
 #' @inheritParams setup_trial
 #' @param true_ys numeric vector, simulated means of the outcome in all trial
 #'   `arms`.
-#' @param sds numeric vector, true standard deviations (must be > 0) of the
+#' @param sds numeric vector, true standard deviations (must be `> 0`) of the
 #'   outcome in all trial `arms`.
 #' @param description character string, default is
 #' `"generic normally distributed outcome trial"`. See arguments of
