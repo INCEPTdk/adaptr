@@ -190,9 +190,10 @@ test_that("run_trials errors on invalid input", {
   # grow == TRUE and invalid file path
   expect_error(run_trials(setup, n_rep = 10, path = paste0(temp_res_file, ".error"), grow = TRUE))
 
-  # Invalid other values
+  # Other other values
   expect_error(run_trials(setup, n_rep = 10, base_seed = 0.3))
   expect_error(run_trials(setup, n_rep = 10, base_seed = 1, progress = 10))
+  expect_error(run_trials(setup, n_rep = 10, base_seed = 1, cores = 0:1))
 
 })
 

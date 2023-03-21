@@ -243,6 +243,10 @@ run_trials <- function(trial_spec, n_rep, path = NULL, overwrite = FALSE,
   if (!(verify_int(cores, min_value = 1) | is.null(cores))) {
     stop0("cores must be NULL or a single whole number > 0.")
   }
+  if (grow & overwrite) {
+    stop0("Both grow and overwrite are TRUE. At least one of them must be ",
+          "FALSE; if grow = TRUE, the object is automatically overwritten.")
+  }
   if (ifelse(!is.null(path), file.exists(path), FALSE) & !overwrite) {
     # File exists and overwrite is FALSE
     prev <- readRDS(path)
@@ -268,10 +272,6 @@ run_trials <- function(trial_spec, n_rep, path = NULL, overwrite = FALSE,
               "cannot be used by this version of adaptr unless the object is updated. ",
               "Type 'help(\"update_saved_trials\")' for help on updating.")
       }
-    }
-    if (grow & overwrite) {
-      stop0("Both grow and overwrite are TRUE. At least one of them must be ",
-            "FALSE; if grow = TRUE, the object is automatically overwritten.")
     }
     prev_n_rep <- prev$n_rep
     if (prev_n_rep != n_rep) {
