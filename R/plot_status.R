@@ -127,8 +127,8 @@ plot_status.trial_results <- function(object, x_value = "look", arm = NULL,
 #' Used internally. Extracts overall trial statuses or statuses from a single
 #' `arm` from multiple trial simulations. Works with *sparse* results.
 #'
-#' @param object `trial_results` object from [run_trials()].
 #' @inheritParams plot_status.trial_results
+#' @param object `trial_results` object from [run_trials()].
 #'
 #' @return A tidy `data.frame` (one row possible status per look) containing the
 #'   following columns:
