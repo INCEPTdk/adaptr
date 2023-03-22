@@ -81,8 +81,9 @@
 #' # Setup a cluster using 2 cores
 #' setup_cluster(cores = 2)
 #'
-#' # Get existing default cluster (invisibly returned)
-#' setup_cluster()
+#' # Get existing default cluster (printed as invisibly returned)
+#' print(setup_cluster())
+#'
 #
 #' # Remove existing default cluster
 #' setup_cluster(cores = NULL)
@@ -92,7 +93,9 @@
 #'
 #' # Remove default cluster preference
 #' setup_cluster(cores = NULL)
+#'
 #' # Set global option to default to using 2 new clusters each time
+#' # (only used if no default cluster preference is specified)
 #' options(mc.cores = 2)
 #'
 setup_cluster <- function(cores, export = NULL, export_envir = parent.frame()) {

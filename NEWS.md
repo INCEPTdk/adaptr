@@ -73,6 +73,9 @@
     now throws an error if this is not the case. Larger values are invalid and
     could lead to simultaneous dropping of all arms, which caused `run_trial()`
     to crash.
+    
+*   The `print()` method for results from `check_performance()` did not respect
+    the `digits` argument; this has been fixed.
 
 ### Minor changes:
 

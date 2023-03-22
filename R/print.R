@@ -256,7 +256,7 @@ print.trial_result <- function(x, prob_digits = 3, ...) {
 print.trial_performance <- function(x, digits = 3, ...) {
   x_round <- x
   for (i in 2:ncol(x_round)) {
-    x_round[[i]] <- vapply_num(x_round[[i]], function(col) round(col, digits = 3))
+    x_round[[i]] <- vapply_num(x_round[[i]], function(col) round(col, digits = digits))
   }
   class(x_round) <- "data.frame"
   print(x_round)

@@ -91,8 +91,9 @@ generator kind and the global random seed after use if called with a seed.
 # Setup a cluster using 2 cores
 setup_cluster(cores = 2)
 
-# Get existing default cluster (invisibly returned)
-setup_cluster()
+# Get existing default cluster (printed as invisibly returned)
+print(setup_cluster())
+
 # Remove existing default cluster
 setup_cluster(cores = NULL)
 
@@ -101,7 +102,9 @@ setup_cluster(cores = 1)
 
 # Remove default cluster preference
 setup_cluster(cores = NULL)
+
 # Set global option to default to using 2 new clusters each time
+# (only used if no default cluster preference is specified)
 options(mc.cores = 2)
 
 }
