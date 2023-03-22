@@ -123,11 +123,11 @@ as seen below.
 trial_res_mult <- run_trials(binom_trial, n_rep = 25, base_seed = 67890)
 ```
 
-`run_trials()` can run simulations on several CPU cores concurrently: set the
-`cores` argument to some number greater than `1` (which is the default value,
-resulting in serial/non-parallel processing) or set the global `"mc.cores"`
-option using `options(mc.cores = <number>)`. As an aside, you can see the
-number of available CPU cores by calling `parallel::detectCores()`.
+`run_trials()` can run simulations on several CPU cores concurrently by using
+the `setup_cluster()` function (recommended), the `"mc.cores"` global option, or
+the `cores` argument of `run_trials()` (further details in the `setup_cluster()`
+and `run_trials()` function definitions). Most functions used to post-process,
+extract, and plot results can similarly be run in parallel.
 
 ###  Calculate performance metrics and summmarise results
 The results of multiple simulations may be summarised by printing the resulting

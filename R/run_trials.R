@@ -140,8 +140,7 @@ dispatch_trial_runs <- function(is, trial_spec, seeds, sparse, cores, cl = NULL)
 #'   If `cores = 1`, computations will be run sequentially in the
 #'   primary process, and if `cores > 1`, a new parallel cluster will be setup
 #'   using the `parallel` library and removed once the function completes.
-#'   See [setup_cluster()] for details. Use [parallel::detectCores()] to find
-#'   the number of available cores.
+#'   See [setup_cluster()] for details.
 #' @param base_seed single integer or `NULL` (default); a random seed used as
 #'   the basis for simulations. Regardless of whether simulations are run
 #'   sequentially or in parallel, random number streams will be identical and

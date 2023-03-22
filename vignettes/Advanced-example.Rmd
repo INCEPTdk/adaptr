@@ -405,5 +405,6 @@ the custom functions provided to `setup_trial()` calls other custom functions
 (or uses objects defined by the user outside these functions) or if functions
 loaded from non-base R packages are used, please be aware that exporting these
 objects/functions or prefixing them with their namespace is necessary if
-simulations are conducted using multiple cores. See `run_trial()` for additional
-details.
+simulations are conducted using multiple cores. See `setup_cluster()` and
+`run_trial()` for additional details on how to export necessary functions and
+objects.

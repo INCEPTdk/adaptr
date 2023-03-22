@@ -16,8 +16,13 @@
 #'   `NULL` or `1`, an existing default cluster is removed (if any), and the
 #'   default will subsequently be to run functions sequentially in the main
 #'   process if `cores = 1`, and according to `getOption("mc.cores")` if `NULL`
-#'   (unless otherwise specified in individual functions). Use
-#'   [parallel::detectCores()] to see the number of available cores.
+#'   (unless otherwise specified in individual functions). The
+#'   [parallel::detectCores()] function may be used to see the number of
+#'   available cores, although this comes with some caveats (as described in the
+#'   function documentation), including that the number of cores may not always
+#'   be returned and may not match the number of cores that are available for
+#'   use. In general, using less cores than available may be preferable if other
+#'   processess are run on the machine at the same time.
 #'
 #' @details
 #'

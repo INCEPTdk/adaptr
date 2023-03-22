@@ -11,8 +11,13 @@ setup_cluster(cores, export = NULL, export_envir = parent.frame())
 \code{NULL} or \code{1}, an existing default cluster is removed (if any), and the
 default will subsequently be to run functions sequentially in the main
 process if \code{cores = 1}, and according to \code{getOption("mc.cores")} if \code{NULL}
-(unless otherwise specified in individual functions). Use
-\code{\link[parallel:detectCores]{parallel::detectCores()}} to see the number of available cores.}
+(unless otherwise specified in individual functions). The
+\code{\link[parallel:detectCores]{parallel::detectCores()}} function may be used to see the number of
+available cores, although this comes with some caveats (as described in the
+function documentation), including that the number of cores may not always
+be returned and may not match the number of cores that are available for
+use. In general, using less cores than available may be preferable if other
+processess are run on the machine at the same time.}
 
 \item{export}{character vector of names of objects to export to each
 parallel core when running in perallel; passed as the \code{varlist} argument to

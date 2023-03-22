@@ -208,8 +208,7 @@ extract_results_batch <- function(trial_results,
 #'   If `cores = 1`, computations
 #'   will be run sequentially in the primary process, and if `cores > 1`, a new
 #'   parallel cluster will be setup using the `parallel` library and removed
-#'   once the function completes. See [setup_cluster()] for details. Use
-#'   [parallel::detectCores()] to find the number of available cores.
+#'   once the function completes. See [setup_cluster()] for details.
 #'
 #' @return A `data.frame` containing the following columns:
 #'   \itemize{

@@ -107,8 +107,7 @@ option (if previously set by \verb{options(mc.cores = <number of cores>}), and
 If \code{cores = 1}, computations
 will be run sequentially in the primary process, and if \code{cores > 1}, a new
 parallel cluster will be setup using the \code{parallel} library and removed
-once the function completes. See \code{\link[=setup_cluster]{setup_cluster()}} for details. Use
-\code{\link[parallel:detectCores]{parallel::detectCores()}} to find the number of available cores.}
+once the function completes. See \code{\link[=setup_cluster]{setup_cluster()}} for details.}
 }
 \value{
 A \code{data.frame} containing the following columns:
