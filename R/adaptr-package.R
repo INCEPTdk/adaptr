@@ -22,20 +22,21 @@
 #' typical use):
 #'
 #' 1. The [setup_cluster()] initiates a parallel computation cluster that can
-#' be used to run simulations and post-processing in parallel, increasing speed,
-#' and details on parallelisation and other options for running `adaptr`
-#' functions in parallel are described in that function.
+#' be used to run simulations and post-processing in parallel, increasing speed.
+#' Details on parallelisation and other options for running `adaptr`
+#' functions in parallel are described in the [setup_cluster()] documentation.
 #' 2. The [setup_trial()] function is the general function that sets up a trial
 #' specification. The simpler, special-case functions [setup_trial_binom()] and
 #' [setup_trial_norm()] may be used for easier specification of trial designs
 #' using binary, binomially distributed or continuous, normally distributed
 #' outcomes, respectively, with some limitations in flexibility.
 #' 3. The [calibrate_trial()] function calibrates a trial specification to
-#' obtain a certain value for a performance metric (typically, to calibrate the
-#' Bayesian type 1 error rate), using the functions below.
+#' obtain a certain value for a performance metric (typically used to calibrate
+#' the Bayesian type 1 error rate in a scenario with no between-arm
+#' differences), using the functions below.
 #' 4. The [run_trial()] and [run_trials()] functions are used to conduct single
 #' or multiple simulations, respectively, according to a trial specification
-#' setup as described in #1.
+#' setup as described in #2.
 #' 5. The [extract_results()], [check_performance()] and [summary()] functions
 #' are used to extract results from multiple trial simulations, calculate
 #' performance metrics, and summarise results. The [plot_convergence()] function
@@ -48,10 +49,10 @@
 #' overall trial/arm statuses for multiple simulated trials or the history of
 #' trial metrics over time for single/multiple simulated trials, respectively.
 #'
-#' For further information see the function documentation or the **Overview**
-#' vignette (`vignette("Overview", package = "adaptr")`) for an example of how
-#' the functions work in combination.
-#' For further examples and guidance on setting up trial specifications, see
+#' For further information see the documentation of each function or the
+#' **Overview** vignette (`vignette("Overview", package = "adaptr")`) for an
+#' example of how the functions work in combination.
+#' For further examples and guidance on setting up trial specifications, see the
 #' [setup_trial()] documentation, the **Basic examples** vignette
 #' (`vignette("Basic-examples", package = "adaptr")`) and the
 #' **Advanced example** vignette

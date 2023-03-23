@@ -23,20 +23,21 @@ The \code{adaptr} package contains the following primary functions (in order of
 typical use):
 \enumerate{
 \item The \code{\link[=setup_cluster]{setup_cluster()}} initiates a parallel computation cluster that can
-be used to run simulations and post-processing in parallel, increasing speed,
-and details on parallelisation and other options for running \code{adaptr}
-functions in parallel are described in that function.
+be used to run simulations and post-processing in parallel, increasing speed.
+Details on parallelisation and other options for running \code{adaptr}
+functions in parallel are described in the \code{\link[=setup_cluster]{setup_cluster()}} documentation.
 \item The \code{\link[=setup_trial]{setup_trial()}} function is the general function that sets up a trial
 specification. The simpler, special-case functions \code{\link[=setup_trial_binom]{setup_trial_binom()}} and
 \code{\link[=setup_trial_norm]{setup_trial_norm()}} may be used for easier specification of trial designs
 using binary, binomially distributed or continuous, normally distributed
 outcomes, respectively, with some limitations in flexibility.
 \item The \code{\link[=calibrate_trial]{calibrate_trial()}} function calibrates a trial specification to
-obtain a certain value for a performance metric (typically, to calibrate the
-Bayesian type 1 error rate), using the functions below.
+obtain a certain value for a performance metric (typically used to calibrate
+the Bayesian type 1 error rate in a scenario with no between-arm
+differences), using the functions below.
 \item The \code{\link[=run_trial]{run_trial()}} and \code{\link[=run_trials]{run_trials()}} functions are used to conduct single
 or multiple simulations, respectively, according to a trial specification
-setup as described in #1.
+setup as described in #2.
 \item The \code{\link[=extract_results]{extract_results()}}, \code{\link[=check_performance]{check_performance()}} and \code{\link[=summary]{summary()}} functions
 are used to extract results from multiple trial simulations, calculate
 performance metrics, and summarise results. The \code{\link[=plot_convergence]{plot_convergence()}} function
@@ -50,10 +51,10 @@ overall trial/arm statuses for multiple simulated trials or the history of
 trial metrics over time for single/multiple simulated trials, respectively.
 }
 
-For further information see the function documentation or the \strong{Overview}
-vignette (\code{vignette("Overview", package = "adaptr")}) for an example of how
-the functions work in combination.
-For further examples and guidance on setting up trial specifications, see
+For further information see the documentation of each function or the
+\strong{Overview} vignette (\code{vignette("Overview", package = "adaptr")}) for an
+example of how the functions work in combination.
+For further examples and guidance on setting up trial specifications, see the
 \code{\link[=setup_trial]{setup_trial()}} documentation, the \strong{Basic examples} vignette
 (\code{vignette("Basic-examples", package = "adaptr")}) and the
 \strong{Advanced example} vignette
