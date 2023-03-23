@@ -25,12 +25,12 @@ outcome where lower numbers are preferred (e.g., hospital length of stay).}
 
 \item{equivalence_diff}{single numeric value (\verb{> 0}) or \code{NULL} (default,
 corresponding to no equivalence assessment). If a numeric value is
-specified, estimated differences below this threshold will be considered
-equivalent when assessing equivalence. For designs with a common \code{control}
-arm, the differences between each non-control arm and the \code{control} arm is
-used, and for trials without a common \code{control} arm, the difference between
-the highest and lowest estimated outcome rates are used and the trial is
-only stopped for equivalence if all remaining arms are thus equivalent.}
+specified, estimated absolute differences smaller than this threshold will
+be considered equivalent. For designs with a common \code{control} arm, the
+differences between each non-control arm and the \code{control} arm is used, and
+for trials without a common \code{control} arm, the difference between the
+highest and lowest estimated outcome rates are used and the trial is only
+stopped for equivalence if all remaining arms are equivalent.}
 
 \item{futility_diff}{single numeric value (\verb{> 0}) or \code{NULL} (default,
 corresponding to no futility assessment). If a numeric value is specified,

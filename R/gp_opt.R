@@ -60,16 +60,16 @@ cov_mat <- function(x1, x2 = x1, g = NULL, pow = 2, lengthscale = 1) {
 
 #' Gaussian process-based optimisation
 #'
-#' Used internally, simple Gaussian process-based Bayesian optimisation
+#' Used internally. Simple Gaussian process-based Bayesian optimisation
 #' function, used to find the next value to evaluate (as `x`) in the
 #' [calibrate_trial()] function. Uses only a single input dimension, which may
 #' be rescaled to the `[0, 1]` range by the function, and a covariance structure
-#' based on inverse exponentiated absolute distances between values, raised to a
-#' power (`pow`) and subsequently divided by `lengthscale` before the inverse
-#' exponentiation of the matrix is used. These hyperparameters control
-#' smoothness by controlling the rate of decay between correlations with
-#' distance.\cr
-#' The optimisation algorithm Uses bi-directional uncertainty bounds in an
+#' based on absolute distances between values, raised to a power (`pow`) and
+#' subsequently divided by `lengthscale` before the inverse exponentiation of
+#' the resulting matrix is used. The `pow` and `lengthscale` hyperparameters
+#' consequently control the smoothness by controlling the rate of decay between
+#' correlations with distance.\cr
+#' The optimisation algorithm uses bi-directional uncertainty bounds in an
 #' acquisition function that suggests the next target to evaluate, with wider
 #' uncertainty bounds (higher `kappa`) leading to increased exploration' (i.e.,
 #' the function is more prone to suggest new target values where the uncertainty
@@ -79,28 +79,28 @@ cov_mat <- function(x1, x2 = x1, g = NULL, pow = 2, lengthscale = 1) {
 #' predictions from the model).\cr
 #' The `dir` argument controls whether the suggested value (based on both
 #' uncertainty bounds) should be the value closest to `target` in either
-#' direction (`dir = 0`), always at or above `target` (`dir > 0`), or always at
-#' or below target (`dir < 0`), if any, are preferred.\cr
+#' direction (`dir = 0`), at or above `target` (`dir > 0`), or at or below
+#' target (`dir < 0`), if any, are preferred.\cr
 #' When the function being evaluated is noise-free and monotonically increasing
-#' or decreasing, the function can narrow the range of predictions based on
-#' the input evaluations (`narrow = TRUE`), leading to a finer grid of potential
-#' new targets to suggest compared to when predictions are spaced over the full
-#' range.\cr
-#' If a new value at which to evaluate the function is suggested which has
-#' already been evaluated, random noise will be added to ensure evaluation at
-#' new values (if `narrow` is `FALSE`, a new value will be suggested based on
-#' a random draw from a normal distribution with the current suggested value as
-#' mean and the standard deviation of the `x` values as SD, truncated to the
-#' range of `x`-values; if `narrow` is `TRUE`, a new value drawn from a uniform
-#' distribution within the current narrowed range will be suggested. For both
-#' strategies, the process will be repeated until the suggested value is 'new').
+#' or decreasing, the optimisation function can narrow the range of predictions
+#' based on the input evaluations (`narrow = TRUE`), leading to a finer grid of
+#' potential new targets to suggest compared to when predictions are spaced over
+#' the full range.\cr
+#' If the new value at which to evaluate the function suggested has already been
+#' evaluated, random noise will be added to ensure evaluation at a new value
+#' (if `narrow` is `FALSE`, noise will be based on a random draw from a normal
+#' distribution with the current suggested value as mean and the standard
+#' deviation of the `x` values as SD, truncated to the range of `x`-values; if
+#' `narrow` is `TRUE`, a new value drawn from a uniform distribution within the
+#' current narrowed range will be suggested. For both strategies, the process
+#' will be repeated until the suggested value is 'new').
 #' \cr The Gaussian process model used is partially based on code from Gramacy
 #' 2020 (with permission), see **References**.
 #'
 #' @param x numeric vector, the previous values where the function being
 #'   calibrated was evaluated.
 #' @param y numeric vector, the corresponding results of the previous
-#'   evaluations at `x` (must be of the same length as `x`).
+#'   evaluations at the `x` values (must be of the same length as `x`).
 #' @param target single numeric value, the desired target value for the
 #'   calibration process.
 #' @param dir single numeric value (default `0`), used when selecting the next
@@ -121,7 +121,7 @@ cov_mat <- function(x1, x2 = x1, g = NULL, pow = 2, lengthscale = 1) {
 #' @param lengthscale single numerical value (default `1`) or numerical vector
 #'   of length `2`; all values must be finite and non-negative. If a single
 #'   value is provided, this will be used as the `lengthscale` hyperparameter
-#'   and passed directly to [cov_mat()]. If a numerical vector of length 2 is
+#'   and passed directly to [cov_mat()]. If a numerical vector of length `2` is
 #'   provided, the second value must be higher than the first and the optimal
 #'   `lengthscale` in this range will be found using an optimisation algorithm.
 #'   If any value is `0`, a minimum amount of noise will be added as
@@ -132,7 +132,7 @@ cov_mat <- function(x1, x2 = x1, g = NULL, pow = 2, lengthscale = 1) {
 #'   values provided. If `FALSE`, the model will use the original scale. If
 #'   distances on the original scale are small, scaling may be preferred. The
 #'   returned values will always be on the original scale.
-#' @param noisy single logical value. If `FALSE` (the default), a noise-less
+#' @param noisy single logical value. If `FALSE` (the default), a noiseless
 #'   process is assumed, and interpolation between values is performed (i.e.,
 #'   with no uncertainty at the evaluated `x`-values); if `TRUE`, the `y`-values
 #'   are assumed to come from a noisy process, and regression is performed
@@ -197,12 +197,12 @@ gp_opt <- function(x, y, target, dir = 0, resolution = 5000,
       opt <- optim(
         par = c(exp(mean(log(lengthscale))), 0.1 * var(y)),
         fn = function(par, D, y) {
-          K <- exp(-D/par[1]) + diag(par[2], length(y))
+          K <- exp(-D / par[1]) + diag(par[2], length(y))
           log_det_modulus <- determinant(K, logarithm = TRUE)$modulus
           length(y) * log(t(y) %*% solve(K) %*% y) / 2 + log_det_modulus / 2
         },
         gr = function(par, D, y) {
-          K <- exp(-D/par[1]) + diag(par[2], length(y))
+          K <- exp(-D / par[1]) + diag(par[2], length(y))
           Ki <- solve(K)
           dotK <- K * D / par[1]^2
           Kiy <- Ki %*% y
@@ -221,7 +221,7 @@ gp_opt <- function(x, y, target, dir = 0, resolution = 5000,
     } else { # Optimise only g
       g <- optimise(
         f = function(g, D, y) {
-          K <- exp(-D/lengthscale) + diag(g, length(y))
+          K <- exp(-D / lengthscale) + diag(g, length(y))
           log_det_modulus <- determinant(K, logarithm = TRUE)$modulus
           length(y) * log(t(y) %*% solve(K) %*% y) / 2 + log_det_modulus / 2
         },
@@ -236,7 +236,7 @@ gp_opt <- function(x, y, target, dir = 0, resolution = 5000,
     if (length(lengthscale) != 1) {
       lengthscale <- optimise(
         f = function(lengthscale, D, y) {
-          K <- exp(-D/lengthscale) + diag(eps, length(y))
+          K <- exp(-D / lengthscale) + diag(eps, length(y))
           log_det_modulus <- determinant(K, logarithm = TRUE)$modulus
           length(y) * log(t(y) %*% solve(K) %*% y) / 2 + log_det_modulus / 2
         },

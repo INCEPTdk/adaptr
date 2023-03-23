@@ -23,7 +23,7 @@ gp_opt(
 calibrated was evaluated.}
 
 \item{y}{numeric vector, the corresponding results of the previous
-evaluations at \code{x} (must be of the same length as \code{x}).}
+evaluations at the \code{x} values (must be of the same length as \code{x}).}
 
 \item{target}{single numeric value, the desired target value for the
 calibration process.}
@@ -50,7 +50,7 @@ internally scaled to the \verb{[0, 1]}-range compared to \code{2}.}
 \item{lengthscale}{single numerical value (default \code{1}) or numerical vector
 of length \code{2}; all values must be finite and non-negative. If a single
 value is provided, this will be used as the \code{lengthscale} hyperparameter
-and passed directly to \code{\link[=cov_mat]{cov_mat()}}. If a numerical vector of length 2 is
+and passed directly to \code{\link[=cov_mat]{cov_mat()}}. If a numerical vector of length \code{2} is
 provided, the second value must be higher than the first and the optimal
 \code{lengthscale} in this range will be found using an optimisation algorithm.
 If any value is \code{0}, a minimum amount of noise will be added as
@@ -63,7 +63,7 @@ values provided. If \code{FALSE}, the model will use the original scale. If
 distances on the original scale are small, scaling may be preferred. The
 returned values will always be on the original scale.}
 
-\item{noisy}{single logical value. If \code{FALSE} (the default), a noise-less
+\item{noisy}{single logical value. If \code{FALSE} (the default), a noiseless
 process is assumed, and interpolation between values is performed (i.e.,
 with no uncertainty at the evaluated \code{x}-values); if \code{TRUE}, the \code{y}-values
 are assumed to come from a noisy process, and regression is performed
@@ -88,16 +88,16 @@ means, and \code{lub} and \code{uub}, the lower and upper uncertainty bounds of 
 predictions according to \code{kappa}.
 }
 \description{
-Used internally, simple Gaussian process-based Bayesian optimisation
+Used internally. Simple Gaussian process-based Bayesian optimisation
 function, used to find the next value to evaluate (as \code{x}) in the
 \code{\link[=calibrate_trial]{calibrate_trial()}} function. Uses only a single input dimension, which may
 be rescaled to the \verb{[0, 1]} range by the function, and a covariance structure
-based on inverse exponentiated absolute distances between values, raised to a
-power (\code{pow}) and subsequently divided by \code{lengthscale} before the inverse
-exponentiation of the matrix is used. These hyperparameters control
-smoothness by controlling the rate of decay between correlations with
-distance.\cr
-The optimisation algorithm Uses bi-directional uncertainty bounds in an
+based on absolute distances between values, raised to a power (\code{pow}) and
+subsequently divided by \code{lengthscale} before the inverse exponentiation of
+the resulting matrix is used. The \code{pow} and \code{lengthscale} hyperparameters
+consequently control the smoothness by controlling the rate of decay between
+correlations with distance.\cr
+The optimisation algorithm uses bi-directional uncertainty bounds in an
 acquisition function that suggests the next target to evaluate, with wider
 uncertainty bounds (higher \code{kappa}) leading to increased exploration' (i.e.,
 the function is more prone to suggest new target values where the uncertainty
@@ -107,21 +107,21 @@ more prone to suggest new target values relatively close to the mean
 predictions from the model).\cr
 The \code{dir} argument controls whether the suggested value (based on both
 uncertainty bounds) should be the value closest to \code{target} in either
-direction (\code{dir = 0}), always at or above \code{target} (\code{dir > 0}), or always at
-or below target (\code{dir < 0}), if any, are preferred.\cr
+direction (\code{dir = 0}), at or above \code{target} (\code{dir > 0}), or at or below
+target (\code{dir < 0}), if any, are preferred.\cr
 When the function being evaluated is noise-free and monotonically increasing
-or decreasing, the function can narrow the range of predictions based on
-the input evaluations (\code{narrow = TRUE}), leading to a finer grid of potential
-new targets to suggest compared to when predictions are spaced over the full
-range.\cr
-If a new value at which to evaluate the function is suggested which has
-already been evaluated, random noise will be added to ensure evaluation at
-new values (if \code{narrow} is \code{FALSE}, a new value will be suggested based on
-a random draw from a normal distribution with the current suggested value as
-mean and the standard deviation of the \code{x} values as SD, truncated to the
-range of \code{x}-values; if \code{narrow} is \code{TRUE}, a new value drawn from a uniform
-distribution within the current narrowed range will be suggested. For both
-strategies, the process will be repeated until the suggested value is 'new').
+or decreasing, the optimisation function can narrow the range of predictions
+based on the input evaluations (\code{narrow = TRUE}), leading to a finer grid of
+potential new targets to suggest compared to when predictions are spaced over
+the full range.\cr
+If the new value at which to evaluate the function suggested has already been
+evaluated, random noise will be added to ensure evaluation at a new value
+(if \code{narrow} is \code{FALSE}, noise will be based on a random draw from a normal
+distribution with the current suggested value as mean and the standard
+deviation of the \code{x} values as SD, truncated to the range of \code{x}-values; if
+\code{narrow} is \code{TRUE}, a new value drawn from a uniform distribution within the
+current narrowed range will be suggested. For both strategies, the process
+will be repeated until the suggested value is 'new').
 \cr The Gaussian process model used is partially based on code from Gramacy
 2020 (with permission), see \strong{References}.
 }
