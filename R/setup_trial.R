@@ -340,9 +340,9 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
   }
 
   # Ensure that global random seed is not affected by function validation below
-  if (exists(".Random.seed", envir = globalenv())) {
-    oldseed <- get(".Random.seed", envir = globalenv())
-    on.exit(assign(".Random.seed", value = oldseed, envir = globalenv()), add = TRUE, after = FALSE)
+  if (exists(".Random.seed", envir = globalenv(), inherits = FALSE)) {
+    oldseed <- get(".Random.seed", envir = globalenv(), inherits = FALSE)
+    on.exit(assign(".Random.seed", value = oldseed, envir = globalenv(), inherits = FALSE), add = TRUE, after = FALSE)
   }
 
   # Validate outcome generator function

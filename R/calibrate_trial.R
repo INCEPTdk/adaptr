@@ -409,9 +409,9 @@ calibrate_trial <- function(
     if (!verify_int(base_seed)) {
       stop0("base_seed must be either NULL (with noisy set to TRUE) or a single whole number.")
     } else { # Valid seed provided
-      if (exists(".Random.seed", envir = globalenv())){ # A global random seed exists (not the case when called from e.g. parallel::parLapply)
-        oldseed <- get(".Random.seed", envir = globalenv())
-        on.exit(assign(".Random.seed", value = oldseed, envir = globalenv()), add = TRUE, after = FALSE)
+      if (exists(".Random.seed", envir = globalenv(), inherits = FALSE)){ # A global random seed exists (not the case when called from e.g. parallel::parLapply)
+        oldseed <- get(".Random.seed", envir = globalenv(), inherits = FALSE)
+        on.exit(assign(".Random.seed", value = oldseed, envir = globalenv(), inherits = FALSE), add = TRUE, after = FALSE)
       }
       set.seed(base_seed)
     }

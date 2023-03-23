@@ -54,7 +54,7 @@ install.packages("adaptr")
 Alternatively, you can install the **development version** from GitHub - this
 requires the *remotes*-package installed. The development version may contain
 additional features not yet available in the CRAN version (including preliminary
-functions) and may not be stable or fully documented:
+functions), but may not be stable or fully documented:
 
 ```{r eval = FALSE}
 # install.packages("remotes") 

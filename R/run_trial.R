@@ -176,9 +176,9 @@ run_trial <- function(trial_spec, seed = NULL, sparse = FALSE) {
     if (!verify_int(seed)) {
       stop0("seed must be either NULL or a single whole number.")
     } else { # Valid seed provided
-      if (exists(".Random.seed", envir = globalenv())) { # A global random seed exists (not the case when called from parallel::parLapply)
-        oldseed <- get(".Random.seed", envir = globalenv())
-        on.exit(assign(".Random.seed", value = oldseed, envir = globalenv()), add = TRUE, after = FALSE)
+      if (exists(".Random.seed", envir = globalenv(), inherits = FALSE)) { # A global random seed exists (not the case when called from parallel::parLapply)
+        oldseed <- get(".Random.seed", envir = globalenv(), inherits = FALSE)
+        on.exit(assign(".Random.seed", value = oldseed, envir = globalenv(), inherits = FALSE), add = TRUE, after = FALSE)
       }
       set.seed(seed)
     }

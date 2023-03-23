@@ -334,14 +334,14 @@ run_trials <- function(trial_spec, n_rep, path = NULL, overwrite = FALSE,
 
     # Create random seeds
     if (!is.null(base_seed)) {
-      if (exists(".Random.seed", envir = globalenv())) { # A global random seed exists (not the case when called from parallel::parLapply)
-        oldseed <- get(".Random.seed", envir = globalenv())
-        on.exit(assign(".Random.seed", value = oldseed, envir = globalenv()), add = TRUE, after = FALSE)
+      if (exists(".Random.seed", envir = globalenv(), inherits = FALSE)) { # A global random seed exists (not the case when called from parallel::parLapply)
+        oldseed <- get(".Random.seed", envir = globalenv(), inherits = FALSE)
+        on.exit(assign(".Random.seed", value = oldseed, envir = globalenv(), inherits = FALSE), add = TRUE, after = FALSE)
       }
       old_rngkind <- RNGkind("L'Ecuyer-CMRG", "default", "default")
       on.exit(RNGkind(kind = old_rngkind[1], normal.kind = old_rngkind[2], sample.kind = old_rngkind[3]), add = TRUE, after = FALSE)
       set.seed(base_seed)
-      seeds <- list(get(".Random.seed", envir = globalenv()))
+      seeds <- list(get(".Random.seed", envir = globalenv(), inherits = FALSE))
       if (n_rep > 1) {
         for (i in 2:n_rep) {
           seeds[[i]] <- nextRNGStream(seeds[[i - 1]])

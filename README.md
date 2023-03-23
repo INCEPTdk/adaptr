@@ -48,7 +48,7 @@ install.packages("adaptr")
 Alternatively, you can install the **development version** from GitHub -
 this requires the *remotes*-package installed. The development version
 may contain additional features not yet available in the CRAN version
-(including preliminary functions) and may not be stable or fully
+(including preliminary functions), but may not be stable or fully
 documented:
 
 ``` r
@@ -210,7 +210,7 @@ print(res_sum, digits = 1)
 #> * Ideal design percentage: 100.0%
 #> 
 #> Simulation details:
-#> * Simulation time: 0.434 secs
+#> * Simulation time: 0.66 secs
 #> * Base random seed: 67890
 #> * Credible interval width: 95%
 #> * Number of posterior draws: 5000

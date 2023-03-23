@@ -188,9 +188,9 @@ check_performance <- function(object, select_strategy = "control if available",
       if (!verify_int(boot_seed)) {
         stop0("boot_seed must be either NULL, 'base' or a single whole number.")
       } # Generate random seeds
-      if (exists(".Random.seed", envir = globalenv())) { # A global random seed exists (not the case when called from parallel::parLapply)
-        oldseed <- get(".Random.seed", envir = globalenv())
-        on.exit(assign(".Random.seed", value = oldseed, envir = globalenv()), add = TRUE, after = FALSE)
+      if (exists(".Random.seed", envir = globalenv(), inherits = FALSE)) { # A global random seed exists (not the case when called from parallel::parLapply)
+        oldseed <- get(".Random.seed", envir = globalenv(), inherits = FALSE)
+        on.exit(assign(".Random.seed", value = oldseed, envir = globalenv(), inherits = FALSE), add = TRUE, after = FALSE)
       }
       old_rngkind <- RNGkind("L'Ecuyer-CMRG", "default", "default")
       on.exit(RNGkind(kind = old_rngkind[1], normal.kind = old_rngkind[2], sample.kind = old_rngkind[3]), add = TRUE, after = FALSE)

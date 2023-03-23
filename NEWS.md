@@ -116,6 +116,12 @@
     called during validation, involving random number generation. While this was
     always documented, it seems preferable that to restore the global random
     seed during trial setup when functions are only validated.
+    
+*   Always explicitly uses `inherits = FALSE` in calls to `base::get()`,
+    `base::exists()`, and `base::assign()` to ensure that `.Random.seed` is only
+    checked/used/assignd to from the global environment. It is very unlikely
+    that this would ever cause errors if not done, but this serves as an extra
+    safety.
 
 # adaptr 1.2.0
 
