@@ -130,17 +130,17 @@ dispatch_trial_runs <- function(is, trial_spec, seeds, sparse, cores, cl = NULL)
 #'   to a valid previous file containing less simulations than `n_rep`, the
 #'   additional number of simulations will be run (appropriately re-using the
 #'   same `base_seed`, if specified) and appended to the same file.
-#' @param cores `NULL` or single integer. If `NULL`, a default value set by
-#'   [setup_cluster()] will be used to control whether simulations are run in
+#' @param cores `NULL` or single integer. If `NULL`, a default value/cluster set
+#'   by [setup_cluster()] will be used to control whether simulations are run in
 #'   parallel on a default cluster or sequentially in the main process; if a
-#'   value has not been specified by [setup_cluster()], `cores` will then be set
-#'   to the value stored in the global `"mc.cores"` option (if previously set by
-#'   `options(mc.cores = <number of cores>`), and `1` if that option has not been
-#'   specified.\cr
-#'   If `cores = 1`, computations will be run sequentially in the
-#'   primary process, and if `cores > 1`, a new parallel cluster will be setup
-#'   using the `parallel` library and removed once the function completes.
-#'   See [setup_cluster()] for details.
+#'   cluster/value has not been specified by [setup_cluster()], `cores` will
+#'   then be set to the value stored in the global `"mc.cores"` option (if
+#'   previously set by `options(mc.cores = <number of cores>`), and `1` if that
+#'   option has not been specified.\cr
+#'   If the resulting number of `cores = 1`, computations will be run
+#'   sequentially in the primary process, and if `cores > 1`, a new parallel
+#'   cluster will be setup using the `parallel` library and removed once the
+#'   function completes. See [setup_cluster()] for details.
 #' @param base_seed single integer or `NULL` (default); a random seed used as
 #'   the basis for simulations. Regardless of whether simulations are run
 #'   sequentially or in parallel, random number streams will be identical and
@@ -159,9 +159,9 @@ dispatch_trial_runs <- function(is, trial_spec, seeds, sparse, cores, cl = NULL)
 #'   cores, the function conducts batches of simulations on multiple cores (if
 #'   specified), with intermittent printing of statuses. Thus, all cores have to
 #'   finish running their current assigned batches before the other cores may
-#'   proceed with the next batch. If there is substantial differences in the
+#'   proceed with the next batch. If there are substantial differences in the
 #'   simulation speeds across cores, using `progress` may thus increase total
-#'   simulation times.
+#'   run time (especially with small values).
 #' @param version passed to [saveRDS()] when saving simulations, defaults to
 #'   `NULL` (as in [saveRDS()]), which means that the current default version is
 #'   used. Ignored if simulations are not saved.

@@ -1,31 +1,35 @@
 #' Calibrate trial specification
 #'
 #' This function calibrates a trial specification using a Gaussian process-based
-#' Bayesian optimisation algorithm. The default (and expected most common use
-#' case) is to calibrate a trial specification to adjust the `superiority` and
-#' `inferiority` thresholds to obtain certain probability of superiority; if
-#' used with a trial specification with identical underlying outcomes, this
-#' probability is an estimate of the Bayesian analogue to the total type 1-error
-#' rate for the outcome driving the adaptations, and if between-arm differences
-#' are present, this corresponds to the Bayesian analogue of the power.\cr
-#' The default is to calibrate single, constant, symmetric thresholds for
-#' `superiority` / `inferiority`, as described in **Details**, and the default
-#' values have been chosen to function well in this case.\cr
-#' Advanced users may use the function to calibrate trial specifications
-#' according to other metrics - see **Details** for how to specify other
-#' calibration functions.\cr
+#' Bayesian optimisation algorithm.
 #' The function calibrates an input trial specification object (using repeated
-#' calls to [run_trials()] after adjusting the trial specification) to a
+#' calls to [run_trials()] while adjusting the trial specification) to a
 #' `target` value within a `search_range` in a single input dimension (`x`) in
 #' order to find an optimal value (`y`).\cr
-#' The Gaussian process model and its control hyperparameters are described
-#' under **Details**, and the model is partially based on code from Gramacy 2020
-#' (with permission; see **References**).
+#' The default (and expected most common use case) is to calibrate a trial
+#' specification to adjust the `superiority` and `inferiority` thresholds to
+#' obtain a certain probability of superiority; if used with a trial
+#' specification with identical underlying outcomes (no between-arm
+#' differences), this probability is an estimate of the Bayesian analogue of the
+#' total type 1-error rate for the outcome driving the adaptations, and if
+#' between-arm differences are present, this corresponds to an estimate of the
+#' Bayesian analogue of the power.\cr
+#' The default is to perform the calibration while varying single, constant,
+#' symmetric thresholds for `superiority` / `inferiority` throughout a trial
+#' design, as described in **Details**, and the default values have been chosen
+#' to function well in this case.\cr
+#' Advanced users may use the function to calibrate trial specifications
+#' according to other metrics - see **Details** for how to specify a custom
+#' function used to modify (or recreate) a trial specification object during
+#' the calibration process.\cr
+#' The underlying Gaussian process model and its control hyperparameters are
+#' described under **Details**, and the model is partially based on code from
+#' Gramacy 2020 (with permission; see **References**).
 #'
 #' @inheritParams run_trials
 #' @param n_rep single integer, the number of simulations to run at each
-#'   evaluation. Values `< 100` not permitted; values `< 1000` permitted but not
-#'   recommended.
+#'   evaluation. Values `< 100` are not permitted; values `< 1000` are permitted
+#'   but recommended against.
 #' @param base_seed single integer or `NULL` (default); the random seed used as
 #'   the basis for all simulation runs (see [run_trials()]) and random number
 #'   generation within the rest of the calibration process; if used, the global
@@ -33,22 +37,22 @@
 #'   **Note:** providing a `base_seed` is highly recommended, as this will
 #'   generally lead to faster and more stable calibration.
 #' @param fun `NULL` (the default), in which case the trial specification will
-#'   be calibrated using the default process described in **Details**; otherwise
-#'   a user-supplied function used during the calibration process, which
-#'   should have a structure as described in **Details**.
-#' @param target single finite numeric value; the target value for `y` to
-#'    calibrate the `trial_spec` object to. Default is `0.05`.
-#' @param search_range finite numeric vector of length 2; the lower and upper
+#'   be calibrated using the default process described above and further in
+#'   **Details**; otherwise a user-supplied function used during the calibration
+#'   process, which should have a structure as described in **Details**.
+#' @param target single finite numeric value (defaults to `0.05`); the target
+#'   value for `y` to calibrate the `trial_spec` object to.
+#' @param search_range finite numeric vector of length `2`; the lower and upper
 #'   boundaries in which to search for the best `x`. Defaults to `c(0.9, 1.0)`.
-#' @param tol single numeric finite value (defaults to `target / 10`); the
+#' @param tol single finite numeric value (defaults to `target / 10`); the
 #'   accepted tolerance (in the direction(s) specified by `dir`) accepted; when
 #'   a `y`-value within the accepted tolerance of the target is obtained, the
 #'   calibration stops.\cr
 #'   **Note:** `tol` should be specified to be sensible considering `n_rep`;
 #'   e.g., if the probability of superiority is targeted with `n_rep == 1000`, a
-#'   `tol` of `0.01` will correspond to `10` trials. A too low `tol` relative to
-#'   `n_rep` may lead to very slow calibration or calibration that cannot
-#'   succeed regardless of the number of iterations.
+#'   `tol` of `0.01` will correspond to `10` simulated trials. A too low `tol`
+#'   relative to `n_rep` may lead to very slow calibration or calibration that
+#'   cannot succeed regardless of the number of iterations.
 #' @param dir single numeric value; specifies the direction(s) of the tolerance
 #'   range. If `0` (the default) the tolerance range will be `target - tol` to
 #'   `target + tol`. If `< 0`, the range will be `target - tol` to `target`, and
@@ -59,33 +63,34 @@
 #'   calibrating according to a different target than the default, a higher
 #'   value may be sensible).
 #' @param iter_max  single integer `> 0` (default `25`). The maximum number of
-#'   new evaluations after the evaluations not including the evaluations in the
-#'   initial grid setup. If calibration is unsuccessful using a maximum number
+#'   new evaluations after the initial grid (with size specified by `init_n`)
+#'   has been set up. If calibration is unsuccessful after the maximum number
 #'   of iterations, the `prev_x` and `prev_y` arguments (described below) may be
-#'   used to to start a new calibration process including previous results.
-#' @param resolution single integer (default: `5000`), size of the grid at which
-#'   the predictions used to select the next value to evaluate at are made.\cr
+#'   used to to start a new calibration process re-using previous evaluations.
+#' @param resolution single integer (defaults to `5000`), size of the grid at
+#'   which the predictions used to select the next value to evaluate at are
+#'   made.\cr
 #'   **Note:** memory use will substantially increase with higher values. See
-#'   also the `narrow` argument belowl.
+#'   also the `narrow` argument below.
 #' @param kappa single numeric value `> 0` (default `0.5`); corresponding to the
 #'   width of the uncertainty bounds used to find the next target to evaluate.
 #'   See **Details**.
 #' @param pow single numerical value in the `[1, 2]` range (default `1.95`),
 #'   controlling the smoothness of the Gaussian process. See **Details**.
-#' @param lengthscale single numerical value (default `1`) or numerical vector
-#'   of length `2`; values must be finite and non-negative. If a single
+#' @param lengthscale single numerical value (defaults to `1`) or numerical
+#'   vector of length `2`; values must be finite and non-negative. If a single
 #'   value is provided, this will be used as the `lengthscale` hyperparameter;
-#'   if a numerical vector of length 2 is provided, the second value must be
+#'   if a numerical vector of length `2` is provided, the second value must be
 #'   higher than the first and the optimal `lengthscale` in this range will be
-#'   found using an optimisation algorithm. If any value is 0, a small amount
+#'   found using an optimisation algorithm. If any value is `0`, a small amount
 #'   of noise will be added as lengthscales must be `> 0`. Controls smoothness
 #'   in combination with `pow`. See **Details**.
 #' @param scale_x single logical value; if `TRUE` (the default) the `x`-values
 #'   will be scaled to the `[0, 1]` range according to the minimum/maximum
-#'   values provided. If `FALSE`, the model will use the original scale (if
-#'   distances on the original scale are small, scaling may be preferred). The
+#'   values provided. If `FALSE`, the model will use the original scale. If
+#'   distances on the original scale are small, scaling may be preferred. The
 #'   returned values will always be on the original scale. See **Details**.
-#' @param noisy single logical value; if `FALSE`, a noise-less process is
+#' @param noisy single logical value; if `FALSE`, a noiseless process is
 #'   assumed, and interpolation between values is performed (i.e., with no
 #'   uncertainty at the `x`-values assumed). If `TRUE`, the `y`-values are
 #'   assumed to come from a noisy process, and regression is performed (i.e.,
@@ -120,11 +125,12 @@
 #'   functions.
 #' @param overwrite single logical, defaults to `FALSE`, in which case previous
 #'   results are loaded if a valid file path is provided in `path` and the
-#'   object in `path` contains the same input `trial_spec` and central control
-#'   settings (otherwise, the function errors). If `TRUE` and a valid file path
-#'   is provided in `path`, the complete calibration function will be run with
-#'   results saved using [saveRDS()], regardless of whether or not a previous
-#'   result was saved in `path`.
+#'   object in `path` contains the same input `trial_spec` and the previous
+#'   calibration used the same central control settings (otherwise, the function
+#'   errors). If `TRUE` and a valid file path is provided in `path`, the
+#'   complete calibration function will be run with results saved using
+#'   [saveRDS()], regardless of whether or not a previous result was saved
+#'   in `path`.
 #' @param version passed to [saveRDS()] when saving calibration results,
 #'   defaults to `NULL` (as in [saveRDS()]), which means that the current
 #'   default version is used. Ignored if calibration results are not saved.
@@ -137,7 +143,7 @@
 #'   will print details on calibration progress.
 #' @param plot single logical, defaults to `FALSE`. If `TRUE`, the function
 #'   will print plots of the Gaussian process model predictions and return
-#'   them with the final object; requires the `ggplot2` package installed.
+#'   them as part of the final object; requires the `ggplot2` package installed.
 #'
 #' @details
 #'
@@ -149,46 +155,50 @@
 #' calibrate constant stopping thresholds for superiority and inferiority (as
 #' described in [setup_trial()], [setup_trial_binom()], and
 #' [setup_trial_norm()]), which corresponds to the Bayesian analogues of the
-#' type 1 error rate (if there are no differences between arms in the trial
-#' specification, which we expect to be the most common use case) or the power
-#' (if there are differences between arms in the trial specification).\cr
+#' type 1 error rate if there are no differences between arms in the trial
+#' specification, which we expect to be the most common use case, or the power,
+#' if there are differences between arms in the trial specification.\cr
 #'
 #' The stopping calibration process will, in the default case, use the input `x`
 #' as the stopping threshold for superiority and `1 - x` as the stopping
-#' threshold for inferiority, respectively.\cr
+#' threshold for inferiority, respectively, i.e., stopping thresholds will be
+#' constant and symmetric.\cr
 #'
 #' The underlying default function calibrated is typically essentially
-#' noise-less if a high enough number of simulations are used with an
+#' noiseless if a high enough number of simulations are used with an
 #' appropriate random `base_seed`, and generally monotonically decreasing. The
-#' default values for the control hyperparameters have been set to generally
+#' default values for the control hyperparameters have been set to normally
 #' work well in this case (including `init_n`, `kappa`, `pow`, `lengthscale`,
 #' `narrow`, `scale_x`, etc.). Thus, few initial grid evaluations are used in
-#' his case, and if a `base_seed` is provided, a noiseless process is assumed
+#' this case, and if a `base_seed` is provided, a noiseless process is assumed
 #' and narrowing of the search range with each iteration is performed, and the
 #' uncertainty bounds used in the acquisition function (corresponding to
 #' quantiles from the posterior predictive distribution) are relatively narrow.
 #'
 #' \strong{Specifying calibration functions}
 #' \cr\cr
-#' A user-specified calibration function may be provided; such a function
-#' should have the following structure:
+#' A user-specified calibration function should have the following structure:
 #'
 #' ```
 #' # The function must take the arguments x and trial_spec
 #' # trial_spec is the original trial_spec object which should be modified
+#' # (alternatively, it may be re-specified, but the argument should still
+#' # be included, even if ignored)
 #' function(x, trial_spec) {
-#'   # Calibrate trial_spec, here as default
+#'   # Calibrate trial_spec, here as in the default function
 #'   trial_spec$superiority <- x
 #'   trial_spec$inferiority <- 1 - x
 #'
-#'   # If relevant, return known y value for corresponding x value without
-#'   # running simulations (here as the default) - only the y value should be
-#'   # changed here, and this should only be included if relevant
+#'   # If relevant, known y values corresponding to specific x values may be
+#'   # returned without running simulations (here done as in the default
+#'   # function). In that case, a code block line the one below can be included,
+#'   # with changed x/y values - of note, the other return values should not be
+#'   # changed
 #'   if (x == 1) {
 #'     return(list(sims = NULL, trial_spec = trial_spec, y = 0))
 #'   }
 #'
-#'   # Run simulations - this line should be included unchanged
+#'   # Run simulations - this block should be included unchanged
 #'   sims <- run_trials(trial_spec, n_rep = n_rep, cores = cores,
 #'                      base_seed = base_seed, sparse = sparse,
 #'                      progress = progress, export = export,
@@ -203,8 +213,8 @@
 #'
 #' **Note:** changes to the trial specification are **not validated**; users who
 #' define their own calibration function need to ensure that changes to
-#' calibrated trial specifications may not lead to invalid values; otherwise,
-#' the function is prone to errors when simulations are run. Especially, users
+#' calibrated trial specifications does not lead to invalid values; otherwise,
+#' the procedure is prone to error when simulations are run. Especially, users
 #' should be aware that changing `true_ys` in a trial specification generated
 #' using the simplified [setup_trial_binom()] and [setup_trial_norm()] functions
 #' requires changes in multiple places in the object, including in the functions
@@ -221,12 +231,11 @@
 #' \strong{Gaussian process optimisation function and control hyperparameters}
 #' \cr\cr
 #' The calibration function uses a relatively simple Gaussian optimisation
-#' function (based on code adapted from Gramacy 2020 with permission, see
-#' **References**), with settings that should work well for the default
-#' calibration function, but can be changed as required, which should be
-#' considered if calibrating according to other targets (effects of using other
-#' settings may be evaluated by setting `verbose` and `plot` to `TRUE`).\cr
-#' The function may perform both interpolation (i.e., assuming a noise-less,
+#' function with settings that should work well for the default calibration
+#' function, but can be changed as required, which should be considered if
+#' calibrating according to other targets (effects of using other settings may
+#' be evaluated in greater detail by setting `verbose` and `plot` to `TRUE`).\cr
+#' The function may perform both interpolation (i.e., assuming a noiseless,
 #' deterministic process with no uncertainty at the values already evaluated) or
 #' regression (i.e., assuming a noisy, stochastic process), controlled by the
 #' `noisy` argument.\cr
@@ -235,83 +244,89 @@
 #'
 #' `exp(-||x - x'||^pow / lengthscale)`\cr
 #'
-#' with `||x -x'||` corresponding to the absolute Euclidean distances of values
-#' of `x` (and values on the prediction grid), scaled to the `[0, 1]` range if
-#' `scale_x` is `TRUE` and on their original scale if `FALSE`. Scaling is
-#' generally recommended (as this leads to more comparable and predictable
-#' effects of `pow` and `lengthscale`, regardless of the true scale), and also
-#' recommended if the range of values is smaller than this range. The absolute
-#' distances are raised to the power `pow`, which must be a value in the
-#' `[1, 2]` range. Together with `lengthscale`, `pow` controls the smoothness of
-#' the Gaussian process model, with `1` corresponding to less smoothing (i.e.,
-#' piecewise straight lines between all evaluations if `lengthscale` is `1`) and
-#' values `> 1` corresponding to increased smoothing. After raising the absolute
-#' distances to the chosen power `pow`, the resulting matrix is divided by
-#' `lengthscale`. The default is `1` (no change), and values `< 1` leads to
-#' faster decay in correlations and thus less smoothing (more wiggly fits), and
-#' values `> 1` leads to more smoothing (less wiggly fits). If a single specific
-#' value is supplied for `lengthscale` this is used; if a range of values is
-#' provided, an optimisation process will find the best value in that range.\cr
+#' with `||x -x'||` corresponding to a matrix containing the absolute Euclidean
+#' distances of values of `x` (and values on the prediction grid), scaled to
+#' the `[0, 1]` range if `scale_x` is `TRUE` and on their original scale if
+#' `FALSE`. Scaling i generally recommended (as this leads to more comparable
+#' and predictable effects of `pow` and `lengthscale`, regardless of the true
+#' scale), and also recommended if the range of values is smaller than this
+#' range. The absolute distances are raised to the power `pow`, which must be a
+#' value in the `[1, 2]` range. Together with `lengthscale`, `pow` controls the
+#' smoothness of the Gaussian process model, with `1` corresponding to less
+#' smoothing (i.e., piecewise straight lines between all evaluations if
+#' `lengthscale` is `1`) and values `> 1` corresponding to more smoothing. After
+#' raising the absolute distances to the chosen power `pow`, the resulting
+#' matrix is divided by `lengthscale`. The default is `1` (no change), and
+#' values `< 1` leads to faster decay in correlations and thus less smoothing
+#' (more wiggly fits), and values `> 1` leads to more smoothing (less wiggly
+#' fits). If a single specific value is supplied for `lengthscale` this is used;
+#' if a range of values is provided, a sub-optimisation process determines the
+#' value to use within that range.\cr
 #'
 #' Some minimal noise ("jitter") is always added to the diagonals of the
 #' matrices where relevant to ensure numerical stability; if `noisy` is `TRUE`,
-#' a "nugget" value will be estimated using optimisation.\cr
+#' a "nugget" value will be determined using a sub-optimisation process.\cr
 #'
 #' Predictions will be made over an equally spaced grid of `x` values of size
 #' `resolution`; if `narrow` is `TRUE`, this grid will only be spread out
 #' between the `x` values with corresponding `y` values closest to and below and
 #' closes to and above `target`, respectively, leading to a finer grid in the
-#' range of relevance (as described above, this can only be used for processes
+#' range of relevance (as described above, this should only be used for processes
 #' that are assumed to be noiseless and should only be used if the process can
 #' safely be assumed to be monotonically increasing or decreasing within the
 #' `search_range`). To suggest the next `x` value for evaluations, the function
-#' uses an acquisition function based on bi-directional uncertainty bounds (
-#' posterior predictive distributions) with widths controlled by the `kappa`
+#' uses an acquisition function based on bi-directional uncertainty bounds
+#' (posterior predictive distributions) with widths controlled by the `kappa`
 #' hyperparameter. Higher `kappa`/wider uncertainty bounds leads to increased
 #' *exploration* (i.e., the algorithm is more prone to select values with high
 #' uncertainty, relatively far from existing evaluations), while lower
 #' `kappa`/narrower uncertainty bounds leads to increased *exploitation* (i.e.,
 #' the algorithm is more prone to select values with less uncertainty, closer to
-#' the best predicted mean values). The value in the `x` grid leading with a
-#' boundary with the smallest absolute distance to the `target` is chosen
-#' (within the narrowed range, if `narrow` is `TRUE`). See Greenhill et al, 2020
-#' under  **References** for a general description of acquisition functions.\cr
+#' the best predicted mean values). The value in the `x` grid leading with one of
+#' the boundaries having the smallest absolute distance to the `target` is
+#' chosen (within the narrowed range, if `narrow` is `TRUE`). See
+#' Greenhill et al, 2020 under **References** for a general description of
+#' acquisition functions.\cr
 #'
-#' **IMPORTANT:** **we recommend that control hyperparameters are always**
-#' **explicitly specified**, even for the default calibration function. Although
-#' the default values should be sensible for the default calibration function,
-#' these may change in the future. Further, we generally recommend user to
-#' perform small-scale comparisons of calibration with different hyperparameters
-#' for specific use cases beyond the default (possibly guided by setting the
-#' `verbose` and `plot` options to `TRUE`) before running a substantial number
-#' of calibrations or simulations, as the exact choices may have important
-#' influence on the speed and likelihood of success of the calibration process.
+#' **IMPORTANT:**
+#' **we recommend that control hyperparameters are explicitly specified**, even
+#' for the default calibration function. Although the default values should be
+#' sensible for the default calibration function, these may change in the
+#' future. Further, we generally recommend users to perform small-scale
+#' comparisons (i.e., with fewer simulations than in the final calibration) of
+#' the calibration process with different hyperparameters for specific use cases
+#' beyond the default (possibly guided by setting the `verbose` and `plot`
+#' options to `TRUE`) before running a substantial number of calibrations or
+#' simulations, as the exact choices may have important influence on the speed
+#' and likelihood of success of the calibration process.\cr
 #' It is the responsibility of the user to specify sensible values for the
-#' settings and parameters.
+#' settings and hyperparameters.
 #'
 #' @return A list of special class `"trial_calibration"`, which contains the
 #'   following elements that can be extracted using `$` or `[[`:
 #'   \itemize{
 #'     \item `success`: single logical, `TRUE` if the calibration succeeded with
-#'       the best result being within the accepted tolerance range, `FALSE` if
-#'       the calibration process ended after all allowed iterations without
-#'       reaching this criteria.
+#'       the best result being within the tolerance range, `FALSE` if the
+#'       calibration process ended after all allowed iterations without
+#'       obtaining a result within the tolerance range.
 #'     \item `best_x`: single numerical value, the `x`-value (on the original,
-#'       input scale) at which the best `y`-value was found.
+#'       input scale) at which the best `y`-value was found, regardless of
+#'       `success`.
 #'     \item `best_y`: single numerical value, the best `y`-value obtained,
 #'       regardless of `success`.
 #'     \item `best_trial_spec`: the best calibrated version of the original
-#'       `trial_spec` object supplied, regardless of `success` (so the returned
-#'       object is not necessarily adequately calibrated).
+#'       `trial_spec` object supplied, regardless of `success` (i.e., the
+#'       returned trial specification object is only adequately calibrated if
+#'       `success` is `TRUE`).
 #'     \item `best_sims`: the trial simulation results (from [run_trials()])
-#'       from the simulations leading to the best `y`-value, regardless of
-#'       `success`. If no new simulations are conducted (e.g., if the best
-#'       `y`-value are from one of the `prev_y`-values), this will be `NULL`.
+#'       leading to the best `y`-value, regardless of `success`. If no new
+#'       simulations have been conducted (e.g., if the best `y`-value is from
+#'       one of the `prev_y`-values), this will be `NULL`.
 #'     \item `evaluations`: a two-column `data.frame` containing the variables
 #'       `x` and `y`, corresponding to all `x`-values and `y`-values (including
 #'       values supplied through `prev_x`/`prev_y`).
-#'     \item `input_trial_spec`: the unaltered, uncalibrated `trial_spec`-object
-#'       provided to the function.
+#'     \item `input_trial_spec`: the unaltered, uncalibrated, original
+#'       `trial_spec`-object provided to the function.
 #'     \item `elapsed_time`: the total run time of the calibration process.
 #'     \item `control`: list of the most central settings provided to the
 #'       function.
@@ -320,8 +335,8 @@
 #'       **Details**) is returned after being used in the function.
 #'     \item `adaptr_version`: the version of the `adaptr` package used to run
 #'       the calibration process.
-#'     \item `plots`: list of `ggplot2` plot objects, only included if `plot` is
-#'       `TRUE`.
+#'     \item `plots`: list containing `ggplot2` plot objects of each Gaussian
+#'       process suggestion step, only included if `plot` is `TRUE`.
 #'   }
 #'
 #' @export
@@ -331,7 +346,7 @@
 #' # Setup a trial specification to calibrate
 #' # This trial specification has similar event rates in all arms
 #' # and as the default calibration settings are used, this corresponds to
-#' # assessing the Bayesian type 1 error rate for this design
+#' # assessing the Bayesian type 1 error rate for this design and scenario
 #' binom_trial <- setup_trial_binom(arms = c("A", "B"),
 #'                                  true_ys = c(0.25, 0.25),
 #'                                  data_looks = 1:5 * 200)
@@ -362,7 +377,7 @@ calibrate_trial <- function(
   # Gaussian process control hyperparameters
   resolution = 5000, kappa = 0.5, pow = 1.95, lengthscale = 1,
   scale_x = TRUE, noisy = is.null(base_seed), narrow = !noisy & !is.null(base_seed),
-  # Previous values
+  # Previously evaluated values
   prev_x = NULL, prev_y = NULL,
   # Save calibration
   path = NULL, overwrite = FALSE, version = NULL, compress = TRUE,

@@ -19,17 +19,17 @@ If \code{FALSE}, more detailed data for each simulation is saved, allowing more
 detailed printing of individual trial results and plotting using
 \code{\link[=plot_history]{plot_history()}} (\code{\link[=plot_status]{plot_status()}} does not require non-sparse results).}
 
-\item{cores}{\code{NULL} or single integer. If \code{NULL}, a default value set by
-\code{\link[=setup_cluster]{setup_cluster()}} will be used to control whether simulations are run in
+\item{cores}{\code{NULL} or single integer. If \code{NULL}, a default value/cluster set
+by \code{\link[=setup_cluster]{setup_cluster()}} will be used to control whether simulations are run in
 parallel on a default cluster or sequentially in the main process; if a
-value has not been specified by \code{\link[=setup_cluster]{setup_cluster()}}, \code{cores} will then be set
-to the value stored in the global \code{"mc.cores"} option (if previously set by
-\verb{options(mc.cores = <number of cores>}), and \code{1} if that option has not been
-specified.\cr
-If \code{cores = 1}, computations will be run sequentially in the
-primary process, and if \code{cores > 1}, a new parallel cluster will be setup
-using the \code{parallel} library and removed once the function completes.
-See \code{\link[=setup_cluster]{setup_cluster()}} for details.}
+cluster/value has not been specified by \code{\link[=setup_cluster]{setup_cluster()}}, \code{cores} will
+then be set to the value stored in the global \code{"mc.cores"} option (if
+previously set by \verb{options(mc.cores = <number of cores>}), and \code{1} if that
+option has not been specified.\cr
+If the resulting number of \code{cores = 1}, computations will be run
+sequentially in the primary process, and if \code{cores > 1}, a new parallel
+cluster will be setup using the \code{parallel} library and removed once the
+function completes. See \code{\link[=setup_cluster]{setup_cluster()}} for details.}
 
 \item{cl}{\code{NULL} (default) for running sequentially, otherwise a \code{parallel}
 cluster for parallel computation if \code{cores > 1}.}
