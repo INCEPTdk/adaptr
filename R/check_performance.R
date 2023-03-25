@@ -1,4 +1,4 @@
-#' Calculate ideal design percentage
+#' Calculate the ideal design percentage
 #'
 #' Used internally by [check_performance()], calculates the ideal design
 #' percentage as described in that function's documentation.
@@ -22,17 +22,18 @@ calculate_idp <- function(sels, arms, true_ys, highest_is_best) {
 
 #' Check performance metrics for trial simulations
 #'
-#' Calculates performance metrics from trial simulation results from the
-#' [run_trials()] function, with bootstrapped uncertainty measures if requested.
-#' Uses [extract_results()], which may be used directly to extract key trial
-#' results without summarising. This function is used in [summary()] to
-#' calculate the performance metrics presented by that function.
+#' Calculates performance metrics for a trial specification based on
+#' simulation results from the [run_trials()] function, with bootstrapped
+#' uncertainty measures if requested. Uses [extract_results()], which may be
+#' used directly to extract key trial results without summarising. This function
+#' is also used by [summary()] to calculate the performance metrics presented by
+#' that function.
 #'
 #' @inheritParams extract_results
 #' @param restrict single character string or `NULL`. If `NULL` (default),
 #'   results are summarised for all simulations; if `"superior`, results are
 #'   summarised for simulations ending with superiority only; if `"selected"`,
-#'   results are summarised for simulations ending with a selected arm
+#'   results are summarised for simulations ending with a selected arm only
 #'   (according to the specified arm selection strategy for simulations not
 #'   ending with superiority). Some summary measures (e.g., `prob_conclusive`)
 #'   have substantially different interpretations if restricted, but are
@@ -42,26 +43,26 @@ calculate_idp <- function(sels, arms, true_ys, highest_is_best) {
 #'   calculate uncertainty measures.
 #' @param n_boot single integer (default `5000`); the number of bootstrap
 #'   samples to use if `uncertainty = TRUE`. Values `< 100` are not allowed and
-#'   values `< 1000` will lead to a warning, and results are thus likely to be
-#'   unstable.
+#'   values `< 1000` will lead to a warning, as results are likely to be
+#'   unstable in those cases.
 #' @param ci_width single numeric `>= 0` and `< 1`, the width of the
 #'   percentile-based bootstrapped confidence intervals. Defaults to `0.95`,
 #'   corresponding to 95% confidence intervals.
 #' @param boot_seed single integer, `NULL` (default), or `"base"`. If a value is
-#'   provided, this value will be used to initiate random seeds when bootstrapping and
-#'   the global random seed will be restored after the function has run,
-#'   so it is not affected. If `"base"` is specified, the `base_seed` specified
-#'   in [run_trials()] is used. Regardless of whether simulations are run
-#'   sequentially or in parallel, random number streams will be identical and
-#'   appropriate.
+#'   provided, this value will be used to initiate random seeds when
+#'   bootstrapping with the global random seed restored after the function has
+#'   run. If `"base"` is specified, the `base_seed` specified in [run_trials()]
+#'   is used. Regardless of whether simulations are run sequentially or in
+#'   parallel, bootstrapped results will be identical if a `boot_seed` is
+#'   specified.
 #'
 #' @return A tidy `data.frame` with added class `trial_performance` (to control
 #'   the number of digits printed, see [print()]), with the columns
-#'   `"metric"` (described below), `"est"` (estimates of each metric), and the
+#'   `"metric"` (described below), `"est"` (estimate of each metric), and the
 #'   following four columns if `uncertainty = TRUE`: `"err_sd"`(bootstrapped
 #'   SDs), `"err_mad"` (bootstrapped MAD-SDs, as described in [setup_trial()]
-#'   and [mad()]), `"lo_ci"`, and `"hi_ci"`, the latter two corresponding to the
-#'   lower/upper limits of the percentile-based bootstrapped confidence
+#'   and [stats::mad()]), `"lo_ci"`, and `"hi_ci"`, the latter two corresponding
+#'   to the lower/upper limits of the percentile-based bootstrapped confidence
 #'   intervals. Bootstrap estimates are **not** calculated for the mininum
 #'   (`_p0`) and maximum values (`_p100`) of `size`, `sum_ys`, and `ratio_ys`,
 #'   as non-parametric bootstrapping for mininum/maximum values is not
@@ -70,20 +71,20 @@ calculate_idp <- function(sels, arms, true_ys, highest_is_best) {
 #' \itemize{
 #'   \item `n_summarised`: the number of simulations summarised.
 #'   \item `size_mean`, `size_sd`, `size_median`, `size_p25`, `size_p75`,
-#'     `size_p0`, `size_p100`: the
-#'     mean, standard deviation, median as well as 25-, 75-, 0- (min), and 100-
-#'     (max) percentiles of the sample sizes (number of patients randomised in
-#'     each simulated trial) of the summarised trial simulations.
+#'     `size_p0`, `size_p100`: the mean, standard deviation, median as well as
+#'     25-, 75-, 0- (min), and 100- (max) percentiles of the sample sizes
+#'     (number of patients randomised in each simulated trial) of the summarised
+#'     trial simulations.
 #'   \item `sum_ys_mean`, `sum_ys_sd`, `sum_ys_median`, `sum_ys_p25`,
 #'     `sum_ys_p75`, `sum_ys_p0`, `sum_ys_p100`: the mean, standard deviation,
 #'     median as well as 25-, 75-, 0- (min), and 100- (max) percentiles of the
-#'     total `sum_ys` (e.g., the total number of events in trials with a binary
-#'     outcome, or the sums of continuous values for all patients across all
-#'     arms in trials with a continuous outcome) across all arms in the
-#'     summarised trial simulations. Always uses all outcomes from all
-#'     randomised patients regardless of whether or not all patients had outcome
-#'     data available at the time of trial stopping (corresponding to
-#'     `sum_ys_all` in results from [run_trial()]).
+#'     total `sum_ys` across all arms in the summarised trial simulations (e.g.,
+#'     the total number of events in trials with a binary outcome, or the sums
+#'     of continuous values for all patients across all arms in trials with a
+#'     continuous outcome). Always uses all outcomes from all randomised
+#'     patients regardless of whether or not all patients had outcome data
+#'     available at the time of trial stopping (corresponding to `sum_ys_all` in
+#'     results from [run_trial()]).
 #'   \item `ratio_ys_mean`, `ratio_ys_sd`, `ratio_ys_median`, `ratio_ys_p25`,
 #'     `ratio_ys_p75`, `ratio_ys_p0`, `ratio_ys_p100`: the mean, standard
 #'     deviation, median as well as 25-, 75-, 0- (min), and 100- (max)
@@ -91,8 +92,8 @@ calculate_idp <- function(sels, arms, true_ys, highest_is_best) {
 #'     by the total number of patients randomised) across all arms in the
 #'     summarised trial simulations.
 #'   \item `prob_conclusive`: the proportion (`0` to `1`) of conclusive trial
-#'     simulations (simulations not stopped at the maximum sample size without a
-#'     superiority, equivalence or futility decision).
+#'     simulations, i.e., simulations not stopped at the maximum sample size
+#'     without a superiority, equivalence or futility decision.
 #'   \item `prob_superior`, `prob_equivalence`, `prob_futility`, `prob_max`: the
 #'     proportion (`0` to `1`) of trial simulations stopped for superiority,
 #'     equivalence, futility or inconclusive at the maximum allowed sample size,
@@ -101,16 +102,16 @@ calculate_idp <- function(sels, arms, true_ys, highest_is_best) {
 #'     results are `restricted`.
 #'   \item `prob_select_*`: the selection probabilities for each arm and for no
 #'     selection, according to the specified selection strategy. Contains one
-#'     element per `arm`, named as `prob_select_arm_<arm name>` and
+#'     element per `arm`, named `prob_select_arm_<arm name>` and
 #'     `prob_select_none` for the probability of selecting no arm.
 #'   \item `rmse`, `rmse_te`: the root mean squared error of the estimates for
-#'     the selected arm and for the treatment effect, as described further in
+#'     the selected arm and for the treatment effect, as described in
 #'     [extract_results()].
 #'   \item `idp`: the ideal design percentage (IDP; 0-100%), see **Details**.
 #'   }
 #'
 #' @details
-#' The ideal design percentage (IDP) returned (described below) is based on
+#' The ideal design percentage (IDP) returned is based on
 #' *Viele et al, 2020* \doi{10.1177/1740774519877836}  (and also described in
 #' *Granholm et al, 2022* \doi{10.1016/j.jclinepi.2022.11.002}, which also
 #' describes the other performance measures) and has been adapted to work for

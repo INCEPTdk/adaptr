@@ -19,23 +19,23 @@ extract_results(
 \item{object}{\code{trial_results} object, output from the \code{\link[=run_trials]{run_trials()}}
 function.}
 
-\item{select_strategy}{single character string. For trials not stopped
-due to superiority (or with only 1 arm remaining, if \code{select_last_arm} is
+\item{select_strategy}{single character string. If a trial was not stopped
+due to superiority (or had only 1 arm remaining, if \code{select_last_arm} is
 set to \code{TRUE} in trial designs with a common \code{control} arm; see below),
 this parameter specifies which arm will be considered selected when
-calculating trial design performance metrics (described below;
+calculating trial design performance metrics, as described below;
 this corresponds to the consequence of an inconclusive trial, i.e., which
-arm would then be used in practice).\cr
+arm would then be used in practice.\cr
 The following options are available and must be written exactly as below
 (case sensitive, cannot be abbreviated):
 \itemize{
 \item \code{"control if available"} (default): selects the \strong{first}
-\code{control} arm for trials with a common control arm \emph{\strong{if}} this arm
-is active at end-of-trial, otherwise no arm will be selected. For
+\code{control} arm for trials with a common \code{control} arm \emph{\strong{if}} this
+arm is active at end-of-trial, otherwise no arm will be selected. For
 trial designs without a common \code{control}, no arm will be selected.
 \item \code{"none"}: selects no arm in trials not ending with superiority.
 \item \code{"control"}: similar to \code{"control if available"}, but will throw
-an error for trial designs without a common \code{control} arm.
+an error if used for trial designs without a common \code{control} arm.
 \item \code{"final control"}: selects the \strong{final} \code{control} arm regardless
 of whether the trial was stopped for practical equivalence, futility,
 or at the maximum sample size; this strategy can only be specified
@@ -43,8 +43,8 @@ for trial designs with a common \code{control} arm.
 \item \code{"control or best"}: selects the \strong{first} \code{control} arm if still
 active at end-of-trial, otherwise selects the best remaining arm
 (defined as the remaining arm with the highest probability of being
-the best in the final analysis). Only works for trial designs with a
-common \code{control} arm.
+the best in the last adaptive analysis conducted). Only works for
+trial designs with a common \code{control} arm.
 \item \code{"best"}: selects the best remaining arm (as described under
 \code{"control or best"}).
 \item \code{"list or best"}: selects the first remaining arm from a specified
@@ -85,17 +85,17 @@ estimates.}
 
 \item{final_ests}{single logical. If \code{TRUE} (recommended) the final estimates
 calculated using outcome data from all patients randomised when trials are
-stopped is used (\code{post_ests_all} or \code{raw_ests_all}, see \code{\link[=setup_trial]{setup_trial()}} and
-\code{\link[=run_trial]{run_trial()}}); if \code{FALSE}, the estimates calculated for each arm when an
-arm is stopped (or at the last adaptive analysis if not before) using data
-from patients having reach followed up at this time point and not all
-patients randomised (\code{post_ests} or \code{raw_ests}, see \code{\link[=setup_trial]{setup_trial()}} and
-\code{\link[=run_trial]{run_trial()}}). If \code{NULL} (the default), this argument will be set to
-\code{FALSE} if outcome data are available immediate after randomisation for all
-patients (for backwards compatibility, as final posterior estimates may
-vary slightly in this situation, even if using the same data); otherwise it
-will be said to \code{TRUE}. See \code{\link[=setup_trial]{setup_trial()}} for more details on how these
-estimates are calculated.}
+stopped are used (\code{post_ests_all} or \code{raw_ests_all}, see \code{\link[=setup_trial]{setup_trial()}}
+and \code{\link[=run_trial]{run_trial()}}); if \code{FALSE}, the estimates calculated for each arm when
+an arm is stopped (or at the last adaptive analysis if not before) using
+data from patients having reach followed up at this time point and not all
+patients randomised are used (\code{post_ests} or \code{raw_ests}, see
+\code{\link[=setup_trial]{setup_trial()}} and \code{\link[=run_trial]{run_trial()}}). If \code{NULL} (the default), this argument
+will be set to \code{FALSE} if outcome data are available immediate after
+randomisation for all patients (for backwards compatibility, as final
+posterior estimates may vary slightly in this situation, even if using the
+same data); otherwise it will be said to \code{TRUE}. See \code{\link[=setup_trial]{setup_trial()}} for
+more details on how these estimates are calculated.}
 
 \item{cores}{\code{NULL} or single integer. If \code{NULL}, a default value set by
 \code{\link[=setup_cluster]{setup_cluster()}} will be used to control whether extractions of simulation
@@ -112,12 +112,13 @@ once the function completes. See \code{\link[=setup_cluster]{setup_cluster()}} f
 \value{
 A \code{data.frame} containing the following columns:
 \itemize{
-\item \code{sim}: the simulation number (from 1 to the number of simulations).
+\item \code{sim}: the simulation number (from \code{1} to the total number of
+simulations).
 \item \code{final_n}: the final sample size in each simulation.
 \item \code{sum_ys}: the sum of the total counts in all arms, e.g., the total
 number of events in trials with a binary outcome
 (\code{\link[=setup_trial_binom]{setup_trial_binom()}}) or the sum of the arm totals in trials with a
-continuous outcome (\code{\link[=setup_trial_norm]{setup_trial_norm()}}). Always uses all outcomes
+continuous outcome (\code{\link[=setup_trial_norm]{setup_trial_norm()}}). Always uses all outcome data
 from all randomised patients regardless of whether or not all patients
 had outcome data available at the time of trial stopping (corresponding
 to \code{sum_ys_all} in results from \code{\link[=run_trial]{run_trial()}}).
@@ -126,8 +127,8 @@ to \code{sum_ys_all} in results from \code{\link[=run_trial]{run_trial()}}).
 \code{"superiority"}, \code{"equivalence"}, \code{"futility"}, or \code{"max"}, as
 described in \code{\link[=run_trial]{run_trial()}}.
 \item \code{superior_arm}: the final superior arm in simulations stopped for
-superiority, will be \code{NA} in simulations not stopped for superiority.
-\item \code{selected_arm}: the final selected arm (as described above), will
+superiority. Will be \code{NA} in simulations not stopped for superiority.
+\item \code{selected_arm}: the final selected arm (as described above). Will
 correspond to the \code{superior_arm} in simulations stopped for superiority
 and be \code{NA} if no arm is selected. See \code{select_strategy} above.
 \item \verb{sq_err:} the squared error of the estimate in the selected arm,
@@ -138,15 +139,16 @@ the selected arm to the comparator arm (as specified in \code{te_comp}).
 Calculated as:\cr
 \verb{((estimated effect in the selected arm - estimated effect in the comparator arm) -}
 \verb{(true effect in the selected arm - true effect in the comparator arm))^2} \cr
-Will be \code{NA} for simulations without a selected arm or with no
-comparator specified (see \code{te_comp} above).
+Will be \code{NA} for simulations without a selected arm, with no
+comparator specified (see \code{te_comp} above), and when the selected arm
+is the comparator arm.
 }
 }
 \description{
 This function extracts relevant information from multiple simulations of the
 same trial specification in a tidy \code{data.frame} (1 simulation per row).
 See also the \code{\link[=check_performance]{check_performance()}} and \code{\link[=summary]{summary()}} functions, that uses the
-output from this function to further summarise simulation results..
+output from this function to further summarise simulation results.
 }
 \examples{
 # Setup a trial specification

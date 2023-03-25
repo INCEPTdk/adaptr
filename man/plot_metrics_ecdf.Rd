@@ -25,7 +25,7 @@ specified with either spaces or underlines. Defaults to plotting all three.}
 \item{restrict}{single character string or \code{NULL}. If \code{NULL} (default),
 results are summarised for all simulations; if \verb{"superior}, results are
 summarised for simulations ending with superiority only; if \code{"selected"},
-results are summarised for simulations ending with a selected arm
+results are summarised for simulations ending with a selected arm only
 (according to the specified arm selection strategy for simulations not
 ending with superiority). Some summary measures (e.g., \code{prob_conclusive})
 have substantially different interpretations if restricted, but are

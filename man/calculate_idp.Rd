@@ -2,7 +2,7 @@
 % Please edit documentation in R/check_performance.R
 \name{calculate_idp}
 \alias{calculate_idp}
-\title{Calculate ideal design percentage}
+\title{Calculate the ideal design percentage}
 \usage{
 calculate_idp(sels, arms, true_ys, highest_is_best)
 }

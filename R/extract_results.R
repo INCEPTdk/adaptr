@@ -2,12 +2,12 @@
 #'
 #' Used internally by [extract_results()]. Extracts results from a batch of
 #' simulations from a simulation object with multiple simulation results
-#' returned by [run_trials()], used to facilitate easy parallelisation.
+#' returned by [run_trials()], used to facilitate parallelisation.
 #'
 #' @inheritParams extract_results
 #' @param trial_results list of trial results to summarise, the current batch.
 #' @param control single character string, the common `control` arm from the
-#'   trial (`NULL` if none).
+#'   trial specification (`NULL` if none).
 #' @param which_ests single character string, a combination of the `raw_ests`
 #'   and `final_ests` arguments from [extract_results()].
 #' @param te_comp_index single integer, index of the treatment effect comparator
@@ -122,27 +122,27 @@ extract_results_batch <- function(trial_results,
 #' This function extracts relevant information from multiple simulations of the
 #' same trial specification in a tidy `data.frame` (1 simulation per row).
 #' See also the [check_performance()] and [summary()] functions, that uses the
-#' output from this function to further summarise simulation results..
+#' output from this function to further summarise simulation results.
 #'
 #' @param object `trial_results` object, output from the [run_trials()]
 #'   function.
-#' @param select_strategy single character string. For trials not stopped
-#'   due to superiority (or with only 1 arm remaining, if `select_last_arm` is
+#' @param select_strategy single character string. If a trial was not stopped
+#'   due to superiority (or had only 1 arm remaining, if `select_last_arm` is
 #'   set to `TRUE` in trial designs with a common `control` arm; see below),
 #'   this parameter specifies which arm will be considered selected when
-#'   calculating trial design performance metrics (described below;
+#'   calculating trial design performance metrics, as described below;
 #'   this corresponds to the consequence of an inconclusive trial, i.e., which
-#'   arm would then be used in practice).\cr
+#'   arm would then be used in practice.\cr
 #'   The following options are available and must be written exactly as below
 #'   (case sensitive, cannot be abbreviated):
 #'   \itemize{
 #'      \item `"control if available"` (default): selects the **first**
-#'         `control` arm for trials with a common control arm ***if*** this arm
-#'         is active at end-of-trial, otherwise no arm will be selected. For
+#'         `control` arm for trials with a common `control` arm ***if*** this
+#'         arm is active at end-of-trial, otherwise no arm will be selected. For
 #'         trial designs without a common `control`, no arm will be selected.
 #'       \item `"none"`: selects no arm in trials not ending with superiority.
 #'       \item `"control"`: similar to `"control if available"`, but will throw
-#'         an error for trial designs without a common `control` arm.
+#'         an error if used for trial designs without a common `control` arm.
 #'       \item `"final control"`: selects the **final** `control` arm regardless
 #'         of whether the trial was stopped for practical equivalence, futility,
 #'         or at the maximum sample size; this strategy can only be specified
@@ -150,8 +150,8 @@ extract_results_batch <- function(trial_results,
 #'       \item `"control or best"`: selects the **first** `control` arm if still
 #'         active at end-of-trial, otherwise selects the best remaining arm
 #'         (defined as the remaining arm with the highest probability of being
-#'         the best in the final analysis). Only works for trial designs with a
-#'         common `control` arm.
+#'         the best in the last adaptive analysis conducted). Only works for
+#'         trial designs with a common `control` arm.
 #'     \item `"best"`: selects the best remaining arm (as described under
 #'       `"control or best"`).
 #'     \item `"list or best"`: selects the first remaining arm from a specified
@@ -187,17 +187,17 @@ extract_results_batch <- function(trial_results,
 #'   estimates.
 #' @param final_ests single logical. If `TRUE` (recommended) the final estimates
 #'   calculated using outcome data from all patients randomised when trials are
-#'   stopped is used (`post_ests_all` or `raw_ests_all`, see [setup_trial()] and
-#'   [run_trial()]); if `FALSE`, the estimates calculated for each arm when an
-#'   arm is stopped (or at the last adaptive analysis if not before) using data
-#'   from patients having reach followed up at this time point and not all
-#'   patients randomised (`post_ests` or `raw_ests`, see [setup_trial()] and
-#'   [run_trial()]). If `NULL` (the default), this argument will be set to
-#'   `FALSE` if outcome data are available immediate after randomisation for all
-#'   patients (for backwards compatibility, as final posterior estimates may
-#'   vary slightly in this situation, even if using the same data); otherwise it
-#'   will be said to `TRUE`. See [setup_trial()] for more details on how these
-#'   estimates are calculated.
+#'   stopped are used (`post_ests_all` or `raw_ests_all`, see [setup_trial()]
+#'   and [run_trial()]); if `FALSE`, the estimates calculated for each arm when
+#'   an arm is stopped (or at the last adaptive analysis if not before) using
+#'   data from patients having reach followed up at this time point and not all
+#'   patients randomised are used (`post_ests` or `raw_ests`, see
+#'   [setup_trial()] and [run_trial()]). If `NULL` (the default), this argument
+#'   will be set to `FALSE` if outcome data are available immediate after
+#'   randomisation for all patients (for backwards compatibility, as final
+#'   posterior estimates may vary slightly in this situation, even if using the
+#'   same data); otherwise it will be said to `TRUE`. See [setup_trial()] for
+#'   more details on how these estimates are calculated.
 #' @param cores `NULL` or single integer. If `NULL`, a default value set by
 #'   [setup_cluster()] will be used to control whether extractions of simulation
 #'   results are done in parallel on a default cluster or sequentially in the
@@ -212,12 +212,13 @@ extract_results_batch <- function(trial_results,
 #'
 #' @return A `data.frame` containing the following columns:
 #'   \itemize{
-#'     \item `sim`: the simulation number (from 1 to the number of simulations).
+#'     \item `sim`: the simulation number (from `1` to the total number of
+#'       simulations).
 #'     \item `final_n`: the final sample size in each simulation.
 #'     \item `sum_ys`: the sum of the total counts in all arms, e.g., the total
 #'       number of events in trials with a binary outcome
 #'       ([setup_trial_binom()]) or the sum of the arm totals in trials with a
-#'       continuous outcome ([setup_trial_norm()]). Always uses all outcomes
+#'       continuous outcome ([setup_trial_norm()]). Always uses all outcome data
 #'       from all randomised patients regardless of whether or not all patients
 #'       had outcome data available at the time of trial stopping (corresponding
 #'       to `sum_ys_all` in results from [run_trial()]).
@@ -226,8 +227,8 @@ extract_results_batch <- function(trial_results,
 #'       `"superiority"`, `"equivalence"`, `"futility"`, or `"max"`, as
 #'       described in [run_trial()].
 #'     \item `superior_arm`: the final superior arm in simulations stopped for
-#'       superiority, will be `NA` in simulations not stopped for superiority.
-#'     \item `selected_arm`: the final selected arm (as described above), will
+#'       superiority. Will be `NA` in simulations not stopped for superiority.
+#'     \item `selected_arm`: the final selected arm (as described above). Will
 #'       correspond to the `superior_arm` in simulations stopped for superiority
 #'       and be `NA` if no arm is selected. See `select_strategy` above.
 #'     \item `sq_err:` the squared error of the estimate in the selected arm,
@@ -238,8 +239,9 @@ extract_results_batch <- function(trial_results,
 #'       Calculated as:\cr
 #'       `((estimated effect in the selected arm - estimated effect in the comparator arm) -`
 #'       `(true effect in the selected arm - true effect in the comparator arm))^2` \cr
-#'       Will be `NA` for simulations without a selected arm or with no
-#'       comparator specified (see `te_comp` above).
+#'       Will be `NA` for simulations without a selected arm, with no
+#'       comparator specified (see `te_comp` above), and when the selected arm
+#'       is the comparator arm.
 #'   }
 #'
 #' @examples

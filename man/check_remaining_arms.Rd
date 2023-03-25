@@ -17,29 +17,30 @@ intervals.}
 }
 \value{
 a \code{data.frame} containing the combinations of remaining arms, sorted
-in descending order of  following columns:
+in descending order of, with the following columns:
 \itemize{
 \item \verb{arm_*}, one column per arm, each named as \verb{arm_<arm name>}. These
 columns will contain an empty character string \code{""} for dropped arms
 (including arms dropped at the final analysis), and otherwise be
-\code{"superior"}, \code{"control"}, \code{"equivalence"} (only if equivalent at th
+\code{"superior"}, \code{"control"}, \code{"equivalence"} (only if equivalent at the
 final analysis), or \code{"active"}, as described in \code{\link[=run_trial]{run_trial()}}.
-\item \code{n} integer vector, number of trials ending with the combination of
-remaining arms as specified by the preceding columns.
-\item \code{prop} numeric vector, the proportion of trials ending with the
+\item \code{n} integer vector, number of trial simulations ending with the
 combination of remaining arms as specified by the preceding columns.
+\item \code{prop} numeric vector, the proportion of trial simulations ending
+with the combination of remaining arms as specified by the preceding
+columns.
 \item \code{se},\code{lo_ci},\code{hi_ci}: the standard error of \code{prop} and the confidence
-intervals, of the width specified by \code{cid_width}.
+intervals of the width specified by \code{ci_width}.
 }
 }
 \description{
-This function summarises all combinations of remaining arms (i.e., excluding
-arms dropped for inferiority or futility at any analysis, and arms dropped
-for equivalence at earlier analyses in trials with a common \code{control}) across
-multiple simulated trial results. The function supplements the
-\code{\link[=extract_results]{extract_results()}}, \code{\link[=check_performance]{check_performance()}}, and \code{\link[=summary]{summary()}} functions, and is
-especially useful for designs with \verb{> 2} arms, where it provides details that
-the other functions do not.
+This function summarises the numbers and proportions of all combinations of
+remaining arms (i.e., excluding arms dropped for inferiority or futility at
+any analysis, and arms dropped for equivalence at earlier analyses in trials
+with a common \code{control}) across multiple simulated trial results. The
+function supplements the \code{\link[=extract_results]{extract_results()}}, \code{\link[=check_performance]{check_performance()}}, and
+\code{\link[=summary]{summary()}} functions, and is especially useful for designs with \verb{> 2} arms,
+where it provides details that the other functions mentioned do not.
 }
 \examples{
 # Setup a trial specification

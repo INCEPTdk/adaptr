@@ -20,25 +20,25 @@ extract_results_batch(
 \item{trial_results}{list of trial results to summarise, the current batch.}
 
 \item{control}{single character string, the common \code{control} arm from the
-trial (\code{NULL} if none).}
+trial specification (\code{NULL} if none).}
 
-\item{select_strategy}{single character string. For trials not stopped
-due to superiority (or with only 1 arm remaining, if \code{select_last_arm} is
+\item{select_strategy}{single character string. If a trial was not stopped
+due to superiority (or had only 1 arm remaining, if \code{select_last_arm} is
 set to \code{TRUE} in trial designs with a common \code{control} arm; see below),
 this parameter specifies which arm will be considered selected when
-calculating trial design performance metrics (described below;
+calculating trial design performance metrics, as described below;
 this corresponds to the consequence of an inconclusive trial, i.e., which
-arm would then be used in practice).\cr
+arm would then be used in practice.\cr
 The following options are available and must be written exactly as below
 (case sensitive, cannot be abbreviated):
 \itemize{
 \item \code{"control if available"} (default): selects the \strong{first}
-\code{control} arm for trials with a common control arm \emph{\strong{if}} this arm
-is active at end-of-trial, otherwise no arm will be selected. For
+\code{control} arm for trials with a common \code{control} arm \emph{\strong{if}} this
+arm is active at end-of-trial, otherwise no arm will be selected. For
 trial designs without a common \code{control}, no arm will be selected.
 \item \code{"none"}: selects no arm in trials not ending with superiority.
 \item \code{"control"}: similar to \code{"control if available"}, but will throw
-an error for trial designs without a common \code{control} arm.
+an error if used for trial designs without a common \code{control} arm.
 \item \code{"final control"}: selects the \strong{final} \code{control} arm regardless
 of whether the trial was stopped for practical equivalence, futility,
 or at the maximum sample size; this strategy can only be specified
@@ -46,8 +46,8 @@ for trial designs with a common \code{control} arm.
 \item \code{"control or best"}: selects the \strong{first} \code{control} arm if still
 active at end-of-trial, otherwise selects the best remaining arm
 (defined as the remaining arm with the highest probability of being
-the best in the final analysis). Only works for trial designs with a
-common \code{control} arm.
+the best in the last adaptive analysis conducted). Only works for
+trial designs with a common \code{control} arm.
 \item \code{"best"}: selects the best remaining arm (as described under
 \code{"control or best"}).
 \item \code{"list or best"}: selects the first remaining arm from a specified
@@ -93,6 +93,6 @@ changed where relevant by \code{\link[=extract_results]{extract_results()}}).
 \description{
 Used internally by \code{\link[=extract_results]{extract_results()}}. Extracts results from a batch of
 simulations from a simulation object with multiple simulation results
-returned by \code{\link[=run_trials]{run_trials()}}, used to facilitate easy parallelisation.
+returned by \code{\link[=run_trials]{run_trials()}}, used to facilitate parallelisation.
 }
 \keyword{internal}

@@ -1,12 +1,12 @@
 #' Check remaining arm combinations
 #'
-#' This function summarises all combinations of remaining arms (i.e., excluding
-#' arms dropped for inferiority or futility at any analysis, and arms dropped
-#' for equivalence at earlier analyses in trials with a common `control`) across
-#' multiple simulated trial results. The function supplements the
-#' [extract_results()], [check_performance()], and [summary()] functions, and is
-#' especially useful for designs with `> 2` arms, where it provides details that
-#' the other functions do not.
+#' This function summarises the numbers and proportions of all combinations of
+#' remaining arms (i.e., excluding arms dropped for inferiority or futility at
+#' any analysis, and arms dropped for equivalence at earlier analyses in trials
+#' with a common `control`) across multiple simulated trial results. The
+#' function supplements the [extract_results()], [check_performance()], and
+#' [summary()] functions, and is especially useful for designs with `> 2` arms,
+#' where it provides details that the other functions mentioned do not.
 #'
 #' @param object `trial_results` object, output from the [run_trials()]
 #'   function.
@@ -16,19 +16,20 @@
 #'   intervals.
 #'
 #' @return a `data.frame` containing the combinations of remaining arms, sorted
-#'   in descending order of  following columns:
+#'   in descending order of, with the following columns:
 #' \itemize{
 #'   \item `arm_*`, one column per arm, each named as `arm_<arm name>`. These
 #'     columns will contain an empty character string `""` for dropped arms
 #'     (including arms dropped at the final analysis), and otherwise be
-#'     `"superior"`, `"control"`, `"equivalence"` (only if equivalent at th
+#'     `"superior"`, `"control"`, `"equivalence"` (only if equivalent at the
 #'     final analysis), or `"active"`, as described in [run_trial()].
-#'   \item `n` integer vector, number of trials ending with the combination of
-#'     remaining arms as specified by the preceding columns.
-#'   \item `prop` numeric vector, the proportion of trials ending with the
+#'   \item `n` integer vector, number of trial simulations ending with the
 #'     combination of remaining arms as specified by the preceding columns.
+#'   \item `prop` numeric vector, the proportion of trial simulations ending
+#'     with the combination of remaining arms as specified by the preceding
+#'     columns.
 #'   \item `se`,`lo_ci`,`hi_ci`: the standard error of `prop` and the confidence
-#'     intervals, of the width specified by `cid_width`.
+#'     intervals of the width specified by `ci_width`.
 #'   }
 #' @export
 #'

@@ -45,23 +45,23 @@ probabilities, allocation probabilities and softening powers.}
 \item{digits}{single integer, number of digits to print for probabilities and
 some other summary values (with 2 extra digits added for outcome rates).}
 
-\item{select_strategy}{single character string. For trials not stopped
-due to superiority (or with only 1 arm remaining, if \code{select_last_arm} is
+\item{select_strategy}{single character string. If a trial was not stopped
+due to superiority (or had only 1 arm remaining, if \code{select_last_arm} is
 set to \code{TRUE} in trial designs with a common \code{control} arm; see below),
 this parameter specifies which arm will be considered selected when
-calculating trial design performance metrics (described below;
+calculating trial design performance metrics, as described below;
 this corresponds to the consequence of an inconclusive trial, i.e., which
-arm would then be used in practice).\cr
+arm would then be used in practice.\cr
 The following options are available and must be written exactly as below
 (case sensitive, cannot be abbreviated):
 \itemize{
 \item \code{"control if available"} (default): selects the \strong{first}
-\code{control} arm for trials with a common control arm \emph{\strong{if}} this arm
-is active at end-of-trial, otherwise no arm will be selected. For
+\code{control} arm for trials with a common \code{control} arm \emph{\strong{if}} this
+arm is active at end-of-trial, otherwise no arm will be selected. For
 trial designs without a common \code{control}, no arm will be selected.
 \item \code{"none"}: selects no arm in trials not ending with superiority.
 \item \code{"control"}: similar to \code{"control if available"}, but will throw
-an error for trial designs without a common \code{control} arm.
+an error if used for trial designs without a common \code{control} arm.
 \item \code{"final control"}: selects the \strong{final} \code{control} arm regardless
 of whether the trial was stopped for practical equivalence, futility,
 or at the maximum sample size; this strategy can only be specified
@@ -69,8 +69,8 @@ for trial designs with a common \code{control} arm.
 \item \code{"control or best"}: selects the \strong{first} \code{control} arm if still
 active at end-of-trial, otherwise selects the best remaining arm
 (defined as the remaining arm with the highest probability of being
-the best in the final analysis). Only works for trial designs with a
-common \code{control} arm.
+the best in the last adaptive analysis conducted). Only works for
+trial designs with a common \code{control} arm.
 \item \code{"best"}: selects the best remaining arm (as described under
 \code{"control or best"}).
 \item \code{"list or best"}: selects the first remaining arm from a specified
@@ -111,22 +111,22 @@ estimates.}
 
 \item{final_ests}{single logical. If \code{TRUE} (recommended) the final estimates
 calculated using outcome data from all patients randomised when trials are
-stopped is used (\code{post_ests_all} or \code{raw_ests_all}, see \code{\link[=setup_trial]{setup_trial()}} and
-\code{\link[=run_trial]{run_trial()}}); if \code{FALSE}, the estimates calculated for each arm when an
-arm is stopped (or at the last adaptive analysis if not before) using data
-from patients having reach followed up at this time point and not all
-patients randomised (\code{post_ests} or \code{raw_ests}, see \code{\link[=setup_trial]{setup_trial()}} and
-\code{\link[=run_trial]{run_trial()}}). If \code{NULL} (the default), this argument will be set to
-\code{FALSE} if outcome data are available immediate after randomisation for all
-patients (for backwards compatibility, as final posterior estimates may
-vary slightly in this situation, even if using the same data); otherwise it
-will be said to \code{TRUE}. See \code{\link[=setup_trial]{setup_trial()}} for more details on how these
-estimates are calculated.}
+stopped are used (\code{post_ests_all} or \code{raw_ests_all}, see \code{\link[=setup_trial]{setup_trial()}}
+and \code{\link[=run_trial]{run_trial()}}); if \code{FALSE}, the estimates calculated for each arm when
+an arm is stopped (or at the last adaptive analysis if not before) using
+data from patients having reach followed up at this time point and not all
+patients randomised are used (\code{post_ests} or \code{raw_ests}, see
+\code{\link[=setup_trial]{setup_trial()}} and \code{\link[=run_trial]{run_trial()}}). If \code{NULL} (the default), this argument
+will be set to \code{FALSE} if outcome data are available immediate after
+randomisation for all patients (for backwards compatibility, as final
+posterior estimates may vary slightly in this situation, even if using the
+same data); otherwise it will be said to \code{TRUE}. See \code{\link[=setup_trial]{setup_trial()}} for
+more details on how these estimates are calculated.}
 
 \item{restrict}{single character string or \code{NULL}. If \code{NULL} (default),
 results are summarised for all simulations; if \verb{"superior}, results are
 summarised for simulations ending with superiority only; if \code{"selected"},
-results are summarised for simulations ending with a selected arm
+results are summarised for simulations ending with a selected arm only
 (according to the specified arm selection strategy for simulations not
 ending with superiority). Some summary measures (e.g., \code{prob_conclusive})
 have substantially different interpretations if restricted, but are
