@@ -1,10 +1,11 @@
 #' Plot trial metric history
 #'
-#' Plots the history of relevant metrics over the progress of single or multiple
-#' simulations. Simulated trials **only** contribute until the time they are
-#' stopped, i.e., if some trials are stopped earlier than others, they will not
-#' contribute to the summary statistics at later adaptive looks. Data from
-#' individual arms in a trial contribute until the complete trial is stopped.\cr
+#' Plots the history of relevant metrics over the progress of a single or
+#' multiple trial simulations. Simulated trials **only** contribute until the
+#' time they are stopped, i.e., if some trials are stopped earlier than others,
+#' they will not contribute to the summary statistics at later adaptive looks.
+#' Data from individual arms in a trial contribute until the complete trial is
+#' stopped.\cr
 #' These history plots require non-sparse results (`sparse` set to
 #' `FALSE`; see [run_trial()] and [run_trials()]) and the `ggplot2` package
 #' installed.
@@ -12,14 +13,15 @@
 #' @inheritParams extract_results
 #' @param x_value single character string, determining whether the number of
 #'  adaptive analysis looks (`"look"`, default), the total cumulated number of
-#'  patients randomised (`"total n"`) or with outcome data available at each
-#'  analysis (`"followed n"`) are plotted on the x-axis.
+#'  patients randomised (`"total n"`) or the total cumulated number of patients
+#'  with outcome data available at each adaptive analysis (`"followed n"`) are
+#'  plotted on the x-axis.
 #' @param y_value single character string, determining which values are plotted
 #'   on the y-axis. The following options are available: allocation
 #'   probabilities (`"prob"`, default), the total number of patients with
-#'   outcome data available (`"n"`) or allocated (`"n all"`) to each arm,
+#'   outcome data available (`"n"`) or randomised (`"n all"`) to each arm,
 #'   the percentage of patients with outcome data available (`"pct"`) or
-#'   allocated (`"pct all"`) to each arm out of the current total, the sum of
+#'   randomised (`"pct all"`) to each arm out of the current total, the sum of
 #'   all available (`"sum ys"`) outcome data or all outcome data for randomised
 #'   patients including outcome data not available at the time of the current
 #'   adaptive analysis (`"sum ys all"`), the ratio of outcomes as defined for

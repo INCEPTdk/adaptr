@@ -10,7 +10,8 @@
 #' @param metrics the performance metrics to plot, as described in
 #'   [extract_results()]. Multiple metrics may be plotted at the same time.
 #'   Valid metrics include: `size`, `sum_ys`, and `ratio_ys_mean`. All may be
-#'   specified with either spaces or underlines. Defaults to plotting all three.
+#'   specified using either spaces or underlines (case sensitive). Defaults to
+#'   plotting all three.
 #' @param nrow,ncol the number of rows and columns when plotting multiple
 #'   metrics in the same plot (using faceting in `ggplot2`). Defaults to `NULL`,
 #'   in which case this will be determined automatically.
@@ -33,8 +34,8 @@
 #'   res_mult <- run_trials(binom_trial, n_rep = 25, base_seed = 678)
 #'
 #'   # NOTE: the number of simulations in this example is smaller than
-#'   # recommended - the plots reflect that, and show that performance metrics
-#'   # are not stable and have likely not converged yet
+#'   # recommended - the plots reflect that, and would likely be smoother if
+#'   # a larger number of trials had been simulated
 #'
 #'   # Plot ECDFs of continuous performance metrics
 #'   plot_metrics_ecdf(res_mult)

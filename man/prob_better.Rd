@@ -2,7 +2,7 @@
 % Please edit documentation in R/prob_funs.R
 \name{prob_better}
 \alias{prob_better}
-\title{Calculate the probabilities that each arm is better than a common control}
+\title{Calculate probabilities of comparisons of arms against with common control}
 \usage{
 prob_better(
   m,
@@ -41,7 +41,7 @@ remains after dropping arms for futility, the trial will be stopped without
 declaring the last arm superior.}
 }
 \value{
-A named (rownames corresponding to the trial \code{arms}) \code{matrix}
+A named (row names corresponding to the trial \code{arms}) \code{matrix}
 containing 1-3 columns: \code{probs_better}, \code{probs_equivalence} (if
 \code{equivalence_diff} is specified), and \code{probs_futile} (if \code{futility_diff} is
 specified). All columns will contain \code{NA} for the control arm.

@@ -35,15 +35,20 @@
 \method{print}{trial_calibration}(x, ...)
 }
 \arguments{
-\item{x}{object to print, output from \code{\link[=calibrate_trial]{calibrate_trial()}}.}
+\item{x}{object to print, see \strong{Details}.}
 
-\item{prob_digits}{single integer, the number of digits used when printing
-probabilities, allocation probabilities and softening powers.}
+\item{prob_digits}{single integer (default is \code{3}), the number of digits used
+when printing probabilities, allocation probabilities and softening powers
+(with \code{2} extra digits added for stopping rule probability thresholds in
+trial specifications and for outcome rates in summarised results from
+multiple simulations).}
 
 \item{...}{additional arguments, not used.}
 
-\item{digits}{single integer, number of digits to print for probabilities and
-some other summary values (with 2 extra digits added for outcome rates).}
+\item{digits}{single integer, the number of digits used when printing
+the numeric results. Default is \code{3} for outputs from \code{\link[=check_performance]{check_performance()}}
+and \code{1} for outputs from \code{\link[=run_trials]{run_trials()}} and the accompanying \code{\link[=summary]{summary()}}
+method.}
 
 \item{select_strategy}{single character string. If a trial was not stopped
 due to superiority (or had only 1 arm remaining, if \code{select_last_arm} is

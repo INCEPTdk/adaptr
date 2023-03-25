@@ -20,7 +20,8 @@ function.}
 \item{metrics}{the performance metrics to plot, as described in
 \code{\link[=extract_results]{extract_results()}}. Multiple metrics may be plotted at the same time.
 Valid metrics include: \code{size}, \code{sum_ys}, and \code{ratio_ys_mean}. All may be
-specified with either spaces or underlines. Defaults to plotting all three.}
+specified using either spaces or underlines (case sensitive). Defaults to
+plotting all three.}
 
 \item{restrict}{single character string or \code{NULL}. If \code{NULL} (default),
 results are summarised for all simulations; if \verb{"superior}, results are
@@ -69,8 +70,8 @@ if (requireNamespace("ggplot2", quietly = TRUE)){
   res_mult <- run_trials(binom_trial, n_rep = 25, base_seed = 678)
 
   # NOTE: the number of simulations in this example is smaller than
-  # recommended - the plots reflect that, and show that performance metrics
-  # are not stable and have likely not converged yet
+  # recommended - the plots reflect that, and would likely be smoother if
+  # a larger number of trials had been simulated
 
   # Plot ECDFs of continuous performance metrics
   plot_metrics_ecdf(res_mult)

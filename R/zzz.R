@@ -25,8 +25,8 @@
 
 #' Handle well-known "problem" of pseudo-global variables
 #'
-#' Handles "Undefined global functions or variables" after R CMD check (in
-#' [plot_convergence()], [plot_status()], and [plot_history()]).
+#' Handles "Undefined global functions or variables" after R CMD check in
+#' functions using non-standard evaluation.
 #' See [https://stackoverflow.com/a/12429344].
 #'
 #' @param libname not used.

@@ -5,6 +5,17 @@
 #' Prints contents of the first input `x` in a human-friendly way, see
 #' **Details** for more information.
 #'
+#' @param x object to print, see **Details**.
+#' @param digits single integer, the number of digits used when printing
+#'   the numeric results. Default is `3` for outputs from [check_performance()]
+#'   and `1` for outputs from [run_trials()] and the accompanying [summary()]
+#'   method.
+#' @param prob_digits single integer (default is `3`), the number of digits used
+#'   when printing probabilities, allocation probabilities and softening powers
+#'   (with `2` extra digits added for stopping rule probability thresholds in
+#'   trial specifications and for outcome rates in summarised results from
+#'   multiple simulations).
+#'
 #' @details The behaviour depends on the class of `x`:
 #'
 #' @return Invisibly returns `x`.
@@ -15,10 +26,7 @@ NULL
 
 #' Print method for trial specifications
 #'
-#' @param x object to print, see **Details** below.
-#' @param prob_digits single integer, the number of digits used when printing
-#'   probabilities, allocation probabilities and softening powers (with `2`
-#'   extra digits added for stopping rule probabilities).
+#' @inheritParams print
 #'
 #' @details
 #' - `trial_spec`: prints a trial specification setup by
@@ -158,9 +166,7 @@ print.trial_spec <- function(x, prob_digits = 3, ...) {
 
 #' Print method for a single simulated trial
 #'
-#' @param x object to print, see **Details** below.
-#' @param prob_digits single integer, the number of digits used when printing
-#'   probabilities, allocation probabilities and softening powers.
+#' @inheritParams print
 #'
 #' @details
 #' - `trial_result`: prints the results of a single trial simulated by
@@ -246,9 +252,7 @@ print.trial_result <- function(x, prob_digits = 3, ...) {
 
 #' Print method for trial performance metrics
 #'
-#' @param x object to print, output from [check_performance()].
-#' @param digits single integer, the number of digits used when printing
-#'   the numeric results (for all performance estimates). Default is `3? .
+#' @inheritParams print
 #'
 #' @describeIn print Trial performance metrics
 #' @export
@@ -267,9 +271,8 @@ print.trial_performance <- function(x, digits = 3, ...) {
 
 #' Print method for multiple simulated trials
 #'
-#' @param x object to print, see Details below.
+#' @inheritParams print
 #' @inheritParams summary
-#' @param digits single integer, number of digits to print for probabilities.
 #'
 #' @details
 #' - `trial_results`: prints the results of multiple simulations
@@ -302,9 +305,7 @@ print.trial_results <- function(x,
 
 #' Print summarised results for multiple simulated trials
 #'
-#' @param x object to print, see Details below.
-#' @param digits single integer, number of digits to print for probabilities and
-#'   some other summary values (with 2 extra digits added for outcome rates).
+#' @inheritParams print
 #'
 #' @details
 #' - `trial_results_summary`: print method for summary of multiple simulations
@@ -384,7 +385,7 @@ print.trial_results_summary <- function(x, digits = 1, ...) {
 
 #' Print method for calibrated trial objects
 #'
-#' @param x object to print, output from [calibrate_trial()].
+#' @inheritParams print
 #'
 #' @describeIn print Trial calibration
 #' @export

@@ -34,14 +34,14 @@ Valid metrics include: \code{size_mean}, \code{size_sd}, \code{size_median}, \co
 \code{ratio_ys_p75}, \code{ratio_ys_p0}, \code{ratio_ys_p100}, \code{prob_conclusive},
 \code{prob_superior}, \code{prob_equivalence}, \code{prob_futility}, \code{prob_max},
 \verb{prob_select_*} (with \code{*} being an \code{arm} name), \code{rmse}, \code{rmse_te}, and
-\code{idp}. All may be specified with either spaces or underlines. Defaults to
-\code{"size mean"}.}
+\code{idp}. All may be specified as above, case sensitive, but with either
+spaces or underlines. Defaults to \code{"size mean"}.}
 
 \item{resolution}{single positive integer, the number of points calculated
 and plotted, defaults to \code{100} and must be \verb{>= 10}. Higher numbers lead to
-smoother plots, but increases computing time. If the value specified is
+smoother plots, but increases computation time. If the value specified is
 higher than the number of simulations (or simulations per split), the
-maximum possible value will be used.}
+maximum possible value will be used instead.}
 
 \item{select_strategy}{single character string. If a trial was not stopped
 due to superiority (or had only 1 arm remaining, if \code{select_last_arm} is
@@ -156,7 +156,7 @@ A \code{ggplot2} plot object.
 }
 \description{
 Plots performance metrics according to the number of simulations conducted
-for multiple simulated trials. The number of trials may be split into a
+for multiple simulated trials. The simulated trial results may be split into
 a number of batches to illustrate stability of performance metrics across
 different simulations. Calculations are done according to specified selection
 and restriction strategies as described in \code{\link[=extract_results]{extract_results()}} and

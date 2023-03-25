@@ -26,15 +26,16 @@ function.}
 
 \item{x_value}{single character string, determining whether the number of
 adaptive analysis looks (\code{"look"}, default), the total cumulated number of
-patients randomised (\code{"total n"}) or with outcome data available at each
-analysis (\code{"followed n"}) are plotted on the x-axis.}
+patients randomised (\code{"total n"}) or the total cumulated number of patients
+with outcome data available at each adaptive analysis (\code{"followed n"}) are
+plotted on the x-axis.}
 
 \item{y_value}{single character string, determining which values are plotted
 on the y-axis. The following options are available: allocation
 probabilities (\code{"prob"}, default), the total number of patients with
-outcome data available (\code{"n"}) or allocated (\code{"n all"}) to each arm,
+outcome data available (\code{"n"}) or randomised (\code{"n all"}) to each arm,
 the percentage of patients with outcome data available (\code{"pct"}) or
-allocated (\code{"pct all"}) to each arm out of the current total, the sum of
+randomised (\code{"pct all"}) to each arm out of the current total, the sum of
 all available (\code{"sum ys"}) outcome data or all outcome data for randomised
 patients including outcome data not available at the time of the current
 adaptive analysis (\code{"sum ys all"}), the ratio of outcomes as defined for
@@ -67,11 +68,12 @@ once the function completes. See \code{\link[=setup_cluster]{setup_cluster()}} f
 A \code{ggplot2} plot object.
 }
 \description{
-Plots the history of relevant metrics over the progress of single or multiple
-simulations. Simulated trials \strong{only} contribute until the time they are
-stopped, i.e., if some trials are stopped earlier than others, they will not
-contribute to the summary statistics at later adaptive looks. Data from
-individual arms in a trial contribute until the complete trial is stopped.\cr
+Plots the history of relevant metrics over the progress of a single or
+multiple trial simulations. Simulated trials \strong{only} contribute until the
+time they are stopped, i.e., if some trials are stopped earlier than others,
+they will not contribute to the summary statistics at later adaptive looks.
+Data from individual arms in a trial contribute until the complete trial is
+stopped.\cr
 These history plots require non-sparse results (\code{sparse} set to
 \code{FALSE}; see \code{\link[=run_trial]{run_trial()}} and \code{\link[=run_trials]{run_trials()}}) and the \code{ggplot2} package
 installed.

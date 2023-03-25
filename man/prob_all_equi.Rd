@@ -30,6 +30,6 @@ Used internally. This function takes a \code{matrix} as calculated by the
 \code{\link[=get_draws_generic]{get_draws_generic()}}), and an equivalence difference, and calculates the
 probability of all arms being equivalent (absolute differences between
 highest and lowest value in the same set of posterior draws being less than
-the difference considered equivalent).
+the difference considered practically equivalent).
 }
 \keyword{internal}

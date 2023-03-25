@@ -66,8 +66,8 @@ rescale <- function(x) {
 #'
 #' @details
 #' MAD-SDs are scaled to correspond to SDs if distributions are normal,
-#' similarly to the [mad] function; see details regarding calculation in that
-#' function's description.
+#' similarly to the [stats::mad()] function; see details regarding calculation
+#' in that function's description.
 #'
 #' @return A numeric vector with four named elements: `est` (the median/mean),
 #'   `err` (the MAD-SD/SD), `lo` and `hi` (the lower and upper boundaries of the
@@ -160,7 +160,7 @@ warning0 <- function(...) warning(..., call. = FALSE)
 #'   between which `x` should lie.
 #' @param open single character, determines whether `min_value` and `max_value`
 #'   are excluded or not. Valid values: `"no"` (= closed interval; `min_value`
-#'   and `max_value` included; default value), `"right"`, `"left"`, `"yes"```
+#'   and `max_value` included; default value), `"right"`, `"left"`, `"yes"`
 #'   (= open interval, `min_value` and `max_value` excluded).
 #'
 #' @return Single logical.
@@ -281,9 +281,10 @@ vapply_lgl <- function(X, FUN, ...) vapply(X, FUN, FUN.VALUE = logical(1), ...)
 #' Assert equivalent functions
 #'
 #' Used internally. Compares the definitions of two functions (ignoring
-#' environments, bytecodes, etc., by only comparing function bodies).
+#' environments, bytecodes, etc., by only comparing function arguments and
+#' bodies, using [deparse()]).
 #'
-#' @param fun1,fun2 names of functions (unquoted)
+#' @param fun1,fun2 functions to compare.
 #'
 #' @return Single logical.
 #'

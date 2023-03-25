@@ -1,7 +1,7 @@
 #' Plot convergence of performance metrics
 #'
 #' Plots performance metrics according to the number of simulations conducted
-#' for multiple simulated trials. The number of trials may be split into a
+#' for multiple simulated trials. The simulated trial results may be split into
 #' a number of batches to illustrate stability of performance metrics across
 #' different simulations. Calculations are done according to specified selection
 #' and restriction strategies as described in [extract_results()] and
@@ -18,13 +18,13 @@
 #'   `ratio_ys_p75`, `ratio_ys_p0`, `ratio_ys_p100`, `prob_conclusive`,
 #'   `prob_superior`, `prob_equivalence`, `prob_futility`, `prob_max`,
 #'   `prob_select_*` (with `*` being an `arm` name), `rmse`, `rmse_te`, and
-#'   `idp`. All may be specified with either spaces or underlines. Defaults to
-#'   `"size mean"`.
+#'   `idp`. All may be specified as above, case sensitive, but with either
+#'   spaces or underlines. Defaults to `"size mean"`.
 #' @param resolution single positive integer, the number of points calculated
 #'   and plotted, defaults to `100` and must be `>= 10`. Higher numbers lead to
-#'   smoother plots, but increases computing time. If the value specified is
+#'   smoother plots, but increases computation time. If the value specified is
 #'   higher than the number of simulations (or simulations per split), the
-#'   maximum possible value will be used.
+#'   maximum possible value will be used instead.
 #' @param n_split single positive integer, the number of consecutive batches the
 #'   simulation results will be split into, which will be plotted separately.
 #'   Default is `1` (no splitting); maximum value is the number of simulations

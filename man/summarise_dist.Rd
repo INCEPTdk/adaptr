@@ -30,7 +30,7 @@ apply to any distribution (thus, the name).
 }
 \details{
 MAD-SDs are scaled to correspond to SDs if distributions are normal,
-similarly to the \link{mad} function; see details regarding calculation in that
-function's description.
+similarly to the \code{\link[stats:mad]{stats::mad()}} function; see details regarding calculation
+in that function's description.
 }
 \keyword{internal}

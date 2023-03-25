@@ -8,7 +8,7 @@ get_draws_norm(arms, allocs, ys, control, n_draws)
 }
 \arguments{
 \item{arms}{character vector, \strong{currently active} \code{arms} as specified in
-\code{\link[=setup_trial]{setup_trial()}}/\code{\link[=setup_trial_binom]{setup_trial_binom()}}/\code{\link[=setup_trial_norm]{setup_trial_norm()}}.}
+\code{\link[=setup_trial]{setup_trial()}} / \code{\link[=setup_trial_binom]{setup_trial_binom()}} / \code{\link[=setup_trial_norm]{setup_trial_norm()}}.}
 
 \item{allocs}{character vector, allocations of all patients (including
 allocations to \strong{currently inactive} \code{arms}).}
@@ -37,11 +37,11 @@ normal-normal models (normally distributed outcome, conjugate normal prior)
 for each arm, assuming that a non-informative, flat prior is used. Thus, the
 posteriors directly correspond to normal distributions with each groups' mean
 as the mean and each groups' standard error as the standard deviation.
-As it is necessary to always return valid draws, in cases where <2 patients
-have been randomised to an \code{arm}, posterior draws will come from an extremely
-wide normal distribution with mean corresponding to the mean of all included
-patients with outcome data and a standard deviation corresponding to the
-difference between the highest and lowest recorded outcomes for all patients
-with available outcome data multiplied by 1000.
+As it is necessary to always return valid draws, in cases where \verb{< 2}
+patients have been randomised to an \code{arm}, posterior draws will come from an
+extremely wide normal distribution with mean corresponding to the mean of all
+included patients with outcome data and a standard deviation corresponding to
+the difference between the highest and lowest recorded outcomes for all
+patients with available outcome data multiplied by \code{1000}.
 }
 \keyword{internal}

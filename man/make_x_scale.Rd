@@ -9,8 +9,9 @@ make_x_scale(x_value)
 \arguments{
 \item{x_value}{single character string, determining whether the number of
 adaptive analysis looks (\code{"look"}, default), the total cumulated number of
-patients randomised (\code{"total n"}) or with outcome data available at each
-analysis (\code{"followed n"}) are plotted on the x-axis.}
+patients randomised (\code{"total n"}) or the total cumulated number of patients
+with outcome data available at each adaptive analysis (\code{"followed n"}) are
+plotted on the x-axis.}
 }
 \value{
 An appropriate scale for the \code{ggplot2} plot x-axis according to

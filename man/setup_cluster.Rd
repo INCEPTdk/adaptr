@@ -11,13 +11,13 @@ setup_cluster(cores, export = NULL, export_envir = parent.frame())
 \code{NULL} or \code{1}, an existing default cluster is removed (if any), and the
 default will subsequently be to run functions sequentially in the main
 process if \code{cores = 1}, and according to \code{getOption("mc.cores")} if \code{NULL}
-(unless otherwise specified in individual functions). The
+(unless otherwise specified in individual functions calls). The
 \code{\link[parallel:detectCores]{parallel::detectCores()}} function may be used to see the number of
 available cores, although this comes with some caveats (as described in the
 function documentation), including that the number of cores may not always
 be returned and may not match the number of cores that are available for
 use. In general, using less cores than available may be preferable if other
-processess are run on the machine at the same time.}
+processes are run on the machine at the same time.}
 
 \item{export}{character vector of names of objects to export to each
 parallel core when running in perallel; passed as the \code{varlist} argument to
@@ -29,14 +29,14 @@ in \code{export} when running in parallel and \code{export} is not \code{NULL}. 
 to the environment from where \code{\link[=run_trials]{run_trials()}} is called.}
 }
 \value{
-invisible returns the default \code{parallel} cluster or \code{NULL}, as
+Invisibly returns the default \code{parallel} cluster or \code{NULL}, as
 appropriate. This may be used with other functions from the \code{parallel}
 package by advanced users, for example to load certain libraries on the
 cluster prior to calling \code{\link[=run_trials]{run_trials()}}.
 }
 \description{
 This function setups (or removes) a default cluster for use in all
-parallelised functions in \code{adaptr} using the \code{parallel}-package. The function
+parallelised functions in \code{adaptr} using the \code{parallel} package. The function
 also exports objects that should be available on the cluster and sets the
 random number generator appropriately. See \strong{Details} for further info on
 how \code{adaptr} handles sequential/parallel computation.
@@ -46,27 +46,27 @@ how \code{adaptr} handles sequential/parallel computation.
 
 All parallelised \code{adaptr} functions have a \code{cores} argument that defaults to
 \code{NULL}. If a non-\code{NULL} integer \verb{> 0} is provided to the \code{cores} argument in
-any of the other \code{adaptr} functions, the package will run calculations
+any of those (except \code{\link[=setup_cluster]{setup_cluster()}}), the package will run calculations
 sequentially in the main process if \code{cores = 1}, and otherwise initiate a new
 cluster of size \code{cores} that will be removed once the function completes,
 regardless of whether or not a default cluster or the global \code{"mc.cores"}
 option have been specified.
 
-If \code{cores} is \code{NULL} in any other \code{adaptr} function, the package will use a
-default cluster if one exists or run computations sequentially if
-\code{\link[=setup_cluster]{setup_cluster()}} has last been called with \code{cores = 1}. If \code{\link[=setup_cluster]{setup_cluster()}}
-has not been called or last called with \code{cores = NULL}, then the package will
-check if the global \code{"mc.cores"} option has been specified (using
-\verb{options(mc.cores = <number of cores>)}). If this option has been set with a
-value \verb{> 1}, then a new, temporary cluster of that size is setup, used, and
-removed once the function completes. If this option has not been set or has
-been set to \code{1}, then computations will be run sequentially in the main
-process.
+If \code{cores} is \code{NULL} in any \code{adaptr} function (except \code{\link[=setup_cluster]{setup_cluster()}}), the
+package will use a default cluster if one exists or run computations
+sequentially if \code{\link[=setup_cluster]{setup_cluster()}} has last been called with \code{cores = 1}.
+If \code{\link[=setup_cluster]{setup_cluster()}} has not been called or last called with \code{cores = NULL},
+then the package will check if the global \code{"mc.cores"} option has been
+specified (using \verb{options(mc.cores = <number of cores>)}). If this option has
+been set with a value \verb{> 1}, then a new, temporary cluster of that size is
+setup, used, and removed once the function completes. If this option has not
+been set or has been set to \code{1}, then computations will be run sequentially
+in the main process.
 
 Generally, we recommend using the \code{\link[=setup_cluster]{setup_cluster()}} function as this avoids
 the overhead of re-initiating new clusters with every call to one of the
 parallelised \code{adaptr} functions. This is especially important when exporting
-many or large objects to a parallel cluster, as this can then be done only
+many or large objects to a \code{parallel} cluster, as this can then be done only
 once (with the option to export further objects to the same cluster when
 calling \code{\link[=run_trials]{run_trials()}}).
 
@@ -74,16 +74,16 @@ calling \code{\link[=run_trials]{run_trials()}}).
 
 The \code{adaptr} package solely uses parallel socket clusters (using
 \code{\link[parallel:makeCluster]{parallel::makePSOCKcluster()}}) and thus does not use forking (as this is not
-available on all operating systems). As such, user-defined objects that
-should be used by the \code{adaptr} functions when run in parallel need to be
-exported using either  \code{\link[=setup_cluster]{setup_cluster()}} or \code{\link[=run_trials]{run_trials()}}, if not part of
-the package or the generated \code{trial_spec} object.
+available on all operating systems and may cause crashes in some situations).
+As such, user-defined objects that should be used by the \code{adaptr} functions
+when run in parallel need to be exported using either \code{\link[=setup_cluster]{setup_cluster()}} or
+\code{\link[=run_trials]{run_trials()}}, if not included in the generated \code{trial_spec} object.
 
 The \code{adaptr} package uses the \code{"L'Ecuyer-CMRG"} kind (see \code{\link[=RNGkind]{RNGkind()}}) for
-safe random number generation for parallelised functions. This is also used
-when running \code{adaptr} functions sequentially with a seed provided, to ensure
-that the same results are obtained regardless of whether sequential or
-parallel computation is used. All functions restore both the random number
+safe random number generation for all parallelised functions. This is also
+the case when running \code{adaptr} functions sequentially with a seed provided,
+to ensure that the same results are obtained regardless of whether sequential
+or parallel computation is used. All functions restore both the random number
 generator kind and the global random seed after use if called with a seed.
 }
 \examples{
@@ -91,7 +91,7 @@ generator kind and the global random seed after use if called with a seed.
 # Setup a cluster using 2 cores
 setup_cluster(cores = 2)
 
-# Get existing default cluster (printed as invisibly returned)
+# Get existing default cluster (printed here as invisibly returned)
 print(setup_cluster())
 
 # Remove existing default cluster
