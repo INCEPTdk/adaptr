@@ -41,8 +41,8 @@ read_testdata <- function(filename) {
 #'
 #' @return single logical, `TRUE` if the test is passed, `FALSE` if not.
 #'
+#' @import parallel
 #' @importFrom utils packageVersion
-#' @importFrom parallel clusterCall
 #'
 #' @keywords internal
 #' @noRd

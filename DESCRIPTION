@@ -38,9 +38,9 @@ URL: https://inceptdk.github.io/adaptr/,
     https://incept.dk/
 BugReports: https://github.com/INCEPTdk/adaptr/issues/
 RoxygenNote: 7.2.3
-Suggests: 
-    covr,
+Suggests:
     ggplot2,
+    covr,
     rmarkdown,
     knitr,
     testthat,

@@ -77,6 +77,8 @@
 #'
 #' @export
 #'
+#' @import parallel
+#'
 #' @examples
 #'
 #' # Setup a cluster using 2 cores
