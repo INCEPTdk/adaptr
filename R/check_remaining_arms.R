@@ -6,7 +6,7 @@
 #' with a common `control`) across multiple simulated trial results. The
 #' function supplements the [extract_results()], [check_performance()], and
 #' [summary()] functions, and is especially useful for designs with `> 2` arms,
-#' where it provides details that the other functions mentioned do not.
+#' where it provides details that the other functionality mentioned do not.
 #'
 #' @param object `trial_results` object, output from the [run_trials()]
 #'   function.
@@ -65,13 +65,15 @@ check_remaining_arms <- function(object, ci_width = 0.95) {
     stop0("ci_width must be a single numeric value >= 0 and < 1.")
   }
 
-  res <- t(do.call(cbind,
-                   lapply(object$trial_results,
-                          function(res) {
-                            res <- res$trial_res[, c("arms", "final_status", "status_look")]
-                            res$final_status <- ifelse(is.na(res$status_look) | res$status_look == max(res$status_look), res$final_status, "")
-                            res$final_status <- ifelse(res$final_status %in% c("inferior", "futile"), "", res$final_status)
-                          })))
+  derive_final_arm_status <- function(trial) {
+    final_status <- with(
+      trial$trial_res,
+      ifelse(is.na(status_look) | status_look == max(status_look), final_status, "")
+    )
+    ifelse(final_status %in% c("inferior", "futile"), "", final_status)
+  }
+
+  res <- t(do.call(cbind, lapply(object$trial_results, derive_final_arm_status)))
   agg_res <- aggregate(rep(1, nrow(res)), by = as.data.frame(res), FUN = length)
   names(agg_res) <- c(paste0("arm_", object$trial_spec$trial_arms$arms), "n")
   agg_res <- agg_res[order(-agg_res$n), ]
