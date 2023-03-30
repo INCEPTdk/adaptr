@@ -18,6 +18,7 @@
 pow_abs_dist <- function(x1, x2 = x1, pow = 2) {
   m <- matrix(nrow = length(x1), ncol = length(x2))
   for (i in 1:length(x2)) {
+    # R stores matrices in column-major order
     m[, i] <- abs(x1 - x2[i])^pow
   }
   m
@@ -51,7 +52,7 @@ pow_abs_dist <- function(x1, x2 = x1, pow = 2) {
 cov_mat <- function(x1, x2 = x1, g = NULL, pow = 2, lengthscale = 1) {
   res <- exp(-pow_abs_dist(x1, x2, pow) / lengthscale)
   if (!is.null(g)) {
-    res <- res + diag(g, length(x1))
+    diag(res) <- diag(res) + g
   }
   res
 }
@@ -206,10 +207,9 @@ gp_opt <- function(x, y, target, dir = 0, resolution = 5000,
           Ki <- solve(K)
           dotK <- K * D / par[1]^2
           Kiy <- Ki %*% y
-          c(-(length(y) / 2 * t(Kiy) %*% dotK %*% Kiy / (t(y) %*% Kiy) - # lengthscale
-                sum(diag(Ki %*% dotK)) / 2),
-            -(length(y) / 2 * t(Kiy) %*% Kiy / (t(y) %*% Kiy) - sum(diag(Ki)) / 2) # g
-          )
+          lengthscale <- -(length(y) / 2 * t(Kiy) %*% dotK %*% Kiy / (t(y) %*% Kiy) - sum(diag(Ki %*% dotK)) / 2)
+          g <- -length(y) / 2 * t(Kiy) %*% Kiy / (t(y) %*% Kiy) + sum(diag(Ki)) / 2
+          c(lengthscale, g)
         },
         method = "L-BFGS-B",
         lower = c(lengthscale[1], eps),
