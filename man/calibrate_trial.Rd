@@ -239,12 +239,12 @@ The function calibrates an input trial specification object (using repeated
 calls to \code{\link[=run_trials]{run_trials()}} while adjusting the trial specification) to a
 \code{target} value within a \code{search_range} in a single input dimension (\code{x}) in
 order to find an optimal value (\code{y}).\cr
-The default (and expected most common use case) is to calibrate a trial
+The default (and expectedly most common use case) is to calibrate a trial
 specification to adjust the \code{superiority} and \code{inferiority} thresholds to
 obtain a certain probability of superiority; if used with a trial
 specification with identical underlying outcomes (no between-arm
 differences), this probability is an estimate of the Bayesian analogue of the
-total type 1-error rate for the outcome driving the adaptations, and if
+total type-1 error rate for the outcome driving the adaptations, and if
 between-arm differences are present, this corresponds to an estimate of the
 Bayesian analogue of the power.\cr
 The default is to perform the calibration while varying single, constant,
@@ -372,12 +372,13 @@ matrix is divided by \code{lengthscale}. The default is \code{1} (no change), an
 values \verb{< 1} leads to faster decay in correlations and thus less smoothing
 (more wiggly fits), and values \verb{> 1} leads to more smoothing (less wiggly
 fits). If a single specific value is supplied for \code{lengthscale} this is used;
-if a range of values is provided, a sub-optimisation process determines the
-value to use within that range.\cr
+if a range of values is provided, a secondary optimisation process determines
+the value to use within that range.\cr
 
 Some minimal noise ("jitter") is always added to the diagonals of the
 matrices where relevant to ensure numerical stability; if \code{noisy} is \code{TRUE},
-a "nugget" value will be determined using a sub-optimisation process.\cr
+a "nugget" value will be determined using a secondary optimisation process
+\cr
 
 Predictions will be made over an equally spaced grid of \code{x} values of size
 \code{resolution}; if \code{narrow} is \code{TRUE}, this grid will only be spread out

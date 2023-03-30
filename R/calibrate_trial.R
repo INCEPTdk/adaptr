@@ -265,7 +265,8 @@
 #'
 #' Some minimal noise ("jitter") is always added to the diagonals of the
 #' matrices where relevant to ensure numerical stability; if `noisy` is `TRUE`,
-#' a "nugget" value will be determined using a secondary ´ptimisation process.\cr
+#' a "nugget" value will be determined using a secondary optimisation process
+#' \cr
 #'
 #' Predictions will be made over an equally spaced grid of `x` values of size
 #' `resolution`; if `narrow` is `TRUE`, this grid will only be spread out

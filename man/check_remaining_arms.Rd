@@ -40,7 +40,7 @@ any analysis, and arms dropped for equivalence at earlier analyses in trials
 with a common \code{control}) across multiple simulated trial results. The
 function supplements the \code{\link[=extract_results]{extract_results()}}, \code{\link[=check_performance]{check_performance()}}, and
 \code{\link[=summary]{summary()}} functions, and is especially useful for designs with \verb{> 2} arms,
-where it provides details that the other functions mentioned do not.
+where it provides details that the other functionality mentioned do not.
 }
 \examples{
 # Setup a trial specification

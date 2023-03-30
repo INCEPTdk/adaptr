@@ -1,5 +1,9 @@
 # adaptr (development version)
 
+This release implements new functionality (most importantly trial calibration),
+improved parallelisation, a single important bug fix, and multiple minor fixes,
+changes, and improvements.
+
 ### New features and major changes:
 
 *   Added the `calibrate_trial()` function, which can be used to calibrate a
@@ -49,11 +53,11 @@
     but instead `NULL`.
     
 *   Added the `plot_metrics_ecdf()` function, which plots empirical cumulative
-    distributions of numerical performance metrics across multiple trial
-    simulations.
+    distribution functions of numerical performance metrics across multiple
+    trial simulations.
     
 *   Added the `check_remaining_arms()` function, which summarises all
-    combinations of remaining arms from multiple simulations.
+    combinations of remaining arms across multiple simulations.
 
 ### Bug fixes:
 
@@ -68,7 +72,7 @@
     This bug did not affect results for simulations without follow-up/outcome-
     data lag.
     
-*   Values for `inferiority` must now be less than 1 / number of arms if no
+*   Values for `inferiority` must now be less than `1 / number of arms` if no
     common control group is used, and the `setup_trial()` family of functions
     now throws an error if this is not the case. Larger values are invalid and
     could lead to simultaneous dropping of all arms, which caused `run_trial()`
@@ -119,8 +123,8 @@
     
 *   Always explicitly uses `inherits = FALSE` in calls to `base::get()`,
     `base::exists()`, and `base::assign()` to ensure that `.Random.seed` is only
-    checked/used/assigned to from the global environment. It is very unlikely
-    that this would ever cause errors if not done, but this serves as an extra
+    checked/used/assigned in the global environment. It is very unlikely that
+    this would ever cause errors if not done, but this serves as an extra
     safety.
 
 # adaptr 1.2.0
