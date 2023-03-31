@@ -71,7 +71,7 @@ prog_breaks <- function(progress, prev_n_rep, n_rep_new, cores) {
 #' Simulate single trial after setting seed
 #'
 #' Helper function to dispatch the running of several trials to [lapply()] or
-#' [parallel::parLapply()], seeting seeds correctly if a `base_seed` was used
+#' [parallel::parLapply()], setting seeds correctly if a `base_seed` was used
 #' when calling [run_trials()]. Used internally in calls by the [run_trials()]
 #' function.
 #'
@@ -169,7 +169,7 @@ dispatch_trial_runs <- function(is, trial_spec, seeds, sparse, cores, cl = NULL)
 #'   `TRUE` (as in [saveRDS()]), see [saveRDS()] for other options. Ignored if
 #'   simulations are not saved.
 #' @param export character vector of names of objects to export to each
-#'   parallel core when running in perallel; passed as the `varlist` argument to
+#'   parallel core when running in parallel; passed as the `varlist` argument to
 #'   [parallel::clusterExport()]. Defaults to `NULL` (no objects exported),
 #'   ignored if `cores == 1`. See **Details** below.
 #' @param export_envir `environment` where to look for the objects defined

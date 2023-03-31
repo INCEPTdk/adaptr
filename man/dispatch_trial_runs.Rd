@@ -39,7 +39,7 @@ Single trial simulation object, as described in \code{\link[=run_trial]{run_tria
 }
 \description{
 Helper function to dispatch the running of several trials to \code{\link[=lapply]{lapply()}} or
-\code{\link[parallel:clusterApply]{parallel::parLapply()}}, seeting seeds correctly if a \code{base_seed} was used
+\code{\link[parallel:clusterApply]{parallel::parLapply()}}, setting seeds correctly if a \code{base_seed} was used
 when calling \code{\link[=run_trials]{run_trials()}}. Used internally in calls by the \code{\link[=run_trials]{run_trials()}}
 function.
 }

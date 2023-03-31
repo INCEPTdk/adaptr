@@ -1,7 +1,7 @@
-# adaptr (development version)
+# adaptr 1.3.0
 
 This release implements new functionality (most importantly trial calibration),
-improved parallelisation, a single important bug fix, and multiple minor fixes,
+improved parallelism, a single important bug fix, and multiple minor fixes,
 changes, and improvements.
 
 ### New features and major changes:

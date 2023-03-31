@@ -1034,7 +1034,7 @@ setup_trial_binom <- function(arms, true_ys, start_probs = NULL,
 #' trial arm; technically, no priors are used (as using *normal-normal*
 #' conjugate prior models with extremely wide or uniform priors gives similar
 #' results for these simple, unadjusted estimates). This corresponds to the use
-#' ofimproper, flat priors, although not explicitly specified as such. Use
+#' of improper, flat priors, although not explicitly specified as such. Use
 #' [calibrate_trial()] to calibrate the trial specification to obtain a specific
 #' value for a certain performance metric (e.g., the Bayesian type 1 error
 #' rate). Use [run_trial()] or [run_trials()] to conduct single/multiple

@@ -53,7 +53,7 @@ binom_trial <- setup_trial_binom(arms = c("A", "B", "C", "D"),
                                  equivalence_only_first = FALSE)
 
 # Run 35 simulations with a specified random base seed
-res <- run_trials(binom_trial, n_rep = 35, base_seed = 12345)
+res <- run_trials(binom_trial, n_rep = 25, base_seed = 12345)
 
 # Check remaining arms (printed with fewer digits)
 print(check_remaining_arms(res), digits = 3)

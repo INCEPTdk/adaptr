@@ -245,7 +245,7 @@ posterior distributions for the mean values in each
 trial arm; technically, no priors are used (as using \emph{normal-normal}
 conjugate prior models with extremely wide or uniform priors gives similar
 results for these simple, unadjusted estimates). This corresponds to the use
-ofimproper, flat priors, although not explicitly specified as such. Use
+of improper, flat priors, although not explicitly specified as such. Use
 \code{\link[=calibrate_trial]{calibrate_trial()}} to calibrate the trial specification to obtain a specific
 value for a certain performance metric (e.g., the Bayesian type 1 error
 rate). Use \code{\link[=run_trial]{run_trial()}} or \code{\link[=run_trials]{run_trials()}} to conduct single/multiple

@@ -1,24 +1,22 @@
-citHeader("To cite adaptr in publications use:")
-
-citEntry(entry = "Article",
-  title        = "{adaptr}: an R package for simulating and comparing adaptive clinical trials",
-  author       = personList(
-                    as.person("Anders Granholm"),
-                    as.person("Aksel Karl Georg Jensen"),
-                    as.person("Theis Lange"),
-                    as.person("Benjamin Skov Kaas-Hansen")
-                 ),
-  journal      = "Journal of Open Source Software",
-  year         = "2022",
-  volume       = "7",
-  number       = "72",
-  pages        = "4284",
-  url          = "https://doi.org/10.21105/joss.04284",
-  doi          = "10.21105/joss.04284",
-
-  textVersion  =
-  paste("Granholm A, Jensen AKG, Lange T, Kaas-Hansen BS (2022).",
-        "adaptr: an R package for simulating and comparing adaptive clinical trials.",
-        "Journal of Open Source Software, 7(72), 4284.",
-        "URL https://doi.org/10.21105/joss.04284.")
+bibentry(
+  bibtype = "article",
+  title = "{adaptr}: an R package for simulating and comparing adaptive clinical trials",
+  author = c(
+    person("Anders", "Granholm"),
+    person("Aksel Karl Georg", "Jensen"),
+    person("Theis", "Lange"),
+    person("Benjamin Skov", "Kaas-Hansen")
+  ),
+  journal = "Journal of Open Source Software",
+  year = 2022,
+  volume = 7,
+  number = 72,
+  pages = 4284,
+  url = "https://doi.org/10.21105/joss.04284",
+  doi = "10.21105/joss.04284",
+  textVersion = paste(
+    "Granholm A, Jensen AKG, Lange T, Kaas-Hansen BS (2022).",
+    "adaptr: an R package for simulating and comparing adaptive clinical trials.",
+    "Journal of Open Source Software, 7(72), 4284.",
+    "URL https://doi.org/10.21105/joss.04284.")
 )

@@ -50,9 +50,19 @@
 #'   calibration stops.\cr
 #'   **Note:** `tol` should be specified to be sensible considering `n_rep`;
 #'   e.g., if the probability of superiority is targeted with `n_rep == 1000`, a
-#'   `tol` of `0.01` will correspond to `10` simulated trials. A too low `tol`
-#'   relative to `n_rep` may lead to very slow calibration or calibration that
-#'   cannot succeed regardless of the number of iterations.
+#'   `tol` of `0.01` will correspond to `10` simulated trials.\cr
+#'   A too low `tol` relative to `n_rep` may lead to very slow calibration or
+#'   calibration that cannot succeed regardless of the number of iterations.\cr
+#'   **Important:** even when a large number of simulations are conducted,
+#'   using a very low `tol` may lead to calibration not succeeding as it may
+#'   also be affected by other factors, e.g., the total number of simulated
+#'   patients, the possible maximum differences in simulated outcomes, and the
+#'   number of posterior draws (`n_draws` in the [setup_trial()] family of
+#'   functions), which affects the minimum differences in posterior
+#'   probabilities when simulating trials and thus can affect calibration,
+#'   including when using the default calibration function. Increase the number
+#'   of posterior draws or the number of repetitions should be attempted if the
+#'   desired tolerance cannot be achieved.
 #' @param dir single numeric value; specifies the direction(s) of the tolerance
 #'   range. If `0` (the default) the tolerance range will be `target - tol` to
 #'   `target + tol`. If `< 0`, the range will be `target - tol` to `target`, and
@@ -362,12 +372,12 @@
 #' @references
 #'
 #' Gramacy RB (2020). Chapter 5: Gaussian Process Regression. In: Surrogates:
-#' Gaussian Process Modeling, Design and Optimization fo the Applied Sciences.
+#' Gaussian Process Modeling, Design and Optimization for the Applied Sciences.
 #' Chapman Hall/CRC, Boca Raton, Florida, USA.
 #' [Available online](https://bookdown.org/rbg/surrogates/chap5.html).
 #'
 #' Greenhill S, Rana S, Gupta S, Vellanki P, Venkatesh S (2020). Bayesian
-#' Optimization for Adaptive Experimental Design: A Review. IEEE Accesss, 8,
+#' Optimization for Adaptive Experimental Design: A Review. IEEE Access, 8,
 #' 13937-13948. \doi{10.1109/ACCESS.2020.2966228}
 #'
 calibrate_trial <- function(

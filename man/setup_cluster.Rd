@@ -20,7 +20,7 @@ use. In general, using less cores than available may be preferable if other
 processes are run on the machine at the same time.}
 
 \item{export}{character vector of names of objects to export to each
-parallel core when running in perallel; passed as the \code{varlist} argument to
+parallel core when running in parallel; passed as the \code{varlist} argument to
 \code{\link[parallel:clusterApply]{parallel::clusterExport()}}. Defaults to \code{NULL} (no objects exported),
 ignored if \code{cores == 1}. See \strong{Details} below.}
 

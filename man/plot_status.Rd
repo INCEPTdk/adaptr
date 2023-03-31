@@ -33,7 +33,7 @@ patients randomised (\code{"total n"}) or the total cumulated number of patients
 with outcome data available at each adaptive analysis (\code{"followed n"}) are
 plotted on the x-axis.}
 
-\item{arm}{character vector containingone or more unique, valid \code{arm} names,
+\item{arm}{character vector containing one or more unique, valid \code{arm} names,
 \code{NA}, or \code{NULL} (default). If \code{NULL}, the overall trial statuses are plotted,
 otherwise the specified arms or all arms (if \code{NA} is specified) are plotted.}
 

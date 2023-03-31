@@ -160,12 +160,12 @@ cov_mat <- function(x1, x2 = x1, g = NULL, pow = 2, lengthscale = 1) {
 #' @references
 #'
 #' Gramacy RB (2020). Chapter 5: Gaussian Process Regression. In: Surrogates:
-#' Gaussian Process Modeling, Design and Optimization fo the Applied Sciences.
+#' Gaussian Process Modeling, Design and Optimization for the Applied Sciences.
 #' Chapman Hall/CRC, Boca Raton, Florida, USA.
 #' [Available online](https://bookdown.org/rbg/surrogates/chap5.html).
 #'
 #' Greenhill S, Rana S, Gupta S, Vellanki P, Venkatesh S (2020). Bayesian
-#' Optimization for Adaptive Experimental Design: A Review. IEEE Accesss, 8,
+#' Optimization for Adaptive Experimental Design: A Review. IEEE Access, 8,
 #' 13937-13948. \doi{10.1109/ACCESS.2020.2966228}
 #'
 #' @keywords internal

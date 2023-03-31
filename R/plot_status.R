@@ -5,7 +5,7 @@
 #'
 #' @inheritParams extract_results
 #' @inheritParams plot_history
-#' @param arm character vector containingone or more unique, valid `arm` names,
+#' @param arm character vector containing one or more unique, valid `arm` names,
 #' `NA`, or `NULL` (default). If `NULL`, the overall trial statuses are plotted,
 #'  otherwise the specified arms or all arms (if `NA` is specified) are plotted.
 #' @param area list of styling settings for the area as per `ggplot2`
