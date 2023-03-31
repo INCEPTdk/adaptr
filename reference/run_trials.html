@@ -24,7 +24,7 @@ additional simulations to the same file)."><!-- mathjax --><script src="https://
     
     <a class="navbar-brand me-2" href="../index.html">adaptr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,9 +38,9 @@ additional simulations to the same file)."><!-- mathjax --><script src="https://
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/Advanced-example.html">Advanced example</a>
-    <a class="dropdown-item" href="../articles/Basic-examples.html">Basic examples</a>
     <a class="dropdown-item" href="../articles/Overview.html">Overview</a>
+    <a class="dropdown-item" href="../articles/Basic-examples.html">Basic examples</a>
+    <a class="dropdown-item" href="../articles/Advanced-example.html">Advanced example</a>
   </div>
 </li>
 <li class="nav-item">
@@ -86,7 +86,7 @@ additional simulations to the same file).</p>
 <span>  path <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  overwrite <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  grow <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  cores <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  cores <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  base_seed <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  sparse <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  progress <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -109,16 +109,17 @@ additional simulations to the same file).</p>
 
 
 <dt>path</dt>
-<dd><p>single character; if specified (defaults to <code>NULL</code>), files will
-be written to and  loaded from this path using the <code><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS()</a></code> /
+<dd><p>single character string; if specified (defaults to <code>NULL</code>), files
+will be written to and  loaded from this path using the <code><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS()</a></code> /
 <code><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS()</a></code> functions.</p></dd>
 
 
 <dt>overwrite</dt>
 <dd><p>single logical; defaults to <code>FALSE</code>, in which case previous
 simulations saved in the same <code>path</code> will be re-loaded (if the same trial
-specification was used). If <code>TRUE</code>, the previous file is overwritten. If
-<code>grow</code> is <code>TRUE</code>, this argument must be set to <code>FALSE</code>.</p></dd>
+specification was used). If <code>TRUE</code>, the previous file is overwritten (even
+if the the same trial specification was not used). If <code>grow</code> is <code>TRUE</code>,
+this argument must be set to <code>FALSE</code>.</p></dd>
 
 
 <dt>grow</dt>
@@ -129,18 +130,24 @@ same <code>base_seed</code>, if specified) and appended to the same file.</p></d
 
 
 <dt>cores</dt>
-<dd><p>single integer; the number of cores to run the simulations on
-using the <span class="pkg">parallel</span> library. Defaults to <code>1</code>; may be increased to run
-multiple simulations in parallel. <code><a href="https://rdrr.io/r/parallel/detectCores.html" class="external-link">parallel::detectCores()</a></code> may be used to
-find the number of available cores.</p></dd>
+<dd><p><code>NULL</code> or single integer. If <code>NULL</code>, a default value/cluster set
+by <code><a href="setup_cluster.html">setup_cluster()</a></code> will be used to control whether simulations are run in
+parallel on a default cluster or sequentially in the main process; if a
+cluster/value has not been specified by <code><a href="setup_cluster.html">setup_cluster()</a></code>, <code>cores</code> will
+then be set to the value stored in the global <code>"mc.cores"</code> option (if
+previously set by <code>options(mc.cores = &lt;number of cores&gt;</code>), and <code>1</code> if that
+option has not been specified.<br>
+If the resulting number of <code>cores = 1</code>, computations will be run
+sequentially in the primary process, and if <code>cores &gt; 1</code>, a new parallel
+cluster will be setup using the <code>parallel</code> library and removed once the
+function completes. See <code><a href="setup_cluster.html">setup_cluster()</a></code> for details.</p></dd>
 
 
 <dt>base_seed</dt>
 <dd><p>single integer or <code>NULL</code> (default); a random seed used as
-the basis for simulations. If a number is provided, each single trial
-simulation will set the random seed to a value based on this (+ the trial
-number), without affecting the global random seed after the function has
-been run.</p></dd>
+the basis for simulations. Regardless of whether simulations are run
+sequentially or in parallel, random number streams will be identical and
+appropriate (see <code><a href="setup_cluster.html">setup_cluster()</a></code> for details).</p></dd>
 
 
 <dt>sparse</dt>
@@ -160,9 +167,9 @@ specified by progress.<br><strong>Note:</strong> as printing is not possible fro
 cores, the function conducts batches of simulations on multiple cores (if
 specified), with intermittent printing of statuses. Thus, all cores have to
 finish running their current assigned batches before the other cores may
-proceed with the next batch. If there is substantial differences in the
+proceed with the next batch. If there are substantial differences in the
 simulation speeds across cores, using <code>progress</code> may thus increase total
-simulation times.</p></dd>
+run time (especially with small values).</p></dd>
 
 
 <dt>version</dt>
@@ -179,15 +186,15 @@ simulations are not saved.</p></dd>
 
 <dt>export</dt>
 <dd><p>character vector of names of objects to export to each
-parallel core if <code>cores &gt; 1</code>; passed as the <code>varlist</code> argument to
+parallel core when running in parallel; passed as the <code>varlist</code> argument to
 <code><a href="https://rdrr.io/r/parallel/clusterApply.html" class="external-link">parallel::clusterExport()</a></code>. Defaults to <code>NULL</code> (no objects exported),
 ignored if <code>cores == 1</code>. See <strong>Details</strong> below.</p></dd>
 
 
 <dt>export_envir</dt>
 <dd><p><code>environment</code> where to look for the objects defined
-in <code>export</code> if <code>cores &gt; 1</code> and <code>export</code> is not <code>NULL</code>. Defaults to the
-environment from where <code>run_trials()</code> is called.</p></dd>
+in <code>export</code> when running in parallel and <code>export</code> is not <code>NULL</code>. Defaults
+to the environment from where <code>run_trials()</code> is called.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -195,13 +202,16 @@ environment from where <code>run_trials()</code> is called.</p></dd>
     
 
 <p>A list of a special class <code>"trial_results"</code>, which contains the
-<code>trial_results</code> (results from all simulations), <code>trial_spec</code> (the trial
+<code>trial_results</code> (results from all simulations; note that <code>seed</code> will be
+<code>NULL</code> in the individual simulations), <code>trial_spec</code> (the trial
 specification), <code>n_rep</code>, <code>base_seed</code>, <code>elapsed_time</code> (the total simulation
 run time), <code>sparse</code> (as described above) and <code>adaptr_version</code> (the version
 of the <code>adaptr</code> package used to run the simulations). These results may be
-extracted using the <code><a href="extract_results.html">extract_results()</a></code> function and summarised using the
-<code><a href="summary.html">summary()</a></code> or print (<code><a href="print.html">print.trial_results()</a></code>) functions; see function
-documentation for details on additional arguments used to select arms in
+extracted, summarised, and plotted using the <code><a href="extract_results.html">extract_results()</a></code>,
+<code><a href="check_performance.html">check_performance()</a></code>, <code><a href="summary.html">summary()</a></code>, <code><a href="print.html">print.trial_results()</a></code>,
+<code><a href="plot_convergence.html">plot_convergence()</a></code>, <code><a href="check_remaining_arms.html">check_remaining_arms()</a></code>, <code><a href="plot_status.html">plot_status()</a></code>, and
+<code><a href="plot_history.html">plot_history()</a></code> functions. See these functions' definitions for additional
+details and details on additional arguments used to select arms in
 simulations not ending in superiority and other summary choices.</p>
     </div>
     <div class="section level2">
@@ -215,7 +225,9 @@ by the user outside the function definitions provided. Similarly, functions
 from external packages loaded using <code><a href="https://rdrr.io/r/base/library.html" class="external-link">library()</a></code> or <code><a href="https://rdrr.io/r/base/library.html" class="external-link">require()</a></code> must be
 exported or called prefixed with the namespace, i.e., <code>package::function</code>.
 The <code>export</code> and <code>export_envir</code> arguments are used to export objects calling
-the <code><a href="https://rdrr.io/r/parallel/clusterApply.html" class="external-link">parallel::clusterExport()</a></code>-function.</p>
+the <code><a href="https://rdrr.io/r/parallel/clusterApply.html" class="external-link">parallel::clusterExport()</a></code>-function. See also <code><a href="setup_cluster.html">setup_cluster()</a></code>, which
+may be used to setup a cluster and export required objects only once per
+session.</p>
     </div>
 
     <div class="section level2">
@@ -228,7 +240,8 @@ the <code><a href="https://rdrr.io/r/parallel/clusterApply.html" class="external
 <span class="r-in"><span><span class="co"># Run 10 simulations with a specified random base seed</span></span></span>
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">run_trials</span><span class="op">(</span><span class="va">binom_trial</span>, n_rep <span class="op">=</span> <span class="fl">10</span>, base_seed <span class="op">=</span> <span class="fl">12345</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># See ?summary and ?print for details on summarising and printing</span></span></span>
+<span class="r-in"><span><span class="co"># See ?extract_results, ?check_performance, ?summary and ?print for details</span></span></span>
+<span class="r-in"><span><span class="co"># on extracting resutls, summarising and printing</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

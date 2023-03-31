@@ -16,7 +16,7 @@ probabilities of each arm being the best by prob_best()."><!-- mathjax --><scrip
     
     <a class="navbar-brand me-2" href="../index.html">adaptr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -30,9 +30,9 @@ probabilities of each arm being the best by prob_best()."><!-- mathjax --><scrip
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/Advanced-example.html">Advanced example</a>
-    <a class="dropdown-item" href="../articles/Basic-examples.html">Basic examples</a>
     <a class="dropdown-item" href="../articles/Overview.html">Overview</a>
+    <a class="dropdown-item" href="../articles/Basic-examples.html">Basic examples</a>
+    <a class="dropdown-item" href="../articles/Advanced-example.html">Advanced example</a>
   </div>
 </li>
 <li class="nav-item">
@@ -86,7 +86,7 @@ probabilities of each arm being the best by <code><a href="prob_best.html">prob_
 
 <dt>fixed_probs</dt>
 <dd><p>numeric vector, fixed allocation probabilities for each
-arm - must be either a numeric vector with <code>NA</code> for arms without fixed
+arm. Must be either a numeric vector with <code>NA</code> for arms without fixed
 probabilities and values between <code>0</code> and <code>1</code> for the other arms or <code>NULL</code>
 (default), if adaptive randomisation is used for all arms or if one of the
 special settings (<code>"sqrt-based"</code>, <code>"sqrt-based start"</code>,
@@ -96,24 +96,27 @@ special settings (<code>"sqrt-based"</code>, <code>"sqrt-based start"</code>,
 
 <dt>min_probs</dt>
 <dd><p>numeric vector, lower threshold for adaptive allocation
-probabilities, lower probabilities will be rounded up to these values. Must
-be <code>NA</code> (default for all arms) if no boundary is wanted.</p></dd>
+probabilities; lower probabilities will be rounded up to these values. Must
+be <code>NA</code> (default for all arms) if no lower threshold is wanted and for arms
+using fixed allocation probabilities.</p></dd>
 
 
 <dt>max_probs</dt>
 <dd><p>numeric vector, upper threshold for adaptive allocation
-probabilities, higher probabilities will be rounded down to these values.
-Must be <code>NA</code> (default for all arms) if no boundary is wanted.</p></dd>
+probabilities; higher probabilities will be rounded down to these values.
+Must be <code>NA</code> (default for all arms) if no threshold is wanted and for arms
+using fixed allocation probabilities.</p></dd>
 
 
 <dt>soften_power</dt>
 <dd><p>either a single numeric value or a numeric vector of
 exactly the same length as the maximum number of looks/adaptive analyses.
 Values must be between <code>0</code> and <code>1</code> (default); if <code>&lt; 1</code>, then re-allocated
-non-fixed allocation probabilities are all raised to this power to make
-allocation probabilities less extreme, in turn used to redistribute
-remaining probability while respecting limits when defined by <code>min_probs</code>
-and/or <code>max_probs</code>. If <code>1</code>, then no <em>softening</em> is applied.</p></dd>
+non-fixed allocation probabilities are all raised to this power (followed
+by rescaling to sum to <code>1</code>) to make adaptive allocation probabilities
+less extreme, in turn used to redistribute remaining probability while
+respecting limits when defined by <code>min_probs</code> and/or <code>max_probs</code>. If <code>1</code>,
+then no <em>softening</em> is applied.</p></dd>
 
 
 <dt>match_arm</dt>

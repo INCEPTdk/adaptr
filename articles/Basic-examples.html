@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">adaptr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,9 +41,9 @@
 <li class="active nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/Advanced-example.html">Advanced example</a>
-    <a class="dropdown-item" href="../articles/Basic-examples.html">Basic examples</a>
     <a class="dropdown-item" href="../articles/Overview.html">Overview</a>
+    <a class="dropdown-item" href="../articles/Basic-examples.html">Basic examples</a>
+    <a class="dropdown-item" href="../articles/Advanced-example.html">Advanced example</a>
   </div>
 </li>
 <li class="nav-item">
@@ -90,7 +90,8 @@ randomisation (RAR), and combinations.</p>
 <code><a href="../reference/setup_trial.html">setup_trial()</a></code>, but because trials with binary, binomially
 distributed and continuous, normally distributed outcomes are so common,
 the package comes with two convenience functions for specifying such
-trial designs: <code><a href="../reference/setup_trial_binom.html">setup_trial_binom()</a></code> and
+trial designs (using default priors only):
+<code><a href="../reference/setup_trial_binom.html">setup_trial_binom()</a></code> and
 <code><a href="../reference/setup_trial_norm.html">setup_trial_norm()</a></code>.</p>
 <p>To keep things simple, this vignette uses only the
 <code><a href="../reference/setup_trial_binom.html">setup_trial_binom()</a></code> function and focuses on settings that
@@ -98,6 +99,10 @@ apply to trial designs regardless of outcome type. The code is heavily
 annotated, but comments focus on settings not touched on earlier in the
 vignette (e.g. we do not keep annotating the <code>arm</code> and
 <code>true_ys</code> arguments).</p>
+<p>Keep in mind that the <code><a href="../reference/calibrate_trial.html">calibrate_trial()</a></code> function can be
+used to calibrate a trial specification to obtain a specific value for a
+certain performance metric (e.g., the Bayesian type 1 error rate for
+trial specifications with no between-arm differences).</p>
 <p>For a general overview of how to use the <code>adaptr</code> package,
 please see <code><a href="../articles/Overview.html">vignette("Overview", "adaptr")</a></code>.</p>
 <p>An <strong>advanced</strong> example on how to specify a trial design
@@ -106,10 +111,10 @@ for generating outcomes and yielding posterior draws, is provided in
 <code><a href="../articles/Advanced-example.html">vignette("Advanced-example", "adaptr")</a></code>.</p>
 <p>First, the package is loaded:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://incept.dk/" class="external-link">adaptr</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Loading adaptr package (version 1.2.0).</span></span>
-<span><span class="co">#&gt; See 'help("adaptr")' or 'vignette("Overview", "adaptr")' for help.</span></span>
-<span><span class="co">#&gt; Further information available on https://inceptdk.github.io/adaptr/.</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://inceptdk.github.io/adaptr/">adaptr</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Loading 'adaptr' package v1.3.0.</span></span>
+<span><span class="co">#&gt; For instructions, type 'help("adaptr")'</span></span>
+<span><span class="co">#&gt; or see https://inceptdk.github.io/adaptr/.</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="trial-designs-without-a-common-control-arm">Trial designs without a common control arm<a class="anchor" aria-label="anchor" href="#trial-designs-without-a-common-control-arm"></a>
 </h2>
@@ -151,6 +156,7 @@ common control arm) are covered in this section.</p>
 <span>  control <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  </span>
 <span>  <span class="co"># Set inferiority/superiority thresholds (different values than the defaults)</span></span>
+<span>  <span class="co"># (see also the calibrate_trial() function)</span></span>
 <span>  inferiority <span class="op">=</span> <span class="fl">0.025</span>,</span>
 <span>  superiority <span class="op">=</span> <span class="fl">0.975</span>,</span>
 <span>  </span>
@@ -507,16 +513,16 @@ highest non-control arm (with re-scaling as necessary)</li>
 <span><span class="co">#&gt; Soften power for all analyses: 0.7</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="example-7-follow-up-or-data-collection-lag">Example 7: follow-up (or data collection) lag<a class="anchor" aria-label="anchor" href="#example-7-follow-up-or-data-collection-lag"></a>
+<h3 id="example-7-follow-up-and-data-collection-lag">Example 7: follow-up and data collection lag<a class="anchor" aria-label="anchor" href="#example-7-follow-up-and-data-collection-lag"></a>
 </h3>
 <p>This example uses the <code>randomised_at_looks</code> argument to
-specify follow-up (or data collection) lag. In real use cases, this
+specify follow-up and/or data collection lag. In real use cases, this
 should usually be considered, as this may affect the relative
 performance of different trial designs and the extent to which the
 ‘final’ results after all patients have reached follow-up and are
-analysed may differ from the results when from the adaptive analyses
-with some randomised patients not included due to outcome data not being
-available yet.</p>
+analysed may differ from the results from the adaptive analyses with
+some randomised patients not included due to outcome data not being
+available yet for these patients.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/setup_trial_binom.html">setup_trial_binom</a></span><span class="op">(</span></span>
 <span>  arms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span><span class="op">)</span>,</span>
@@ -563,7 +569,12 @@ superiority and inferiority stopping rules at different adaptive
 analyses. Varying probability thresholds may similarly be specified for
 stopping rules for equivalence and futility. Importantly, all
 probability thresholds must be specified such that each subsequent
-threshold is never stricter than the previous threshold</p>
+threshold is never stricter than the previous threshold. Varying
+thresholds may also be used to make some stopping rules first function
+at later analyses (e.g., as long as the stopping threshold for
+<code>superiority</code> is <code>1</code> and the stopping threshold
+for <code>inferiority</code> is <code>0</code>, trials will not be
+stopped and arms will not be dropped due to these rules).</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/setup_trial_binom.html">setup_trial_binom</a></span><span class="op">(</span></span>
 <span>  arms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span><span class="op">)</span>,</span>

@@ -12,7 +12,7 @@ or more specific arms). Requires the ggplot2 package installed."><!-- mathjax --
     
     <a class="navbar-brand me-2" href="../index.html">adaptr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -26,9 +26,9 @@ or more specific arms). Requires the ggplot2 package installed."><!-- mathjax --
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/Advanced-example.html">Advanced example</a>
-    <a class="dropdown-item" href="../articles/Basic-examples.html">Basic examples</a>
     <a class="dropdown-item" href="../articles/Overview.html">Overview</a>
+    <a class="dropdown-item" href="../articles/Basic-examples.html">Basic examples</a>
+    <a class="dropdown-item" href="../articles/Advanced-example.html">Advanced example</a>
   </div>
 </li>
 <li class="nav-item">
@@ -92,20 +92,21 @@ function.</p></dd>
 <dt>x_value</dt>
 <dd><p>single character string, determining whether the number of
 adaptive analysis looks (<code>"look"</code>, default), the total cumulated number of
-patients randomised (<code>"total n"</code>) or with outcome data available at each
-analysis (<code>"followed n"</code>) are plotted on the x-axis.</p></dd>
+patients randomised (<code>"total n"</code>) or the total cumulated number of patients
+with outcome data available at each adaptive analysis (<code>"followed n"</code>) are
+plotted on the x-axis.</p></dd>
 
 
 <dt>arm</dt>
-<dd><p>character string of one or more unique, valid <code>arm</code> names, <code>NA</code>,
-or <code>NULL</code> (default). If <code>NULL</code>, the overall trial statuses are plotted,
+<dd><p>character vector containing one or more unique, valid <code>arm</code> names,
+<code>NA</code>, or <code>NULL</code> (default). If <code>NULL</code>, the overall trial statuses are plotted,
 otherwise the specified arms or all arms (if <code>NA</code> is specified) are plotted.</p></dd>
 
 
 <dt>area</dt>
-<dd><p>list of styling settings for the area as per <span class="pkg">ggplot2</span>
-conventions (e.g., <code>alpha</code>, <code>size</code>). The default (<code>list(alpha = 0.5)</code>) sets
-the transparency to 50% so overlain shaded areas are visible.</p></dd>
+<dd><p>list of styling settings for the area as per <code>ggplot2</code>
+conventions (e.g., <code>alpha</code>, <code>linewidth</code>). The default (<code>list(alpha = 0.5)</code>)
+sets the transparency to 50% so overlain shaded areas are visible.</p></dd>
 
 
 <dt>nrow, ncol</dt>
@@ -142,12 +143,16 @@ multiple arms in the same plot (using faceting in <code>ggplot2</code>). Default
 <span class="r-in"><span>  <span class="co"># Plot trial statuses at each look according to total allocations</span></span></span>
 <span class="r-in"><span>  <span class="fu">plot_status</span><span class="op">(</span><span class="va">res_mult</span>, x_value <span class="op">=</span> <span class="st">"total n"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-plt img"><img src="plot_status-1.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"ggplot2"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="co"># Plot trial statuses for all arms</span></span></span>
 <span class="r-in"><span>  <span class="fu">plot_status</span><span class="op">(</span><span class="va">res_mult</span>, arm <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>  <span class="co"># Do not return/print last plot in documentation</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-plt img"><img src="plot_status-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

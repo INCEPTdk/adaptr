@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">adaptr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,9 +24,9 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/Advanced-example.html">Advanced example</a>
-    <a class="dropdown-item" href="../articles/Basic-examples.html">Basic examples</a>
     <a class="dropdown-item" href="../articles/Overview.html">Overview</a>
+    <a class="dropdown-item" href="../articles/Basic-examples.html">Basic examples</a>
+    <a class="dropdown-item" href="../articles/Advanced-example.html">Advanced example</a>
   </div>
 </li>
 <li class="nav-item">
@@ -52,7 +52,7 @@
     </div>
 
     <div class="section level2">
-      <h2 id="all-functions">All functions<a class="anchor" aria-label="anchor" href="#all-functions"></a></h2>
+      <h2 id="package-overview">Package overview<a class="anchor" aria-label="anchor" href="#package-overview"></a></h2>
       
       
 
@@ -67,52 +67,18 @@
           <code><a href="adaptr-package.html">adaptr-package</a></code> <code><a href="adaptr-package.html">adaptr</a></code> 
         </dt>
         <dd>adaptr: Adaptive Trial Simulator</dd>
-      </dl><dl><dt>
-          
-          <code><a href="check_performance.html">check_performance()</a></code> 
-        </dt>
-        <dd>Check performance metrics for trial simulations</dd>
-      </dl><dl><dt>
-          
-          <code><a href="extract_results.html">extract_results()</a></code> 
-        </dt>
-        <dd>Extract simulation results</dd>
-      </dl><dl><dt>
-          
-          <code><a href="find_beta_params.html">find_beta_params()</a></code> 
-        </dt>
-        <dd>Find beta distribution parameters from thresholds</dd>
-      </dl><dl><dt>
-          
-          <code><a href="plot_convergence.html">plot_convergence()</a></code> 
-        </dt>
-        <dd>Plot convergence of performance metrics</dd>
-      </dl><dl><dt>
-          
-          <code><a href="plot_history.html">plot_history()</a></code> 
-        </dt>
-        <dd>Plot trial metric history</dd>
-      </dl><dl><dt>
-          
-          <code><a href="plot_status.html">plot_status()</a></code> 
-        </dt>
-        <dd>Plot statuses</dd>
-      </dl><dl><dt>
-          
-          <code><a href="print.html">print(<i>&lt;trial_spec&gt;</i>)</a></code> <code><a href="print.html">print(<i>&lt;trial_result&gt;</i>)</a></code> <code><a href="print.html">print(<i>&lt;trial_performance&gt;</i>)</a></code> <code><a href="print.html">print(<i>&lt;trial_results&gt;</i>)</a></code> <code><a href="print.html">print(<i>&lt;trial_results_summary&gt;</i>)</a></code> 
-        </dt>
-        <dd>Print methods for adaptive trial objects</dd>
-      </dl><dl><dt>
-          
-          <code><a href="run_trial.html">run_trial()</a></code> 
-        </dt>
-        <dd>Simulate a single trial</dd>
-      </dl><dl><dt>
-          
-          <code><a href="run_trials.html">run_trials()</a></code> 
-        </dt>
-        <dd>Simulate multiple trials</dd>
-      </dl><dl><dt>
+      </dl></div><div class="section level2">
+      <h2 id="setup-calibrate-and-run-trials">Setup, calibrate, and run trials<a class="anchor" aria-label="anchor" href="#setup-calibrate-and-run-trials"></a></h2>
+      
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
           
           <code><a href="setup_trial.html">setup_trial()</a></code> 
         </dt>
@@ -129,16 +95,126 @@
         <dd>Setup a trial specification using a continuous, normally distributed outcome</dd>
       </dl><dl><dt>
           
+          <code><a href="calibrate_trial.html">calibrate_trial()</a></code> 
+        </dt>
+        <dd>Calibrate trial specification</dd>
+      </dl><dl><dt>
+          
+          <code><a href="run_trial.html">run_trial()</a></code> 
+        </dt>
+        <dd>Simulate a single trial</dd>
+      </dl><dl><dt>
+          
+          <code><a href="run_trials.html">run_trials()</a></code> 
+        </dt>
+        <dd>Simulate multiple trials</dd>
+      </dl></div><div class="section level2">
+      <h2 id="extract-and-summarise-results">Extract and summarise results<a class="anchor" aria-label="anchor" href="#extract-and-summarise-results"></a></h2>
+      
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="extract_results.html">extract_results()</a></code> 
+        </dt>
+        <dd>Extract simulation results</dd>
+      </dl><dl><dt>
+          
+          <code><a href="check_performance.html">check_performance()</a></code> 
+        </dt>
+        <dd>Check performance metrics for trial simulations</dd>
+      </dl><dl><dt>
+          
           <code><a href="summary.html">summary(<i>&lt;trial_results&gt;</i>)</a></code> 
         </dt>
         <dd>Summary of simulated trial results</dd>
       </dl><dl><dt>
           
+          <code><a href="check_remaining_arms.html">check_remaining_arms()</a></code> 
+        </dt>
+        <dd>Check remaining arm combinations</dd>
+      </dl></div><div class="section level2">
+      <h2 id="plotting-functions">Plotting functions<a class="anchor" aria-label="anchor" href="#plotting-functions"></a></h2>
+      
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="plot_convergence.html">plot_convergence()</a></code> 
+        </dt>
+        <dd>Plot convergence of performance metrics</dd>
+      </dl><dl><dt>
+          
+          <code><a href="plot_metrics_ecdf.html">plot_metrics_ecdf()</a></code> 
+        </dt>
+        <dd>Plot empirical cumulative distribution functions of performance metrics</dd>
+      </dl><dl><dt>
+          
+          <code><a href="plot_status.html">plot_status()</a></code> 
+        </dt>
+        <dd>Plot statuses</dd>
+      </dl><dl><dt>
+          
+          <code><a href="plot_history.html">plot_history()</a></code> 
+        </dt>
+        <dd>Plot trial metric history</dd>
+      </dl></div><div class="section level2">
+      <h2 id="print-methods">Print methods<a class="anchor" aria-label="anchor" href="#print-methods"></a></h2>
+      
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="print.html">print(<i>&lt;trial_spec&gt;</i>)</a></code> <code><a href="print.html">print(<i>&lt;trial_result&gt;</i>)</a></code> <code><a href="print.html">print(<i>&lt;trial_performance&gt;</i>)</a></code> <code><a href="print.html">print(<i>&lt;trial_results&gt;</i>)</a></code> <code><a href="print.html">print(<i>&lt;trial_results_summary&gt;</i>)</a></code> <code><a href="print.html">print(<i>&lt;trial_calibration&gt;</i>)</a></code> 
+        </dt>
+        <dd>Print methods for adaptive trial objects</dd>
+      </dl></div><div class="section level2">
+      <h2 id="helper-functions">Helper functions<a class="anchor" aria-label="anchor" href="#helper-functions"></a></h2>
+      
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="setup_cluster.html">setup_cluster()</a></code> 
+        </dt>
+        <dd>Setup default cluster for use in parallelised adaptr functions</dd>
+      </dl><dl><dt>
+          
           <code><a href="update_saved_trials.html">update_saved_trials()</a></code> 
         </dt>
-        <dd>Update previously saved simulations</dd>
+        <dd>Update previously saved simulation results</dd>
+      </dl><dl><dt>
+          
+          <code><a href="find_beta_params.html">find_beta_params()</a></code> 
+        </dt>
+        <dd>Find beta distribution parameters from thresholds</dd>
       </dl></div>
-  </main></div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">

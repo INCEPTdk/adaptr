@@ -10,25 +10,25 @@ re-adjusting allocation probabilities according to the criteria specified in
 the trial specification. If there is no common control arm, the trial
 simulation will be stopped at the final specified adaptive analysis, when 1
 arm is superior to the others, or when all arms are considered equivalent (if
-equivalence testing is specified).
-If a common control arm is specified, all other arms will be compared to
-that, and if 1 comparison crosses the applicable superiority threshold at an
-adaptive analysis, that arm will become the new control and the old control
-will be considered inferior. If multiple non-control arms cross the
-applicable superiority threshold in the same adaptive analysis, the one with
-the highest probability of being the overall best will become the new
-control. Equivalence/futility will also be checked if specified, and
-equivalent or futile arms will be dropped in designs with a common control
-arm and the entire trial will be stopped if all remaining arms are equivalent
-in designs without a common control arm. The trial simulation will be
-stopped when only 1 arm is left, when the final arms are all equivalent, or
-after the final specified adaptive analysis.
+equivalence is assessed). If a common control arm is specified, all other
+arms will be compared to that, and if 1 of these pairwise comparisons crosses
+the applicable superiority threshold at an adaptive analysis, that arm will
+become the new control and the old control will be considered inferior and
+dropped. If multiple non-control arms cross the applicable superiority
+threshold in the same adaptive analysis, the one with the highest probability
+of being the overall best will become the new control. Equivalence/futility
+will also be checked if specified, and equivalent or futile arms will be
+dropped in designs with a common control arm and the entire trial will be
+stopped if all remaining arms are equivalent in designs without a common
+control arm. The trial simulation will be stopped when only 1 arm is left,
+when the final arms are all equivalent, or after the final specified adaptive
+analysis.
 After stopping (regardless of reason), a final analysis including outcome
 data from all patients randomised to all arms will be conducted (with the
 final control arm, if any, used as the control in this analysis).
 Results from this analysis will be saved, but not used with regards to the
 adaptive stopping rules. This is particularly relevant if less patients have
-available outcome data at the adaptive analyses than the total number of
+available outcome data at the last adaptive analyses than the total number of
 patients randomised (as specified in setup_trial(), setup_trial_binom(),
 or setup_trial_norm()), as the final analysis will then include all
 patients randomised, which may be more than in the last adaptive analysis
@@ -43,25 +43,25 @@ re-adjusting allocation probabilities according to the criteria specified in
 the trial specification. If there is no common control arm, the trial
 simulation will be stopped at the final specified adaptive analysis, when 1
 arm is superior to the others, or when all arms are considered equivalent (if
-equivalence testing is specified).
-If a common control arm is specified, all other arms will be compared to
-that, and if 1 comparison crosses the applicable superiority threshold at an
-adaptive analysis, that arm will become the new control and the old control
-will be considered inferior. If multiple non-control arms cross the
-applicable superiority threshold in the same adaptive analysis, the one with
-the highest probability of being the overall best will become the new
-control. Equivalence/futility will also be checked if specified, and
-equivalent or futile arms will be dropped in designs with a common control
-arm and the entire trial will be stopped if all remaining arms are equivalent
-in designs without a common control arm. The trial simulation will be
-stopped when only 1 arm is left, when the final arms are all equivalent, or
-after the final specified adaptive analysis.
+equivalence is assessed). If a common control arm is specified, all other
+arms will be compared to that, and if 1 of these pairwise comparisons crosses
+the applicable superiority threshold at an adaptive analysis, that arm will
+become the new control and the old control will be considered inferior and
+dropped. If multiple non-control arms cross the applicable superiority
+threshold in the same adaptive analysis, the one with the highest probability
+of being the overall best will become the new control. Equivalence/futility
+will also be checked if specified, and equivalent or futile arms will be
+dropped in designs with a common control arm and the entire trial will be
+stopped if all remaining arms are equivalent in designs without a common
+control arm. The trial simulation will be stopped when only 1 arm is left,
+when the final arms are all equivalent, or after the final specified adaptive
+analysis.
 After stopping (regardless of reason), a final analysis including outcome
 data from all patients randomised to all arms will be conducted (with the
 final control arm, if any, used as the control in this analysis).
 Results from this analysis will be saved, but not used with regards to the
 adaptive stopping rules. This is particularly relevant if less patients have
-available outcome data at the adaptive analyses than the total number of
+available outcome data at the last adaptive analyses than the total number of
 patients randomised (as specified in setup_trial(), setup_trial_binom(),
 or setup_trial_norm()), as the final analysis will then include all
 patients randomised, which may be more than in the last adaptive analysis
@@ -76,7 +76,7 @@ conducted.'><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/
     
     <a class="navbar-brand me-2" href="../index.html">adaptr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -90,9 +90,9 @@ conducted.'><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/Advanced-example.html">Advanced example</a>
-    <a class="dropdown-item" href="../articles/Basic-examples.html">Basic examples</a>
     <a class="dropdown-item" href="../articles/Overview.html">Overview</a>
+    <a class="dropdown-item" href="../articles/Basic-examples.html">Basic examples</a>
+    <a class="dropdown-item" href="../articles/Advanced-example.html">Advanced example</a>
   </div>
 </li>
 <li class="nav-item">
@@ -122,7 +122,7 @@ conducted.'><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/
     <div class="ref-description section level2">
     <p>This function conducts a single trial simulation using a trial specification
 as specified by <code><a href="setup_trial.html">setup_trial()</a></code>, <code><a href="setup_trial_binom.html">setup_trial_binom()</a></code> or
-<code><a href="setup_trial_norm.html">setup_trial_norm()</a></code>.
+<code><a href="setup_trial_norm.html">setup_trial_norm()</a></code>.<br>
 During simulation, the function randomises "patients", randomly generates
 outcomes, calculates the probabilities that each <code>arm</code> is the best (and
 better than the control, if any). This is followed by checking inferiority,
@@ -131,25 +131,25 @@ re-adjusting allocation probabilities according to the criteria specified in
 the trial specification. If there is no common <code>control</code> arm, the trial
 simulation will be stopped at the final specified adaptive analysis, when 1
 arm is superior to the others, or when all arms are considered equivalent (if
-equivalence testing is specified).<br>
-If a common <code>control</code> arm is specified, all other arms will be compared to
-that, and if 1 comparison crosses the applicable superiority threshold at an
-adaptive analysis, that arm will become the new control and the old control
-will be considered inferior. If multiple non-control arms cross the
-applicable superiority threshold in the same adaptive analysis, the one with
-the highest probability of being the overall best will become the new
-control. Equivalence/futility will also be checked if specified, and
-equivalent or futile arms will be dropped in designs with a common <code>control</code>
-arm and the entire trial will be stopped if all remaining arms are equivalent
-in designs without a common <code>control</code> arm. The trial simulation will be
-stopped when only 1 arm is left, when the final arms are all equivalent, or
-after the final specified adaptive analysis.<br>
+equivalence is assessed). If a common <code>control</code> arm is specified, all other
+arms will be compared to that, and if 1 of these pairwise comparisons crosses
+the applicable superiority threshold at an adaptive analysis, that arm will
+become the new control and the old control will be considered inferior and
+dropped. If multiple non-control arms cross the applicable superiority
+threshold in the same adaptive analysis, the one with the highest probability
+of being the overall best will become the new control. Equivalence/futility
+will also be checked if specified, and equivalent or futile arms will be
+dropped in designs with a common <code>control</code> arm and the entire trial will be
+stopped if all remaining arms are equivalent in designs without a common
+<code>control</code> arm. The trial simulation will be stopped when only 1 arm is left,
+when the final arms are all equivalent, or after the final specified adaptive
+analysis.<br>
 After stopping (regardless of reason), a final analysis including outcome
 data from all patients randomised to all arms will be conducted (with the
 final <code>control</code> arm, if any, used as the <code>control</code> in this analysis).
 Results from this analysis will be saved, but not used with regards to the
 adaptive stopping rules. This is particularly relevant if less patients have
-available outcome data at the adaptive analyses than the total number of
+available outcome data at the last adaptive analyses than the total number of
 patients randomised (as specified in <code><a href="setup_trial.html">setup_trial()</a></code>, <code><a href="setup_trial_binom.html">setup_trial_binom()</a></code>,
 or <code><a href="setup_trial_norm.html">setup_trial_norm()</a></code>), as the final analysis will then include all
 patients randomised, which may be more than in the last adaptive analysis
@@ -177,12 +177,12 @@ seed will be restored after the function has run, so it is not affected.</p></dd
 <dt>sparse</dt>
 <dd><p>single logical; if <code>FALSE</code> (default) everything listed below is
 included in the returned object. If <code>TRUE</code>, only a limited amount of data
-is included in the returned object. This can be practical when running many
-simulations and saving the results using the <code><a href="run_trials.html">run_trials()</a></code> function (which
-relies on this function), as the output file will thus be substantially
-smaller. However, printing of individual trial results will be
-substantially less detailed for sparse results and non-sparse results are
-required by <code><a href="plot_history.html">plot_history()</a></code>.</p></dd>
+are included in the returned object. This can be practical when running
+many simulations and saving the results using the <code><a href="run_trials.html">run_trials()</a></code> function
+(which relies on this function), as the output file will thus be
+substantially smaller. However, printing of individual trial results will
+be substantially less detailed for sparse results and non-sparse results
+are required by <code><a href="plot_history.html">plot_history()</a></code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -207,18 +207,20 @@ data available at each conducted adaptive analysis.</p></li>
 planned to have outcome data available at each adaptive analysis, even
 those not conducted if the simulation is stopped before the final
 possible analysis.</p></li>
-<li><p><code>randomised_at_looks</code>: numeric vector, the total number of patients
-randomised at each conducted adaptive analysis.</p></li>
-<li><p><code>start_control</code>: character, initial common control arm (if
+<li><p><code>randomised_at_looks</code>: numeric vector, the cumulated number of
+patients  randomised at each conducted adaptive analysis (only
+including the relevant numbers for the analyses actually conducted).</p></li>
+<li><p><code>start_control</code>: character, initial common <code>control</code> arm (if
 specified).</p></li>
-<li><p><code>final_control</code>: character, final common control arm (if relevant).</p></li>
-<li><p><code>control_prob_fixed</code>: fixed common control arm probabilities (if
+<li><p><code>final_control</code>: character, final common <code>control</code> arm
+(if relevant).</p></li>
+<li><p><code>control_prob_fixed</code>: fixed common <code>control</code> arm probabilities (if
 specified; see <code><a href="setup_trial.html">setup_trial()</a></code>).</p></li>
 <li><p><code>inferiority</code>, <code>superiority</code>, <code>equivalence_prob</code>,
 <code>equivalence_diff</code>, <code>equivalence_only_first</code>, <code>futility_prob</code>,
 <code>futility_diff</code>, <code>futility_only_first</code>, <code>highest_is_best</code>, and
 <code>soften_power</code>: as specified in <code><a href="setup_trial.html">setup_trial()</a></code>.</p></li>
-<li><p><code>best_arm</code>: the best arm(s), as described in <code><a href="setup_trial.html">setup_trial()</a></code>.</p></li>
+<li><p><code>best_arm</code>: the best <code>arm</code>(s), as described in <code><a href="setup_trial.html">setup_trial()</a></code>.</p></li>
 <li><p><code>trial_res</code>: a <code>data.frame</code> containing most of the information
 specified for each arm in <code><a href="setup_trial.html">setup_trial()</a></code> including <code>true_ys</code> (true
 outcomes as specified in <code><a href="setup_trial.html">setup_trial()</a></code>) and for each arm the sum of
