@@ -2,7 +2,7 @@
 #'
 #' This function conducts a single trial simulation using a trial specification
 #' as specified by [setup_trial()], [setup_trial_binom()] or
-#' [setup_trial_norm()].
+#' [setup_trial_norm()].\cr
 #' During simulation, the function randomises "patients", randomly generates
 #' outcomes, calculates the probabilities that each `arm` is the best (and
 #' better than the control, if any). This is followed by checking inferiority,
@@ -11,25 +11,25 @@
 #' the trial specification. If there is no common `control` arm, the trial
 #' simulation will be stopped at the final specified adaptive analysis, when 1
 #' arm is superior to the others, or when all arms are considered equivalent (if
-#' equivalence testing is specified).\cr
-#' If a common `control` arm is specified, all other arms will be compared to
-#' that, and if 1 comparison crosses the applicable superiority threshold at an
-#' adaptive analysis, that arm will become the new control and the old control
-#' will be considered inferior. If multiple non-control arms cross the
-#' applicable superiority threshold in the same adaptive analysis, the one with
-#' the highest probability of being the overall best will become the new
-#' control. Equivalence/futility will also be checked if specified, and
-#' equivalent or futile arms will be dropped in designs with a common `control`
-#' arm and the entire trial will be stopped if all remaining arms are equivalent
-#' in designs without a common `control` arm. The trial simulation will be
-#' stopped when only 1 arm is left, when the final arms are all equivalent, or
-#' after the final specified adaptive analysis.\cr
+#' equivalence is assessed). If a common `control` arm is specified, all other
+#' arms will be compared to that, and if 1 of these pairwise comparisons crosses
+#' the applicable superiority threshold at an adaptive analysis, that arm will
+#' become the new control and the old control will be considered inferior and
+#' dropped. If multiple non-control arms cross the applicable superiority
+#' threshold in the same adaptive analysis, the one with the highest probability
+#' of being the overall best will become the new control. Equivalence/futility
+#' will also be checked if specified, and equivalent or futile arms will be
+#' dropped in designs with a common `control` arm and the entire trial will be
+#' stopped if all remaining arms are equivalent in designs without a common
+#' `control` arm. The trial simulation will be stopped when only 1 arm is left,
+#' when the final arms are all equivalent, or after the final specified adaptive
+#' analysis.\cr
 #' After stopping (regardless of reason), a final analysis including outcome
 #' data from all patients randomised to all arms will be conducted (with the
 #' final `control` arm, if any, used as the `control` in this analysis).
 #' Results from this analysis will be saved, but not used with regards to the
 #' adaptive stopping rules. This is particularly relevant if less patients have
-#' available outcome data at the adaptive analyses than the total number of
+#' available outcome data at the last adaptive analyses than the total number of
 #' patients randomised (as specified in [setup_trial()], [setup_trial_binom()],
 #' or [setup_trial_norm()]), as the final analysis will then include all
 #' patients randomised, which may be more than in the last adaptive analysis
@@ -42,12 +42,12 @@
 #'   seed will be restored after the function has run, so it is not affected.
 #' @param sparse single logical; if `FALSE` (default) everything listed below is
 #'   included in the returned object. If `TRUE`, only a limited amount of data
-#'   is included in the returned object. This can be practical when running many
-#'   simulations and saving the results using the [run_trials()] function (which
-#'   relies on this function), as the output file will thus be substantially
-#'   smaller. However, printing of individual trial results will be
-#'   substantially less detailed for sparse results and non-sparse results are
-#'   required by [plot_history()].
+#'   are included in the returned object. This can be practical when running
+#'   many simulations and saving the results using the [run_trials()] function
+#'   (which relies on this function), as the output file will thus be
+#'   substantially smaller. However, printing of individual trial results will
+#'   be substantially less detailed for sparse results and non-sparse results
+#'   are required by [plot_history()].
 #'
 #' @return A `trial_result` object containing everything listed below if
 #'   `sparse` (as described above) is `FALSE`. Otherwise only `final_status`,
@@ -69,18 +69,20 @@
 #'       planned to have outcome data available at each adaptive analysis, even
 #'       those not conducted if the simulation is stopped before the final
 #'       possible analysis.
-#'     \item `randomised_at_looks`: numeric vector, the total number of patients
-#'       randomised at each conducted adaptive analysis.
-#'     \item `start_control`: character, initial common control arm (if
+#'     \item `randomised_at_looks`: numeric vector, the cumulated number of
+#'       patients  randomised at each conducted adaptive analysis (only
+#'       including the relevant numbers for the analyses actually conducted).
+#'     \item `start_control`: character, initial common `control` arm (if
 #'       specified).
-#'     \item `final_control`: character, final common control arm (if relevant).
-#'     \item `control_prob_fixed`: fixed common control arm probabilities (if
+#'     \item `final_control`: character, final common `control` arm
+#'       (if relevant).
+#'     \item `control_prob_fixed`: fixed common `control` arm probabilities (if
 #'       specified; see [setup_trial()]).
 #'     \item `inferiority`, `superiority`, `equivalence_prob`,
 #'       `equivalence_diff`, `equivalence_only_first`, `futility_prob`,
 #'       `futility_diff`, `futility_only_first`, `highest_is_best`, and
 #'       `soften_power`: as specified in [setup_trial()].
-#'     \item `best_arm`: the best arm(s), as described in [setup_trial()].
+#'     \item `best_arm`: the best `arm`(s), as described in [setup_trial()].
 #'     \item `trial_res`: a `data.frame` containing most of the information
 #'       specified for each arm in [setup_trial()] including `true_ys` (true
 #'       outcomes as specified in [setup_trial()]) and for each arm the sum of
@@ -176,9 +178,9 @@ run_trial <- function(trial_spec, seed = NULL, sparse = FALSE) {
     if (!verify_int(seed)) {
       stop0("seed must be either NULL or a single whole number.")
     } else { # Valid seed provided
-      if (exists(".Random.seed", envir = globalenv())){ # A global random seed exists (not the case when called from parallel::parLapply)
-        oldseed <- get(".Random.seed", envir = globalenv())
-        on.exit(assign(".Random.seed", value = oldseed, envir = globalenv()), add = TRUE, after = FALSE)
+      if (exists(".Random.seed", envir = globalenv(), inherits = FALSE)) { # A global random seed exists (not the case when called from parallel::parLapply)
+        oldseed <- get(".Random.seed", envir = globalenv(), inherits = FALSE)
+        on.exit(assign(".Random.seed", value = oldseed, envir = globalenv(), inherits = FALSE), add = TRUE, after = FALSE)
       }
       set.seed(seed)
     }

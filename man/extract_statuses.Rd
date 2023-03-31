@@ -11,11 +11,12 @@ extract_statuses(object, x_value, arm = NULL)
 
 \item{x_value}{single character string, determining whether the number of
 adaptive analysis looks (\code{"look"}, default), the total cumulated number of
-patients randomised (\code{"total n"}) or with outcome data available at each
-analysis (\code{"followed n"}) are plotted on the x-axis.}
+patients randomised (\code{"total n"}) or the total cumulated number of patients
+with outcome data available at each adaptive analysis (\code{"followed n"}) are
+plotted on the x-axis.}
 
-\item{arm}{character string of one or more unique, valid \code{arm} names, \code{NA},
-or \code{NULL} (default). If \code{NULL}, the overall trial statuses are plotted,
+\item{arm}{character vector containing one or more unique, valid \code{arm} names,
+\code{NA}, or \code{NULL} (default). If \code{NULL}, the overall trial statuses are plotted,
 otherwise the specified arms or all arms (if \code{NA} is specified) are plotted.}
 }
 \value{

@@ -16,30 +16,31 @@ check_performance(
   uncertainty = FALSE,
   n_boot = 5000,
   ci_width = 0.95,
-  boot_seed = NULL
+  boot_seed = NULL,
+  cores = NULL
 )
 }
 \arguments{
 \item{object}{\code{trial_results} object, output from the \code{\link[=run_trials]{run_trials()}}
 function.}
 
-\item{select_strategy}{single character string. For trials not stopped
-due to superiority (or with only 1 arm remaining, if \code{select_last_arm} is
+\item{select_strategy}{single character string. If a trial was not stopped
+due to superiority (or had only 1 arm remaining, if \code{select_last_arm} is
 set to \code{TRUE} in trial designs with a common \code{control} arm; see below),
 this parameter specifies which arm will be considered selected when
-calculating trial design performance metrics (described below;
+calculating trial design performance metrics, as described below;
 this corresponds to the consequence of an inconclusive trial, i.e., which
-arm would then be used in practice).\cr
+arm would then be used in practice.\cr
 The following options are available and must be written exactly as below
 (case sensitive, cannot be abbreviated):
 \itemize{
 \item \code{"control if available"} (default): selects the \strong{first}
-\code{control} arm for trials with a common control arm \emph{\strong{if}} this arm
-is active at end-of-trial, otherwise no arm will be selected. For
+\code{control} arm for trials with a common \code{control} arm \emph{\strong{if}} this
+arm is active at end-of-trial, otherwise no arm will be selected. For
 trial designs without a common \code{control}, no arm will be selected.
 \item \code{"none"}: selects no arm in trials not ending with superiority.
 \item \code{"control"}: similar to \code{"control if available"}, but will throw
-an error for trial designs without a common \code{control} arm.
+an error if used for trial designs without a common \code{control} arm.
 \item \code{"final control"}: selects the \strong{final} \code{control} arm regardless
 of whether the trial was stopped for practical equivalence, futility,
 or at the maximum sample size; this strategy can only be specified
@@ -47,8 +48,8 @@ for trial designs with a common \code{control} arm.
 \item \code{"control or best"}: selects the \strong{first} \code{control} arm if still
 active at end-of-trial, otherwise selects the best remaining arm
 (defined as the remaining arm with the highest probability of being
-the best in the final analysis). Only works for trial designs with a
-common \code{control} arm.
+the best in the last adaptive analysis conducted). Only works for
+trial designs with a common \code{control} arm.
 \item \code{"best"}: selects the best remaining arm (as described under
 \code{"control or best"}).
 \item \code{"list or best"}: selects the first remaining arm from a specified
@@ -72,36 +73,39 @@ available in the trial.}
 
 \item{te_comp}{character string, treatment-effect comparator. Can be either
 \code{NULL} (the default) in which case the \strong{first} \code{control} arm is used for
-trial designs with a common control arm, or a single trial \code{arm}. Will be
-used when calculating \code{sq_err_te} (the squared error of the treatment
-effect comparing the selected arm to the comparator arm, as described
-below).}
+trial designs with a common control arm, or a string naming a single trial
+\code{arm}. Will be used when calculating \code{sq_err_te} (the squared error of the
+treatment effect comparing the selected arm to the comparator arm, as
+described below).}
 
 \item{raw_ests}{single logical. If \code{FALSE} (default), the
-posterior estimates (\code{post_ests}, see \code{\link[=setup_trial]{setup_trial()}} and
-\code{\link[=run_trial]{run_trial()}}) will be used to calculate \code{sq_err} (the squared error of the
-estimated compared to the specified effect in the selected arm) and
+posterior estimates (\code{post_ests} or \code{post_ests_all}, see \code{\link[=setup_trial]{setup_trial()}}
+and \code{\link[=run_trial]{run_trial()}}) will be used to calculate \code{sq_err} (the squared error of
+the estimated compared to the specified effect in the selected arm) and
 \code{sq_err_te} (the squared error of the treatment effect comparing the
 selected arm to the comparator arm, as described for \code{te_comp} and below).
-If \code{TRUE}, the raw estimates (\code{raw_ests}, see \code{\link[=setup_trial]{setup_trial()}} and
-\code{\link[=run_trial]{run_trial()}}) will be used instead of the posterior estimates.}
+If \code{TRUE}, the raw estimates (\code{raw_ests} or \code{raw_ests_all}, see
+\code{\link[=setup_trial]{setup_trial()}} and \code{\link[=run_trial]{run_trial()}}) will be used instead of the posterior
+estimates.}
 
 \item{final_ests}{single logical. If \code{TRUE} (recommended) the final estimates
 calculated using outcome data from all patients randomised when trials are
-stopped is used; if \code{FALSE}, the estimates calculated for each arm when an
-arm is stopped (or at the last adaptive analysis if not before) using data
-from patients having reach followed up at this time point and not all
-patients randomised. If \code{NULL} (the default), this argument will be set to
-\code{FALSE} if outcome data are available immediate after randomisation for all
-patients (for backwards compatibility, as final posterior estimates may
-vary slightly in this situation, even if using the same data); otherwise it
-will be said to \code{TRUE}. See \code{\link[=setup_trial]{setup_trial()}} for more details on how these
-estimates are calculated.}
+stopped are used (\code{post_ests_all} or \code{raw_ests_all}, see \code{\link[=setup_trial]{setup_trial()}}
+and \code{\link[=run_trial]{run_trial()}}); if \code{FALSE}, the estimates calculated for each arm when
+an arm is stopped (or at the last adaptive analysis if not before) using
+data from patients having reach followed up at this time point and not all
+patients randomised are used (\code{post_ests} or \code{raw_ests}, see
+\code{\link[=setup_trial]{setup_trial()}} and \code{\link[=run_trial]{run_trial()}}). If \code{NULL} (the default), this argument
+will be set to \code{FALSE} if outcome data are available immediate after
+randomisation for all patients (for backwards compatibility, as final
+posterior estimates may vary slightly in this situation, even if using the
+same data); otherwise it will be said to \code{TRUE}. See \code{\link[=setup_trial]{setup_trial()}} for
+more details on how these estimates are calculated.}
 
 \item{restrict}{single character string or \code{NULL}. If \code{NULL} (default),
 results are summarised for all simulations; if \verb{"superior}, results are
 summarised for simulations ending with superiority only; if \code{"selected"},
-results are summarised for simulations ending with a selected arm
+results are summarised for simulations ending with a selected arm only
 (according to the specified arm selection strategy for simulations not
 ending with superiority). Some summary measures (e.g., \code{prob_conclusive})
 have substantially different interpretations if restricted, but are
@@ -113,48 +117,72 @@ calculate uncertainty measures.}
 
 \item{n_boot}{single integer (default \code{5000}); the number of bootstrap
 samples to use if \code{uncertainty = TRUE}. Values \verb{< 100} are not allowed and
-values \verb{< 1000} will lead to a warning, and results are thus likely to be
-unstable.}
+values \verb{< 1000} will lead to a warning, as results are likely to be
+unstable in those cases.}
 
 \item{ci_width}{single numeric \verb{>= 0} and \verb{< 1}, the width of the
 percentile-based bootstrapped confidence intervals. Defaults to \code{0.95},
 corresponding to 95\% confidence intervals.}
 
 \item{boot_seed}{single integer, \code{NULL} (default), or \code{"base"}. If a value is
-provided, this value will be used as the random seed when bootstrapping and
-the global random seed will be restored after the function has run,
-so it is not affected. If \code{"base"} is specified, the \code{base_seed} specified
-in \code{\link[=run_trials]{run_trials()}} is used.}
+provided, this value will be used to initiate random seeds when
+bootstrapping with the global random seed restored after the function has
+run. If \code{"base"} is specified, the \code{base_seed} specified in \code{\link[=run_trials]{run_trials()}}
+is used. Regardless of whether simulations are run sequentially or in
+parallel, bootstrapped results will be identical if a \code{boot_seed} is
+specified.}
+
+\item{cores}{\code{NULL} or single integer. If \code{NULL}, a default value set by
+\code{\link[=setup_cluster]{setup_cluster()}} will be used to control whether extractions of simulation
+results are done in parallel on a default cluster or sequentially in the
+main process; if a value has not been specified by \code{\link[=setup_cluster]{setup_cluster()}},
+\code{cores} will then be set to the value stored in the global \code{"mc.cores"}
+option (if previously set by \verb{options(mc.cores = <number of cores>}), and
+\code{1} if that option has not been specified.\cr
+If \code{cores = 1}, computations
+will be run sequentially in the primary process, and if \code{cores > 1}, a new
+parallel cluster will be setup using the \code{parallel} library and removed
+once the function completes. See \code{\link[=setup_cluster]{setup_cluster()}} for details.}
 }
 \value{
 A tidy \code{data.frame} with added class \code{trial_performance} (to control
-the number of digits printed, see \code{\link[=print]{print()}}), with the columns \code{"metric"}
-(described below), \code{"est"} (the estimates of each metric), and the
-following four columns if \code{uncertainty = TRUE}: \code{"err_sd"} (bootstrapped
+the number of digits printed, see \code{\link[=print]{print()}}), with the columns
+\code{"metric"} (described below), \code{"est"} (estimate of each metric), and the
+following four columns if \code{uncertainty = TRUE}: \code{"err_sd"}(bootstrapped
 SDs), \code{"err_mad"} (bootstrapped MAD-SDs, as described in \code{\link[=setup_trial]{setup_trial()}}
-and \code{\link[=mad]{mad()}}), \code{"lo_ci"}, and \code{"hi_ci"}, the latter two corresponding to the
-lower/upper limits of the percentile-based bootstrapped confidence
-intervals.\cr
+and \code{\link[stats:mad]{stats::mad()}}), \code{"lo_ci"}, and \code{"hi_ci"}, the latter two corresponding
+to the lower/upper limits of the percentile-based bootstrapped confidence
+intervals. Bootstrap estimates are \strong{not} calculated for the mininum
+(\verb{_p0}) and maximum values (\verb{_p100}) of \code{size}, \code{sum_ys}, and \code{ratio_ys},
+as non-parametric bootstrapping for mininum/maximum values is not
+sensible - bootstrap estimates for these values will be \code{NA}.\cr
 The following performance metrics are calculated:
 \itemize{
 \item \code{n_summarised}: the number of simulations summarised.
-\item \code{size_mean}, \code{size_sd}, \code{size_median}, \code{size_p25}, \code{size_p75}: the
-mean, standard deviation, median as well as 25- and 75-percentiles of the
-sample sizes (number of patients randomised in each simulated trial) of
-the summarised trial simulations.
+\item \code{size_mean}, \code{size_sd}, \code{size_median}, \code{size_p25}, \code{size_p75},
+\code{size_p0}, \code{size_p100}: the mean, standard deviation, median as well as
+25-, 75-, 0- (min), and 100- (max) percentiles of the sample sizes
+(number of patients randomised in each simulated trial) of the summarised
+trial simulations.
 \item \code{sum_ys_mean}, \code{sum_ys_sd}, \code{sum_ys_median}, \code{sum_ys_p25},
-\code{sum_ys_p75}: the mean, standard deviation, median as well as 25- and
-75-percentiles of the total \code{sum_ys} (e.g., the total number of events in
-trials with a binary outcome, or the sums of continuous values for all
-patients across all arms in trials with a continuous outcome) across all
-arms in the summarised trial simulations.
+\code{sum_ys_p75}, \code{sum_ys_p0}, \code{sum_ys_p100}: the mean, standard deviation,
+median as well as 25-, 75-, 0- (min), and 100- (max) percentiles of the
+total \code{sum_ys} across all arms in the summarised trial simulations (e.g.,
+the total number of events in trials with a binary outcome, or the sums
+of continuous values for all patients across all arms in trials with a
+continuous outcome). Always uses all outcomes from all randomised
+patients regardless of whether or not all patients had outcome data
+available at the time of trial stopping (corresponding to \code{sum_ys_all} in
+results from \code{\link[=run_trial]{run_trial()}}).
 \item \code{ratio_ys_mean}, \code{ratio_ys_sd}, \code{ratio_ys_median}, \code{ratio_ys_p25},
-\code{ratio_ys_p75}: the mean, standard deviation, median as well as 25- and
-75-percentiles of the final \code{ratio_ys} (\code{sum_ys/final_n}) across all arms
-in the summarised trial simulations.
+\code{ratio_ys_p75}, \code{ratio_ys_p0}, \code{ratio_ys_p100}: the mean, standard
+deviation, median as well as 25-, 75-, 0- (min), and 100- (max)
+percentiles of the final \code{ratio_ys} (\code{sum_ys} as described above divided
+by the total number of patients randomised) across all arms in the
+summarised trial simulations.
 \item \code{prob_conclusive}: the proportion (\code{0} to \code{1}) of conclusive trial
-simulations (simulations not stopped at the maximum sample size without a
-superiority, equivalence or futility decision).
+simulations, i.e., simulations not stopped at the maximum sample size
+without a superiority, equivalence or futility decision.
 \item \code{prob_superior}, \code{prob_equivalence}, \code{prob_futility}, \code{prob_max}: the
 proportion (\code{0} to \code{1}) of trial simulations stopped for superiority,
 equivalence, futility or inconclusive at the maximum allowed sample size,
@@ -163,24 +191,25 @@ respectively.\cr
 results are \code{restricted}.
 \item \verb{prob_select_*}: the selection probabilities for each arm and for no
 selection, according to the specified selection strategy. Contains one
-element per \code{arm}, named as \verb{prob_select_arm_<arm name>} and
+element per \code{arm}, named \verb{prob_select_arm_<arm name>} and
 \code{prob_select_none} for the probability of selecting no arm.
 \item \code{rmse}, \code{rmse_te}: the root mean squared error of the estimates for
-the selected arm and for the treatment effect, as described further in
+the selected arm and for the treatment effect, as described in
 \code{\link[=extract_results]{extract_results()}}.
 \item \code{idp}: the ideal design percentage (IDP; 0-100\%), see \strong{Details}.
 }
 }
 \description{
-Calculates performance metrics from trial simulation results from the
-\code{\link[=run_trials]{run_trials()}} function, with bootstrapped uncertainty measures if requested.
-Uses \code{\link[=extract_results]{extract_results()}}, which may be used directly to extract key trial
-results without summarising. This function is used in \code{\link[=summary]{summary()}} to
-calculate the performance metrics presented by that function.
+Calculates performance metrics for a trial specification based on
+simulation results from the \code{\link[=run_trials]{run_trials()}} function, with bootstrapped
+uncertainty measures if requested. Uses \code{\link[=extract_results]{extract_results()}}, which may be
+used directly to extract key trial results without summarising. This function
+is also used by \code{\link[=summary]{summary()}} to calculate the performance metrics presented by
+that function.
 }
 \details{
-The ideal design percentage (IDP) returned (described below) is based on
-\emph{Viele et al, 2020} \doi{10.1177/1740774519877836}  (also described in
+The ideal design percentage (IDP) returned is based on
+\emph{Viele et al, 2020} \doi{10.1177/1740774519877836}  (and also described in
 \emph{Granholm et al, 2022} \doi{10.1016/j.jclinepi.2022.11.002}, which also
 describes the other performance measures) and has been adapted to work for
 trials with both desirable/undesirable outcomes and non-binary outcomes.
@@ -188,9 +217,9 @@ Briefly, the expected outcome is calculated as the sum of the true outcomes
 in each arm multiplied by the corresponding selection probabilities (ignoring
 simulations with no selected arm). The IDP is then calculated as:
 \itemize{
-\item For desirable outcomes:\cr
+\item For desirable outcomes (\code{highest_is_best} is \code{TRUE}):\cr
 \verb{100 * (expected outcome - lowest true outcome) / (highest true outcome - lowest true outcome)}
-\item For undesirable outcomes:\cr
+\item For undesirable outcomes (\code{highest_is_best} is \code{FALSE}):\cr
 \verb{100 - IDP calculated for desirable outcomes}
 }
 }
@@ -213,5 +242,6 @@ n_boot = 1000, boot_seed = "base")
 
 }
 \seealso{
-\code{\link[=extract_results]{extract_results()}}, \code{\link[=summary]{summary()}}, \code{\link[=plot_convergence]{plot_convergence()}}.
+\code{\link[=extract_results]{extract_results()}}, \code{\link[=summary]{summary()}}, \code{\link[=plot_convergence]{plot_convergence()}},
+\code{\link[=plot_metrics_ecdf]{plot_metrics_ecdf()}}, \code{\link[=check_remaining_arms]{check_remaining_arms()}}.
 }

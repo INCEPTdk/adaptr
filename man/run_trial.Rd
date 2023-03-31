@@ -16,12 +16,12 @@ seed will be restored after the function has run, so it is not affected.}
 
 \item{sparse}{single logical; if \code{FALSE} (default) everything listed below is
 included in the returned object. If \code{TRUE}, only a limited amount of data
-is included in the returned object. This can be practical when running many
-simulations and saving the results using the \code{\link[=run_trials]{run_trials()}} function (which
-relies on this function), as the output file will thus be substantially
-smaller. However, printing of individual trial results will be
-substantially less detailed for sparse results and non-sparse results are
-required by \code{\link[=plot_history]{plot_history()}}.}
+are included in the returned object. This can be practical when running
+many simulations and saving the results using the \code{\link[=run_trials]{run_trials()}} function
+(which relies on this function), as the output file will thus be
+substantially smaller. However, printing of individual trial results will
+be substantially less detailed for sparse results and non-sparse results
+are required by \code{\link[=plot_history]{plot_history()}}.}
 }
 \value{
 A \code{trial_result} object containing everything listed below if
@@ -44,18 +44,20 @@ data available at each conducted adaptive analysis.
 planned to have outcome data available at each adaptive analysis, even
 those not conducted if the simulation is stopped before the final
 possible analysis.
-\item \code{randomised_at_looks}: numeric vector, the total number of patients
-randomised at each conducted adaptive analysis.
-\item \code{start_control}: character, initial common control arm (if
+\item \code{randomised_at_looks}: numeric vector, the cumulated number of
+patients  randomised at each conducted adaptive analysis (only
+including the relevant numbers for the analyses actually conducted).
+\item \code{start_control}: character, initial common \code{control} arm (if
 specified).
-\item \code{final_control}: character, final common control arm (if relevant).
-\item \code{control_prob_fixed}: fixed common control arm probabilities (if
+\item \code{final_control}: character, final common \code{control} arm
+(if relevant).
+\item \code{control_prob_fixed}: fixed common \code{control} arm probabilities (if
 specified; see \code{\link[=setup_trial]{setup_trial()}}).
 \item \code{inferiority}, \code{superiority}, \code{equivalence_prob},
 \code{equivalence_diff}, \code{equivalence_only_first}, \code{futility_prob},
 \code{futility_diff}, \code{futility_only_first}, \code{highest_is_best}, and
 \code{soften_power}: as specified in \code{\link[=setup_trial]{setup_trial()}}.
-\item \code{best_arm}: the best arm(s), as described in \code{\link[=setup_trial]{setup_trial()}}.
+\item \code{best_arm}: the best \code{arm}(s), as described in \code{\link[=setup_trial]{setup_trial()}}.
 \item \code{trial_res}: a \code{data.frame} containing most of the information
 specified for each arm in \code{\link[=setup_trial]{setup_trial()}} including \code{true_ys} (true
 outcomes as specified in \code{\link[=setup_trial]{setup_trial()}}) and for each arm the sum of
@@ -125,7 +127,7 @@ specified in \code{\link[=setup_trial]{setup_trial()}}, \code{\link[=setup_trial
 \description{
 This function conducts a single trial simulation using a trial specification
 as specified by \code{\link[=setup_trial]{setup_trial()}}, \code{\link[=setup_trial_binom]{setup_trial_binom()}} or
-\code{\link[=setup_trial_norm]{setup_trial_norm()}}.
+\code{\link[=setup_trial_norm]{setup_trial_norm()}}.\cr
 During simulation, the function randomises "patients", randomly generates
 outcomes, calculates the probabilities that each \code{arm} is the best (and
 better than the control, if any). This is followed by checking inferiority,
@@ -134,25 +136,25 @@ re-adjusting allocation probabilities according to the criteria specified in
 the trial specification. If there is no common \code{control} arm, the trial
 simulation will be stopped at the final specified adaptive analysis, when 1
 arm is superior to the others, or when all arms are considered equivalent (if
-equivalence testing is specified).\cr
-If a common \code{control} arm is specified, all other arms will be compared to
-that, and if 1 comparison crosses the applicable superiority threshold at an
-adaptive analysis, that arm will become the new control and the old control
-will be considered inferior. If multiple non-control arms cross the
-applicable superiority threshold in the same adaptive analysis, the one with
-the highest probability of being the overall best will become the new
-control. Equivalence/futility will also be checked if specified, and
-equivalent or futile arms will be dropped in designs with a common \code{control}
-arm and the entire trial will be stopped if all remaining arms are equivalent
-in designs without a common \code{control} arm. The trial simulation will be
-stopped when only 1 arm is left, when the final arms are all equivalent, or
-after the final specified adaptive analysis.\cr
+equivalence is assessed). If a common \code{control} arm is specified, all other
+arms will be compared to that, and if 1 of these pairwise comparisons crosses
+the applicable superiority threshold at an adaptive analysis, that arm will
+become the new control and the old control will be considered inferior and
+dropped. If multiple non-control arms cross the applicable superiority
+threshold in the same adaptive analysis, the one with the highest probability
+of being the overall best will become the new control. Equivalence/futility
+will also be checked if specified, and equivalent or futile arms will be
+dropped in designs with a common \code{control} arm and the entire trial will be
+stopped if all remaining arms are equivalent in designs without a common
+\code{control} arm. The trial simulation will be stopped when only 1 arm is left,
+when the final arms are all equivalent, or after the final specified adaptive
+analysis.\cr
 After stopping (regardless of reason), a final analysis including outcome
 data from all patients randomised to all arms will be conducted (with the
 final \code{control} arm, if any, used as the \code{control} in this analysis).
 Results from this analysis will be saved, but not used with regards to the
 adaptive stopping rules. This is particularly relevant if less patients have
-available outcome data at the adaptive analyses than the total number of
+available outcome data at the last adaptive analyses than the total number of
 patients randomised (as specified in \code{\link[=setup_trial]{setup_trial()}}, \code{\link[=setup_trial_binom]{setup_trial_binom()}},
 or \code{\link[=setup_trial_norm]{setup_trial_norm()}}), as the final analysis will then include all
 patients randomised, which may be more than in the last adaptive analysis

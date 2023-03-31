@@ -99,7 +99,7 @@ test_that("stop0, warning0 and cat0 work", {
 test_that("summarise_num works", {
   expect_equal(
     summarise_num(1:100),
-    c(mean = 50.5, sd = 29.011492, median = 50.5, p25 = 25.75, p75 = 75.25)
+    c(mean = 50.5, sd = 29.011492, median = 50.5, p25 = 25.75, p75 = 75.25, p0 = 1, p100 = 100)
   )
   expect_error(summarise_num(c(NA, 1:100)))
 })
@@ -107,4 +107,11 @@ test_that("summarise_num works", {
 test_that("assert_pkgs works", {
   expect_true(assert_pkgs(c("base", "stats")))
   expect_error(assert_pkgs("!*?")) # Invalid package name used
+})
+
+test_that("which_nearest works", {
+  expect_equal(which_nearest(1:10 + 0.01, 5, dir = 0), 5)
+  expect_equal(which_nearest(1:10 + 0.01, 5, dir = -1), 4)
+  expect_equal(which_nearest(1:10 + 0.01, 5, dir = 1), 5)
+  expect_equal(which_nearest(1:10, 12, dir = 1), which_nearest(1:10, 12, dir = -1))
 })

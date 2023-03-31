@@ -1,8 +1,7 @@
 ## Release summary
 
-This is a minor release implementing new functionality, updating
-documentation, and fixing multiple minor issues, mostly in validation of
-supplied arguments.
+This release implements new functionality, an important bug fix, and various
+minor updates to documentation and other minor issues and changes.
 
 ## R CMD check results
 

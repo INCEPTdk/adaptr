@@ -66,8 +66,8 @@ rescale <- function(x) {
 #'
 #' @details
 #' MAD-SDs are scaled to correspond to SDs if distributions are normal,
-#' similarly to the [mad] function; see details regarding calculation in that
-#' function's description.
+#' similarly to the [stats::mad()] function; see details regarding calculation
+#' in that function's description.
 #'
 #' @return A numeric vector with four named elements: `est` (the median/mean),
 #'   `err` (the MAD-SD/SD), `lo` and `hi` (the lower and upper boundaries of the
@@ -94,21 +94,23 @@ summarise_dist <- function(x, robust = TRUE, interval_width = 0.95) {
 #'
 #' @param x a numeric vector.
 #'
-#' @return A numeric vector with five named elements: `mean`, `sd`, `median`,
-#'   `p25`, and `p75`, corresponding to the mean, standard deviation, median,
-#'   and 25-/75-percentiles.
+#' @return A numeric vector with seven named elements: `mean`, `sd`, `median`,
+#'   `p25`, `p75`, `p0`, and `p100` corresponding to the mean, standard
+#'   deviation, median, and 25-/75-/0-/100-percentiles.
 #'
 #' @importFrom stats quantile sd
 #'
 #' @keywords internal
 #'
 summarise_num <- function(x) {
-  ps <- quantile(x, probs = c(0.5, 0.25, 0.75), names = FALSE)
+  ps <- quantile(x, probs = c(0.5, 0.25, 0.75, 0, 1), names = FALSE)
   c(mean = mean(x),
     sd = sd(x),
     median = ps[1],
     p25 = ps[2],
-    p75 = ps[3])
+    p75 = ps[3],
+    p0 = ps[4],
+    p100 = ps[5])
 }
 
 
@@ -158,7 +160,7 @@ warning0 <- function(...) warning(..., call. = FALSE)
 #'   between which `x` should lie.
 #' @param open single character, determines whether `min_value` and `max_value`
 #'   are excluded or not. Valid values: `"no"` (= closed interval; `min_value`
-#'   and `max_value` included; default value), `"right"`, `"left"`, `"yes"```
+#'   and `max_value` included; default value), `"right"`, `"left"`, `"yes"`
 #'   (= open interval, `min_value` and `max_value` excluded).
 #'
 #' @return Single logical.
@@ -279,11 +281,12 @@ vapply_lgl <- function(X, FUN, ...) vapply(X, FUN, FUN.VALUE = logical(1), ...)
 #' Assert equivalent functions
 #'
 #' Used internally. Compares the definitions of two functions (ignoring
-#' environments, bytecodes, etc., by only comparing function bodies).
+#' environments, bytecodes, etc., by only comparing function arguments and
+#' bodies, using [deparse()]).
 #'
-#' @param fun1,fun2 names of functions (unquoted)
+#' @param fun1,fun2 functions to compare.
 #'
-#' @return single logical.
+#' @return Single logical.
 #'
 #' @keywords internal
 #'
@@ -294,4 +297,37 @@ equivalent_funs <- function(fun1, fun2) {
       deparse(fun2)
     )
   )
+}
+
+
+
+#' Find the index of value nearest to a target value
+#'
+#' Used internally, to find the index of the value in a vector nearest to a
+#' target value, possibly in a specific preferred direction.
+#'
+#' @param values numeric vector, the values considered.
+#' @param target single numeric value, the target to find the value closest to.
+#' @param dir single numeric value. If `0` (the default), finds the index of the
+#'   value closest to the target, regardless of the direction. If `< 0` or
+#'   `> 0`, finds the index of the value closest to the target, but only
+#'   considers values at or below/above target, respectfully, if any (otherwise
+#'   returns the closest value regardless of direction).
+#'
+#' @return Single integer, the index of the value closest to `target` according
+#'   to `dir`.
+#'
+#' @keywords internal
+#'
+which_nearest <- function(values, target, dir) {
+  # Nearest to target is the default and used if dir == 0 or as fall-back
+  idx <- which.min(abs(target - values))
+  if (dir != 0) {
+    diffs <- sign(dir) * (target - values)
+    if (sum(diffs <= 0) > 0) {
+      diffs[diffs > 0] <- -Inf
+      idx <- which.max(diffs)
+    }
+  }
+  idx
 }

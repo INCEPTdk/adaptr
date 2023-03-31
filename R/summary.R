@@ -17,12 +17,16 @@
 #'   \item `highest_is_best`: as specified in [setup_trial()].
 #'   \item `elapsed_time`: the total simulation time.
 #'   \item `size_mean`, `size_sd`, `size_median`, `size_p25`, `size_p75`,
-#'     `sum_ys_mean`, `sum_ys_sd`, `sum_ys_median`, `sum_ys_p25`, `sum_ys_p75`,
-#'     `ratio_ys_mean`, `ratio_ys_sd`, `ratio_ys_median`, `ratio_ys_p25`,
-#'     `ratio_ys_p75`, `prob_conclusive`, `prob_superior`, `prob_equivalence`,
-#'     `prob_futility`, `prob_max`, `prob_select_*` (with `*` being all `arm`
-#'     names), `rmse`, `rmse_te`, and `idp`: performance metrics as described in
-#'     [check_performance()].
+#'     `size_p0`, `size_p100`, `sum_ys_mean`, `sum_ys_sd`, `sum_ys_median`,
+#'     `sum_ys_p25`, `sum_ys_p75`, `sum_ys_p0`, `sum_ys_p100`, `ratio_ys_mean`,
+#'     `ratio_ys_sd`, `ratio_ys_median`, `ratio_ys_p25`, `ratio_ys_p75`,
+#'     `ratio_ys_p0`, `ratio_ys_p100`, `prob_conclusive`, `prob_superior`,
+#'     `prob_equivalence`, `prob_futility`, `prob_max`, `prob_select_*` (with
+#'     `*` being all `arm` names), `rmse`, `rmse_te`, and `idp`: performance
+#'     metrics as described in [check_performance()]. Note that all `sum_ys_`
+#'     and `ratio_ys_` measures uses outcome data from all randomised patients,
+#'    regardless of whether they had outcome data available at the last analysis
+#'    or not, as described in [extract_results()].
 #'   \item `select_strategy`, `select_last_arm`, `select_preferences`,
 #'     `te_comp`, `raw_ests`, `final_ests`, `restrict`: as specified above.
 #'   \item `control`: the control arm specified by [setup_trial()],
@@ -57,14 +61,18 @@
 #' @export
 #'
 #' @seealso
-#' [extract_results()], [check_performance()], [plot_convergence()].
+#' [extract_results()], [check_performance()], [plot_convergence()],
+#' [plot_metrics_ecdf()], [check_remaining_arms()].
 #'
 summary.trial_results <- function(object,
                                   select_strategy = "control if available",
                                   select_last_arm = FALSE,
-                                  select_preferences = NULL, te_comp = NULL,
-                                  raw_ests = FALSE, final_ests = NULL,
-                                  restrict = NULL, ...) {
+                                  select_preferences = NULL,
+                                  te_comp = NULL,
+                                  raw_ests = FALSE,
+                                  final_ests = NULL,
+                                  restrict = NULL,
+                                  cores = NULL, ...) {
 
   # Set final_ests
   if (is.null(final_ests)) {
@@ -77,7 +85,8 @@ summary.trial_results <- function(object,
                                    select_preferences = select_preferences,
                                    te_comp = te_comp,
                                    raw_ests = raw_ests, final_ests = final_ests,
-                                   restrict = restrict)
+                                   restrict = restrict,
+                                   cores = cores)
 
   # Prepare and return summary object
   performance_vec <- as.list(performance$est)

@@ -7,13 +7,14 @@
 equivalent_funs(fun1, fun2)
 }
 \arguments{
-\item{fun1, fun2}{names of functions (unquoted)}
+\item{fun1, fun2}{functions to compare.}
 }
 \value{
-single logical.
+Single logical.
 }
 \description{
 Used internally. Compares the definitions of two functions (ignoring
-environments, bytecodes, etc., by only comparing function bodies).
+environments, bytecodes, etc., by only comparing function arguments and
+bodies, using \code{\link[=deparse]{deparse()}}).
 }
 \keyword{internal}

@@ -132,21 +132,21 @@
       * Treatment effect compared to: no comparison
       
       Performance metrics (using posterior estimates from last adaptive analysis):
-      * Sample sizes: mean 680.0 (SD: 433.6) | median 500.0 (IQR: 400.0 to 800.0)
-      * Total summarised outcomes: mean 176.6 (SD: 115.0) | median 133.0 (IQR: 102.2 to 210.8)
-      * Total summarised outcome rates: mean 0.258 (SD: 0.015) | median 0.260 (IQR: 0.248 to 0.268)
-      * Conclusive: 95.0%
-      * Superiority: 5.0%
-      * Equivalence: 10.0%
-      * Futility: 80.0%
-      * Inconclusive at max sample size: 5.0%
-      * Selection probabilities: A: 0.0% | B: 5.0% | C: 5.0% | None: 90.0%
-      * RMSE: 0.02360
-      * RMSE treatment effect: 0.00487
-      * Ideal design percentage: 50.0%
+      * Sample sizes: mean 800.0 (SD: 432.9) | median 700.0 (IQR: 475.0 to 1100.0) [range: 300.0 to 1900.0]
+      * Total summarised outcomes: mean 206.8 (SD: 117.6) | median 183.5 (IQR: 117.0 to 271.8) [range: 69.0 to 523.0]
+      * Total summarised outcome rates: mean 0.257 (SD: 0.022) | median 0.253 (IQR: 0.238 to 0.277) [range: 0.228 to 0.295]
+      * Conclusive: 100.0%
+      * Superiority: 25.0%
+      * Equivalence: 0.0%
+      * Futility: 75.0%
+      * Inconclusive at max sample size: 0.0%
+      * Selection probabilities: A: 0.0% | B: 0.0% | C: 25.0% | None: 75.0%
+      * RMSE: 0.02621
+      * RMSE treatment effect: 0.02309
+      * Ideal design percentage: 100.0%
       
       Simulation details:
-      * Simulation time: 0.727 secs
+      * Simulation time: 0.83 secs
       * Base random seed: 12345
       * Credible interval width: 95%
       * Number of posterior draws: 5000
@@ -166,21 +166,21 @@
       * Treatment effect compared to: no comparison
       
       Performance metrics (using posterior estimates from last adaptive analysis):
-      * Sample sizes: mean 680.0 (SD: 433.6) | median 500.0 (IQR: 400.0 to 800.0)
-      * Total summarised outcomes: mean 176.6 (SD: 115.0) | median 133.0 (IQR: 102.2 to 210.8)
-      * Total summarised outcome rates: mean 0.258 (SD: 0.015) | median 0.260 (IQR: 0.248 to 0.268)
-      * Conclusive: 95.0%
-      * Superiority: 5.0%
-      * Equivalence: 10.0%
-      * Futility: 80.0%
-      * Inconclusive at max sample size: 5.0%
-      * Selection probabilities: A: 0.0% | B: 5.0% | C: 5.0% | None: 90.0%
-      * RMSE: 0.02360
-      * RMSE treatment effect: 0.00487
-      * Ideal design percentage: 50.0%
+      * Sample sizes: mean 800.0 (SD: 432.9) | median 700.0 (IQR: 475.0 to 1100.0) [range: 300.0 to 1900.0]
+      * Total summarised outcomes: mean 206.8 (SD: 117.6) | median 183.5 (IQR: 117.0 to 271.8) [range: 69.0 to 523.0]
+      * Total summarised outcome rates: mean 0.257 (SD: 0.022) | median 0.253 (IQR: 0.238 to 0.277) [range: 0.228 to 0.295]
+      * Conclusive: 100.0%
+      * Superiority: 25.0%
+      * Equivalence: 0.0%
+      * Futility: 75.0%
+      * Inconclusive at max sample size: 0.0%
+      * Selection probabilities: A: 0.0% | B: 0.0% | C: 25.0% | None: 75.0%
+      * RMSE: 0.02621
+      * RMSE treatment effect: 0.02309
+      * Ideal design percentage: 100.0%
       
       Simulation details:
-      * Simulation time: 0.727 secs
+      * Simulation time: 0.83 secs
       * Base random seed: 12345
       * Credible interval width: 95%
       * Number of posterior draws: 5000

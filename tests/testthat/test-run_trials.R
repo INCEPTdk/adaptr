@@ -1,4 +1,8 @@
 test_that("single trial simulation works", {
+  # Store seed - check that the entire process does not change it
+  set.seed(12345)
+  oldseed <- get(".Random.seed", envir = globalenv())
+
   setup <- read_testdata("binom__setup__3_arms__no_control__equivalence__softened")
   res <- read_testdata("binom__result__3_arms__no_control__equivalence__softened")
   expect_equal(run_trial(setup, seed = 12345, sparse = FALSE), res)
@@ -38,6 +42,9 @@ test_that("single trial simulation works", {
     futility_only_first = TRUE
   )
   expect_snapshot(run_trial(setup_equi_futil_only_first, seed = 12345))
+
+  # Check that seed is unchanged
+  expect_identical(oldseed, get(".Random.seed", envir = globalenv()))
 })
 
 test_that("Single trial simulation errors on invalid inputs", {
@@ -52,9 +59,17 @@ test_that("Single trial simulation errors on invalid inputs", {
 test_that("dispatch_trial_runs works", {
      setup <- read_testdata("binom__setup__3_arms__common_control__equivalence__futility__softened")
 
+     # Manage random seeds
+     old_rngkind <- RNGkind("L'Ecuyer-CMRG", "default", "default")
+     set.seed(12345)
+     seeds <- list(get(".Random.seed", envir = globalenv()))
+     for (i in 2:5) {
+       seeds[[i]] <- nextRNGStream(seeds[[i - 1]])
+     }
+
      # Serial run
      expect_snapshot(
-       dispatch_trial_runs(1:5, setup, base_seed = 12345, sparse = FALSE, cores = 1)
+       dispatch_trial_runs(1:5, setup, seeds = seeds, sparse = FALSE, cores = 1)
      )
 
      # Parallel run
@@ -62,14 +77,21 @@ test_that("dispatch_trial_runs works", {
      # explanation.
      cl <- parallel::makeCluster(2)
      on.exit(parallel::stopCluster(cl))
+     parallel::clusterEvalQ(cl, RNGkind("L'Ecuyer-CMRG", "default", "default"))
      if (check_cluster_version(cl)) {
        expect_snapshot(
-         dispatch_trial_runs(1:5, setup, base_seed = 12345, sparse = TRUE, cores = 2, cl = cl)
+         dispatch_trial_runs(1:5, setup, seeds = seeds, sparse = TRUE, cores = 2, cl = cl)
        )
      }
+
+     RNGkind(kind = old_rngkind[1], normal.kind = old_rngkind[2], sample.kind = old_rngkind[3])
 })
 
 test_that("Multiple trials simulation works", {
+  # Store seed - check that the entire process does not change it
+  set.seed(12345)
+  oldseed <- get(".Random.seed", envir = globalenv())
+
   setup <- read_testdata("binom__setup__3_arms__no_control__equivalence__softened")
   res <- run_trials(setup, n_rep = 20, base_seed = 12345, sparse = FALSE)
 
@@ -92,11 +114,14 @@ test_that("Multiple trials simulation works", {
 
   expect_equal(res, loaded_res)
   expect_equal(res, res_with_progress)
+
+  # Check that seed is unchanged
+  expect_identical(oldseed, get(".Random.seed", envir = globalenv()))
 })
 
 test_that("prog_breaks", {
-  expect_snapshot(prog_breaks(0.1, n_rep_new = 10, cores = 1))
-  expect_snapshot(prog_breaks(0.1, n_rep_new = 10, cores = 2))
+  expect_snapshot(prog_breaks(0.1, prev_n_rep = 10, n_rep_new = 20, cores = 1))
+  expect_snapshot(prog_breaks(0.1, prev_n_rep = 0, n_rep_new = 10, cores = 2))
 })
 
 # This test also uses extract_results, to avoid the issue mentioned at the top
@@ -106,7 +131,7 @@ test_that("Multiple trials simulation works on multiple cores", {
   expect_snapshot(extract_results(res)) # Avoid empty test
 
   # Tests only run conditionally, see check_cluster_version() function for
-  # explanation.
+  # explanation. This cluster is only used to check version of adaptr on the cluster
   cl <- parallel::makeCluster(2)
   on.exit(parallel::stopCluster(cl))
 
@@ -176,9 +201,10 @@ test_that("run_trials errors on invalid input", {
   # grow == TRUE and invalid file path
   expect_error(run_trials(setup, n_rep = 10, path = paste0(temp_res_file, ".error"), grow = TRUE))
 
-  # Invalid other values
+  # Other other values
   expect_error(run_trials(setup, n_rep = 10, base_seed = 0.3))
   expect_error(run_trials(setup, n_rep = 10, base_seed = 1, progress = 10))
+  expect_error(run_trials(setup, n_rep = 10, base_seed = 1, cores = 0:1))
 
 })
 

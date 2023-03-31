@@ -7,6 +7,7 @@ test_that("updating outdated trials objects works", {
 
   res <- read_testdata("binom__results__3_arms__no_control__equivalence__softened")
 
+  # Test v1.1.1 or before
   pseudo_old_res <- res
   pseudo_old_res$adaptr_version <- NULL # mimic what happened in adaptr until v1.1.1
 
@@ -24,4 +25,11 @@ test_that("updating outdated trials objects works", {
 
   saveRDS(1:10, tmp_file)
   expect_error(update_saved_trials(tmp_file))
+
+  # Test v1.2.0
+  pseudo_old_res <- res
+  pseudo_old_res$adaptr_version <- as.package_version("1.2.0")
+
+  saveRDS(pseudo_old_res, tmp_file)
+  expect_identical(update_saved_trials(tmp_file), res)
 })

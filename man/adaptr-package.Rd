@@ -14,35 +14,50 @@
 The \code{adaptr} package simulates adaptive (multi-arm, multi-stage) randomised
 clinical trials using adaptive stopping, adaptive arm dropping and/or
 response-adaptive randomisation. The package is developed as part of the
+The \code{adaptr} package simulates adaptive (multi-arm, multi-stage) randomised
+clinical trials using adaptive stopping, adaptive arm dropping and/or
+response-adaptive randomisation. The package is developed as part of the
 \href{https://incept.dk/}{INCEPT (Intensive Care Platform Trial) project},
 funded primarily by a grant from
 \href{https://www.sygeforsikring.dk/}{Sygeforsikringen "danmark"}.
 }
 \details{
-The \code{adaptr} package contains the following primary functions:
+The \code{adaptr} package contains the following primary functions (in order of
+typical use):
 \enumerate{
-\item \code{\link[=setup_trial]{setup_trial()}} is the general function that sets up a trial
+\item The \code{\link[=setup_cluster]{setup_cluster()}} initiates a parallel computation cluster that can
+be used to run simulations and post-processing in parallel, increasing speed.
+Details on parallelisation and other options for running \code{adaptr}
+functions in parallel are described in the \code{\link[=setup_cluster]{setup_cluster()}} documentation.
+\item The \code{\link[=setup_trial]{setup_trial()}} function is the general function that sets up a trial
 specification. The simpler, special-case functions \code{\link[=setup_trial_binom]{setup_trial_binom()}} and
 \code{\link[=setup_trial_norm]{setup_trial_norm()}} may be used for easier specification of trial designs
 using binary, binomially distributed or continuous, normally distributed
 outcomes, respectively, with some limitations in flexibility.
+\item The \code{\link[=calibrate_trial]{calibrate_trial()}} function calibrates a trial specification to
+obtain a certain value for a performance metric (typically used to calibrate
+the Bayesian type 1 error rate in a scenario with no between-arm
+differences), using the functions below.
 \item The \code{\link[=run_trial]{run_trial()}} and \code{\link[=run_trials]{run_trials()}} functions are used to conduct single
 or multiple simulations, respectively, according to a trial specification
-setup as described in #1.
+setup as described in #2.
 \item The \code{\link[=extract_results]{extract_results()}}, \code{\link[=check_performance]{check_performance()}} and \code{\link[=summary]{summary()}} functions
 are used to extract results from multiple trial simulations, calculate
 performance metrics, and summarise results. The \code{\link[=plot_convergence]{plot_convergence()}} function
 assesses stability of performance metrics according to the number of
-simulations conducted.
+simulations conducted. The \code{\link[=plot_metrics_ecdf]{plot_metrics_ecdf()}} function plots empirical
+cumulative distribution functions for numerical performance metrics. The
+\code{\link[=check_remaining_arms]{check_remaining_arms()}} function summarises all combinations of remaining
+arms across multiple trials simulations.
 \item The \code{\link[=plot_status]{plot_status()}} and \code{\link[=plot_history]{plot_history()}} functions are used to plot the
 overall trial/arm statuses for multiple simulated trials or the history of
 trial metrics over time for single/multiple simulated trials, respectively.
 }
 
-For further information see the function documentation or the \strong{Overview}
-vignette (\code{vignette("Overview", package = "adaptr")}) for an example of how
-the functions work in combination.
-For further examples and guidance on setting up trial specifications, see
+For further information see the documentation of each function or the
+\strong{Overview} vignette (\code{vignette("Overview", package = "adaptr")}) for an
+example of how the functions work in combination.
+For further examples and guidance on setting up trial specifications, see the
 \code{\link[=setup_trial]{setup_trial()}} documentation, the \strong{Basic examples} vignette
 (\code{vignette("Basic-examples", package = "adaptr")}) and the
 \strong{Advanced example} vignette
@@ -66,7 +81,9 @@ trials. J Clin Epidemiol. \doi{10.1016/j.jclinepi.2022.11.002}
 \href{https://github.com/INCEPTdk/adaptr/}{GitHub repository}
 }
 \seealso{
-\code{\link[=setup_trial]{setup_trial()}}, \code{\link[=setup_trial_binom]{setup_trial_binom()}}, \code{\link[=setup_trial_norm]{setup_trial_norm()}}, \code{\link[=run_trial]{run_trial()}},
-\code{\link[=run_trials]{run_trials()}}, \code{\link[=extract_results]{extract_results()}}, \code{\link[=check_performance]{check_performance()}}, \code{\link[=summary]{summary()}},
-\code{\link[=plot_convergence]{plot_convergence()}}, \code{\link[=print]{print()}}, \code{\link[=plot_status]{plot_status()}}, and \code{\link[=plot_history]{plot_history()}}.
+\code{\link[=setup_cluster]{setup_cluster()}}, \code{\link[=setup_trial]{setup_trial()}}, \code{\link[=setup_trial_binom]{setup_trial_binom()}},
+\code{\link[=setup_trial_norm]{setup_trial_norm()}}, \code{\link[=calibrate_trial]{calibrate_trial()}}, \code{\link[=run_trial]{run_trial()}}, \code{\link[=run_trials]{run_trials()}},
+\code{\link[=extract_results]{extract_results()}}, \code{\link[=check_performance]{check_performance()}}, \code{\link[=summary]{summary()}},
+\code{\link[=check_remaining_arms]{check_remaining_arms()}}, \code{\link[=plot_convergence]{plot_convergence()}}, \code{\link[=plot_metrics_ecdf]{plot_metrics_ecdf()}},
+\code{\link[=print]{print()}}, \code{\link[=plot_status]{plot_status()}}, \code{\link[=plot_history]{plot_history()}}.
 }

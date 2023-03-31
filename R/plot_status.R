@@ -5,12 +5,12 @@
 #'
 #' @inheritParams extract_results
 #' @inheritParams plot_history
-#' @param arm character string of one or more unique, valid `arm` names, `NA`,
-#'  or `NULL` (default). If `NULL`, the overall trial statuses are plotted,
+#' @param arm character vector containing one or more unique, valid `arm` names,
+#' `NA`, or `NULL` (default). If `NULL`, the overall trial statuses are plotted,
 #'  otherwise the specified arms or all arms (if `NA` is specified) are plotted.
-#' @param area list of styling settings for the area as per \pkg{ggplot2}
-#'   conventions (e.g., `alpha`, `size`). The default (`list(alpha = 0.5)`) sets
-#'   the transparency to 50% so overlain shaded areas are visible.
+#' @param area list of styling settings for the area as per `ggplot2`
+#'   conventions (e.g., `alpha`, `linewidth`). The default (`list(alpha = 0.5)`)
+#'   sets the transparency to 50% so overlain shaded areas are visible.
 #' @param nrow,ncol the number of rows and columns when plotting statuses for
 #'   multiple arms in the same plot (using faceting in `ggplot2`). Defaults to
 #'   `NULL`, in which case this will be determined automatically where relevant.
@@ -35,11 +35,13 @@
 #'   # Plot trial statuses at each look according to total allocations
 #'   plot_status(res_mult, x_value = "total n")
 #'
+#' }
+#'
+#' if (requireNamespace("ggplot2", quietly = TRUE)){
+#'
 #'   # Plot trial statuses for all arms
 #'   plot_status(res_mult, arm = NA)
 #'
-#'   # Do not return/print last plot in documentation
-#'   invisible(NULL)
 #' }
 #'
 #' @seealso
@@ -125,8 +127,8 @@ plot_status.trial_results <- function(object, x_value = "look", arm = NULL,
 #' Used internally. Extracts overall trial statuses or statuses from a single
 #' `arm` from multiple trial simulations. Works with *sparse* results.
 #'
-#' @param object `trial_results` object from [run_trials()].
 #' @inheritParams plot_status.trial_results
+#' @param object `trial_results` object from [run_trials()].
 #'
 #' @return A tidy `data.frame` (one row possible status per look) containing the
 #'   following columns:

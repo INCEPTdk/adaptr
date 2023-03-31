@@ -53,11 +53,11 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
               "or 'sqrt-based fixed', start_probs must be NULL.")
       }
       if (control_prob_fixed == "sqrt-based" | control_prob_fixed == "sqrt-based fixed") {
-        control_prob_fixed <- vapply_num(n_arms:2, function(x) sqrt(x-1)/(sqrt(x-1)+x-1))
+        control_prob_fixed <- vapply_num(n_arms:2, function(x) sqrt(x - 1) / (sqrt(x - 1) + x - 1))
       } else if (control_prob_fixed == "sqrt-based start") {
-        control_prob_fixed <- sqrt(n_arms-1)/(sqrt(n_arms-1)+n_arms-1)
+        control_prob_fixed <- sqrt(n_arms - 1) / (sqrt(n_arms - 1) + n_arms - 1)
       }
-      start_probs <- ifelse(arms == control, control_prob_fixed[1], 1/(sqrt(n_arms-1)+n_arms-1))
+      start_probs <- ifelse(arms == control, control_prob_fixed[1], 1 / (sqrt(n_arms - 1) + n_arms - 1))
       if (control_prob_fixed_orig == "sqrt-based fixed") {
         if (!is.null(fixed_probs)) {
           stop0("When control_prob_fixed is set to 'sqrt-based fixed', fixed_probs must be NULL.")
@@ -78,7 +78,7 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 
   # Equal initial allocation if start_probs is not specified or set above
   if (is.null(start_probs)) {
-    start_probs <- rep(1/length(arms), length(arms))
+    start_probs <- rep(1 / length(arms), length(arms))
   } else if(match) { # start_probs not null and 'match'
     if (!isTRUE(max(start_probs[!(arms %in% control)], na.rm = TRUE) == start_probs[which(arms %in% control)])) {
       stop0("If control_prob_fixed is set to 'match' and start_probs are specified, the control group starting ",
@@ -253,6 +253,10 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
     stop0("Invalid combination of inferiority/superiority thresholds - inferiority threshold(s) must be ",
           "lower than the corresponding superiority threshold(s) at all adaptive analyses.")
   }
+  if (any(inferiority >= (1 / n_arms)) & is.null(control)) {
+    stop0("All inferiority thresholds must be less than 1 divided by the number of arms when a ",
+          "common control group is not used.")
+  }
 
   # Check that highest_is_best is correct
   if (!(is.logical(highest_is_best) & length(highest_is_best) == 1)) {
@@ -265,8 +269,8 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
       stop0("Either equivalence_prob or equivalence_diff is specified - both need to be specified at the same time.")
     }
     if (!(length(equivalence_prob) %in% c(1, n_data_looks)) | !all(is.numeric(equivalence_prob)) | any(equivalence_prob <= 0) |
-        any(equivalence_prob >= 1) | any(equivalence_prob != cummin(equivalence_prob))) {
-      stop0("equivalence_prob must be a single numeric value > 0 and < 1 or a numeric vector of the same length ",
+        any(equivalence_prob > 1) | any(equivalence_prob != cummin(equivalence_prob))) {
+      stop0("equivalence_prob must be a single numeric value > 0 and <= 1 or a numeric vector of the same length ",
             "as the maximum possible number of adaptive analyses, with all values > 0 and < 1 and no values ",
             "higher than the previous value.")
     }
@@ -295,8 +299,8 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
       stop0("Valid values for futility_prob, futility_diff and futility_only_first must all be specified for futility assessment.")
     }
     if (!(length(futility_prob) %in% c(1, n_data_looks)) | !all(is.numeric(futility_prob)) | any(futility_prob <= 0) |
-        any(futility_prob >= 1) | any(futility_prob != cummin(futility_prob))) {
-      stop0("futility_prob must be a single numeric value > 0 and < 1 or a numeric vector of the same length ",
+        any(futility_prob > 1) | any(futility_prob != cummin(futility_prob))) {
+      stop0("futility_prob must be a single numeric value > 0 and <= 1 or a numeric vector of the same length ",
             "as the maximum possible number of adaptive analyses, with all values > 0 and < 1 and no values ",
             "higher than the previous value.")
     }
@@ -321,10 +325,6 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 
   # Get best arm(s)
   best_arm <- arms[true_ys == ifelse(highest_is_best, max(true_ys), min(true_ys))]
-  if (length(best_arm) > 1) {
-    message(paste0("Notice: trial specification does not contain a single superior arm -", "
-                   multiple arms have the best value in true_ys: ", paste0(best_arm, collapse = ", ")))
-  }
 
   # Validate Bayesian settings
   if (isTRUE(is.null(cri_width) | is.na(cri_width) | !is.numeric(cri_width) | cri_width >= 1 | cri_width < 0) | length(cri_width) != 1) {
@@ -337,6 +337,12 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
   }
   if (isTRUE(!is.logical(robust) | is.na(robust)) | length(robust) != 1) {
     stop0("robust must be either TRUE or FALSE.")
+  }
+
+  # Ensure that global random seed is not affected by function validation below
+  if (exists(".Random.seed", envir = globalenv(), inherits = FALSE)) {
+    oldseed <- get(".Random.seed", envir = globalenv(), inherits = FALSE)
+    on.exit(assign(".Random.seed", value = oldseed, envir = globalenv(), inherits = FALSE), add = TRUE, after = FALSE)
   }
 
   # Validate outcome generator function
@@ -435,10 +441,12 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' Setup a generic trial specification
 #'
 #' Specifies the design of an adaptive trial with any type of outcome and
-#' validates all inputs. Use [run_trial()] or [run_trials()] to conduct
-#' single/multiple simulations of the specified trial, respectively.\cr
-#' See [setup_trial_binom()] and [setup_trial_norm()] for simplified setup of
-#' trial designs common outcome types. For additional trial specification
+#' validates all inputs. Use [calibrate_trial()] to calibrate the trial
+#' specification to obtain a specific value for a certain performance metric
+#' (e.g., the Bayesian type 1 error rate). Use [run_trial()] or [run_trials()]
+#' to conduct single/multiple simulations of the specified trial, respectively.
+#' \cr See [setup_trial_binom()] and [setup_trial_norm()] for simplified setup
+#' of trial designs for common outcome types. For additional trial specification
 #' examples, see the the **Basic examples** vignette
 #' (`vignette("Basic-examples", package = "adaptr")`) and the
 #' **Advanced example** vignette
@@ -449,38 +457,39 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' @param true_ys numeric vector specifying true outcomes (e.g., event
 #'   probabilities, mean values, etc.) for all trial `arms`.
 #' @param fun_y_gen function, generates outcomes. See [setup_trial()]
-#'   **Details**
-#'   for information on how to specify this function.\cr
-#'   **Note:** this function is called once during setup to validate the output
-#'   structure.
+#'   **Details** for information on how to specify this function.\cr
+#'   **Note:** this function is called once during setup to validate its output
+#'   (with the global random seed restored afterwards).
 #' @param fun_draws function, generates posterior draws. See [setup_trial()]
 #'   **Details** for information on how to specify this function.\cr
 #'   **Note:** this function is called up to three times during setup to
-#'   validate the output structure.
+#'   validate its output (with the global random seed restored afterwards).
 #' @param start_probs numeric vector, allocation probabilities for each arm at
-#'   the beginning of the trial. The default (`NULL`) is automatically
-#'   changed to equal randomisation.
+#'   the beginning of the trial. The default (`NULL`) automatically generates
+#'   equal randomisation probabilities for each arm.
 #' @param fixed_probs numeric vector, fixed allocation probabilities for each
-#'   arm - must be either a numeric vector with `NA` for arms without fixed
+#'   arm. Must be either a numeric vector with `NA` for arms without fixed
 #'   probabilities and values between `0` and `1` for the other arms or `NULL`
 #'   (default), if adaptive randomisation is used for all arms or if one of the
 #'   special settings (`"sqrt-based"`, `"sqrt-based start"`,
 #'   `"sqrt-based fixed"`, or `"match"`) is specified for `control_prob_fixed`
 #'   (described below).
 #' @param min_probs numeric vector, lower threshold for adaptive allocation
-#'   probabilities, lower probabilities will be rounded up to these values. Must
-#'   be `NA` (default for all arms) if no boundary is wanted.
+#'   probabilities; lower probabilities will be rounded up to these values. Must
+#'   be `NA` (default for all arms) if no lower threshold is wanted and for arms
+#'   using fixed allocation probabilities.
 #' @param max_probs numeric vector, upper threshold for adaptive allocation
-#'   probabilities, higher probabilities will be rounded down to these values.
-#'   Must be `NA` (default for all arms) if no boundary is wanted.
+#'   probabilities; higher probabilities will be rounded down to these values.
+#'   Must be `NA` (default for all arms) if no threshold is wanted and for arms
+#'   using fixed allocation probabilities.
 #' @param data_looks vector of increasing integers, specifies when to conduct
 #'   adaptive analyses (= the total number of patients with available outcome
 #'   data at each adaptive analysis). The last number in the vector represents
 #'   the final adaptive analysis, i.e., the final analysis where superiority,
 #'   inferiority, practical equivalence, or futility can be claimed.
 #'   Instead of specifying `data_looks`, the `max_n` and `look_after_every`
-#'   arguments can be used in combination (then `data_looks` must be `NULL`,
-#'   the default).
+#'   arguments can be used in combination (in which case `data_looks` must be
+#'   `NULL`, the default value).
 #' @param max_n single integer, number of patients with available outcome data
 #'   at the last possible adaptive analysis (defaults to `NULL`).
 #'   Must only be specified if `data_looks` is `NULL`. Requires specification of
@@ -492,7 +501,8 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #'   `look_after_every`). If specified, `data_looks` must be `NULL` (default).
 #' @param randomised_at_looks vector of increasing integers or `NULL`,
 #'   specifying the number of patients randomised at the time of each adaptive
-#'   analysis using the current allocation probabilities at said analysis.
+#'   analysis, with new patients randomised using the current allocation
+#'   probabilities at said analysis.
 #'   If `NULL` (the default), the number of patients randomised at each analysis
 #'   will match the number of patients with available outcome data at said
 #'   analysis, as specified by `data_looks` or `max_n` and `look_after_every`,
@@ -506,21 +516,23 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #'   (default). If specified, this arm will serve as a common control arm, to
 #'   which all other arms will be compared and the
 #'   inferiority/superiority/equivalence thresholds (see below) will be for
-#'   those comparisons. See [setup_trial()] **Details** below for information on
+#'   those comparisons. See [setup_trial()] **Details** for information on
 #'   behaviour with respect to these comparisons.
-#' @param control_prob_fixed if a common `control` arm is specified, this must
-#'   be set to either `NULL` (the default), in which case the control arm
-#'   allocation probability will not be fixed if control arms change (the
-#'   allocation probability to the first control arm may still be fixed using
-#'   `fixed_probs`) Otherwise a vector of probabilities of either length `1` or
-#'   `number of arms - 1` can be provided, or one of the special arguments
-#'   `"sqrt-based"`, `"sqrt-based start"`, `"sqrt-based fixed"` or `"match"`.
-#'   See [setup_trial()] **Details** below for details in behaviour.
+#' @param control_prob_fixed if a common `control` arm is specified, this can
+#'   be set `NULL` (the default), in which case the control arm allocation
+#'   probability will not be fixed if control arms change (the allocation
+#'   probability for the first control arm may still be fixed using
+#'   `fixed_probs`). If not `NULL`, a vector of probabilities of either length
+#'   `1` or `number of arms - 1` can be provided, or one of the special
+#'   arguments `"sqrt-based"`, `"sqrt-based start"`, `"sqrt-based fixed"` or
+#'   `"match"`. See [setup_trial()] **Details** for details on how this affects
+#'   trial behaviour.
 #' @param inferiority single numeric value or vector of numeric values of the
 #'   same length as the maximum number of possible adaptive analyses, specifying
 #'   the probability threshold(s) for inferiority (default is `0.01`). All
 #'   values must be `>= 0` and `<= 1`, and if multiple values are supplied, no
-#'   values may be lower than the preceding value. An arm will be considered
+#'   values may be lower than the preceding value. If a common `control`is not
+#'   used, all values must be `< 1 / number of arms`. An arm will be considered
 #'   inferior and dropped if the probability that it is best (when comparing all
 #'   arms) or better than the control arm (when a common `control` is used)
 #'   drops below the inferiority threshold at an adaptive analysis.
@@ -538,37 +550,39 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' @param equivalence_prob single numeric value, vector of numeric values of the
 #'   same length as the maximum number of possible adaptive analyses or `NULL`
 #'   (default, corresponding to no equivalence assessment), specifying the
-#'   probability threshold(s) for equivalence. All values must be `> 0` and
-#'   `< 1`, and if multiple values are supplied, no values may be higher than
-#'   the preceding value. If not `NULL`, arms will be dropped for equivalence if
-#'   the probability of either *(a)* equivalence compared to a common `control`
-#'   or *(b)* equivalence between all arms remaining (designs without a common
-#'   `control`) exceeds the equivalence threshold at an adaptive analysis.
-#'   Requires specification of `equivalence_diff`, and `equivalence_only_first`.
+#'   probability threshold(s) for equivalence. If not `NULL`, all values must be
+#'   `> 0` and `<= 1`, and if multiple values are supplied, no value may be
+#'   higher than the preceding value. If not `NULL`, arms will be dropped for
+#'   equivalence if the probability of either *(a)* equivalence compared to a
+#'   common `control` or *(b)* equivalence between all arms remaining (designs
+#'   without a common `control`) exceeds the equivalence threshold at an
+#'   adaptive analysis. Requires specification of `equivalence_diff` and
+#'   `equivalence_only_first`.
 #' @param equivalence_diff single numeric value (`> 0`) or `NULL` (default,
 #'   corresponding to no equivalence assessment). If a numeric value is
-#'   specified, estimated differences below this threshold will be considered
-#'   equivalent when assessing equivalence. For designs with a common `control`
-#'   arm, the differences between each non-control arm and the `control` arm is
-#'   used, and for trials without a common `control` arm, the difference between
-#'   the highest and lowest estimated outcome rates are used and the trial is
-#'   only stopped for equivalence if all remaining arms are thus equivalent.
+#'   specified, estimated absolute differences smaller than this threshold will
+#'   be considered equivalent. For designs with a common `control` arm, the
+#'   differences between each non-control arm and the `control` arm is used, and
+#'   for trials without a common `control` arm, the difference between the
+#'   highest and lowest estimated outcome rates are used and the trial is only
+#'   stopped for equivalence if all remaining arms are equivalent.
 #' @param equivalence_only_first single logical in trial specifications where
-#'   `equivalence_prob` and `equivalence_diff` are specified, otherwise `NULL`
-#'   (default). Must be `NULL` for designs without a common control arm. If a
-#'   common `control` arm is used, this specifies whether equivalence will only
-#'   be assessed for the first control (if `TRUE`) or also for subsequent
-#'   control arms (if `FALSE`) if one arm is superior to the first control and
-#'   becomes the new control.
+#'   `equivalence_prob` and `equivalence_diff` are specified and a common
+#'   `control` arm is included, otherwise `NULL` (default). If a common
+#'   `control` arm is used, this specifies whether equivalence will only be
+#'   assessed for the first control (if `TRUE`) or also for subsequent `control`
+#'   arms (if `FALSE`) if one arm is superior to the first control and becomes
+#'   the new control.
 #' @param futility_prob single numeric value, vector of numeric values of the
 #'   same length as the maximum number of possible adaptive analyses or `NULL`
 #'   (default, corresponding to no futility assessment), specifying the
-#'   probability threshold(s) for futility. All values must be `> 0` and `< 1`,
-#'   and if multiple values are supplied, no values may be higher than
-#'   the preceding value. If not `NULL`, arms will be dropped for futility if
+#'   probability threshold(s) for futility. All values must be `> 0` and `<= 1`,
+#'   and if multiple values are supplied, no value may be higher than the
+#'   preceding value. If not `NULL`, arms will be dropped for futility if
 #'   the probability for futility compared to the common `control` exceeds the
 #'   futility threshold at an adaptive analysis. Requires a common `control`
-#'   arm, specification of `futility_diff`, and `futility_only_first`.
+#'   arm (otherwise this argument must be `NULL`), specification of
+#'   `futility_diff`, and `futility_only_first`.
 #' @param futility_diff single numeric value (`> 0`) or `NULL` (default,
 #'   corresponding to no futility assessment). If a numeric value is specified,
 #'   estimated differences below this threshold in the *beneficial* direction
@@ -577,8 +591,8 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #'   remains after dropping arms for futility, the trial will be stopped without
 #'   declaring the last arm superior.
 #' @param futility_only_first single logical in trial specifications designs
-#'   where `futility_prob` and `futility_diff` are specified, otherwise `NULL
-#'   (default). Must be `NULL` for designs without a common `control` arm.
+#'   where `futility_prob` and `futility_diff` are specified, otherwise `NULL`
+#'   (default and required in designs without a common `control` arm).
 #'   Specifies whether futility will only be assessed against the first
 #'   `control` (if `TRUE`) or also for subsequent control arms (if `FALSE`) if
 #'   one arm is superior to the first control and becomes the new control.
@@ -589,10 +603,11 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' @param soften_power either a single numeric value or a numeric vector of
 #'   exactly the same length as the maximum number of looks/adaptive analyses.
 #'   Values must be between `0` and `1` (default); if `< 1`, then re-allocated
-#'   non-fixed allocation probabilities are all raised to this power to make
-#'   allocation probabilities less extreme, in turn used to redistribute
-#'   remaining probability while respecting limits when defined by `min_probs`
-#'   and/or `max_probs`. If `1`, then no *softening* is applied.
+#'   non-fixed allocation probabilities are all raised to this power (followed
+#'   by rescaling to sum to `1`) to make adaptive allocation probabilities
+#'   less extreme, in turn used to redistribute remaining probability while
+#'   respecting limits when defined by `min_probs` and/or `max_probs`. If `1`,
+#'   then no *softening* is applied.
 #' @param fun_raw_est function that takes a numeric vector and returns a
 #'   single numeric value, used to calculate a raw summary estimate of the
 #'   outcomes in each `arm`. Defaults to [mean()], which is always used in the
@@ -603,17 +618,17 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #'   percentile-based credible intervals used when summarising individual trial
 #'   results. Defaults to `0.95`, corresponding to 95% credible intervals.
 #' @param n_draws single integer, the number of draws from the posterior
-#'   distributions (for each arm) used when running the trial. Defaults to
+#'   distributions for each arm used when running the trial. Defaults to
 #'   `5000`; can be reduced for a speed gain (at the potential loss of stability
-#'   of results if too low) or increased for increased precision (takes longer).
-#'   Values `< 100` are not allowed and values `< 1000` are not recommended
-#'   and warned against.
+#'   of results if too low) or increased for increased precision (increasing
+#'   simulation time). Values `< 100` are not allowed and values `< 1000` are
+#'   not recommended and warned against.
 #' @param robust single logical, if `TRUE` (default) the medians and median
 #'   absolute deviations (scaled to be comparable to the standard deviation for
-#'   normal distributions; MAD_SDs) are used to summarise the posterior
-#'   distributions; if `FALSE`, the means and standard deviations (SDs) are used
-#'   instead (slightly faster, but may be less appropriate for posteriors skewed
-#'   on the natural scale).
+#'   normal distributions; MAD_SDs, see [stats::mad()]) are used to summarise
+#'   the posterior distributions; if `FALSE`, the means and standard deviations
+#'   (SDs) are used instead (slightly faster, but may be less appropriate for
+#'   posteriors skewed on the natural scale).
 #' @param description optional single character string describing the trial
 #'   design, will only be used in print functions if not `NULL` (the default).
 #' @param add_info optional single string containing additional information
@@ -624,7 +639,7 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #'
 #' \strong{How to specify the `fun_y_gen` function}
 #'
-#' The function must take the following inputs:
+#' The function must take the following arguments:
 #' - `allocs`: character vector, the trial `arms` that new patients allocated
 #' since the last adaptive analysis are randomised to.
 #'
@@ -637,23 +652,23 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #'
 #' \strong{How to specify the `fun_draws` function}
 #'
-#' The function must take the following inputs:
-#' - `arms`: character vector, the unique trial arms, in the same order as
-#' above, but only the **currently active** arms are specified when the function is
-#' called.
+#' The function must take the following arguments:
+#' - `arms`: character vector, the unique trial `arms`, in the same order as
+#' above, but only the **currently active** arms are included when the function
+#' is called.
 #' - `allocs`: a vector of allocations for all patients, corresponding to the
-#' trial arms, including patients allocated to **currently inactive** `arms` when
-#' called,
+#' trial `arms`, including patients allocated to both
+#' **currently active AND inactive** `arms` when called.
 #' - `ys`: a vector of outcomes for all patients in the same order as `allocs`,
-#' including outcomes for patients allocated to **currently inactive** `arms`
-#' when called.
-#' - `control`: single character, the current `control arm`, will be `NULL` for
+#' including outcomes for patients allocated to both
+#' **currently active AND inactive** `arms` when called.
+#' - `control`: single character, the current `control` arm, will be `NULL` for
 #' designs without a common control arm, but required regardless as the argument
 #' is supplied by [run_trial()]/[run_trials()].
 #' - `n_draws`: single integer, the number of posterior draws for each arm.
 #'
-#' The function must return a `matrix` (with numeric values) with `arms` columns
-#' and `n_draws` rows. The `matrix` must have columns
+#' The function must return a `matrix` (containing numeric values) with `arms`
+#' named columns and `n_draws` rows. The `matrix` must have columns
 #' **only for currently active arms** (when called). Each row should contain a
 #' single posterior draw for each arm on the original outcome
 #' scale: if they are estimated as, e.g., the *log(odds)*, these estimates must
@@ -670,30 +685,31 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' complex functions will lead to slower simulations compared to simpler
 #' methods for obtaining posterior draws, including those specified using the
 #' [setup_trial_binom()] and [setup_trial_norm()] functions.
-#' - Technically, using log relative effect measures — e.g. log(odds ratio) or
+#' - Technically, using log relative effect measures — e.g. log(odds ratios) or
 #' log(risk ratios) - or differences compared to a reference arm (e.g., mean
 #' differences or absolute risk differences) instead of absolute values in each
 #' arm will work to some extent (**be cautious!**):
 #' - Stopping for superiority/inferiority/max sample sizes will work.
 #' - Stopping for equivalence/futility may be used with relative effect
-#' measures on the log scale.
+#' measures on the log scale, but thresholds have to be adjusted accordingly.
 #' - Several summary statistics from [run_trial()] (`sum_ys` and posterior
 #' estimates) may be nonsensical if relative effect measures are used
-#' (depending on calculation method).
+#' (depending on calculation method; see the `raw_ests` argument in the
+#' relevant functions).
 #' - In the same vein, [extract_results()] (`sum_ys`, `sq_err`, and
-#' `sq_err_te`), and [summary()] (`sum_ys_mean/sd/median/q25/q75`, `rmse`,
-#' `rmse_te` and `idp`) may be equally nonsensical when calculated on the
-#' relative scale.
+#' `sq_err_te`), and [summary()] (`sum_ys_mean/sd/median/q25/q75/q0/q100`,
+#' `rmse`, and `rmse_te`) may be equally nonsensical when calculated on
+#' the relative scale (see the `raw_ests` argument in the relevant functions.
 #'
 #' \strong{Using additional custom or functions from loaded packages in the
 #' custom functions}
+#'
 #' If the `fun_y_gen`, `fun_draws`, or `fun_raw_est` functions calls other
 #' user-specified functions (or uses objects defined by the user outside these
 #' functions or the [setup_trial()]-call) or functions from external packages
 #' and simulations are conducted on multiple cores, these objects or functions
 #' must be exported or prefixed with their namespaces, respectively, as
-#' described in [run_trials()].
-#'
+#' described in [setup_cluster()] and [run_trials()].
 #'
 #' \strong{More information on arguments}
 #' - `control`: if one or more treatment arms are superior to the control arm
@@ -711,7 +727,7 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' arm has been dropped, and so forth. If 1 or more values are specified,
 #' previously set `fixed_probs`, `min_probs` or `max_probs` for new control arms
 #' will be ignored. If all allocation probabilities do not sum to 1 (e.g, due to
-#' multiple limits) they will be re-scaled to do so.\cr
+#' multiple limits) they will be rescaled to do so.\cr
 #' Can also be set to one of the special arguments `"sqrt-based"`,
 #' `"sqrt-based start"`, `"sqrt-based fixed"` or `"match"` (written exactly as
 #' one of those, case sensitive). This requires `start_probs` to be `NULL` and
@@ -721,18 +737,19 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' allocation probabilities. These are defined as:\cr
 #' `square root of number of non-control arms to 1-ratio for other arms`\cr
 #' scaled to sum to 1, which will generally increase power for comparisons
-#' against the common control, as discussed in, e.g., *Park et al, 2020*
+#' against the common `control`, as discussed in, e.g., *Park et al, 2020*
 #' \doi{10.1016/j.jclinepi.2020.04.025}.\cr
 #' If `"sqrt-based"`, square-root-transformation-based allocation probabilities
 #' will also be used for new controls when arms are dropped. If
 #' `"sqrt-based start"`, the control arm will be fixed to this allocation
-#' probability at all times (also after arm dropping, with re-scaling as
+#' probability at all times (also after arm dropping, with rescaling as
 #' necessary, as specified above). If `"sqrt-based fixed"` is chosen,
 #' square-root-transformation-based allocation probabilities will be used and
 #' all allocation probabilities will be fixed throughout the trial (with
-#' re-scaling when arms are dropped).\cr
-#' If `"match"` is specified, the control group allocation will always be
-#' *matched* to be similar to the highest non-control arm allocation ratio.
+#' rescaling when arms are dropped).\cr
+#' If `"match"` is specified, the control group allocation probability will
+#' always be *matched* to be similar to the highest non-control arm allocation
+#' probability.
 #'
 #' \strong{Superiority and inferiority}
 #'
@@ -740,7 +757,7 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' are assessed by comparing all ***currently active*** groups. This means that
 #' if a "final" analysis of a trial without a common control and `> 2 arms` is
 #' conducted including all arms (as will often be done in practice) *after* an
-#' adaptive trial have stopped, the final probabilities of the best arm being
+#' adaptive trial has stopped, the final probabilities of the best arm being
 #' superior may differ slightly.\cr
 #' For example, in a trial with three arms and no common `control` arm, one arm
 #' may be dropped early for inferiority defined as `< 1%` probability of being
@@ -749,23 +766,25 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' `> 99%` probability of being the overall best `arm`. If a final analysis is
 #' then conducted including all arms, the final probability of the best arm
 #' being overall superior will generally be slightly lower as the probability
-#' of the first dropped arm being the best will generally be `> 0%`, even if
-#' very low and below the inferiority threshold.\cr
-#' This is not relevant trial designs *with* a common `control`, as pairwise
+#' of the first dropped arm being the best will often be `> 0%`, even if very
+#' low and below the inferiority threshold.\cr
+#' This is less relevant trial designs *with* a common `control`, as pairwise
 #' assessments of superiority/inferiority compared to the common `control` will
 #' not be influenced similarly by previously dropped arms (and previously
 #' dropped arms may be included in the analyses, even if posterior distributions
 #' are not returned for those).
-#' Similarly, in actual clinical trials, final probabilities may change slightly
-#' as the most recently randomised patients will generally not have outcome data
-#' available at the final adaptive analysis where the trial is stopped.
+#' Similarly, in actual clinical trials and when `randomised_at_looks` is
+#' specified with numbers higher than the number of patients with available
+#' outcome data at each analysis, final probabilities may change somewhat when
+#' the all patients are have completed follow-up and are included in a final
+#' analysis.
 #'
 #' \strong{Equivalence}
 #'
-#' Equivalence is assessed ***after*** both inferiority and
-#' superiority have been assessed (and in case of superiority, it will be
-#' assessed against the new `control` arm in designs with a common `control`, if
-#' specified - see above).
+#' Equivalence is assessed ***after*** both inferiority and superiority have
+#' been assessed (and in case of superiority, it will be assessed against the
+#' new `control` arm in designs with a common `control`, if specified - see
+#' above).
 #'
 #' \strong{Futility}
 #'
@@ -779,16 +798,18 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #'
 #' Different probability thresholds (for superiority, inferiority, equivalence,
 #' and futility) may be specified for different adaptive analyses. This may be
-#' used, e.g., to apply more strict probability thresholds at earlier analyses,
-#' similar to the use of alpha-spending functions in conventional,
-#' frequentist group sequential trial designs. See the **Basic examples**
-#' vignette (`vignette("Basic-examples", package = "adaptr")`) for an example.
+#' used, e.g., to apply more strict probability thresholds at earlier analyses
+#' (or make one or more stopping rules not apply at earlier analyses), similar
+#' to the use of monitoring boundaries with different thresholds used for
+#' interim analyses in conventional, frequentist group sequential trial designs.
+#' See the **Basic examples** vignette
+#' (`vignette("Basic-examples", package = "adaptr")`) for an example.
 #'
 #' @return A `trial_spec` object used to run simulations by [run_trial()] or
 #'   [run_trials()]. The output is essentially a list containing the input
 #'   values (some combined in a `data.frame` called `trial_arms`), but its class
 #'   signals that these inputs have been validated and inappropriate
-#'   combinations and settings have been ruled out. Also contains `best_arm`
+#'   combinations and settings have been ruled out. Also contains `best_arm`,
 #'   holding the arm(s) with the best value(s) in `true_ys`. Use `str()` to
 #'   peruse the actual content of the returned object.
 #'
@@ -843,7 +864,7 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #'   max_n = 5000,
 #'   look_after_every = 200,
 #'   control = "Control",
-#'   # Qquare-root-based, fixed control group allocation ratio
+#'   # Square-root-based, fixed control group allocation ratio
 #'   # and response-adaptive randomisation for other arms
 #'   control_prob_fixed = "sqrt-based",
 #'   # Equivalence assessment
@@ -904,13 +925,16 @@ setup_trial <- function(arms, true_ys, fun_y_gen = NULL, fun_draws = NULL,
 #' Specifies the design of an adaptive trial with a binary, binomially
 #' distributed outcome and validates all inputs. Uses *beta-binomial*
 #' conjugate models with `beta(1, 1)` prior distributions, corresponding to a
-#' uniform prior (or the addition of 2 patients, 1 with an event and 1 without)
-#' to the trial. Use [run_trial()] or [run_trials()] to conduct single/multiple
-#' simulations of the specified trial, respectively.\cr
+#' uniform prior (or the addition of 2 patients, 1 with an event and 1 without,
+#' in each `arm`) to the trial. Use [calibrate_trial()] to calibrate the trial
+#' specification to obtain a specific value for a certain performance metric
+#' (e.g., the Bayesian type 1 error rate). Use [run_trial()] or [run_trials()]
+#' to conduct single/multiple simulations of the specified trial, respectively.
+#' \cr
 #' **Note:** `add_info` as specified in [setup_trial()] is set to `NULL` for
 #' trial specifications setup by this function.\cr
 #' **Further details:** please see [setup_trial()]. See [setup_trial_norm()] for
-#' simplified setup of trials with normally distributed continuous outcomes.\cr
+#' simplified setup of trials with a normally distributed continuous outcome.\cr
 #' For additional trial specification examples, see the the **Basic examples**
 #' vignette (`vignette("Basic-examples", package = "adaptr")`) and the
 #' **Advanced example** vignette
@@ -928,7 +952,8 @@ setup_trial <- function(arms, true_ys, fun_y_gen = NULL, fun_draws = NULL,
 #' @export
 #'
 #' @examples
-#' # Setup a trial specification a binary, binomially distributed, undesirable outcome
+#' # Setup a trial specification using a binary, binomially
+#' # distributed, undesirable outcome
 #' binom_trial <- setup_trial_binom(
 #'   arms = c("Arm A", "Arm B", "Arm C"),
 #'   true_ys = c(0.25, 0.20, 0.30),
@@ -936,7 +961,7 @@ setup_trial <- function(arms, true_ys, fun_y_gen = NULL, fun_draws = NULL,
 #'   min_probs = rep(0.15, 3),
 #'   data_looks = seq(from = 300, to = 2000, by = 100),
 #'   # Stop for equivalence if > 90% probability of
-#'   # differences < 5 percentage points
+#'   # absolute differences < 5 percentage points
 #'   equivalence_prob = 0.9,
 #'   equivalence_diff = 0.05,
 #'   soften_power = 0.5 # Limit extreme allocation ratios
@@ -1008,9 +1033,11 @@ setup_trial_binom <- function(arms, true_ys, start_probs = NULL,
 #' posterior distributions for the mean values in each
 #' trial arm; technically, no priors are used (as using *normal-normal*
 #' conjugate prior models with extremely wide or uniform priors gives similar
-#' results for these simple, unadjusted estimates). Technically, this thus
-#' corresponds to using improper, flat priors, although not explicitly specified
-#' as such. Use [run_trial()] or [run_trials()] to conduct single/multiple
+#' results for these simple, unadjusted estimates). This corresponds to the use
+#' of improper, flat priors, although not explicitly specified as such. Use
+#' [calibrate_trial()] to calibrate the trial specification to obtain a specific
+#' value for a certain performance metric (e.g., the Bayesian type 1 error
+#' rate). Use [run_trial()] or [run_trials()] to conduct single/multiple
 #' simulations of the specified trial, respectively.\cr
 #' **Note:** `add_info` as specified in [setup_trial()] is set to the arms and
 #' standard deviations used for trials specified using this function.\cr
@@ -1026,7 +1053,7 @@ setup_trial_binom <- function(arms, true_ys, start_probs = NULL,
 #' @inheritParams setup_trial
 #' @param true_ys numeric vector, simulated means of the outcome in all trial
 #'   `arms`.
-#' @param sds numeric vector, true standard deviations (must be > 0) of the
+#' @param sds numeric vector, true standard deviations (must be `> 0`) of the
 #'   outcome in all trial `arms`.
 #' @param description character string, default is
 #' `"generic normally distributed outcome trial"`. See arguments of

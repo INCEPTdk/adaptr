@@ -10,7 +10,7 @@ run_trials(
   path = NULL,
   overwrite = FALSE,
   grow = FALSE,
-  cores = 1,
+  cores = NULL,
   base_seed = NULL,
   sparse = TRUE,
   progress = NULL,
@@ -26,30 +26,37 @@ run_trials(
 
 \item{n_rep}{single integer; the number of simulations to run.}
 
-\item{path}{single character; if specified (defaults to \code{NULL}), files will
-be written to and  loaded from this path using the \code{\link[=saveRDS]{saveRDS()}} /
+\item{path}{single character string; if specified (defaults to \code{NULL}), files
+will be written to and  loaded from this path using the \code{\link[=saveRDS]{saveRDS()}} /
 \code{\link[=readRDS]{readRDS()}} functions.}
 
 \item{overwrite}{single logical; defaults to \code{FALSE}, in which case previous
 simulations saved in the same \code{path} will be re-loaded (if the same trial
-specification was used). If \code{TRUE}, the previous file is overwritten. If
-\code{grow} is \code{TRUE}, this argument must be set to \code{FALSE}.}
+specification was used). If \code{TRUE}, the previous file is overwritten (even
+if the the same trial specification was not used). If \code{grow} is \code{TRUE},
+this argument must be set to \code{FALSE}.}
 
 \item{grow}{single logical; defaults to \code{FALSE}. If \code{TRUE} and a valid \code{path}
 to a valid previous file containing less simulations than \code{n_rep}, the
 additional number of simulations will be run (appropriately re-using the
 same \code{base_seed}, if specified) and appended to the same file.}
 
-\item{cores}{single integer; the number of cores to run the simulations on
-using the \pkg{parallel} library. Defaults to \code{1}; may be increased to run
-multiple simulations in parallel. \code{\link[parallel:detectCores]{parallel::detectCores()}} may be used to
-find the number of available cores.}
+\item{cores}{\code{NULL} or single integer. If \code{NULL}, a default value/cluster set
+by \code{\link[=setup_cluster]{setup_cluster()}} will be used to control whether simulations are run in
+parallel on a default cluster or sequentially in the main process; if a
+cluster/value has not been specified by \code{\link[=setup_cluster]{setup_cluster()}}, \code{cores} will
+then be set to the value stored in the global \code{"mc.cores"} option (if
+previously set by \verb{options(mc.cores = <number of cores>}), and \code{1} if that
+option has not been specified.\cr
+If the resulting number of \code{cores = 1}, computations will be run
+sequentially in the primary process, and if \code{cores > 1}, a new parallel
+cluster will be setup using the \code{parallel} library and removed once the
+function completes. See \code{\link[=setup_cluster]{setup_cluster()}} for details.}
 
 \item{base_seed}{single integer or \code{NULL} (default); a random seed used as
-the basis for simulations. If a number is provided, each single trial
-simulation will set the random seed to a value based on this (+ the trial
-number), without affecting the global random seed after the function has
-been run.}
+the basis for simulations. Regardless of whether simulations are run
+sequentially or in parallel, random number streams will be identical and
+appropriate (see \code{\link[=setup_cluster]{setup_cluster()}} for details).}
 
 \item{sparse}{single logical, as described in \code{\link[=run_trial]{run_trial()}}; defaults to
 \code{TRUE} when running multiple simulations, in which case only the data
@@ -66,9 +73,9 @@ specified by progress.\cr
 cores, the function conducts batches of simulations on multiple cores (if
 specified), with intermittent printing of statuses. Thus, all cores have to
 finish running their current assigned batches before the other cores may
-proceed with the next batch. If there is substantial differences in the
+proceed with the next batch. If there are substantial differences in the
 simulation speeds across cores, using \code{progress} may thus increase total
-simulation times.}
+run time (especially with small values).}
 
 \item{version}{passed to \code{\link[=saveRDS]{saveRDS()}} when saving simulations, defaults to
 \code{NULL} (as in \code{\link[=saveRDS]{saveRDS()}}), which means that the current default version is
@@ -79,23 +86,26 @@ used. Ignored if simulations are not saved.}
 simulations are not saved.}
 
 \item{export}{character vector of names of objects to export to each
-parallel core if \code{cores > 1}; passed as the \code{varlist} argument to
+parallel core when running in parallel; passed as the \code{varlist} argument to
 \code{\link[parallel:clusterApply]{parallel::clusterExport()}}. Defaults to \code{NULL} (no objects exported),
 ignored if \code{cores == 1}. See \strong{Details} below.}
 
 \item{export_envir}{\code{environment} where to look for the objects defined
-in \code{export} if \code{cores > 1} and \code{export} is not \code{NULL}. Defaults to the
-environment from where \code{\link[=run_trials]{run_trials()}} is called.}
+in \code{export} when running in parallel and \code{export} is not \code{NULL}. Defaults
+to the environment from where \code{\link[=run_trials]{run_trials()}} is called.}
 }
 \value{
 A list of a special class \code{"trial_results"}, which contains the
-\code{trial_results} (results from all simulations), \code{trial_spec} (the trial
+\code{trial_results} (results from all simulations; note that \code{seed} will be
+\code{NULL} in the individual simulations), \code{trial_spec} (the trial
 specification), \code{n_rep}, \code{base_seed}, \code{elapsed_time} (the total simulation
 run time), \code{sparse} (as described above) and \code{adaptr_version} (the version
 of the \code{adaptr} package used to run the simulations). These results may be
-extracted using the \code{\link[=extract_results]{extract_results()}} function and summarised using the
-\code{\link[=summary]{summary()}} or print (\code{\link[=print.trial_results]{print.trial_results()}}) functions; see function
-documentation for details on additional arguments used to select arms in
+extracted, summarised, and plotted using the \code{\link[=extract_results]{extract_results()}},
+\code{\link[=check_performance]{check_performance()}}, \code{\link[=summary]{summary()}}, \code{\link[=print.trial_results]{print.trial_results()}},
+\code{\link[=plot_convergence]{plot_convergence()}}, \code{\link[=check_remaining_arms]{check_remaining_arms()}}, \code{\link[=plot_status]{plot_status()}}, and
+\code{\link[=plot_history]{plot_history()}} functions. See these functions' definitions for additional
+details and details on additional arguments used to select arms in
 simulations not ending in superiority and other summary choices.
 }
 \description{
@@ -119,7 +129,9 @@ by the user outside the function definitions provided. Similarly, functions
 from external packages loaded using \code{\link[=library]{library()}} or \code{\link[=require]{require()}} must be
 exported or called prefixed with the namespace, i.e., \verb{package::function}.
 The \code{export} and \code{export_envir} arguments are used to export objects calling
-the \code{\link[parallel:clusterApply]{parallel::clusterExport()}}-function.
+the \code{\link[parallel:clusterApply]{parallel::clusterExport()}}-function. See also \code{\link[=setup_cluster]{setup_cluster()}}, which
+may be used to setup a cluster and export required objects only once per
+session.
 }
 \examples{
 # Setup a trial specification
@@ -130,6 +142,7 @@ binom_trial <- setup_trial_binom(arms = c("A", "B", "C", "D"),
 # Run 10 simulations with a specified random base seed
 res <- run_trials(binom_trial, n_rep = 10, base_seed = 12345)
 
-# See ?summary and ?print for details on summarising and printing
+# See ?extract_results, ?check_performance, ?summary and ?print for details
+# on extracting resutls, summarising and printing
 
 }

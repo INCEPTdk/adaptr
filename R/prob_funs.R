@@ -29,7 +29,7 @@ prob_best <- function(m, highest_is_best = FALSE) {
 
 
 
-#' Calculate the probabilities that each arm is better than a common control
+#' Calculate probabilities of comparisons of arms against with common control
 #'
 #' Used internally. This function takes a `matrix` as calculated by the
 #' [get_draws_binom()], [get_draws_norm()] or a corresponding custom function
@@ -49,7 +49,7 @@ prob_best <- function(m, highest_is_best = FALSE) {
 #'
 #' @param control a single character string specifying the common `control` arm.
 #'
-#' @return A named (rownames corresponding to the trial `arms`) `matrix`
+#' @return A named (row names corresponding to the trial `arms`) `matrix`
 #' containing 1-3 columns: `probs_better`, `probs_equivalence` (if
 #' `equivalence_diff` is specified), and `probs_futile` (if `futility_diff` is
 #' specified). All columns will contain `NA` for the control arm.
@@ -95,7 +95,7 @@ prob_better <- function(m, control = NULL, highest_is_best = FALSE,
 #' [get_draws_generic()]), and an equivalence difference, and calculates the
 #' probability of all arms being equivalent (absolute differences between
 #' highest and lowest value in the same set of posterior draws being less than
-#' the difference considered equivalent).
+#' the difference considered practically equivalent).
 
 #' @inheritParams prob_best
 #' @inheritParams setup_trial
@@ -119,11 +119,11 @@ prob_all_equi <- function(m, equivalence_diff = NULL) {
 #' [setup_trial_binom()] or [setup_trial_norm()] and the calculated
 #' probabilities of each arm being the best by [prob_best()].
 #'
+#' @inheritParams setup_trial
 #' @param probs_best a resulting named vector from the [prob_best()] function.
 #' @param match_arm index of the `control` arm. If not `NULL` (default), the
 #'   control arm allocation probability will be similar to that of the best
 #'   non-control arm. Must be `NULL` in designs without a common control arm.
-#' @inheritParams setup_trial
 #'
 #' @return A named (according to the `arms`) numeric vector with updated
 #'   allocation probabilities.

@@ -4,7 +4,7 @@
 \alias{prog_breaks}
 \title{Generate breakpoints and other values for printing progress}
 \usage{
-prog_breaks(progress, n_rep_new, cores)
+prog_breaks(progress, prev_n_rep, n_rep_new, cores)
 }
 \arguments{
 \item{progress}{single numeric \verb{> 0} and \verb{<= 1} or \code{NULL}. If \code{NULL}
@@ -15,18 +15,28 @@ specified by progress.\cr
 cores, the function conducts batches of simulations on multiple cores (if
 specified), with intermittent printing of statuses. Thus, all cores have to
 finish running their current assigned batches before the other cores may
-proceed with the next batch. If there is substantial differences in the
+proceed with the next batch. If there are substantial differences in the
 simulation speeds across cores, using \code{progress} may thus increase total
-simulation times.}
+run time (especially with small values).}
+
+\item{prev_n_rep}{single integer, the previous number of simulations run (to
+add to the indices generated and used).}
 
 \item{n_rep_new}{single integers, number of new simulations to run (i.e.,
 \code{n_rep} as supplied to \code{\link[=run_trials]{run_trials()}} minus the number of previously run
 simulations if \code{grow} is used in \code{\link[=run_trials]{run_trials()}}).}
 
-\item{cores}{single integer; the number of cores to run the simulations on
-using the \pkg{parallel} library. Defaults to \code{1}; may be increased to run
-multiple simulations in parallel. \code{\link[parallel:detectCores]{parallel::detectCores()}} may be used to
-find the number of available cores.}
+\item{cores}{\code{NULL} or single integer. If \code{NULL}, a default value/cluster set
+by \code{\link[=setup_cluster]{setup_cluster()}} will be used to control whether simulations are run in
+parallel on a default cluster or sequentially in the main process; if a
+cluster/value has not been specified by \code{\link[=setup_cluster]{setup_cluster()}}, \code{cores} will
+then be set to the value stored in the global \code{"mc.cores"} option (if
+previously set by \verb{options(mc.cores = <number of cores>}), and \code{1} if that
+option has not been specified.\cr
+If the resulting number of \code{cores = 1}, computations will be run
+sequentially in the primary process, and if \code{cores > 1}, a new parallel
+cluster will be setup using the \code{parallel} library and removed once the
+function completes. See \code{\link[=setup_cluster]{setup_cluster()}} for details.}
 }
 \value{
 List containing \code{breaks} (the number of patients at each break),

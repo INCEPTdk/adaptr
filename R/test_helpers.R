@@ -35,13 +35,14 @@ read_testdata <- function(filename) {
 #' @param minimum_version single character string, defaults to `NULL` in which
 #'   case it is tested whether the package version loaded on the cluster is the
 #'   exact same as that loaded when not working in parallel. If a version is
-#'   provided (in the format returned by [utils::packageVersion]), it is tested
-#'   whether the version loaded on the cluster is greater than or equal to this.
+#'   provided (in the format returned by [utils::packageVersion()]), it is
+#'   tested whether the version loaded on the cluster is greater than or equal
+#'   to this.
 #'
 #' @return single logical, `TRUE` if the test is passed, `FALSE` if not.
 #'
+#' @import parallel
 #' @importFrom utils packageVersion
-#' @importFrom parallel clusterCall
 #'
 #' @keywords internal
 #' @noRd

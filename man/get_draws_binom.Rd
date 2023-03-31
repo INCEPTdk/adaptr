@@ -8,7 +8,7 @@ get_draws_binom(arms, allocs, ys, control, n_draws)
 }
 \arguments{
 \item{arms}{character vector, \strong{currently active} \code{arms} as specified in
-\code{\link[=setup_trial]{setup_trial()}}/\code{\link[=setup_trial_binom]{setup_trial_binom()}}/\code{\link[=setup_trial_norm]{setup_trial_norm()}}.}
+\code{\link[=setup_trial]{setup_trial()}} / \code{\link[=setup_trial_binom]{setup_trial_binom()}} / \code{\link[=setup_trial_norm]{setup_trial_norm()}}.}
 
 \item{allocs}{character vector, allocations of all patients (including
 allocations to \strong{currently inactive} \code{arms}).}

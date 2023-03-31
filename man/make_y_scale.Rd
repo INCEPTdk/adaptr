@@ -10,9 +10,9 @@ make_y_scale(y_value)
 \item{y_value}{single character string, determining which values are plotted
 on the y-axis. The following options are available: allocation
 probabilities (\code{"prob"}, default), the total number of patients with
-outcome data available (\code{"n"}) or allocated (\code{"n all"}) to each arm,
+outcome data available (\code{"n"}) or randomised (\code{"n all"}) to each arm,
 the percentage of patients with outcome data available (\code{"pct"}) or
-allocated (\code{"pct all"}) to each arm out of the current total, the sum of
+randomised (\code{"pct all"}) to each arm out of the current total, the sum of
 all available (\code{"sum ys"}) outcome data or all outcome data for randomised
 patients including outcome data not available at the time of the current
 adaptive analysis (\code{"sum ys all"}), the ratio of outcomes as defined for

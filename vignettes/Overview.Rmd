@@ -16,8 +16,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-The `adaptr` package simulates adaptive clinical trials using adaptive
-stopping, adaptive arm dropping and/or response-adaptive randomisation.
+The `adaptr` package simulates adaptive (multi-arm, multi-stage) clinical trials
+using adaptive stopping, adaptive arm dropping and/or response-adaptive
+randomisation.
 
 The package has been developed as part of the
 [INCEPT (Intensive Care Platform Trial) project](https://incept.dk/), funded
@@ -36,15 +37,25 @@ First, load the package:
 library(adaptr)
 ```
 
+Parallelisation is supported in many `adaptr` functions, and a cluster of
+parallel workers may be setup for the entire session using `setup_cluster()`,
+which is ideally called early in a script. Alternatively, parallelisation
+can be controlled by the global `"mc.cores"` option (set by calling
+`options(mc.cores = <number>)`) or the `cores` argument of many functions.
+
 ### Set up trial
 Then, setup a trial with the desired specifications. `adaptr` offers the
 general purpose function `setup_trial()`, but here we use the built-in
 `setup_trial_binom()` for a trial with a binary, binomially distributed,
 undesirable outcome such as mortality (`adaptr` also includes
 `setup_trial_norm()` for continuous, normally distributed outcomes).
-The example trial specification has three characteristics:
+
+The example trial specification has the following characteristics:
 
 - The allocation probability to each arm cannot be lower than 15% (`min_probs`).
+- Default thresholds for `inferiority` (< 1% probability of being the best arm)
+and `superiority` (> 99% probability of being the best arm) are used and hence
+not specified.
 - Equivalence stopping rule: if the simulation yields a 90% probability
 (`equivalence_prob`) of treatment differences being < 5 %-points
 (`equivalence_diff`), the trial is stopped.
@@ -62,12 +73,12 @@ binom_trial <- setup_trial_binom(
 ) 
 ```
 
-See `?setup_trial()` for more details on these arguments or
+See `?setup_trial()` for more details on the arguments or
 `vignette("Basic-examples", "adaptr")` for **basic** example trial
-specifications and a thorough review of the general settings, and
-`vignette("Advanced-example", "adaptr")` for an **advanced** example including
-details on how to specify user-written functions for generating outcomes and
-posterior draws.
+specifications and a thorough review of the general trial specification
+settings, and `vignette("Advanced-example", "adaptr")` for an **advanced**
+example including details on how to specify user-written functions for
+generating outcomes and posterior draws.
 
 We can print an overview of the trial specification by simply running:
 
@@ -75,13 +86,18 @@ We can print an overview of the trial specification by simply running:
 binom_trial
 ```
 
-By default, probabilities are shown with 3 decimals. This can be changed by
-explicitly `print()`ing the specification with the `prob_digits` arguments, for
-example:
+By default, (most) probabilities are shown with 3 decimals. This can be changed
+by explicitly `print()`ing the specification with the `prob_digits` arguments,
+for example:
 
 ```{r}
 print(binom_trial, prob_digits = 2)
 ```
+
+Finally, a trial specification may be calibrated to obtain a specific value for
+a certain performance metric (e.g., the Bayesian type 1 error rate for trial
+specifications with no between-arm differences; not done in this overview) by
+using the `calibrate_trial()` function. 
 
 ### Simulate a single trial
 Remember to define the `seed` to ensure reproducible results:
@@ -101,21 +117,22 @@ print(trial_res, prob_digits = 2)
 ### Simulate multiple trials
 Generally, we want to run many simulations using the same trial specification to
 assess and compare performance metrics of different trial designs. This is the
-job of `run_trials()` (note the final ***s***); again, note the use of a
-`base_seed` for reproducible results. Here we run 25 simulations, but in
-practice you will generally want to run more simulations. The low number of
-simulations in this example have been chosen to make run-time tolerable when
-producing the example, but leads to uncertainty and instability in the results,
-as seen below.
+job of `run_trials()` (note the final ***s***); again, we specify a `base_seed`
+for reproducible results. Here we run 25 simulations, but in practice you will
+generally want to run more simulations. The low number of simulations in this
+example has been chosen to make run-time tolerable when producing the example,
+but leads to uncertainty and instability in the results, as seen below.
 
 ```{r}
 trial_res_mult <- run_trials(binom_trial, n_rep = 25, base_seed = 67890)
 ```
 
-`run_trials()` can run simulations on several CPU cores concurrently: set the
-`cores` argument to some number greater than `1` (which is the default value,
-resulting in serial/non-parallel processing). As an aside, you can see the
-number of available CPU cores by calling `parallel::detectCores()`.
+`run_trials()` can run simulations on several CPU cores concurrently by using
+the `setup_cluster()` function (recommended), the `"mc.cores"` global option, or
+the `cores` argument of `run_trials()`, as mentioned above (further details in
+the `setup_cluster()` and `run_trials()` function definitions). Most functions
+used to post-process, extract, and plot results can similarly be run in
+parallel.
 
 ###  Calculate performance metrics and summmarise results
 The results of multiple simulations may be summarised by printing the resulting
@@ -141,8 +158,8 @@ print(res_sum, digits = 1)
 ```
 
 The `summary()` method, however, may not necessarily be what you want. `adaptr`
-has additional functions that may be used on multiple simulations using the same
-trial specification.
+has additional functions that may be used on multiple simulation results of the
+same trial specification.
 
 The `extract_results()` function extract key trial results and yields a tidy
 `data.frame` with one simulation per row:
@@ -155,8 +172,8 @@ nrow(extr_res)
 head(extr_res)
 ```
 
-Further, the `check_performance()` function calculates key performance metrics
-and returns them in a tidy `data.frame` with one metric per row, and may also be
+The `check_performance()` function calculates key performance metrics and
+returns them in a tidy `data.frame` with one metric per row, and may also be
 used to assess the uncertainty in these estimates using bootstrapping:
 
 ```{r}
@@ -166,9 +183,16 @@ perf_res <- check_performance(trial_res_mult, uncertainty = TRUE, n_boot = 1000,
 print(perf_res, digits = 3)
 ```
 
-Finally, the stability of performance metrics according to the number of
-simulations may be assessed visually using the `plot_convergence()` function.
+The `plot_metrics_ecdf()` function plots empirical cumulative distribution
+functions of numerical performance metrics:
+```{r}
+plot_metrics_ecdf(trial_res_mult)
+```
+
 Note that all `adaptr` plotting functions require the `ggplot2` package.
+
+The stability of performance metrics according to the number of simulations may
+be assessed visually using the `plot_convergence()` function.
 
 ```{r}
 # Convergence plots for four performance metrics
@@ -181,12 +205,20 @@ substantial uncertainty and instability in performance metrics (while the ideal
 design percentage is always at 100% here, it would likely drop somewhat if more
 simulations were conducted).
 
+Finally, all combinations of remaining arms after trial completion may be
+summarised using `check_remaining_arms()`:
+
+```{r}
+check_remaining_arms(trial_res_mult)
+```
+
+
 ### Visualise trial results
 In addition to the convergence plots, results may be visualised using the
 `plot_status()` and `plot_history()` functions.
 We need non-sparse results for `plot_history()` (but *not* for `plot_status()`
-or `plot_convergence()` presented above), so first we re-run `run_trials()` with
-the `sparse` argument set to `FALSE`:
+or `plot_convergence()` presented above), so we re-run `run_trials()` with the
+`sparse` argument set to `FALSE`:
 
 ```{r}
 trial_res_mult <- run_trials(binom_trial, n_rep = 25, base_seed = 67890,
@@ -215,7 +247,8 @@ analysis look. Intervals cover the inter-quartile range by default
 plot_history(trial_res_mult)
 ```
 
-Plotting other summary metrics is possible; see `plot_history()`.
+Plotting other summary metrics is possible; see the `plot_history()`
+documentation.
 
 ## Citation
 If using the package, please consider citing:

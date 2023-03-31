@@ -17,7 +17,8 @@ plot_convergence(
   restrict = NULL,
   n_split = 1,
   nrow = NULL,
-  ncol = NULL
+  ncol = NULL,
+  cores = NULL
 )
 }
 \arguments{
@@ -27,36 +28,38 @@ function.}
 \item{metrics}{the performance metrics to plot, as described in
 \code{\link[=check_performance]{check_performance()}}. Multiple metrics may be plotted at the same time.
 Valid metrics include: \code{size_mean}, \code{size_sd}, \code{size_median}, \code{size_p25},
-\code{size_p75}, \code{sum_ys_mean}, \code{sum_ys_sd}, \code{sum_ys_median}, \code{sum_ys_p25},
-\code{sum_ys_p75}, \code{ratio_ys_mean}, \code{ratio_ys_sd}, \code{ratio_ys_median},
-\code{ratio_ys_p25}, \code{ratio_ys_p75}, \code{prob_conclusive}, \code{prob_superior},
-\code{prob_equivalence}, \code{prob_futility}, \code{prob_max}, \verb{prob_select_*} (with \code{*}
-being an \code{arm} name), \code{rmse}, \code{rmse_te}, and \code{idp}. All may be specified
-with either spaces or underlines. Defaults to \code{"size mean"}.}
+\code{size_p75}, \code{size_p0}, \code{size_p100}, \code{sum_ys_mean}, \code{sum_ys_sd},
+\code{sum_ys_median}, \code{sum_ys_p25}, \code{sum_ys_p75}, \code{sum_ys_p0}, \code{sum_ys_p100},
+\code{ratio_ys_mean}, \code{ratio_ys_sd}, \code{ratio_ys_median}, \code{ratio_ys_p25},
+\code{ratio_ys_p75}, \code{ratio_ys_p0}, \code{ratio_ys_p100}, \code{prob_conclusive},
+\code{prob_superior}, \code{prob_equivalence}, \code{prob_futility}, \code{prob_max},
+\verb{prob_select_*} (with \code{*} being an \code{arm} name), \code{rmse}, \code{rmse_te}, and
+\code{idp}. All may be specified as above, case sensitive, but with either
+spaces or underlines. Defaults to \code{"size mean"}.}
 
 \item{resolution}{single positive integer, the number of points calculated
 and plotted, defaults to \code{100} and must be \verb{>= 10}. Higher numbers lead to
-smoother plots, but increases computing time. If the value specified is
+smoother plots, but increases computation time. If the value specified is
 higher than the number of simulations (or simulations per split), the
-maximum possible value will be used.}
+maximum possible value will be used instead.}
 
-\item{select_strategy}{single character string. For trials not stopped
-due to superiority (or with only 1 arm remaining, if \code{select_last_arm} is
+\item{select_strategy}{single character string. If a trial was not stopped
+due to superiority (or had only 1 arm remaining, if \code{select_last_arm} is
 set to \code{TRUE} in trial designs with a common \code{control} arm; see below),
 this parameter specifies which arm will be considered selected when
-calculating trial design performance metrics (described below;
+calculating trial design performance metrics, as described below;
 this corresponds to the consequence of an inconclusive trial, i.e., which
-arm would then be used in practice).\cr
+arm would then be used in practice.\cr
 The following options are available and must be written exactly as below
 (case sensitive, cannot be abbreviated):
 \itemize{
 \item \code{"control if available"} (default): selects the \strong{first}
-\code{control} arm for trials with a common control arm \emph{\strong{if}} this arm
-is active at end-of-trial, otherwise no arm will be selected. For
+\code{control} arm for trials with a common \code{control} arm \emph{\strong{if}} this
+arm is active at end-of-trial, otherwise no arm will be selected. For
 trial designs without a common \code{control}, no arm will be selected.
 \item \code{"none"}: selects no arm in trials not ending with superiority.
 \item \code{"control"}: similar to \code{"control if available"}, but will throw
-an error for trial designs without a common \code{control} arm.
+an error if used for trial designs without a common \code{control} arm.
 \item \code{"final control"}: selects the \strong{final} \code{control} arm regardless
 of whether the trial was stopped for practical equivalence, futility,
 or at the maximum sample size; this strategy can only be specified
@@ -64,8 +67,8 @@ for trial designs with a common \code{control} arm.
 \item \code{"control or best"}: selects the \strong{first} \code{control} arm if still
 active at end-of-trial, otherwise selects the best remaining arm
 (defined as the remaining arm with the highest probability of being
-the best in the final analysis). Only works for trial designs with a
-common \code{control} arm.
+the best in the last adaptive analysis conducted). Only works for
+trial designs with a common \code{control} arm.
 \item \code{"best"}: selects the best remaining arm (as described under
 \code{"control or best"}).
 \item \code{"list or best"}: selects the first remaining arm from a specified
@@ -89,36 +92,39 @@ available in the trial.}
 
 \item{te_comp}{character string, treatment-effect comparator. Can be either
 \code{NULL} (the default) in which case the \strong{first} \code{control} arm is used for
-trial designs with a common control arm, or a single trial \code{arm}. Will be
-used when calculating \code{sq_err_te} (the squared error of the treatment
-effect comparing the selected arm to the comparator arm, as described
-below).}
+trial designs with a common control arm, or a string naming a single trial
+\code{arm}. Will be used when calculating \code{sq_err_te} (the squared error of the
+treatment effect comparing the selected arm to the comparator arm, as
+described below).}
 
 \item{raw_ests}{single logical. If \code{FALSE} (default), the
-posterior estimates (\code{post_ests}, see \code{\link[=setup_trial]{setup_trial()}} and
-\code{\link[=run_trial]{run_trial()}}) will be used to calculate \code{sq_err} (the squared error of the
-estimated compared to the specified effect in the selected arm) and
+posterior estimates (\code{post_ests} or \code{post_ests_all}, see \code{\link[=setup_trial]{setup_trial()}}
+and \code{\link[=run_trial]{run_trial()}}) will be used to calculate \code{sq_err} (the squared error of
+the estimated compared to the specified effect in the selected arm) and
 \code{sq_err_te} (the squared error of the treatment effect comparing the
 selected arm to the comparator arm, as described for \code{te_comp} and below).
-If \code{TRUE}, the raw estimates (\code{raw_ests}, see \code{\link[=setup_trial]{setup_trial()}} and
-\code{\link[=run_trial]{run_trial()}}) will be used instead of the posterior estimates.}
+If \code{TRUE}, the raw estimates (\code{raw_ests} or \code{raw_ests_all}, see
+\code{\link[=setup_trial]{setup_trial()}} and \code{\link[=run_trial]{run_trial()}}) will be used instead of the posterior
+estimates.}
 
 \item{final_ests}{single logical. If \code{TRUE} (recommended) the final estimates
 calculated using outcome data from all patients randomised when trials are
-stopped is used; if \code{FALSE}, the estimates calculated for each arm when an
-arm is stopped (or at the last adaptive analysis if not before) using data
-from patients having reach followed up at this time point and not all
-patients randomised. If \code{NULL} (the default), this argument will be set to
-\code{FALSE} if outcome data are available immediate after randomisation for all
-patients (for backwards compatibility, as final posterior estimates may
-vary slightly in this situation, even if using the same data); otherwise it
-will be said to \code{TRUE}. See \code{\link[=setup_trial]{setup_trial()}} for more details on how these
-estimates are calculated.}
+stopped are used (\code{post_ests_all} or \code{raw_ests_all}, see \code{\link[=setup_trial]{setup_trial()}}
+and \code{\link[=run_trial]{run_trial()}}); if \code{FALSE}, the estimates calculated for each arm when
+an arm is stopped (or at the last adaptive analysis if not before) using
+data from patients having reach followed up at this time point and not all
+patients randomised are used (\code{post_ests} or \code{raw_ests}, see
+\code{\link[=setup_trial]{setup_trial()}} and \code{\link[=run_trial]{run_trial()}}). If \code{NULL} (the default), this argument
+will be set to \code{FALSE} if outcome data are available immediate after
+randomisation for all patients (for backwards compatibility, as final
+posterior estimates may vary slightly in this situation, even if using the
+same data); otherwise it will be said to \code{TRUE}. See \code{\link[=setup_trial]{setup_trial()}} for
+more details on how these estimates are calculated.}
 
 \item{restrict}{single character string or \code{NULL}. If \code{NULL} (default),
 results are summarised for all simulations; if \verb{"superior}, results are
 summarised for simulations ending with superiority only; if \code{"selected"},
-results are summarised for simulations ending with a selected arm
+results are summarised for simulations ending with a selected arm only
 (according to the specified arm selection strategy for simulations not
 ending with superiority). Some summary measures (e.g., \code{prob_conclusive})
 have substantially different interpretations if restricted, but are
@@ -132,13 +138,25 @@ summarised (after restrictions) divided by 10.}
 \item{nrow, ncol}{the number of rows and columns when plotting multiple
 metrics in the same plot (using faceting in \code{ggplot2}). Defaults to \code{NULL},
 in which case this will be determined automatically.}
+
+\item{cores}{\code{NULL} or single integer. If \code{NULL}, a default value set by
+\code{\link[=setup_cluster]{setup_cluster()}} will be used to control whether extractions of simulation
+results are done in parallel on a default cluster or sequentially in the
+main process; if a value has not been specified by \code{\link[=setup_cluster]{setup_cluster()}},
+\code{cores} will then be set to the value stored in the global \code{"mc.cores"}
+option (if previously set by \verb{options(mc.cores = <number of cores>}), and
+\code{1} if that option has not been specified.\cr
+If \code{cores = 1}, computations
+will be run sequentially in the primary process, and if \code{cores > 1}, a new
+parallel cluster will be setup using the \code{parallel} library and removed
+once the function completes. See \code{\link[=setup_cluster]{setup_cluster()}} for details.}
 }
 \value{
 A \code{ggplot2} plot object.
 }
 \description{
 Plots performance metrics according to the number of simulations conducted
-for multiple simulated trials. The number of trials may be split into a
+for multiple simulated trials. The simulated trial results may be split into
 a number of batches to illustrate stability of performance metrics across
 different simulations. Calculations are done according to specified selection
 and restriction strategies as described in \code{\link[=extract_results]{extract_results()}} and
@@ -164,15 +182,18 @@ if (requireNamespace("ggplot2", quietly = TRUE)){
   # Convergence plot of mean sample sizes
   plot_convergence(res_mult, metrics = "size mean")
 
+}
+
+if (requireNamespace("ggplot2", quietly = TRUE)){
+
   # Convergence plot of mean sample sizes and ideal design percentages,
   # with simulations split in 2 batches
   plot_convergence(res_mult, metrics = c("size mean", "idp"), n_split = 2)
 
-  # Do not return/print last plot in documentation
-  invisible(NULL)
 }
 
 }
 \seealso{
-\code{\link[=check_performance]{check_performance()}}, \code{\link[=summary]{summary()}}, \code{\link[=extract_results]{extract_results()}}.
+\code{\link[=check_performance]{check_performance()}}, \code{\link[=summary]{summary()}}, \code{\link[=extract_results]{extract_results()}},
+\code{\link[=check_remaining_arms]{check_remaining_arms()}}.
 }

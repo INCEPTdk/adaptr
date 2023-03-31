@@ -4,17 +4,13 @@
 \alias{dispatch_trial_runs}
 \title{Simulate single trial after setting seed}
 \usage{
-dispatch_trial_runs(X, trial_spec, base_seed, sparse, cores, cl = NULL)
+dispatch_trial_runs(is, trial_spec, seeds, sparse, cores, cl = NULL)
 }
 \arguments{
+\item{is}{vector of integers, the simulation numbers/indices.}
+
 \item{trial_spec}{trial specification as provided by \code{\link[=setup_trial]{setup_trial()}},
 \code{\link[=setup_trial_binom]{setup_trial_binom()}} or \code{\link[=setup_trial_norm]{setup_trial_norm()}}.}
-
-\item{base_seed}{single integer or \code{NULL} (default); a random seed used as
-the basis for simulations. If a number is provided, each single trial
-simulation will set the random seed to a value based on this (+ the trial
-number), without affecting the global random seed after the function has
-been run.}
 
 \item{sparse}{single logical, as described in \code{\link[=run_trial]{run_trial()}}; defaults to
 \code{TRUE} when running multiple simulations, in which case only the data
@@ -23,19 +19,28 @@ If \code{FALSE}, more detailed data for each simulation is saved, allowing more
 detailed printing of individual trial results and plotting using
 \code{\link[=plot_history]{plot_history()}} (\code{\link[=plot_status]{plot_status()}} does not require non-sparse results).}
 
-\item{cores}{single integer; the number of cores to run the simulations on
-using the \pkg{parallel} library. Defaults to \code{1}; may be increased to run
-multiple simulations in parallel. \code{\link[parallel:detectCores]{parallel::detectCores()}} may be used to
-find the number of available cores.}
+\item{cores}{\code{NULL} or single integer. If \code{NULL}, a default value/cluster set
+by \code{\link[=setup_cluster]{setup_cluster()}} will be used to control whether simulations are run in
+parallel on a default cluster or sequentially in the main process; if a
+cluster/value has not been specified by \code{\link[=setup_cluster]{setup_cluster()}}, \code{cores} will
+then be set to the value stored in the global \code{"mc.cores"} option (if
+previously set by \verb{options(mc.cores = <number of cores>}), and \code{1} if that
+option has not been specified.\cr
+If the resulting number of \code{cores = 1}, computations will be run
+sequentially in the primary process, and if \code{cores > 1}, a new parallel
+cluster will be setup using the \code{parallel} library and removed once the
+function completes. See \code{\link[=setup_cluster]{setup_cluster()}} for details.}
 
-\item{i}{single integer, the simulation number.}
+\item{cl}{\code{NULL} (default) for running sequentially, otherwise a \code{parallel}
+cluster for parallel computation if \code{cores > 1}.}
 }
 \value{
 Single trial simulation object, as described in \code{\link[=run_trial]{run_trial()}}.
 }
 \description{
 Helper function to dispatch the running of several trials to \code{\link[=lapply]{lapply()}} or
-\code{\link[parallel:clusterApply]{parallel::parLapply()}}. Used internally in calls by the \code{\link[=run_trials]{run_trials()}}
+\code{\link[parallel:clusterApply]{parallel::parLapply()}}, setting seeds correctly if a \code{base_seed} was used
+when calling \code{\link[=run_trials]{run_trials()}}. Used internally in calls by the \code{\link[=run_trials]{run_trials()}}
 function.
 }
 \keyword{internal}

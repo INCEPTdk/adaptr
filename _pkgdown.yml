@@ -2,3 +2,46 @@ url: https://inceptdk.github.io/adaptr/
 template:
   bootstrap: 5
 
+articles:
+- title: Vignettes
+  navbar: ~
+  contents:
+  - Overview
+  - Basic-examples
+  - Advanced-example
+
+reference:
+- title: Package overview
+  contents:
+  - 'adaptr-package'
+
+- title: Setup, calibrate, and run trials
+  contents:
+  - starts_with("setup_trial")
+  - calibrate_trial
+  - run_trial
+  - run_trials
+
+- title: Extract and summarise results
+  contents:
+  - extract_results
+  - check_performance
+  - summary
+  - check_remaining_arms
+
+- title: Plotting functions
+  contents:
+  - plot_convergence
+  - plot_metrics_ecdf
+  - plot_status
+  - plot_history
+
+- title: Print methods
+  contents:
+  - starts_with("print")
+
+- title: Helper functions
+  contents:
+  - setup_cluster
+  - update_saved_trials
+  - find_beta_params

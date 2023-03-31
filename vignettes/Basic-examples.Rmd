@@ -21,14 +21,19 @@ fixed randomisation, response-adaptive randomisation (RAR), and combinations.
 The general-purpose function for specifying a trial is
 `setup_trial()`, but because trials with binary, binomially distributed and
 continuous, normally distributed outcomes are so common, the package comes with
-two convenience functions for specifying such trial designs:
-`setup_trial_binom()` and `setup_trial_norm()`.
+two convenience functions for specifying such trial designs (using default
+priors only): `setup_trial_binom()` and `setup_trial_norm()`.
 
 To keep things simple, this vignette uses only the `setup_trial_binom()`
 function and focuses on settings that apply to trial designs regardless of
 outcome type. The code is heavily annotated, but comments focus on settings not
 touched on earlier in the vignette (e.g. we do not keep annotating the `arm` and
 `true_ys` arguments).
+
+Keep in mind that the `calibrate_trial()` function can be used to calibrate a
+trial specification to obtain a specific value for a certain performance metric
+(e.g., the Bayesian type 1 error rate for trial specifications with no
+between-arm differences). 
 
 For a general overview of how to use the `adaptr` package, please see
 `vignette("Overview", "adaptr")`.
@@ -83,6 +88,7 @@ setup_trial_binom(
   control = NULL,
   
   # Set inferiority/superiority thresholds (different values than the defaults)
+  # (see also the calibrate_trial() function)
   inferiority = 0.025,
   superiority = 0.975,
   
@@ -282,15 +288,15 @@ setup_trial_binom(
 )
 ```
 
-### Example 7: follow-up (or data collection) lag
+### Example 7: follow-up and data collection lag
 
-This example uses the `randomised_at_looks`
-argument to specify follow-up (or data collection) lag. In real use cases, this
-should usually be considered, as this may affect the relative performance of
-different trial designs and the extent to which the 'final' results after all
-patients have reached follow-up and are analysed may differ from the results when
-from the adaptive analyses with some randomised patients not included due to
-outcome data not being available yet.
+This example uses the `randomised_at_looks` argument to specify follow-up and/or
+data collection lag. In real use cases, this should usually be considered, as
+this may affect the relative performance of different trial designs and the
+extent to which the 'final' results after all patients have reached follow-up
+and are analysed may differ from the results from the adaptive analyses with
+some randomised patients not included due to outcome data not being available
+yet for these patients.
 
 ```{r}
 setup_trial_binom(
@@ -313,7 +319,11 @@ In this example, we specify different probability thresholds for superiority and
 inferiority stopping rules at different adaptive analyses. Varying probability
 thresholds may similarly be specified for stopping rules for equivalence and
 futility. Importantly, all probability thresholds must be specified such that
-each subsequent threshold is never stricter than the previous threshold
+each subsequent threshold is never stricter than the previous threshold.
+Varying thresholds may also be used to make some stopping rules first function
+at later analyses (e.g., as long as the stopping threshold for `superiority` is
+`1` and the stopping threshold for `inferiority` is `0`, trials will not be
+stopped and arms will not be dropped due to these rules).
 
 ```{r}
 setup_trial_binom(

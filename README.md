@@ -17,6 +17,9 @@ mirror](https://cranlogs.r-pkg.org/badges/grand-total/adaptr)
 The `adaptr` package simulates adaptive (multi-arm, multi-stage)
 clinical trials using adaptive stopping, adaptive arm dropping and/or
 response-adaptive randomisation.
+The `adaptr` package simulates adaptive (multi-arm, multi-stage)
+clinical trials using adaptive stopping, adaptive arm dropping and/or
+response-adaptive randomisation.
 
 The package has been developed as part of the [INCEPT (Intensive Care
 Platform Trial) project](https://incept.dk/), which is primarily
@@ -36,8 +39,23 @@ supported by a grant from [Sygeforsikringen
     Journal of Clinical Epidemiology describing key methodological
     considerations in adaptive trials with description of the workflow
     and a simulation-based example using the package
+## Resources
+
+-   [Website](https://inceptdk.github.io/adaptr/) - stand-alone website
+    with full package documentation
+-   [adaptr: an R package for simulating and comparing adaptive clinical
+    trials](https://doi.org/10.21105/joss.04284) - article in the
+    Journal of Open Source Software describing the package
+-   [An overview of methodological considerations regarding adaptive
+    stopping, arm dropping and randomisation in clinical
+    trials](https://doi.org/10.1016/j.jclinepi.2022.11.002) - article in
+    Journal of Clinical Epidemiology describing key methodological
+    considerations in adaptive trials with description of the workflow
+    and a simulation-based example using the package
 
 ## Installation
+
+The easiest way is to install from CRAN directly:
 
 The easiest way is to install from CRAN directly:
 
@@ -48,9 +66,10 @@ install.packages("adaptr")
 Alternatively, you can install the **development version** from GitHub -
 this requires the *remotes*-package installed. The development version
 may contain additional features not yet available in the CRAN version
-(including preliminary functions) and may not be stable or fully
+(including preliminary functions), but may not be stable or fully
 documented:
 
+``` r
 ``` r
 # install.packages("remotes") 
 remotes::install_github("INCEPTdk/adaptr@dev")
@@ -66,9 +85,9 @@ general `setup_trial()` function, or one of the special case functions,
 
 ``` r
 library(adaptr)
-#> Loading adaptr package (version 1.2.0).
-#> See 'help("adaptr")' or 'vignette("Overview", "adaptr")' for help.
-#> Further information available on https://inceptdk.github.io/adaptr/.
+#> Loading 'adaptr' package v1.3.0.
+#> For instructions, type 'help("adaptr")'
+#> or see https://inceptdk.github.io/adaptr/.
 
 # Setup a trial using a binary, binomially distributed, undesirable outcome
 binom_trial <- setup_trial_binom(
@@ -100,7 +119,12 @@ print(binom_trial, prob_digits = 3)
 #> Maximum number of data looks: 18
 #> Planned data looks after:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000 patients have reached follow-up
 #> Number of patients randomised at each look:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000
+#> Planned data looks after:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000 patients have reached follow-up
+#> Number of patients randomised at each look:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000
 #> 
+#> Superiority threshold: 0.99 (all analyses)
+#> Inferiority threshold: 0.01 (all analyses)
+#> Equivalence threshold: 0.9 (all analyses) (no common control)
 #> Superiority threshold: 0.99 (all analyses)
 #> Inferiority threshold: 0.01 (all analyses)
 #> Equivalence threshold: 0.9 (all analyses) (no common control)
@@ -108,6 +132,11 @@ print(binom_trial, prob_digits = 3)
 #> No futility threshold (not relevant - no common control)
 #> Soften power for all analyses: 0.5
 ```
+
+The resulting trial specification may be calibrated to obtain a specific
+value for a certain performance metric (e.g., the Bayesian type 1 error
+rate for trial specifications with no between-arm differences) by using
+the `calibrate_trial()` function.
 
 Simulate a single trial using a reproducible random seed:
 
@@ -163,19 +192,19 @@ trial_res_mult <- run_trials(binom_trial, n_rep = 10, base_seed = 67890)
 extr_res <- extract_results(trial_res_mult)
 head(extr_res)
 #>   sim final_n sum_ys  ratio_ys final_status superior_arm selected_arm
-#> 1   1    2000    415 0.2075000          max         <NA>         <NA>
-#> 2   2     600    139 0.2316667  superiority        Arm B        Arm B
-#> 3   3    1000    237 0.2370000  superiority        Arm B        Arm B
-#> 4   4     900    209 0.2322222  equivalence         <NA>         <NA>
-#> 5   5    2000    441 0.2205000  superiority        Arm B        Arm B
-#> 6   6    1900    431 0.2268421  superiority        Arm B        Arm B
+#> 1   1    1400    332 0.2371429  superiority        Arm B        Arm B
+#> 2   2     900    196 0.2177778  equivalence         <NA>         <NA>
+#> 3   3    2000    441 0.2205000          max         <NA>         <NA>
+#> 4   4    1300    274 0.2107692  superiority        Arm B        Arm B
+#> 5   5    1400    354 0.2528571  equivalence         <NA>         <NA>
+#> 6   6    1700    373 0.2194118  superiority        Arm B        Arm B
 #>         sq_err sq_err_te
-#> 1           NA        NA
-#> 2 7.853843e-04        NA
-#> 3 4.190319e-05        NA
-#> 4           NA        NA
-#> 5 3.422824e-06        NA
-#> 6 4.852161e-05        NA
+#> 1 8.118136e-06        NA
+#> 2           NA        NA
+#> 3           NA        NA
+#> 4 3.801078e-04        NA
+#> 5           NA        NA
+#> 6 3.871855e-05        NA
 
 # Summarise trial results
 # See function documentation for details, including on arm selection in trials
@@ -191,21 +220,21 @@ print(res_sum, digits = 1)
 #> * Treatment effect compared to: no comparison
 #> 
 #> Performance metrics (using posterior estimates from last adaptive analysis):
-#> * Sample sizes: mean 1470.0 (SD: 559.9) | median 1550.0 (IQR: 1025.0 to 2000.0)
-#> * Total summarised outcomes: mean 323.3 (SD: 110.6) | median 340.0 (IQR: 242.0 to 421.8)
-#> * Total summarised outcome rates: mean 0.224 (SD: 0.013) | median 0.229 (IQR: 0.214 to 0.233)
-#> * Conclusive: 70.0%
-#> * Superiority: 50.0%
-#> * Equivalence: 20.0%
+#> * Sample sizes: mean 1350.0 (SD: 445.3) | median 1350.0 (IQR: 1025.0 to 1625.0) [range: 700.0 to 2000.0]
+#> * Total summarised outcomes: mean 305.3 (SD: 103.8) | median 303.0 (IQR: 231.0 to 368.2) [range: 156.0 to 463.0]
+#> * Total summarised outcome rates: mean 0.226 (SD: 0.013) | median 0.222 (IQR: 0.218 to 0.231) [range: 0.211 to 0.253]
+#> * Conclusive: 80.0%
+#> * Superiority: 40.0%
+#> * Equivalence: 40.0%
 #> * Futility: 0.0% [not assessed]
-#> * Inconclusive at max sample size: 30.0%
-#> * Selection probabilities: Arm A: 0.0% | Arm B: 50.0% | Arm C: 0.0% | None: 50.0%
-#> * RMSE: 0.01330
+#> * Inconclusive at max sample size: 20.0%
+#> * Selection probabilities: Arm A: 0.0% | Arm B: 40.0% | Arm C: 0.0% | None: 60.0%
+#> * RMSE: 0.01675
 #> * RMSE treatment effect: not estimated
 #> * Ideal design percentage: 100.0%
 #> 
 #> Simulation details:
-#> * Simulation time: 0.471 secs
+#> * Simulation time: 0.438 secs
 #> * Base random seed: 67890
 #> * Credible interval width: 95%
 #> * Number of posterior draws: 5000
@@ -214,9 +243,13 @@ print(res_sum, digits = 1)
 
 Performance metrics may also be calculated and returned in a tidy
 `data.frame` (with bootstrapped uncertainty measures, if requested) by
-the `check_performance()` function, and the `plot_convergence()`
+the `check_performance()` function, and the empirical cumulative
+distribution functions of numerical performance metrics may be plotted
+by the `plot_metrics_ecdf()` function. Finally, the `plot_convergence()`
 function may be used to visually assess stability of performance metrics
-according to the number of simulations.
+according to the number of simulations. The `check_remaining_arms()`
+function may be used to summarise all combinations of remaining arms
+across multiple simulations.
 
 Plot trial statuses or history of trial metrics over time:
 
@@ -241,6 +274,13 @@ plot_history(trial_res_mult)
 
 Plotting statuses for individual trial arms and other summary metrics is
 possible, too.
+
+Running simulations and extracting and processing results may be done in
+parallel by either using the `setup_cluster()` function to set up a
+cluster of parallel workers that may be used throughout the session, or
+with new clusters each time parallel computation is done by setting the
+`"mc.cores"` global option via `options(mc.cores = <number>)` or by
+using the `cores` argument of many functions in the package.
 
 ## Issues and enhancements
 

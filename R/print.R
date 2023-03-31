@@ -5,6 +5,17 @@
 #' Prints contents of the first input `x` in a human-friendly way, see
 #' **Details** for more information.
 #'
+#' @param x object to print, see **Details**.
+#' @param digits single integer, the number of digits used when printing
+#'   the numeric results. Default is `3` for outputs from [check_performance()]
+#'   and `1` for outputs from [run_trials()] and the accompanying [summary()]
+#'   method.
+#' @param prob_digits single integer (default is `3`), the number of digits used
+#'   when printing probabilities, allocation probabilities and softening powers
+#'   (with `2` extra digits added for stopping rule probability thresholds in
+#'   trial specifications and for outcome rates in summarised results from
+#'   multiple simulations).
+#'
 #' @details The behaviour depends on the class of `x`:
 #'
 #' @return Invisibly returns `x`.
@@ -15,9 +26,7 @@ NULL
 
 #' Print method for trial specifications
 #'
-#' @param x object to print, see **Details** below.
-#' @param prob_digits single integer, the number of digits used when printing
-#'   probabilities, allocation probabilities and softening powers.
+#' @inheritParams print
 #'
 #' @details
 #' - `trial_spec`: prints a trial specification setup by
@@ -82,15 +91,16 @@ print.trial_spec <- function(x, prob_digits = 3, ...) {
   }
   cat0(paste("Number of patients randomised at each look: ", paste(x$randomised_at_looks, collapse = ", ")), fill = TRUE)
 
+  # Superiority and inferiority specifications
   if (length(x$superiority) == 1) {
-    cat("\nSuperiority threshold:", round(x$superiority, prob_digits), "(all analyses)", fill = TRUE)
+    cat("\nSuperiority threshold:", round(x$superiority, prob_digits + 2), "(all analyses)", fill = TRUE)
   } else {
-    cat("\nSuperiority thresholds:", paste(round(x$superiority, prob_digits), collapse = ", "), fill = TRUE)
+    cat("\nSuperiority thresholds:", paste(round(x$superiority, prob_digits + 2), collapse = ", "), fill = TRUE)
   }
   if (length(x$inferiority) == 1) {
-    cat("Inferiority threshold:", round(x$inferiority, prob_digits), "(all analyses)", fill = TRUE)
+    cat("Inferiority threshold:", round(x$inferiority, prob_digits + 2), "(all analyses)", fill = TRUE)
   } else {
-    cat("Inferiority thresholds:", paste(round(x$inferiority, prob_digits), collapse = ", "), fill = TRUE)
+    cat("Inferiority thresholds:", paste(round(x$inferiority, prob_digits + 2), collapse = ", "), fill = TRUE)
   }
 
 
@@ -108,9 +118,9 @@ print.trial_spec <- function(x, prob_digits = 3, ...) {
       }
     }
     if (length(x$equivalence_prob) == 1) {
-      cat("Equivalence threshold:", round(x$equivalence_prob, prob_digits), "(all analyses)", equi_ctrl, fill = TRUE)
+      cat("Equivalence threshold:", round(x$equivalence_prob, prob_digits + 2), "(all analyses)", equi_ctrl, fill = TRUE)
     } else {
-      cat("Equivalence thresholds:", paste(round(x$equivalence_prob, prob_digits), collapse = ", "), equi_ctrl, fill = TRUE)
+      cat("Equivalence thresholds:", paste(round(x$equivalence_prob, prob_digits + 2), collapse = ", "), equi_ctrl, fill = TRUE)
     }
 
     cat0("Absolute equivalence difference: ", x$equivalence_diff, "\n")
@@ -122,9 +132,9 @@ print.trial_spec <- function(x, prob_digits = 3, ...) {
   } else {
     futility_ctrl <- ifelse(x$futility_only_first, "(only checked for first control)", "(checked for first and eventual new controls)")
     if (length(x$futility_prob) == 1) {
-      cat("Futility threshold:", round(x$futility_prob, prob_digits), "(all analyses)", futility_ctrl, fill = TRUE)
+      cat("Futility threshold:", round(x$futility_prob, prob_digits + 2), "(all analyses)", futility_ctrl, fill = TRUE)
     } else {
-      cat("Futility thresholds:", paste(round(x$futility_prob, prob_digits), collapse = ", "), futility_ctrl, fill = TRUE)
+      cat("Futility thresholds:", paste(round(x$futility_prob, prob_digits + 2), collapse = ", "), futility_ctrl, fill = TRUE)
     }
 
     cat("Absolute futility difference (in beneficial direction):", x$futility_diff, "\n")
@@ -156,9 +166,7 @@ print.trial_spec <- function(x, prob_digits = 3, ...) {
 
 #' Print method for a single simulated trial
 #'
-#' @param x object to print, see **Details** below.
-#' @param prob_digits single integer, the number of digits used when printing
-#'   probabilities, allocation probabilities and softening powers.
+#' @inheritParams print
 #'
 #' @details
 #' - `trial_result`: prints the results of a single trial simulated by
@@ -244,9 +252,7 @@ print.trial_result <- function(x, prob_digits = 3, ...) {
 
 #' Print method for trial performance metrics
 #'
-#' @param x object to print, output from [check_performance()].
-#' @param digits single integer, the number of digits used when printing
-#'   the numeric results (for all performance estimates). Default is `3? .
+#' @inheritParams print
 #'
 #' @describeIn print Trial performance metrics
 #' @export
@@ -254,7 +260,7 @@ print.trial_result <- function(x, prob_digits = 3, ...) {
 print.trial_performance <- function(x, digits = 3, ...) {
   x_round <- x
   for (i in 2:ncol(x_round)) {
-    x_round[[i]] <- vapply_num(x_round[[i]], function(col) round(col, digits = 3))
+    x_round[[i]] <- vapply_num(x_round[[i]], function(col) round(col, digits = digits))
   }
   class(x_round) <- "data.frame"
   print(x_round)
@@ -265,9 +271,8 @@ print.trial_performance <- function(x, digits = 3, ...) {
 
 #' Print method for multiple simulated trials
 #'
-#' @param x object to print, see Details below.
+#' @inheritParams print
 #' @inheritParams summary
-#' @param digits single integer, number of digits to print for probabilities.
 #'
 #' @details
 #' - `trial_results`: prints the results of multiple simulations
@@ -284,10 +289,12 @@ print.trial_results <- function(x,
                                 select_preferences = NULL, te_comp = NULL,
                                 raw_ests = FALSE, final_ests = NULL,
                                 restrict = NULL, digits = 1,
+                                cores = NULL,
                                 ...) {
   print(summary(object = x, select_strategy = select_strategy,
                 select_preferences = select_preferences, te_comp = te_comp,
-                raw_ests = raw_ests, final_ests = final_ests, restrict = restrict),
+                raw_ests = raw_ests, final_ests = final_ests, restrict = restrict,
+                cores = cores),
         digits = digits)
 
   # Return invisibly
@@ -298,9 +305,7 @@ print.trial_results <- function(x,
 
 #' Print summarised results for multiple simulated trials
 #'
-#' @param x object to print, see Details below.
-#' @param digits single integer, number of digits to print for probabilities and
-#'   some other summary values (with 2 extra digits added for outcome rates).
+#' @inheritParams print
 #'
 #' @details
 #' - `trial_results_summary`: print method for summary of multiple simulations
@@ -343,9 +348,12 @@ print.trial_results_summary <- function(x, digits = 1, ...) {
       # Performance metrics
       "Performance metrics ", ifelse(x$raw_ests, "(using raw estimates ", "(using posterior estimates "),
       ifelse(x$final_ests, "from final analysis [all patients]", "from last adaptive analysis"), "):\n",
-      "* Sample sizes: mean ", fmt_dig(x$size_mean, digits), " (SD: ", fmt_dig(x$size_sd, digits), ") | median ", fmt_dig(x$size_median, digits), " (IQR: ", fmt_dig(x$size_p25, digits), " to ", fmt_dig(x$size_p75, digits), ")", "\n",
-      "* Total summarised outcomes: mean ", fmt_dig(x$sum_ys_mean, digits), " (SD: ", fmt_dig(x$sum_ys_sd, digits), ") | median ", fmt_dig(x$sum_ys_median, digits), " (IQR: ", fmt_dig(x$sum_ys_p25, digits), " to ", fmt_dig(x$sum_ys_p75, digits), ")", "\n",
-      "* Total summarised outcome rates: mean ", fmt_dig(x$ratio_ys_mean, digits+2), " (SD: ", fmt_dig(x$ratio_ys_sd, digits+2), ") | median ", fmt_dig(x$ratio_ys_median, digits+2), " (IQR: ", fmt_dig(x$ratio_ys_p25, digits+2), " to ", fmt_dig(x$ratio_ys_p75, digits+2), ")", "\n",
+      "* Sample sizes: mean ", fmt_dig(x$size_mean, digits), " (SD: ", fmt_dig(x$size_sd, digits), ") | median ", fmt_dig(x$size_median, digits), " (IQR: ", fmt_dig(x$size_p25, digits), " to ", fmt_dig(x$size_p75, digits),
+      ") [range: ", fmt_dig(x$size_p0, digits), " to ", fmt_dig(x$size_p100, digits), "]\n",
+      "* Total summarised outcomes: mean ", fmt_dig(x$sum_ys_mean, digits), " (SD: ", fmt_dig(x$sum_ys_sd, digits), ") | median ", fmt_dig(x$sum_ys_median, digits), " (IQR: ", fmt_dig(x$sum_ys_p25, digits), " to ", fmt_dig(x$sum_ys_p75, digits),
+      ") [range: ", fmt_dig(x$sum_ys_p0, digits), " to ", fmt_dig(x$sum_ys_p100, digits), "]\n",
+      "* Total summarised outcome rates: mean ", fmt_dig(x$ratio_ys_mean, digits + 2), " (SD: ", fmt_dig(x$ratio_ys_sd, digits + 2), ") | median ", fmt_dig(x$ratio_ys_median, digits + 2), " (IQR: ", fmt_dig(x$ratio_ys_p25, digits + 2), " to ", fmt_dig(x$ratio_ys_p75, digits + 2),
+      ") [range: ", fmt_dig(x$ratio_ys_p0, digits + 2), " to ", fmt_dig(x$ratio_ys_p100, digits + 2), "]\n",
       "* Conclusive: ", ifelse(is.null(x$restrict), paste0(fmt_dig(x$prob_conclusive * 100, digits), "%"), "not calculated for restricted summaries"), "\n",
       "* Superiority: ", fmt_dig(x$prob_superior * 100, digits), "%\n",
       "* Equivalence: ", fmt_dig(x$prob_equivalence * 100, digits), "%", ifelse(x$equivalence_assessed, "\n", " [not assessed]\n"),
@@ -368,6 +376,49 @@ print.trial_results_summary <- function(x, digits = 1, ...) {
       ifelse(!is.null(x$add_info), paste0("\n\n", "Additional info: ", x$add_info), ""),
 
       "\n", sep = "")
+
+  # Return invisibly
+  invisible(x)
+}
+
+
+
+#' Print method for calibrated trial objects
+#'
+#' @inheritParams print
+#'
+#' @describeIn print Trial calibration
+#' @export
+#'
+print.trial_calibration <- function(x, ...) {
+  cat0("Trial calibration:",
+       "\n* Result: calibration ", ifelse(x$success, "successful", "unsuccessful"),
+       "\n* Best x: ", x$best_x,
+       "\n* Best y: ", x$best_y,
+
+       "\n\nCentral settings:",
+       "\n* Target: ", x$control$target,
+       "\n* Tolerance: ", x$control$tol, " (",
+       ifelse(x$control$dir == 0, "in both directions", ifelse(x$control$dir < 0, "at or below target", "at or above target")),
+       ", range: ", paste(x$control$target + x$control$tol * c(-1 * (x$control$dir <= 0), x$control$dir >= 0), collapse = " to "), ")",
+       "\n* Search range: ", x$control$search_range[1], " to ", x$control$search_range[2],
+       "\n* Gaussian process controls:",
+       "\n* - resolution: ", x$control$resolution,
+       "\n* - kappa: ", x$control$kappa,
+       "\n* - pow: ", x$control$pow,
+       "\n* - lengthscale: ", paste(x$control$lengthscale, collapse = " to "),
+       ifelse(length(x$control$lengthscale) == 1, " (constant)", " (search range)"),
+       "\n* - x scaled: ", ifelse(x$control$scale_x, "yes", "no"),
+       "\n* Noisy: ", ifelse(x$control$noisy, "yes", "no"),
+       "\n* Narrowing: ", ifelse(x$control$narrow, "yes", "no"),
+
+       "\n\nCalibration/simulation details:",
+       "\n* Total evaluations: ", nrow(x$evaluations), " (previous + grid + iterations)",
+       "\n* Repetitions: ", x$control$n_rep,
+       "\n* Calibration time: ", format(unclass(x$elapsed_time), digits = 3), " ", attr(x$elapsed_time, "units"),
+       "\n* Base random seed: ", x$control$base_seed %||% "none specified",
+
+       "\n\nSee 'help(\"calibrate_trial\")' for details.")
 
   # Return invisibly
   invisible(x)

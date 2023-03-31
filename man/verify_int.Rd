@@ -14,7 +14,8 @@ between which \code{x} should lie.}
 
 \item{open}{single character, determines whether \code{min_value} and \code{max_value}
 are excluded or not. Valid values: \code{"no"} (= closed interval; \code{min_value}
-and \code{max_value} included; default value), \code{"right"}, \code{"left"}, \verb{"yes"``` (= open interval, }min_value\code{and}max_value` excluded).}
+and \code{max_value} included; default value), \code{"right"}, \code{"left"}, \code{"yes"}
+(= open interval, \code{min_value} and \code{max_value} excluded).}
 }
 \value{
 Single logical.

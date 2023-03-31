@@ -12,12 +12,12 @@ row for each draw from the posterior distributions.}
 
 \item{equivalence_diff}{single numeric value (\verb{> 0}) or \code{NULL} (default,
 corresponding to no equivalence assessment). If a numeric value is
-specified, estimated differences below this threshold will be considered
-equivalent when assessing equivalence. For designs with a common \code{control}
-arm, the differences between each non-control arm and the \code{control} arm is
-used, and for trials without a common \code{control} arm, the difference between
-the highest and lowest estimated outcome rates are used and the trial is
-only stopped for equivalence if all remaining arms are thus equivalent.}
+specified, estimated absolute differences smaller than this threshold will
+be considered equivalent. For designs with a common \code{control} arm, the
+differences between each non-control arm and the \code{control} arm is used, and
+for trials without a common \code{control} arm, the difference between the
+highest and lowest estimated outcome rates are used and the trial is only
+stopped for equivalence if all remaining arms are equivalent.}
 }
 \value{
 A single numeric value corresponding to the probability of all arms
@@ -30,6 +30,6 @@ Used internally. This function takes a \code{matrix} as calculated by the
 \code{\link[=get_draws_generic]{get_draws_generic()}}), and an equivalence difference, and calculates the
 probability of all arms being equivalent (absolute differences between
 highest and lowest value in the same set of posterior draws being less than
-the difference considered equivalent).
+the difference considered practically equivalent).
 }
 \keyword{internal}

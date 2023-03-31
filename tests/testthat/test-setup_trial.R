@@ -211,7 +211,6 @@ test_that("setup/validate_trial functions errors on invalid inputs", {
   expect_error(validate_trial(arms = 1:3, data_looks = 1:3 * 100, control = 1,
                               equivalence_prob = 0.9, equivalence_diff = 0.1))
 
-
   expect_error(validate_trial(arms = 1:3, data_looks = 1:3 * 100, futility_prob = 0.9))
   expect_error(validate_trial(arms = 1:3, control = 1, data_looks = 1:3 * 100, futility_prob = 0.9))
   expect_error(validate_trial(arms = 1:3, control = 1, data_looks = 1:3 * 100,
@@ -224,7 +223,6 @@ test_that("setup/validate_trial functions errors on invalid inputs", {
   expect_error(validate_trial(arms = 1:3, data_looks = 1:3 * 100, soften_power = 1 - 0.01 * 1:2))
   expect_error(validate_trial(arms = 1:3, data_looks = 1:3 * 100, soften_power = 1.01))
 
-  expect_message(setup_trial_binom(arms = 1:3, data_looks = 1:3 * 100, true_ys = rep(0.5, 3)))
   expect_error(validate_trial(arms = 1:3, data_looks = 1:3 * 100, true_ys = 0.1 * 1:3,
                               cri_width = c(1.01, 0.9)))
   expect_error(validate_trial(arms = 1:3, data_looks = 1:3 * 100, true_ys = 1:3, n_draws = 10))
@@ -257,4 +255,13 @@ test_that("setup/validate_trial functions errors on invalid inputs", {
                                  futility_prob = 0.9, futility_diff = 2, futility_only_first = TRUE))
 
   expect_error(setup_trial_norm(arms = 1:3, data_looks = 1:3 * 100, true_ys = 1:3, sds = -1))
+
+  expect_error(setup_trial_binom(arms = 1:3, max_n = 28.9, look_after_every = 1.23, true_ys = 1:3 * 0.1))
+  expect_error(setup_trial_binom(arms = 1:3, true_ys = 1:3 * 0.1, data_looks = 100 / 3 * 1:3))
+
+  expect_error(setup_trial_binom(arms = 1:3, data_looks = 1:3 * 100, true_ys = 1:3 * 0.1, inferiority = 0.35))
+
+  expect_error(setup_trial(arms = 1:3, true_ys = 1:3, data_looks = 1:3 * 100,
+                           fun_y_gen = function(x) rnorm(length(x)),
+                           fun_draws = function(...) matrix(1:9, ncol = 3)))
 })

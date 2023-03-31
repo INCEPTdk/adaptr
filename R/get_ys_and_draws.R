@@ -4,7 +4,7 @@
 #' additional details on how to specify functions to generate posterior draws.
 #'
 #' @param arms character vector, **currently active** `arms` as specified in
-#'   [setup_trial()]/[setup_trial_binom()]/[setup_trial_norm()].
+#'   [setup_trial()] / [setup_trial_binom()] / [setup_trial_norm()].
 #' @param allocs character vector, allocations of all patients (including
 #'   allocations to **currently inactive** `arms`).
 #' @param ys numeric vector, outcomes of all patients in the same order
@@ -82,6 +82,7 @@ get_draws_binom <- function(arms, allocs, ys, control, n_draws) {
 }
 
 
+
 #' Generate normally distributed continuous outcomes
 #'
 #' Used internally. Function factory used to generate a function that generates
@@ -124,12 +125,12 @@ get_ys_norm <- function(arms, means, sds) {
 #' for each arm, assuming that a non-informative, flat prior is used. Thus, the
 #' posteriors directly correspond to normal distributions with each groups' mean
 #' as the mean and each groups' standard error as the standard deviation.
-#' As it is necessary to always return valid draws, in cases where <2 patients
-#' have been randomised to an `arm`, posterior draws will come from an extremely
-#' wide normal distribution with mean corresponding to the mean of all included
-#' patients with outcome data and a standard deviation corresponding to the
-#' difference between the highest and lowest recorded outcomes for all patients
-#' with available outcome data multiplied by 1000.
+#' As it is necessary to always return valid draws, in cases where `< 2`
+#' patients have been randomised to an `arm`, posterior draws will come from an
+#' extremely wide normal distribution with mean corresponding to the mean of all
+#' included patients with outcome data and a standard deviation corresponding to
+#' the difference between the highest and lowest recorded outcomes for all
+#' patients with available outcome data multiplied by `1000`.
 #'
 #' @inheritParams get_draws_generic
 #'

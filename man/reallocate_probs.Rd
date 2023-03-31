@@ -17,7 +17,7 @@ reallocate_probs(
 \item{probs_best}{a resulting named vector from the \code{\link[=prob_best]{prob_best()}} function.}
 
 \item{fixed_probs}{numeric vector, fixed allocation probabilities for each
-arm - must be either a numeric vector with \code{NA} for arms without fixed
+arm. Must be either a numeric vector with \code{NA} for arms without fixed
 probabilities and values between \code{0} and \code{1} for the other arms or \code{NULL}
 (default), if adaptive randomisation is used for all arms or if one of the
 special settings (\code{"sqrt-based"}, \code{"sqrt-based start"},
@@ -25,20 +25,23 @@ special settings (\code{"sqrt-based"}, \code{"sqrt-based start"},
 (described below).}
 
 \item{min_probs}{numeric vector, lower threshold for adaptive allocation
-probabilities, lower probabilities will be rounded up to these values. Must
-be \code{NA} (default for all arms) if no boundary is wanted.}
+probabilities; lower probabilities will be rounded up to these values. Must
+be \code{NA} (default for all arms) if no lower threshold is wanted and for arms
+using fixed allocation probabilities.}
 
 \item{max_probs}{numeric vector, upper threshold for adaptive allocation
-probabilities, higher probabilities will be rounded down to these values.
-Must be \code{NA} (default for all arms) if no boundary is wanted.}
+probabilities; higher probabilities will be rounded down to these values.
+Must be \code{NA} (default for all arms) if no threshold is wanted and for arms
+using fixed allocation probabilities.}
 
 \item{soften_power}{either a single numeric value or a numeric vector of
 exactly the same length as the maximum number of looks/adaptive analyses.
 Values must be between \code{0} and \code{1} (default); if \verb{< 1}, then re-allocated
-non-fixed allocation probabilities are all raised to this power to make
-allocation probabilities less extreme, in turn used to redistribute
-remaining probability while respecting limits when defined by \code{min_probs}
-and/or \code{max_probs}. If \code{1}, then no \emph{softening} is applied.}
+non-fixed allocation probabilities are all raised to this power (followed
+by rescaling to sum to \code{1}) to make adaptive allocation probabilities
+less extreme, in turn used to redistribute remaining probability while
+respecting limits when defined by \code{min_probs} and/or \code{max_probs}. If \code{1},
+then no \emph{softening} is applied.}
 
 \item{match_arm}{index of the \code{control} arm. If not \code{NULL} (default), the
 control arm allocation probability will be similar to that of the best

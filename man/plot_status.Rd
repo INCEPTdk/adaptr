@@ -29,16 +29,17 @@ function.}
 
 \item{x_value}{single character string, determining whether the number of
 adaptive analysis looks (\code{"look"}, default), the total cumulated number of
-patients randomised (\code{"total n"}) or with outcome data available at each
-analysis (\code{"followed n"}) are plotted on the x-axis.}
+patients randomised (\code{"total n"}) or the total cumulated number of patients
+with outcome data available at each adaptive analysis (\code{"followed n"}) are
+plotted on the x-axis.}
 
-\item{arm}{character string of one or more unique, valid \code{arm} names, \code{NA},
-or \code{NULL} (default). If \code{NULL}, the overall trial statuses are plotted,
+\item{arm}{character vector containing one or more unique, valid \code{arm} names,
+\code{NA}, or \code{NULL} (default). If \code{NULL}, the overall trial statuses are plotted,
 otherwise the specified arms or all arms (if \code{NA} is specified) are plotted.}
 
-\item{area}{list of styling settings for the area as per \pkg{ggplot2}
-conventions (e.g., \code{alpha}, \code{size}). The default (\code{list(alpha = 0.5)}) sets
-the transparency to 50\% so overlain shaded areas are visible.}
+\item{area}{list of styling settings for the area as per \code{ggplot2}
+conventions (e.g., \code{alpha}, \code{linewidth}). The default (\code{list(alpha = 0.5)})
+sets the transparency to 50\% so overlain shaded areas are visible.}
 
 \item{nrow, ncol}{the number of rows and columns when plotting statuses for
 multiple arms in the same plot (using faceting in \code{ggplot2}). Defaults to
@@ -67,11 +68,13 @@ if (requireNamespace("ggplot2", quietly = TRUE)){
   # Plot trial statuses at each look according to total allocations
   plot_status(res_mult, x_value = "total n")
 
+}
+
+if (requireNamespace("ggplot2", quietly = TRUE)){
+
   # Plot trial statuses for all arms
   plot_status(res_mult, arm = NA)
 
-  # Do not return/print last plot in documentation
-  invisible(NULL)
 }
 
 }

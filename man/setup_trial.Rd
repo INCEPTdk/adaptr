@@ -44,22 +44,21 @@ setup_trial(
 probabilities, mean values, etc.) for all trial \code{arms}.}
 
 \item{fun_y_gen}{function, generates outcomes. See \code{\link[=setup_trial]{setup_trial()}}
-\strong{Details}
-for information on how to specify this function.\cr
-\strong{Note:} this function is called once during setup to validate the output
-structure.}
+\strong{Details} for information on how to specify this function.\cr
+\strong{Note:} this function is called once during setup to validate its output
+(with the global random seed restored afterwards).}
 
 \item{fun_draws}{function, generates posterior draws. See \code{\link[=setup_trial]{setup_trial()}}
 \strong{Details} for information on how to specify this function.\cr
 \strong{Note:} this function is called up to three times during setup to
-validate the output structure.}
+validate its output (with the global random seed restored afterwards).}
 
 \item{start_probs}{numeric vector, allocation probabilities for each arm at
-the beginning of the trial. The default (\code{NULL}) is automatically
-changed to equal randomisation.}
+the beginning of the trial. The default (\code{NULL}) automatically generates
+equal randomisation probabilities for each arm.}
 
 \item{fixed_probs}{numeric vector, fixed allocation probabilities for each
-arm - must be either a numeric vector with \code{NA} for arms without fixed
+arm. Must be either a numeric vector with \code{NA} for arms without fixed
 probabilities and values between \code{0} and \code{1} for the other arms or \code{NULL}
 (default), if adaptive randomisation is used for all arms or if one of the
 special settings (\code{"sqrt-based"}, \code{"sqrt-based start"},
@@ -67,12 +66,14 @@ special settings (\code{"sqrt-based"}, \code{"sqrt-based start"},
 (described below).}
 
 \item{min_probs}{numeric vector, lower threshold for adaptive allocation
-probabilities, lower probabilities will be rounded up to these values. Must
-be \code{NA} (default for all arms) if no boundary is wanted.}
+probabilities; lower probabilities will be rounded up to these values. Must
+be \code{NA} (default for all arms) if no lower threshold is wanted and for arms
+using fixed allocation probabilities.}
 
 \item{max_probs}{numeric vector, upper threshold for adaptive allocation
-probabilities, higher probabilities will be rounded down to these values.
-Must be \code{NA} (default for all arms) if no boundary is wanted.}
+probabilities; higher probabilities will be rounded down to these values.
+Must be \code{NA} (default for all arms) if no threshold is wanted and for arms
+using fixed allocation probabilities.}
 
 \item{data_looks}{vector of increasing integers, specifies when to conduct
 adaptive analyses (= the total number of patients with available outcome
@@ -80,8 +81,8 @@ data at each adaptive analysis). The last number in the vector represents
 the final adaptive analysis, i.e., the final analysis where superiority,
 inferiority, practical equivalence, or futility can be claimed.
 Instead of specifying \code{data_looks}, the \code{max_n} and \code{look_after_every}
-arguments can be used in combination (then \code{data_looks} must be \code{NULL},
-the default).}
+arguments can be used in combination (in which case \code{data_looks} must be
+\code{NULL}, the default value).}
 
 \item{max_n}{single integer, number of patients with available outcome data
 at the last possible adaptive analysis (defaults to \code{NULL}).
@@ -96,7 +97,8 @@ specified by \code{max_n} (\code{max_n} does not need to be a multiple of
 
 \item{randomised_at_looks}{vector of increasing integers or \code{NULL},
 specifying the number of patients randomised at the time of each adaptive
-analysis using the current allocation probabilities at said analysis.
+analysis, with new patients randomised using the current allocation
+probabilities at said analysis.
 If \code{NULL} (the default), the number of patients randomised at each analysis
 will match the number of patients with available outcome data at said
 analysis, as specified by \code{data_looks} or \code{max_n} and \code{look_after_every},
@@ -111,23 +113,25 @@ number of patients with available outcome data at each analysis.}
 (default). If specified, this arm will serve as a common control arm, to
 which all other arms will be compared and the
 inferiority/superiority/equivalence thresholds (see below) will be for
-those comparisons. See \code{\link[=setup_trial]{setup_trial()}} \strong{Details} below for information on
+those comparisons. See \code{\link[=setup_trial]{setup_trial()}} \strong{Details} for information on
 behaviour with respect to these comparisons.}
 
-\item{control_prob_fixed}{if a common \code{control} arm is specified, this must
-be set to either \code{NULL} (the default), in which case the control arm
-allocation probability will not be fixed if control arms change (the
-allocation probability to the first control arm may still be fixed using
-\code{fixed_probs}) Otherwise a vector of probabilities of either length \code{1} or
-\verb{number of arms - 1} can be provided, or one of the special arguments
-\code{"sqrt-based"}, \code{"sqrt-based start"}, \code{"sqrt-based fixed"} or \code{"match"}.
-See \code{\link[=setup_trial]{setup_trial()}} \strong{Details} below for details in behaviour.}
+\item{control_prob_fixed}{if a common \code{control} arm is specified, this can
+be set \code{NULL} (the default), in which case the control arm allocation
+probability will not be fixed if control arms change (the allocation
+probability for the first control arm may still be fixed using
+\code{fixed_probs}). If not \code{NULL}, a vector of probabilities of either length
+\code{1} or \verb{number of arms - 1} can be provided, or one of the special
+arguments \code{"sqrt-based"}, \code{"sqrt-based start"}, \code{"sqrt-based fixed"} or
+\code{"match"}. See \code{\link[=setup_trial]{setup_trial()}} \strong{Details} for details on how this affects
+trial behaviour.}
 
 \item{inferiority}{single numeric value or vector of numeric values of the
 same length as the maximum number of possible adaptive analyses, specifying
 the probability threshold(s) for inferiority (default is \code{0.01}). All
 values must be \verb{>= 0} and \verb{<= 1}, and if multiple values are supplied, no
-values may be lower than the preceding value. An arm will be considered
+values may be lower than the preceding value. If a common \code{control}is not
+used, all values must be \verb{< 1 / number of arms}. An arm will be considered
 inferior and dropped if the probability that it is best (when comparing all
 arms) or better than the control arm (when a common \code{control} is used)
 drops below the inferiority threshold at an adaptive analysis.}
@@ -147,40 +151,42 @@ the trial will continue (if a common control is specified).}
 \item{equivalence_prob}{single numeric value, vector of numeric values of the
 same length as the maximum number of possible adaptive analyses or \code{NULL}
 (default, corresponding to no equivalence assessment), specifying the
-probability threshold(s) for equivalence. All values must be \verb{> 0} and
-\verb{< 1}, and if multiple values are supplied, no values may be higher than
-the preceding value. If not \code{NULL}, arms will be dropped for equivalence if
-the probability of either \emph{(a)} equivalence compared to a common \code{control}
-or \emph{(b)} equivalence between all arms remaining (designs without a common
-\code{control}) exceeds the equivalence threshold at an adaptive analysis.
-Requires specification of \code{equivalence_diff}, and \code{equivalence_only_first}.}
+probability threshold(s) for equivalence. If not \code{NULL}, all values must be
+\verb{> 0} and \verb{<= 1}, and if multiple values are supplied, no value may be
+higher than the preceding value. If not \code{NULL}, arms will be dropped for
+equivalence if the probability of either \emph{(a)} equivalence compared to a
+common \code{control} or \emph{(b)} equivalence between all arms remaining (designs
+without a common \code{control}) exceeds the equivalence threshold at an
+adaptive analysis. Requires specification of \code{equivalence_diff} and
+\code{equivalence_only_first}.}
 
 \item{equivalence_diff}{single numeric value (\verb{> 0}) or \code{NULL} (default,
 corresponding to no equivalence assessment). If a numeric value is
-specified, estimated differences below this threshold will be considered
-equivalent when assessing equivalence. For designs with a common \code{control}
-arm, the differences between each non-control arm and the \code{control} arm is
-used, and for trials without a common \code{control} arm, the difference between
-the highest and lowest estimated outcome rates are used and the trial is
-only stopped for equivalence if all remaining arms are thus equivalent.}
+specified, estimated absolute differences smaller than this threshold will
+be considered equivalent. For designs with a common \code{control} arm, the
+differences between each non-control arm and the \code{control} arm is used, and
+for trials without a common \code{control} arm, the difference between the
+highest and lowest estimated outcome rates are used and the trial is only
+stopped for equivalence if all remaining arms are equivalent.}
 
 \item{equivalence_only_first}{single logical in trial specifications where
-\code{equivalence_prob} and \code{equivalence_diff} are specified, otherwise \code{NULL}
-(default). Must be \code{NULL} for designs without a common control arm. If a
-common \code{control} arm is used, this specifies whether equivalence will only
-be assessed for the first control (if \code{TRUE}) or also for subsequent
-control arms (if \code{FALSE}) if one arm is superior to the first control and
-becomes the new control.}
+\code{equivalence_prob} and \code{equivalence_diff} are specified and a common
+\code{control} arm is included, otherwise \code{NULL} (default). If a common
+\code{control} arm is used, this specifies whether equivalence will only be
+assessed for the first control (if \code{TRUE}) or also for subsequent \code{control}
+arms (if \code{FALSE}) if one arm is superior to the first control and becomes
+the new control.}
 
 \item{futility_prob}{single numeric value, vector of numeric values of the
 same length as the maximum number of possible adaptive analyses or \code{NULL}
 (default, corresponding to no futility assessment), specifying the
-probability threshold(s) for futility. All values must be \verb{> 0} and \verb{< 1},
-and if multiple values are supplied, no values may be higher than
-the preceding value. If not \code{NULL}, arms will be dropped for futility if
+probability threshold(s) for futility. All values must be \verb{> 0} and \verb{<= 1},
+and if multiple values are supplied, no value may be higher than the
+preceding value. If not \code{NULL}, arms will be dropped for futility if
 the probability for futility compared to the common \code{control} exceeds the
 futility threshold at an adaptive analysis. Requires a common \code{control}
-arm, specification of \code{futility_diff}, and \code{futility_only_first}.}
+arm (otherwise this argument must be \code{NULL}), specification of
+\code{futility_diff}, and \code{futility_only_first}.}
 
 \item{futility_diff}{single numeric value (\verb{> 0}) or \code{NULL} (default,
 corresponding to no futility assessment). If a numeric value is specified,
@@ -191,7 +197,10 @@ remains after dropping arms for futility, the trial will be stopped without
 declaring the last arm superior.}
 
 \item{futility_only_first}{single logical in trial specifications designs
-where \code{futility_prob} and \code{futility_diff} are specified, otherwise \verb{NULL (default). Must be }NULL\verb{for designs without a common}control\verb{arm. Specifies whether futility will only be assessed against the first}control\verb{(if}TRUE\verb{) or also for subsequent control arms (if }FALSE`) if
+where \code{futility_prob} and \code{futility_diff} are specified, otherwise \code{NULL}
+(default and required in designs without a common \code{control} arm).
+Specifies whether futility will only be assessed against the first
+\code{control} (if \code{TRUE}) or also for subsequent control arms (if \code{FALSE}) if
 one arm is superior to the first control and becomes the new control.}
 
 \item{highest_is_best}{single logical, specifies whether larger estimates of
@@ -202,10 +211,11 @@ outcome where lower numbers are preferred (e.g., hospital length of stay).}
 \item{soften_power}{either a single numeric value or a numeric vector of
 exactly the same length as the maximum number of looks/adaptive analyses.
 Values must be between \code{0} and \code{1} (default); if \verb{< 1}, then re-allocated
-non-fixed allocation probabilities are all raised to this power to make
-allocation probabilities less extreme, in turn used to redistribute
-remaining probability while respecting limits when defined by \code{min_probs}
-and/or \code{max_probs}. If \code{1}, then no \emph{softening} is applied.}
+non-fixed allocation probabilities are all raised to this power (followed
+by rescaling to sum to \code{1}) to make adaptive allocation probabilities
+less extreme, in turn used to redistribute remaining probability while
+respecting limits when defined by \code{min_probs} and/or \code{max_probs}. If \code{1},
+then no \emph{softening} is applied.}
 
 \item{fun_raw_est}{function that takes a numeric vector and returns a
 single numeric value, used to calculate a raw summary estimate of the
@@ -219,18 +229,18 @@ percentile-based credible intervals used when summarising individual trial
 results. Defaults to \code{0.95}, corresponding to 95\% credible intervals.}
 
 \item{n_draws}{single integer, the number of draws from the posterior
-distributions (for each arm) used when running the trial. Defaults to
+distributions for each arm used when running the trial. Defaults to
 \code{5000}; can be reduced for a speed gain (at the potential loss of stability
-of results if too low) or increased for increased precision (takes longer).
-Values \verb{< 100} are not allowed and values \verb{< 1000} are not recommended
-and warned against.}
+of results if too low) or increased for increased precision (increasing
+simulation time). Values \verb{< 100} are not allowed and values \verb{< 1000} are
+not recommended and warned against.}
 
 \item{robust}{single logical, if \code{TRUE} (default) the medians and median
 absolute deviations (scaled to be comparable to the standard deviation for
-normal distributions; MAD_SDs) are used to summarise the posterior
-distributions; if \code{FALSE}, the means and standard deviations (SDs) are used
-instead (slightly faster, but may be less appropriate for posteriors skewed
-on the natural scale).}
+normal distributions; MAD_SDs, see \code{\link[stats:mad]{stats::mad()}}) are used to summarise
+the posterior distributions; if \code{FALSE}, the means and standard deviations
+(SDs) are used instead (slightly faster, but may be less appropriate for
+posteriors skewed on the natural scale).}
 
 \item{description}{optional single character string describing the trial
 design, will only be used in print functions if not \code{NULL} (the default).}
@@ -244,16 +254,18 @@ A \code{trial_spec} object used to run simulations by \code{\link[=run_trial]{ru
 \code{\link[=run_trials]{run_trials()}}. The output is essentially a list containing the input
 values (some combined in a \code{data.frame} called \code{trial_arms}), but its class
 signals that these inputs have been validated and inappropriate
-combinations and settings have been ruled out. Also contains \code{best_arm}
+combinations and settings have been ruled out. Also contains \code{best_arm},
 holding the arm(s) with the best value(s) in \code{true_ys}. Use \code{str()} to
 peruse the actual content of the returned object.
 }
 \description{
 Specifies the design of an adaptive trial with any type of outcome and
-validates all inputs. Use \code{\link[=run_trial]{run_trial()}} or \code{\link[=run_trials]{run_trials()}} to conduct
-single/multiple simulations of the specified trial, respectively.\cr
-See \code{\link[=setup_trial_binom]{setup_trial_binom()}} and \code{\link[=setup_trial_norm]{setup_trial_norm()}} for simplified setup of
-trial designs common outcome types. For additional trial specification
+validates all inputs. Use \code{\link[=calibrate_trial]{calibrate_trial()}} to calibrate the trial
+specification to obtain a specific value for a certain performance metric
+(e.g., the Bayesian type 1 error rate). Use \code{\link[=run_trial]{run_trial()}} or \code{\link[=run_trials]{run_trials()}}
+to conduct single/multiple simulations of the specified trial, respectively.
+\cr See \code{\link[=setup_trial_binom]{setup_trial_binom()}} and \code{\link[=setup_trial_norm]{setup_trial_norm()}} for simplified setup
+of trial designs for common outcome types. For additional trial specification
 examples, see the the \strong{Basic examples} vignette
 (\code{vignette("Basic-examples", package = "adaptr")}) and the
 \strong{Advanced example} vignette
@@ -262,7 +274,7 @@ examples, see the the \strong{Basic examples} vignette
 \details{
 \strong{How to specify the \code{fun_y_gen} function}
 
-The function must take the following inputs:
+The function must take the following arguments:
 \itemize{
 \item \code{allocs}: character vector, the trial \code{arms} that new patients allocated
 since the last adaptive analysis are randomised to.
@@ -277,25 +289,25 @@ further details.
 
 \strong{How to specify the \code{fun_draws} function}
 
-The function must take the following inputs:
+The function must take the following arguments:
 \itemize{
-\item \code{arms}: character vector, the unique trial arms, in the same order as
-above, but only the \strong{currently active} arms are specified when the function is
-called.
+\item \code{arms}: character vector, the unique trial \code{arms}, in the same order as
+above, but only the \strong{currently active} arms are included when the function
+is called.
 \item \code{allocs}: a vector of allocations for all patients, corresponding to the
-trial arms, including patients allocated to \strong{currently inactive} \code{arms} when
-called,
+trial \code{arms}, including patients allocated to both
+\strong{currently active AND inactive} \code{arms} when called.
 \item \code{ys}: a vector of outcomes for all patients in the same order as \code{allocs},
-including outcomes for patients allocated to \strong{currently inactive} \code{arms}
-when called.
-\item \code{control}: single character, the current \verb{control arm}, will be \code{NULL} for
+including outcomes for patients allocated to both
+\strong{currently active AND inactive} \code{arms} when called.
+\item \code{control}: single character, the current \code{control} arm, will be \code{NULL} for
 designs without a common control arm, but required regardless as the argument
 is supplied by \code{\link[=run_trial]{run_trial()}}/\code{\link[=run_trials]{run_trials()}}.
 \item \code{n_draws}: single integer, the number of posterior draws for each arm.
 }
 
-The function must return a \code{matrix} (with numeric values) with \code{arms} columns
-and \code{n_draws} rows. The \code{matrix} must have columns
+The function must return a \code{matrix} (containing numeric values) with \code{arms}
+named columns and \code{n_draws} rows. The \code{matrix} must have columns
 \strong{only for currently active arms} (when called). Each row should contain a
 single posterior draw for each arm on the original outcome
 scale: if they are estimated as, e.g., the \emph{log(odds)}, these estimates must
@@ -313,30 +325,32 @@ further details.
 complex functions will lead to slower simulations compared to simpler
 methods for obtaining posterior draws, including those specified using the
 \code{\link[=setup_trial_binom]{setup_trial_binom()}} and \code{\link[=setup_trial_norm]{setup_trial_norm()}} functions.
-\item Technically, using log relative effect measures — e.g. log(odds ratio) or
+\item Technically, using log relative effect measures — e.g. log(odds ratios) or
 log(risk ratios) - or differences compared to a reference arm (e.g., mean
 differences or absolute risk differences) instead of absolute values in each
 arm will work to some extent (\strong{be cautious!}):
 \item Stopping for superiority/inferiority/max sample sizes will work.
 \item Stopping for equivalence/futility may be used with relative effect
-measures on the log scale.
+measures on the log scale, but thresholds have to be adjusted accordingly.
 \item Several summary statistics from \code{\link[=run_trial]{run_trial()}} (\code{sum_ys} and posterior
 estimates) may be nonsensical if relative effect measures are used
-(depending on calculation method).
+(depending on calculation method; see the \code{raw_ests} argument in the
+relevant functions).
 \item In the same vein, \code{\link[=extract_results]{extract_results()}} (\code{sum_ys}, \code{sq_err}, and
-\code{sq_err_te}), and \code{\link[=summary]{summary()}} (\code{sum_ys_mean/sd/median/q25/q75}, \code{rmse},
-\code{rmse_te} and \code{idp}) may be equally nonsensical when calculated on the
-relative scale.
+\code{sq_err_te}), and \code{\link[=summary]{summary()}} (\code{sum_ys_mean/sd/median/q25/q75/q0/q100},
+\code{rmse}, and \code{rmse_te}) may be equally nonsensical when calculated on
+the relative scale (see the \code{raw_ests} argument in the relevant functions.
 }
 
 \strong{Using additional custom or functions from loaded packages in the
 custom functions}
+
 If the \code{fun_y_gen}, \code{fun_draws}, or \code{fun_raw_est} functions calls other
 user-specified functions (or uses objects defined by the user outside these
 functions or the \code{\link[=setup_trial]{setup_trial()}}-call) or functions from external packages
 and simulations are conducted on multiple cores, these objects or functions
 must be exported or prefixed with their namespaces, respectively, as
-described in \code{\link[=run_trials]{run_trials()}}.
+described in \code{\link[=setup_cluster]{setup_cluster()}} and \code{\link[=run_trials]{run_trials()}}.
 
 \strong{More information on arguments}
 \itemize{
@@ -355,7 +369,7 @@ the first value will be used when all arms are active, the second when one
 arm has been dropped, and so forth. If 1 or more values are specified,
 previously set \code{fixed_probs}, \code{min_probs} or \code{max_probs} for new control arms
 will be ignored. If all allocation probabilities do not sum to 1 (e.g, due to
-multiple limits) they will be re-scaled to do so.\cr
+multiple limits) they will be rescaled to do so.\cr
 Can also be set to one of the special arguments \code{"sqrt-based"},
 \code{"sqrt-based start"}, \code{"sqrt-based fixed"} or \code{"match"} (written exactly as
 one of those, case sensitive). This requires \code{start_probs} to be \code{NULL} and
@@ -365,18 +379,19 @@ are used, the function will set \emph{square-root-transformation-based} starting
 allocation probabilities. These are defined as:\cr
 \verb{square root of number of non-control arms to 1-ratio for other arms}\cr
 scaled to sum to 1, which will generally increase power for comparisons
-against the common control, as discussed in, e.g., \emph{Park et al, 2020}
+against the common \code{control}, as discussed in, e.g., \emph{Park et al, 2020}
 \doi{10.1016/j.jclinepi.2020.04.025}.\cr
 If \code{"sqrt-based"}, square-root-transformation-based allocation probabilities
 will also be used for new controls when arms are dropped. If
 \code{"sqrt-based start"}, the control arm will be fixed to this allocation
-probability at all times (also after arm dropping, with re-scaling as
+probability at all times (also after arm dropping, with rescaling as
 necessary, as specified above). If \code{"sqrt-based fixed"} is chosen,
 square-root-transformation-based allocation probabilities will be used and
 all allocation probabilities will be fixed throughout the trial (with
-re-scaling when arms are dropped).\cr
-If \code{"match"} is specified, the control group allocation will always be
-\emph{matched} to be similar to the highest non-control arm allocation ratio.
+rescaling when arms are dropped).\cr
+If \code{"match"} is specified, the control group allocation probability will
+always be \emph{matched} to be similar to the highest non-control arm allocation
+probability.
 }
 
 \strong{Superiority and inferiority}
@@ -385,7 +400,7 @@ In trial designs without a common control arm, superiority and inferiority
 are assessed by comparing all \emph{\strong{currently active}} groups. This means that
 if a "final" analysis of a trial without a common control and \verb{> 2 arms} is
 conducted including all arms (as will often be done in practice) \emph{after} an
-adaptive trial have stopped, the final probabilities of the best arm being
+adaptive trial has stopped, the final probabilities of the best arm being
 superior may differ slightly.\cr
 For example, in a trial with three arms and no common \code{control} arm, one arm
 may be dropped early for inferiority defined as \verb{< 1\%} probability of being
@@ -394,23 +409,25 @@ arms, and stopped when one is declared superior to the other defined as
 \verb{> 99\%} probability of being the overall best \code{arm}. If a final analysis is
 then conducted including all arms, the final probability of the best arm
 being overall superior will generally be slightly lower as the probability
-of the first dropped arm being the best will generally be \verb{> 0\%}, even if
-very low and below the inferiority threshold.\cr
-This is not relevant trial designs \emph{with} a common \code{control}, as pairwise
+of the first dropped arm being the best will often be \verb{> 0\%}, even if very
+low and below the inferiority threshold.\cr
+This is less relevant trial designs \emph{with} a common \code{control}, as pairwise
 assessments of superiority/inferiority compared to the common \code{control} will
 not be influenced similarly by previously dropped arms (and previously
 dropped arms may be included in the analyses, even if posterior distributions
 are not returned for those).
-Similarly, in actual clinical trials, final probabilities may change slightly
-as the most recently randomised patients will generally not have outcome data
-available at the final adaptive analysis where the trial is stopped.
+Similarly, in actual clinical trials and when \code{randomised_at_looks} is
+specified with numbers higher than the number of patients with available
+outcome data at each analysis, final probabilities may change somewhat when
+the all patients are have completed follow-up and are included in a final
+analysis.
 
 \strong{Equivalence}
 
-Equivalence is assessed \emph{\strong{after}} both inferiority and
-superiority have been assessed (and in case of superiority, it will be
-assessed against the new \code{control} arm in designs with a common \code{control}, if
-specified - see above).
+Equivalence is assessed \emph{\strong{after}} both inferiority and superiority have
+been assessed (and in case of superiority, it will be assessed against the
+new \code{control} arm in designs with a common \code{control}, if specified - see
+above).
 
 \strong{Futility}
 
@@ -424,10 +441,12 @@ futility.
 
 Different probability thresholds (for superiority, inferiority, equivalence,
 and futility) may be specified for different adaptive analyses. This may be
-used, e.g., to apply more strict probability thresholds at earlier analyses,
-similar to the use of alpha-spending functions in conventional,
-frequentist group sequential trial designs. See the \strong{Basic examples}
-vignette (\code{vignette("Basic-examples", package = "adaptr")}) for an example.
+used, e.g., to apply more strict probability thresholds at earlier analyses
+(or make one or more stopping rules not apply at earlier analyses), similar
+to the use of monitoring boundaries with different thresholds used for
+interim analyses in conventional, frequentist group sequential trial designs.
+See the \strong{Basic examples} vignette
+(\code{vignette("Basic-examples", package = "adaptr")}) for an example.
 }
 \examples{
 # Setup a custom trial specification with right-skewed, log-normally
@@ -480,7 +499,7 @@ lognorm_trial <- setup_trial(
   max_n = 5000,
   look_after_every = 200,
   control = "Control",
-  # Qquare-root-based, fixed control group allocation ratio
+  # Square-root-based, fixed control group allocation ratio
   # and response-adaptive randomisation for other arms
   control_prob_fixed = "sqrt-based",
   # Equivalence assessment

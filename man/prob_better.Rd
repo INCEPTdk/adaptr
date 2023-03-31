@@ -2,7 +2,7 @@
 % Please edit documentation in R/prob_funs.R
 \name{prob_better}
 \alias{prob_better}
-\title{Calculate the probabilities that each arm is better than a common control}
+\title{Calculate probabilities of comparisons of arms against with common control}
 \usage{
 prob_better(
   m,
@@ -25,12 +25,12 @@ outcome where lower numbers are preferred (e.g., hospital length of stay).}
 
 \item{equivalence_diff}{single numeric value (\verb{> 0}) or \code{NULL} (default,
 corresponding to no equivalence assessment). If a numeric value is
-specified, estimated differences below this threshold will be considered
-equivalent when assessing equivalence. For designs with a common \code{control}
-arm, the differences between each non-control arm and the \code{control} arm is
-used, and for trials without a common \code{control} arm, the difference between
-the highest and lowest estimated outcome rates are used and the trial is
-only stopped for equivalence if all remaining arms are thus equivalent.}
+specified, estimated absolute differences smaller than this threshold will
+be considered equivalent. For designs with a common \code{control} arm, the
+differences between each non-control arm and the \code{control} arm is used, and
+for trials without a common \code{control} arm, the difference between the
+highest and lowest estimated outcome rates are used and the trial is only
+stopped for equivalence if all remaining arms are equivalent.}
 
 \item{futility_diff}{single numeric value (\verb{> 0}) or \code{NULL} (default,
 corresponding to no futility assessment). If a numeric value is specified,
@@ -41,7 +41,7 @@ remains after dropping arms for futility, the trial will be stopped without
 declaring the last arm superior.}
 }
 \value{
-A named (rownames corresponding to the trial \code{arms}) \code{matrix}
+A named (row names corresponding to the trial \code{arms}) \code{matrix}
 containing 1-3 columns: \code{probs_better}, \code{probs_equivalence} (if
 \code{equivalence_diff} is specified), and \code{probs_futile} (if \code{futility_diff} is
 specified). All columns will contain \code{NA} for the control arm.
