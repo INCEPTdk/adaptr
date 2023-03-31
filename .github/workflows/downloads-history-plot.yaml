@@ -1,8 +1,8 @@
 # Workflow derived from https://github.com/r-lib/actions/tree/master/examples
 
 on:
-  schedule:
-  - cron: "0 22 * * 1" # run Mondays at 22 o'clock
+  # schedule:
+  # - cron: "0 22 * * 1" # run Mondays at 22 o'clock
   workflow_dispatch:
 
 
@@ -17,22 +17,21 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: r-lib/actions/setup-r@master
+      - uses: r-lib/actions/setup-r@v2
         with:
           use-public-rspm: true
 
       - name: Draw history
         run: |
-          install.packages("cranlogs")
+          install.packages("cranlogs", repos = "http://cran.rstudio.com/", dependencies = TRUE)
 
           df <- cranlogs::cran_downloads("adaptr", from = "2022-03-14", to = Sys.Date() - 1)
             # today's stats won't be available
 
-          pdf(file = ".github/workflows/downloads-history.pdf", width = 20/2.54, height = 12/2.54)
-            # convert to inches
+          pdf(file = ".github/workflows/downloads-history.pdf", width = 20/2.54, height = 12/2.54) # cm --> inches
           plot(df$date, df$count,
                xlab = "Dashed line: mean per day",
-               ylab = "No. downloads", type = "o", pch = 16, cex = 0.75, lwd = 0.2,
+               ylab = "No. downloads", type = "l", lwd = 0.5,
                main = paste("Downloads per day since release\n",
                             "Total downloads:",
                             format(sum(df$count), big.mark = ",", scientific = FALSE)))

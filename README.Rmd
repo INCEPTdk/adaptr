@@ -26,6 +26,9 @@ knitr::opts_chunk$set(
 The `adaptr` package simulates adaptive (multi-arm, multi-stage) clinical trials
 using adaptive stopping, adaptive arm dropping and/or response-adaptive
 randomisation.
+The `adaptr` package simulates adaptive (multi-arm, multi-stage) clinical trials
+using adaptive stopping, adaptive arm dropping and/or response-adaptive
+randomisation.
 
 The package has been developed as part of the
 [INCEPT (Intensive Care Platform Trial) project](https://incept.dk/), which
@@ -56,6 +59,7 @@ requires the *remotes*-package installed. The development version may contain
 additional features not yet available in the CRAN version (including preliminary
 functions), but may not be stable or fully documented:
 
+```{r eval = FALSE}
 ```{r eval = FALSE}
 # install.packages("remotes") 
 remotes::install_github("INCEPTdk/adaptr@dev")

@@ -14,6 +14,9 @@
 The \code{adaptr} package simulates adaptive (multi-arm, multi-stage) randomised
 clinical trials using adaptive stopping, adaptive arm dropping and/or
 response-adaptive randomisation. The package is developed as part of the
+The \code{adaptr} package simulates adaptive (multi-arm, multi-stage) randomised
+clinical trials using adaptive stopping, adaptive arm dropping and/or
+response-adaptive randomisation. The package is developed as part of the
 \href{https://incept.dk/}{INCEPT (Intensive Care Platform Trial) project},
 funded primarily by a grant from
 \href{https://www.sygeforsikring.dk/}{Sygeforsikringen "danmark"}.
