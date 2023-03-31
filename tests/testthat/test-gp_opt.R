@@ -22,7 +22,7 @@ test_that("gp_opt works", {
 
   # Test with relatively low resolution for speed
   tmp_op <- gp_opt(x, y, target = 0.05, dir = 0, resolution = 500, scale_x = FALSE)
-  tmp_op$predictions <- round(tmp_op$predictions, 6)
+  tmp_op$predictions <- round(tmp_op$predictions, 5)
     # different OS yield minuscule difference on the last decimals
   expect_snapshot(tmp_op)
 
