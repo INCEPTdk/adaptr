@@ -66,7 +66,7 @@ general `setup_trial()` function, or one of the special case functions,
 
 ``` r
 library(adaptr)
-#> Loading 'adaptr' package v1.3.0.
+#> Loading 'adaptr' package v1.3.0.9000.
 #> For instructions, type 'help("adaptr")'
 #> or see https://inceptdk.github.io/adaptr/.
 
@@ -210,7 +210,7 @@ print(res_sum, digits = 1)
 #> * Ideal design percentage: 100.0%
 #> 
 #> Simulation details:
-#> * Simulation time: 0.439 secs
+#> * Simulation time: 0.44 secs
 #> * Base random seed: 67890
 #> * Credible interval width: 95%
 #> * Number of posterior draws: 5000
@@ -221,11 +221,11 @@ Performance metrics may also be calculated and returned in a tidy
 `data.frame` (with bootstrapped uncertainty measures, if requested) by
 the `check_performance()` function, and the empirical cumulative
 distribution functions of numerical performance metrics may be plotted
-by the `plot_metrics_ecdf()` function. Finally, the `plot_convergence()`
-function may be used to visually assess stability of performance metrics
-according to the number of simulations. The `check_remaining_arms()`
-function may be used to summarise all combinations of remaining arms
-across multiple simulations.
+by the `plot_metrics_ecdf()` function. The `plot_convergence()` function
+may be used to visually assess stability of performance metrics
+according to the number of simulations. Finally, the
+`check_remaining_arms()` function may be used to summarise all
+combinations of remaining arms across multiple simulations.
 
 Plot trial statuses or history of trial metrics over time:
 

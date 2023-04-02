@@ -1,3 +1,11 @@
+# adaptr (development version)
+
+*   Fixed erroneous duplicated text in README and thus also on GitHub and the
+    package website (occurred due to an error in a previous merge).
+    
+*   Minor edits/clarifications in the documentation including README and
+    vignettes.
+
 # adaptr 1.3.0
 
 This release implements new functionality (most importantly trial calibration),

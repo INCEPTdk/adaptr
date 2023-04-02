@@ -104,9 +104,9 @@ of the \code{adaptr} package used to run the simulations). These results may be
 extracted, summarised, and plotted using the \code{\link[=extract_results]{extract_results()}},
 \code{\link[=check_performance]{check_performance()}}, \code{\link[=summary]{summary()}}, \code{\link[=print.trial_results]{print.trial_results()}},
 \code{\link[=plot_convergence]{plot_convergence()}}, \code{\link[=check_remaining_arms]{check_remaining_arms()}}, \code{\link[=plot_status]{plot_status()}}, and
-\code{\link[=plot_history]{plot_history()}} functions. See these functions' definitions for additional
-details and details on additional arguments used to select arms in
-simulations not ending in superiority and other summary choices.
+\code{\link[=plot_history]{plot_history()}} functions. See the definitions of these functions for
+additional details and details on additional arguments used to select arms
+in simulations not ending in superiority and other summary choices.
 }
 \description{
 This function conducts multiple simulations using a trial specification as

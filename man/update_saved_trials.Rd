@@ -48,7 +48,7 @@ version of the package.
 The following changes are made according to the version of \code{adaptr} used to
 generate the original \code{"trial_results"} object:
 \itemize{
-\item \verb{v1.2.0+}: only updates the version number
+\item \verb{v1.2.0+}: only updates the version number.
 \item \verb{v1.1.1 or earlier}: updates version number and everything related
 to follow-up and data collection lag (in these versions, the
 \code{randomised_at_looks} argument in the \code{\link[=setup_trial]{setup_trial()}} functions did not

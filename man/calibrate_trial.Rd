@@ -91,9 +91,9 @@ patients, the possible maximum differences in simulated outcomes, and the
 number of posterior draws (\code{n_draws} in the \code{\link[=setup_trial]{setup_trial()}} family of
 functions), which affects the minimum differences in posterior
 probabilities when simulating trials and thus can affect calibration,
-including when using the default calibration function. Increase the number
-of posterior draws or the number of repetitions should be attempted if the
-desired tolerance cannot be achieved.}
+including when using the default calibration function. Increasing the
+number of posterior draws or the number of repetitions should be attempted
+if the desired tolerance cannot be achieved with lower numbers.}
 
 \item{dir}{single numeric value; specifies the direction(s) of the tolerance
 range. If \code{0} (the default) the tolerance range will be \code{target - tol} to
