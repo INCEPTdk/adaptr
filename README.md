@@ -17,9 +17,6 @@ mirror](https://cranlogs.r-pkg.org/badges/grand-total/adaptr)
 The `adaptr` package simulates adaptive (multi-arm, multi-stage)
 clinical trials using adaptive stopping, adaptive arm dropping and/or
 response-adaptive randomisation.
-The `adaptr` package simulates adaptive (multi-arm, multi-stage)
-clinical trials using adaptive stopping, adaptive arm dropping and/or
-response-adaptive randomisation.
 
 The package has been developed as part of the [INCEPT (Intensive Care
 Platform Trial) project](https://incept.dk/), which is primarily
@@ -39,23 +36,8 @@ supported by a grant from [Sygeforsikringen
     Journal of Clinical Epidemiology describing key methodological
     considerations in adaptive trials with description of the workflow
     and a simulation-based example using the package
-## Resources
-
--   [Website](https://inceptdk.github.io/adaptr/) - stand-alone website
-    with full package documentation
--   [adaptr: an R package for simulating and comparing adaptive clinical
-    trials](https://doi.org/10.21105/joss.04284) - article in the
-    Journal of Open Source Software describing the package
--   [An overview of methodological considerations regarding adaptive
-    stopping, arm dropping and randomisation in clinical
-    trials](https://doi.org/10.1016/j.jclinepi.2022.11.002) - article in
-    Journal of Clinical Epidemiology describing key methodological
-    considerations in adaptive trials with description of the workflow
-    and a simulation-based example using the package
 
 ## Installation
-
-The easiest way is to install from CRAN directly:
 
 The easiest way is to install from CRAN directly:
 
@@ -69,7 +51,6 @@ may contain additional features not yet available in the CRAN version
 (including preliminary functions), but may not be stable or fully
 documented:
 
-``` r
 ``` r
 # install.packages("remotes") 
 remotes::install_github("INCEPTdk/adaptr@dev")
@@ -119,12 +100,7 @@ print(binom_trial, prob_digits = 3)
 #> Maximum number of data looks: 18
 #> Planned data looks after:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000 patients have reached follow-up
 #> Number of patients randomised at each look:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000
-#> Planned data looks after:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000 patients have reached follow-up
-#> Number of patients randomised at each look:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000
 #> 
-#> Superiority threshold: 0.99 (all analyses)
-#> Inferiority threshold: 0.01 (all analyses)
-#> Equivalence threshold: 0.9 (all analyses) (no common control)
 #> Superiority threshold: 0.99 (all analyses)
 #> Inferiority threshold: 0.01 (all analyses)
 #> Equivalence threshold: 0.9 (all analyses) (no common control)
@@ -234,7 +210,7 @@ print(res_sum, digits = 1)
 #> * Ideal design percentage: 100.0%
 #> 
 #> Simulation details:
-#> * Simulation time: 0.438 secs
+#> * Simulation time: 0.439 secs
 #> * Base random seed: 67890
 #> * Credible interval width: 95%
 #> * Number of posterior draws: 5000
@@ -317,7 +293,7 @@ If using the package, please consider citing it:
 ``` r
 citation(package = "adaptr")
 #> 
-#> To cite adaptr in publications use:
+#> To cite package 'adaptr' in publications use:
 #> 
 #>   Granholm A, Jensen AKG, Lange T, Kaas-Hansen BS (2022). adaptr: an R
 #>   package for simulating and comparing adaptive clinical trials.
