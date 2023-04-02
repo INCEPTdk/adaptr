@@ -81,31 +81,30 @@
 </h1></div>
 <!-- badges: start -->
 
-<p>The <code>adaptr</code> package simulates adaptive (multi-arm, multi-stage) clinical trials using adaptive stopping, adaptive arm dropping and/or response-adaptive randomisation. The <code>adaptr</code> package simulates adaptive (multi-arm, multi-stage) clinical trials using adaptive stopping, adaptive arm dropping and/or response-adaptive randomisation.</p>
+<p>The <code>adaptr</code> package simulates adaptive (multi-arm, multi-stage) clinical trials using adaptive stopping, adaptive arm dropping and/or response-adaptive randomisation.</p>
 <p>The package has been developed as part of the <a href="https://incept.dk/" class="external-link">INCEPT (Intensive Care Platform Trial) project</a>, which is primarily supported by a grant from <a href="https://www.sygeforsikring.dk/" class="external-link">Sygeforsikringen “danmark”</a>.</p>
 <div class="section level2">
 <h2 id="resources">Resources<a class="anchor" aria-label="anchor" href="#resources"></a>
 </h2>
 <ul>
-<li><p><a href="https://inceptdk.github.io/adaptr/">Website</a> - stand-alone website with full package documentation</p></li>
-<li><p><a href="https://doi.org/10.21105/joss.04284" class="external-link">adaptr: an R package for simulating and comparing adaptive clinical trials</a> - article in the Journal of Open Source Software describing the package</p></li>
-<li><p><a href="https://doi.org/10.1016/j.jclinepi.2022.11.002" class="external-link">An overview of methodological considerations regarding adaptive stopping, arm dropping and randomisation in clinical trials</a> - article in Journal of Clinical Epidemiology describing key methodological considerations in adaptive trials with description of the workflow and a simulation-based example using the package ## Resources</p></li>
-<li><p><a href="https://inceptdk.github.io/adaptr/">Website</a> - stand-alone website with full package documentation</p></li>
-<li><p><a href="https://doi.org/10.21105/joss.04284" class="external-link">adaptr: an R package for simulating and comparing adaptive clinical trials</a> - article in the Journal of Open Source Software describing the package</p></li>
-<li><p><a href="https://doi.org/10.1016/j.jclinepi.2022.11.002" class="external-link">An overview of methodological considerations regarding adaptive stopping, arm dropping and randomisation in clinical trials</a> - article in Journal of Clinical Epidemiology describing key methodological considerations in adaptive trials with description of the workflow and a simulation-based example using the package</p></li>
+<li>
+<a href="https://inceptdk.github.io/adaptr/">Website</a> - stand-alone website with full package documentation</li>
+<li>
+<a href="https://doi.org/10.21105/joss.04284" class="external-link">adaptr: an R package for simulating and comparing adaptive clinical trials</a> - article in the Journal of Open Source Software describing the package</li>
+<li>
+<a href="https://doi.org/10.1016/j.jclinepi.2022.11.002" class="external-link">An overview of methodological considerations regarding adaptive stopping, arm dropping and randomisation in clinical trials</a> - article in Journal of Clinical Epidemiology describing key methodological considerations in adaptive trials with description of the workflow and a simulation-based example using the package</li>
 </ul>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <p>The easiest way is to install from CRAN directly:</p>
-<p>The easiest way is to install from CRAN directly:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"adaptr"</span><span class="op">)</span></span></code></pre></div>
 <p>Alternatively, you can install the <strong>development version</strong> from GitHub - this requires the <em>remotes</em>-package installed. The development version may contain additional features not yet available in the CRAN version (including preliminary functions), but may not be stable or fully documented:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="st">```</span><span class="at"> r</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="at"># install.packages("remotes") </span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="at">remotes::install_github("INCEPTdk/adaptr@dev")</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># install.packages("remotes") </span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"INCEPTdk/adaptr@dev"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
@@ -148,12 +147,7 @@
 <span><span class="co">#&gt; Maximum number of data looks: 18</span></span>
 <span><span class="co">#&gt; Planned data looks after:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000 patients have reached follow-up</span></span>
 <span><span class="co">#&gt; Number of patients randomised at each look:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000</span></span>
-<span><span class="co">#&gt; Planned data looks after:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000 patients have reached follow-up</span></span>
-<span><span class="co">#&gt; Number of patients randomised at each look:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Superiority threshold: 0.99 (all analyses)</span></span>
-<span><span class="co">#&gt; Inferiority threshold: 0.01 (all analyses)</span></span>
-<span><span class="co">#&gt; Equivalence threshold: 0.9 (all analyses) (no common control)</span></span>
 <span><span class="co">#&gt; Superiority threshold: 0.99 (all analyses)</span></span>
 <span><span class="co">#&gt; Inferiority threshold: 0.01 (all analyses)</span></span>
 <span><span class="co">#&gt; Equivalence threshold: 0.9 (all analyses) (no common control)</span></span>
@@ -253,7 +247,7 @@
 <span><span class="co">#&gt; * Ideal design percentage: 100.0%</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Simulation details:</span></span>
-<span><span class="co">#&gt; * Simulation time: 0.438 secs</span></span>
+<span><span class="co">#&gt; * Simulation time: 0.447 secs</span></span>
 <span><span class="co">#&gt; * Base random seed: 67890</span></span>
 <span><span class="co">#&gt; * Credible interval width: 95%</span></span>
 <span><span class="co">#&gt; * Number of posterior draws: 5000</span></span>
@@ -303,7 +297,7 @@
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">"adaptr"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; To cite adaptr in publications use:</span></span>
+<span><span class="co">#&gt; To cite package 'adaptr' in publications use:</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;   Granholm A, Jensen AKG, Lange T, Kaas-Hansen BS (2022). adaptr: an R</span></span>
 <span><span class="co">#&gt;   package for simulating and comparing adaptive clinical trials.</span></span>
