@@ -3,8 +3,8 @@
 *   Fixed erroneous duplicated text in README and thus also on GitHub and the
     package website (occurred due to an error in a previous merge).
     
-*   Minor edits/clarifications in the documentation including README and
-    vignettes.
+*   Minor edits/clarifications in the documentation including function
+    documentation, README, and vignettes.
 
 # adaptr 1.3.0
 

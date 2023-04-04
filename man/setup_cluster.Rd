@@ -26,7 +26,7 @@ ignored if \code{cores == 1}. See \strong{Details} below.}
 
 \item{export_envir}{\code{environment} where to look for the objects defined
 in \code{export} when running in parallel and \code{export} is not \code{NULL}. Defaults
-to the environment from where \code{\link[=run_trials]{run_trials()}} is called.}
+to the environment from where the function is called.}
 }
 \value{
 Invisibly returns the default \code{parallel} cluster or \code{NULL}, as

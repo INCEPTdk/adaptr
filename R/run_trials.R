@@ -174,7 +174,7 @@ dispatch_trial_runs <- function(is, trial_spec, seeds, sparse, cores, cl = NULL)
 #'   ignored if `cores == 1`. See **Details** below.
 #' @param export_envir `environment` where to look for the objects defined
 #'   in `export` when running in parallel and `export` is not `NULL`. Defaults
-#'   to the environment from where [run_trials()] is called.
+#'   to the environment from where the function is called.
 #'
 #' @details
 #'
