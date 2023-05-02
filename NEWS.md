@@ -1,13 +1,16 @@
-# adaptr (development version)
+# adaptr 1.3.1
 
+This is a patch release triggered by a CRAN request to fix a failing test that
+also includes minor documentation updates.
+    
+*   Fixed a single test that failed on CRAN using a patched version of R on a
+    single operating system.
+    
 *   Fixed erroneous duplicated text in README and thus also on GitHub and the
-    package website (occurred due to an error in a previous merge).
+    package website.
     
 *   Minor edits/clarifications in the documentation including function
     documentation, README, and vignettes.
-    
-*   Minor fix to a test that failed on CRAN using a patched version of R on a
-    single operating system.
 
 # adaptr 1.3.0
 
