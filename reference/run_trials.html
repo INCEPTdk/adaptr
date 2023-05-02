@@ -24,7 +24,7 @@ additional simulations to the same file)."><!-- mathjax --><script src="https://
     
     <a class="navbar-brand me-2" href="../index.html">adaptr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -194,7 +194,7 @@ ignored if <code>cores == 1</code>. See <strong>Details</strong> below.</p></dd>
 <dt>export_envir</dt>
 <dd><p><code>environment</code> where to look for the objects defined
 in <code>export</code> when running in parallel and <code>export</code> is not <code>NULL</code>. Defaults
-to the environment from where <code>run_trials()</code> is called.</p></dd>
+to the environment from where the function is called.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -210,9 +210,9 @@ of the <code>adaptr</code> package used to run the simulations). These results m
 extracted, summarised, and plotted using the <code><a href="extract_results.html">extract_results()</a></code>,
 <code><a href="check_performance.html">check_performance()</a></code>, <code><a href="summary.html">summary()</a></code>, <code><a href="print.html">print.trial_results()</a></code>,
 <code><a href="plot_convergence.html">plot_convergence()</a></code>, <code><a href="check_remaining_arms.html">check_remaining_arms()</a></code>, <code><a href="plot_status.html">plot_status()</a></code>, and
-<code><a href="plot_history.html">plot_history()</a></code> functions. See these functions' definitions for additional
-details and details on additional arguments used to select arms in
-simulations not ending in superiority and other summary choices.</p>
+<code><a href="plot_history.html">plot_history()</a></code> functions. See the definitions of these functions for
+additional details and details on additional arguments used to select arms
+in simulations not ending in superiority and other summary choices.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
