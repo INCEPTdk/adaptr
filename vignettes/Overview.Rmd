@@ -185,6 +185,7 @@ print(perf_res, digits = 3)
 
 The `plot_metrics_ecdf()` function plots empirical cumulative distribution
 functions of numerical performance metrics:
+
 ```{r}
 plot_metrics_ecdf(trial_res_mult)
 ```

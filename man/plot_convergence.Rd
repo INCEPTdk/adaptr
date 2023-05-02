@@ -122,7 +122,7 @@ same data); otherwise it will be said to \code{TRUE}. See \code{\link[=setup_tri
 more details on how these estimates are calculated.}
 
 \item{restrict}{single character string or \code{NULL}. If \code{NULL} (default),
-results are summarised for all simulations; if \verb{"superior}, results are
+results are summarised for all simulations; if \code{"superior"}, results are
 summarised for simulations ending with superiority only; if \code{"selected"},
 results are summarised for simulations ending with a selected arm only
 (according to the specified arm selection strategy for simulations not

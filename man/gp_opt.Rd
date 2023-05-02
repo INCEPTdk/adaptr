@@ -99,7 +99,7 @@ consequently control the smoothness by controlling the rate of decay between
 correlations with distance.\cr
 The optimisation algorithm uses bi-directional uncertainty bounds in an
 acquisition function that suggests the next target to evaluate, with wider
-uncertainty bounds (higher \code{kappa}) leading to increased exploration' (i.e.,
+uncertainty bounds (higher \code{kappa}) leading to increased 'exploration' (i.e.,
 the function is more prone to suggest new target values where the uncertainty
 is high and often further from the best evaluation so far) and narrower
 uncertainty bounds leading to increased 'exploitation' (i.e., the function is

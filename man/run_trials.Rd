@@ -92,7 +92,7 @@ ignored if \code{cores == 1}. See \strong{Details} below.}
 
 \item{export_envir}{\code{environment} where to look for the objects defined
 in \code{export} when running in parallel and \code{export} is not \code{NULL}. Defaults
-to the environment from where \code{\link[=run_trials]{run_trials()}} is called.}
+to the environment from where the function is called.}
 }
 \value{
 A list of a special class \code{"trial_results"}, which contains the
@@ -104,9 +104,9 @@ of the \code{adaptr} package used to run the simulations). These results may be
 extracted, summarised, and plotted using the \code{\link[=extract_results]{extract_results()}},
 \code{\link[=check_performance]{check_performance()}}, \code{\link[=summary]{summary()}}, \code{\link[=print.trial_results]{print.trial_results()}},
 \code{\link[=plot_convergence]{plot_convergence()}}, \code{\link[=check_remaining_arms]{check_remaining_arms()}}, \code{\link[=plot_status]{plot_status()}}, and
-\code{\link[=plot_history]{plot_history()}} functions. See these functions' definitions for additional
-details and details on additional arguments used to select arms in
-simulations not ending in superiority and other summary choices.
+\code{\link[=plot_history]{plot_history()}} functions. See the definitions of these functions for
+additional details and details on additional arguments used to select arms
+in simulations not ending in superiority and other summary choices.
 }
 \description{
 This function conducts multiple simulations using a trial specification as

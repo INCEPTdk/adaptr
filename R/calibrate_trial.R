@@ -60,9 +60,9 @@
 #'   number of posterior draws (`n_draws` in the [setup_trial()] family of
 #'   functions), which affects the minimum differences in posterior
 #'   probabilities when simulating trials and thus can affect calibration,
-#'   including when using the default calibration function. Increase the number
-#'   of posterior draws or the number of repetitions should be attempted if the
-#'   desired tolerance cannot be achieved.
+#'   including when using the default calibration function. Increasing the
+#'   number of posterior draws or the number of repetitions should be attempted
+#'   if the desired tolerance cannot be achieved with lower numbers.
 #' @param dir single numeric value; specifies the direction(s) of the tolerance
 #'   range. If `0` (the default) the tolerance range will be `target - tol` to
 #'   `target + tol`. If `< 0`, the range will be `target - tol` to `target`, and

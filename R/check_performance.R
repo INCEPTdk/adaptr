@@ -31,7 +31,7 @@ calculate_idp <- function(sels, arms, true_ys, highest_is_best) {
 #'
 #' @inheritParams extract_results
 #' @param restrict single character string or `NULL`. If `NULL` (default),
-#'   results are summarised for all simulations; if `"superior`, results are
+#'   results are summarised for all simulations; if `"superior"`, results are
 #'   summarised for simulations ending with superiority only; if `"selected"`,
 #'   results are summarised for simulations ending with a selected arm only
 #'   (according to the specified arm selection strategy for simulations not

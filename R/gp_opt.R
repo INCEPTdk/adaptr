@@ -72,7 +72,7 @@ cov_mat <- function(x1, x2 = x1, g = NULL, pow = 2, lengthscale = 1) {
 #' correlations with distance.\cr
 #' The optimisation algorithm uses bi-directional uncertainty bounds in an
 #' acquisition function that suggests the next target to evaluate, with wider
-#' uncertainty bounds (higher `kappa`) leading to increased exploration' (i.e.,
+#' uncertainty bounds (higher `kappa`) leading to increased 'exploration' (i.e.,
 #' the function is more prone to suggest new target values where the uncertainty
 #' is high and often further from the best evaluation so far) and narrower
 #' uncertainty bounds leading to increased 'exploitation' (i.e., the function is

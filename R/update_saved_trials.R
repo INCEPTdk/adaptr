@@ -36,7 +36,7 @@
 #' The following changes are made according to the version of `adaptr` used to
 #' generate the original `"trial_results"` object:
 #'   \itemize{
-#'     \item `v1.2.0+`: only updates the version number
+#'     \item `v1.2.0+`: only updates the version number.
 #'     \item `v1.1.1 or earlier`: updates version number and everything related
 #'       to follow-up and data collection lag (in these versions, the
 #'       `randomised_at_looks` argument in the [setup_trial()] functions did not

@@ -46,7 +46,7 @@ test_that("prob_best works", {
 })
 
 test_that("prob_all_equi works", {
-  expect_equal(prob_all_equi(m), NA_real_)
+  expect_true(is.na(prob_all_equi(m)))
   expect_equal(prob_all_equi(m, equivalence_diff = 0.5), 0.8)
   expect_equal(prob_all_equi(m, equivalence_diff = 0.25), 0.6)
   expect_equal(prob_all_equi(m, equivalence_diff = 0.1), 0.1)

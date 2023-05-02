@@ -40,9 +40,9 @@ function completes. See \code{\link[=setup_cluster]{setup_cluster()}} for detail
 }
 \value{
 List containing \code{breaks} (the number of patients at each break),
-\code{start_mess} and \code{prog_mess} (the first and subsequent progress messages'
-basis), and \code{batches} (a list with each entry corresponding to the
-simulation numbers in each batch).
+\code{start_mess} and \code{prog_mess} (the basis of the first and subsequent
+progress messages), and \code{batches} (a list with each entry corresponding to
+the simulation numbers in each batch).
 }
 \description{
 Used internally. Generates breakpoints, messages, and 'batches' of trial

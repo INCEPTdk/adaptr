@@ -15,9 +15,9 @@
 #'   simulations if `grow` is used in [run_trials()]).
 #'
 #' @return List containing `breaks` (the number of patients at each break),
-#'   `start_mess` and `prog_mess` (the first and subsequent progress messages'
-#'   basis), and `batches` (a list with each entry corresponding to the
-#'   simulation numbers in each batch).
+#'   `start_mess` and `prog_mess` (the basis of the first and subsequent
+#'   progress messages), and `batches` (a list with each entry corresponding to
+#'   the simulation numbers in each batch).
 #'
 #' @keywords internal
 #'
@@ -174,7 +174,7 @@ dispatch_trial_runs <- function(is, trial_spec, seeds, sparse, cores, cl = NULL)
 #'   ignored if `cores == 1`. See **Details** below.
 #' @param export_envir `environment` where to look for the objects defined
 #'   in `export` when running in parallel and `export` is not `NULL`. Defaults
-#'   to the environment from where [run_trials()] is called.
+#'   to the environment from where the function is called.
 #'
 #' @details
 #'
@@ -201,9 +201,9 @@ dispatch_trial_runs <- function(is, trial_spec, seeds, sparse, cores, cl = NULL)
 #'   extracted, summarised, and plotted using the [extract_results()],
 #'   [check_performance()], [summary()], [print.trial_results()],
 #'   [plot_convergence()], [check_remaining_arms()], [plot_status()], and
-#'   [plot_history()] functions. See these functions' definitions for additional
-#'   details and details on additional arguments used to select arms in
-#'   simulations not ending in superiority and other summary choices.
+#'   [plot_history()] functions. See the definitions of these functions for
+#'   additional details and details on additional arguments used to select arms
+#'   in simulations not ending in superiority and other summary choices.
 #'
 #' @export
 #'
