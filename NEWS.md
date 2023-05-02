@@ -5,6 +5,9 @@
     
 *   Minor edits/clarifications in the documentation including function
     documentation, README, and vignettes.
+    
+*   Minor fix to a test that failed on CRAN using a patched version of R on a
+    single operating system.
 
 # adaptr 1.3.0
 
