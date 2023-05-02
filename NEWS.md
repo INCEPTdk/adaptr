@@ -1,3 +1,7 @@
+# adaptr (development version)
+
+No changes yet.
+
 # adaptr 1.3.1
 
 This is a patch release triggered by a CRAN request to fix a failing test that
