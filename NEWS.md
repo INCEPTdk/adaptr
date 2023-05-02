@@ -3,8 +3,8 @@
 This is a patch release triggered by a CRAN request to fix a failing test that
 also includes minor documentation updates.
     
-*   Fixed a single test that failed on CRAN using a patched version of R on a
-    single operating system.
+*   Fixed a single test that failed on CRAN due to an update in the `testthat`
+    dependency `waldo`.
     
 *   Fixed erroneous duplicated text in README and thus also on GitHub and the
     package website.
