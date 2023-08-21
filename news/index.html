@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">adaptr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,7 +53,15 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.3.1" id="adaptr-131">adaptr 1.3.1<a class="anchor" aria-label="anchor" href="#adaptr-131"></a></h2>
+<h2 class="pkg-version" data-toc-text="1.3.2" id="adaptr-132">adaptr 1.3.2<a class="anchor" aria-label="anchor" href="#adaptr-132"></a></h2>
+<p>This is a patch release with bug fixes and documentation updates.</p>
+<ul><li><p>Fixed a bug in <code><a href="../reference/check_performance.html">check_performance()</a></code> that caused the proportion of conclusive trial simulations (<code>prob_conclusive</code>) to be calculated incorrectly when restricted to simulations ending in superiority or with a selected arm according to the selection strategy used in <code>restrict</code>. This bug also affected the <code><a href="../reference/summary.html">summary()</a></code> method for multiple simulations (as this relies on <code><a href="../reference/check_performance.html">check_performance()</a></code>).</p></li>
+<li><p>Fixed a bug in <code><a href="../reference/plot_convergence.html">plot_convergence()</a></code> that caused arm selection probabilities to be incorrectly calculated and plotted (this bug did not affect any of the other functions for calculating and summarising simulation results).</p></li>
+<li><p>Corrections to <code><a href="../reference/plot_convergence.html">plot_convergence()</a></code> and <code><a href="../reference/summary.html">summary()</a></code> method documentation for arm selection probability extraction.</p></li>
+<li><p>Fixed inconsistency between argument names and documentation in the internal <code>%f|%</code> function (renamed arguments for consistency with the internal <code>%||%</code> function).</p></li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.3.1" id="adaptr-131">adaptr 1.3.1<a class="anchor" aria-label="anchor" href="#adaptr-131"></a></h2><p class="text-muted">CRAN release: 2023-05-02</p>
 <p>This is a patch release triggered by a CRAN request to fix a failing test that also includes minor documentation updates.</p>
 <ul><li><p>Fixed a single test that failed on CRAN due to an update in the <code>testthat</code> dependency <code>waldo</code>.</p></li>
 <li><p>Fixed erroneous duplicated text in README and thus also on GitHub and the package website.</p></li>

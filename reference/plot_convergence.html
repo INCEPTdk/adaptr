@@ -20,7 +20,7 @@ check_performance(). Requires the ggplot2 package installed."><!-- mathjax --><s
     
     <a class="navbar-brand me-2" href="../index.html">adaptr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -108,9 +108,10 @@ Valid metrics include: <code>size_mean</code>, <code>size_sd</code>, <code>size_
 <code>ratio_ys_mean</code>, <code>ratio_ys_sd</code>, <code>ratio_ys_median</code>, <code>ratio_ys_p25</code>,
 <code>ratio_ys_p75</code>, <code>ratio_ys_p0</code>, <code>ratio_ys_p100</code>, <code>prob_conclusive</code>,
 <code>prob_superior</code>, <code>prob_equivalence</code>, <code>prob_futility</code>, <code>prob_max</code>,
-<code>prob_select_*</code> (with <code>*</code> being an <code>arm</code> name), <code>rmse</code>, <code>rmse_te</code>, and
-<code>idp</code>. All may be specified as above, case sensitive, but with either
-spaces or underlines. Defaults to <code>"size mean"</code>.</p></dd>
+<code>prob_select_*</code> (with <code>*</code> being either "<code>arm_&lt;name&gt;</code> for all <code>arm</code> names or
+<code>none</code>), <code>rmse</code>, <code>rmse_te</code>, and <code>idp</code>. All may be specified as above,
+case sensitive, but with either spaces or underlines. Defaults to
+<code>"size mean"</code>.</p></dd>
 
 
 <dt>resolution</dt>
