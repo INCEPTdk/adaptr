@@ -1,7 +1,6 @@
 ## Release summary
 
-This is a patch release triggered by a CRAN request to fix a failing test on R
-patched that also includes minor documentation updates.
+This is a patch release with bug fixes and documentation updates.
 
 ## R CMD check results
 

@@ -66,7 +66,7 @@ general `setup_trial()` function, or one of the special case functions,
 
 ``` r
 library(adaptr)
-#> Loading 'adaptr' package v1.3.1.
+#> Loading 'adaptr' package v1.3.2.
 #> For instructions, type 'help("adaptr")'
 #> or see https://inceptdk.github.io/adaptr/.
 
@@ -210,7 +210,7 @@ print(res_sum, digits = 1)
 #> * Ideal design percentage: 100.0%
 #> 
 #> Simulation details:
-#> * Simulation time: 0.622 secs
+#> * Simulation time: 0.475 secs
 #> * Base random seed: 67890
 #> * Credible interval width: 95%
 #> * Number of posterior draws: 5000

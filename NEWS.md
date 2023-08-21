@@ -1,4 +1,6 @@
-# adaptr (development version)
+# adaptr 1.3.2
+
+This is a patch release with bug fixes and documentation updates.
 
 *   Fixed a bug in `check_performance()` that caused the proportion of
     conclusive trial simulations (`prob_conclusive`) to be calculated
@@ -13,6 +15,10 @@
 
 *   Corrections to `plot_convergence()` and `summary()` method documentation for
     arm selection probability extraction.
+    
+*   Fixed inconsistency between argument names and documentation in the internal
+    `%f|%` function (renamed arguments for consistency with the internal `%||%`
+    function).
 
 # adaptr 1.3.1
 
