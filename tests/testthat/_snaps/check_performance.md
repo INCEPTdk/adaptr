@@ -195,7 +195,7 @@
       20      ratio_ys_p75    0.228
       21       ratio_ys_p0    0.216
       22     ratio_ys_p100    0.270
-      23   prob_conclusive    0.800
+      23   prob_conclusive    1.000
       24     prob_superior    1.000
       25  prob_equivalence    0.000
       26     prob_futility    0.000
@@ -236,7 +236,7 @@
       20      ratio_ys_p75    0.228
       21       ratio_ys_p0    0.216
       22     ratio_ys_p100    0.270
-      23   prob_conclusive    0.800
+      23   prob_conclusive    1.000
       24     prob_superior    1.000
       25  prob_equivalence    0.000
       26     prob_futility    0.000
@@ -280,7 +280,7 @@
       20      ratio_ys_p75    0.228   0.008   0.004    0.222    0.253
       21       ratio_ys_p0    0.216      NA      NA       NA       NA
       22     ratio_ys_p100    0.270      NA      NA       NA       NA
-      23   prob_conclusive    0.800   0.086   0.074    0.650    0.950
+      23   prob_conclusive    1.000   0.000   0.000    1.000    1.000
       24     prob_superior    1.000   0.000   0.000    1.000    1.000
       25  prob_equivalence    0.000   0.000   0.000    0.000    0.000
       26     prob_futility    0.000   0.000   0.000    0.000    0.000
@@ -324,7 +324,7 @@
       20      ratio_ys_p75    0.228   0.008   0.004    0.222    0.253
       21       ratio_ys_p0    0.216      NA      NA       NA       NA
       22     ratio_ys_p100    0.270      NA      NA       NA       NA
-      23   prob_conclusive    0.800   0.086   0.074    0.650    0.950
+      23   prob_conclusive    1.000   0.000   0.000    1.000    1.000
       24     prob_superior    1.000   0.000   0.000    1.000    1.000
       25  prob_equivalence    0.000   0.000   0.000    0.000    0.000
       26     prob_futility    0.000   0.000   0.000    0.000    0.000

@@ -1,3 +1,25 @@
+# adaptr 1.3.2
+
+This is a patch release with bug fixes and documentation updates.
+
+*   Fixed a bug in `check_performance()` that caused the proportion of
+    conclusive trial simulations (`prob_conclusive`) to be calculated
+    incorrectly when restricted to simulations ending in superiority or with a
+    selected arm according to the selection strategy used in `restrict`. This
+    bug also affected the `summary()` method for multiple simulations (as this
+    relies on `check_performance()`).
+
+*   Fixed a bug in `plot_convergence()` that caused arm selection probabilities
+    to be incorrectly calculated and plotted (this bug did not affect any of the
+    other functions for calculating and summarising simulation results).
+
+*   Corrections to `plot_convergence()` and `summary()` method documentation for
+    arm selection probability extraction.
+    
+*   Fixed inconsistency between argument names and documentation in the internal
+    `%f|%` function (renamed arguments for consistency with the internal `%||%`
+    function).
+
 # adaptr 1.3.1
 
 This is a patch release triggered by a CRAN request to fix a failing test that

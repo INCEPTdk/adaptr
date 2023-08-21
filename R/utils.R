@@ -212,9 +212,9 @@ verify_int <- function(x, min_value = -Inf, max_value = Inf, open = "no") {
 #'
 #' @name replace_nonfinite
 #'
-`%f|%` <- function(x, y) {
-  x[!is.finite(x)] <- y
-  x
+`%f|%` <- function(a, b) {
+  a[!is.finite(a)] <- b
+  a
 }
 
 

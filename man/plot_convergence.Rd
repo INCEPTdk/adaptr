@@ -33,9 +33,10 @@ Valid metrics include: \code{size_mean}, \code{size_sd}, \code{size_median}, \co
 \code{ratio_ys_mean}, \code{ratio_ys_sd}, \code{ratio_ys_median}, \code{ratio_ys_p25},
 \code{ratio_ys_p75}, \code{ratio_ys_p0}, \code{ratio_ys_p100}, \code{prob_conclusive},
 \code{prob_superior}, \code{prob_equivalence}, \code{prob_futility}, \code{prob_max},
-\verb{prob_select_*} (with \code{*} being an \code{arm} name), \code{rmse}, \code{rmse_te}, and
-\code{idp}. All may be specified as above, case sensitive, but with either
-spaces or underlines. Defaults to \code{"size mean"}.}
+\verb{prob_select_*} (with \code{*} being either "\verb{arm_<name>} for all \code{arm} names or
+\code{none}), \code{rmse}, \code{rmse_te}, and \code{idp}. All may be specified as above,
+case sensitive, but with either spaces or underlines. Defaults to
+\code{"size mean"}.}
 
 \item{resolution}{single positive integer, the number of points calculated
 and plotted, defaults to \code{100} and must be \verb{>= 10}. Higher numbers lead to

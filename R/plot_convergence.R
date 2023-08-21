@@ -17,9 +17,10 @@
 #'   `ratio_ys_mean`, `ratio_ys_sd`, `ratio_ys_median`, `ratio_ys_p25`,
 #'   `ratio_ys_p75`, `ratio_ys_p0`, `ratio_ys_p100`, `prob_conclusive`,
 #'   `prob_superior`, `prob_equivalence`, `prob_futility`, `prob_max`,
-#'   `prob_select_*` (with `*` being an `arm` name), `rmse`, `rmse_te`, and
-#'   `idp`. All may be specified as above, case sensitive, but with either
-#'   spaces or underlines. Defaults to `"size mean"`.
+#'   `prob_select_*` (with `*` being either "`arm_<name>` for all `arm` names or
+#'   `none`), `rmse`, `rmse_te`, and `idp`. All may be specified as above,
+#'   case sensitive, but with either spaces or underlines. Defaults to
+#'   `"size mean"`.
 #' @param resolution single positive integer, the number of points calculated
 #'   and plotted, defaults to `100` and must be `>= 10`. Higher numbers lead to
 #'   smoother plots, but increases computation time. If the value specified is
@@ -154,7 +155,7 @@ plot_convergence <- function(object, metrics = "size mean", resolution = 100,
     # Get current function
     if (substr(cur_metric, 1, 16) == "prob_select_arm_") {
       cur_arm <- substr(cur_metric, 17, nchar(cur_metric))
-      cur_fun <- function(i) sum(extr_res$selected_arm[start_id:i] == cur_arm, na.rm = TRUE) / n_restrict  * 100
+      cur_fun <- function(i) sum(extr_res$selected_arm[start_id:i] == cur_arm, na.rm = TRUE) / length(start_id:i)  * 100
     } else {
       cur_fun <- switch(cur_metric,
                         size_mean = function(i) mean(extr_res$final_n[start_id:i]),

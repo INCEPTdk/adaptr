@@ -5,7 +5,7 @@
 \alias{\%f|\%}
 \title{Replace non-finite values with other value (finite-OR-operator)}
 \usage{
-x \%f|\% y
+a \%f|\% b
 }
 \arguments{
 \item{a}{atomic vector of any type.}
