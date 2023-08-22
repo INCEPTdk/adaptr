@@ -1,3 +1,7 @@
+# adaptr (development version)
+
+No changes yet.
+
 # adaptr 1.3.2
 
 This is a patch release with bug fixes and documentation updates.
