@@ -37,6 +37,15 @@ supported by a grant from [Sygeforsikringen
     considerations in adaptive trials with description of the workflow
     and a simulation-based example using the package
 
+**Examples:**
+
+-   [Effects of duration of follow-up and lag in data collection on the
+    performance of adaptive clinical
+    trials](https://doi.org/10.1002/pst.2342) - article in
+    Pharmaceutical Statistics describing a simulation study (with code)
+    using `adaptr` to assess the performance of adaptive clinical trials
+    according to different follow-up/data collection lags.
+
 ## Installation
 
 The easiest way is to install from CRAN directly:
@@ -210,7 +219,7 @@ print(res_sum, digits = 1)
 #> * Ideal design percentage: 100.0%
 #> 
 #> Simulation details:
-#> * Simulation time: 0.468 secs
+#> * Simulation time: 0.448 secs
 #> * Base random seed: 67890
 #> * Credible interval width: 95%
 #> * Number of posterior draws: 5000

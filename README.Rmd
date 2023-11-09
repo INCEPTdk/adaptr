@@ -43,6 +43,13 @@ Clinical Epidemiology describing key methodological considerations in adaptive
 trials with description of the workflow and a simulation-based example using the
 package
 
+**Examples:**
+
+* [Effects of duration of follow-up and lag in data collection on the performance of adaptive clinical trials](https://doi.org/10.1002/pst.2342) - article in Pharmaceutical
+Statistics describing a simulation study (with code) using `adaptr` to assess
+the performance of adaptive clinical trials according to different
+follow-up/data collection lags.
+
 ## Installation
 
 The easiest way is to install from CRAN directly:

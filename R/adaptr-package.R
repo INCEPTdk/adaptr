@@ -76,6 +76,12 @@
 #'
 #' [GitHub repository](https://github.com/INCEPTdk/adaptr/)
 #'
+#' **Examples of studies using `adaptr`:**
+#'
+#' Granholm A, Lange T, Harhay MO, Jensen AKG, Perner A, Møller MH, Kaas-Hansen
+#' BS (2023). Effects of duration of follow-up and lag in data collection on the
+#' performance of adaptive clinical trials. Pharm Stat. \doi{10.1002/pst.2342}
+#'
 #'
 #' @seealso
 #' [setup_cluster()], [setup_trial()], [setup_trial_binom()],

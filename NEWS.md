@@ -1,6 +1,9 @@
 # adaptr (development version)
 
-No changes yet.
+*   Added reference to open access article (with code) of a simulation study
+    using `adaptr` to assess the performance of adaptive clinical trials
+    according to different follow-up/data collection lags
+    (<https://doi.org/10.1002/pst.2342>).
 
 # adaptr 1.3.2
 
