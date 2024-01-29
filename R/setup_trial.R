@@ -14,6 +14,7 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
                            fixed_probs = NULL,
                            min_probs = rep(NA, length(arms)),
                            max_probs = rep(NA, length(arms)),
+                           rescale_probs = NULL,
                            data_looks = NULL,
                            max_n = NULL, look_after_every = NULL,
                            randomised_at_looks = NULL,
@@ -42,12 +43,12 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
   }
 
   # If control_prob_fixed is set to a valid non-numeric value, then set according to that
+  control_prob_fixed_orig <- control_prob_fixed # Save original before editing
   if (!is.null(control_prob_fixed)) {
     if (is.null(control) | sum(control %in% arms) != 1) {
       stop0("control_prob_fixed is specified, but no single valid control is specified.")
     }
     if (isTRUE(length(control_prob_fixed) == 1 & control_prob_fixed %in% c("sqrt-based", "sqrt-based start", "sqrt-based fixed"))) {
-      control_prob_fixed_orig <- control_prob_fixed
       if (!is.null(start_probs)) {
         stop0("When control_prob_fixed is set to 'sqrt-based', 'sqrt-based start', ",
               "or 'sqrt-based fixed', start_probs must be NULL.")
@@ -162,6 +163,32 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 
   if (sum(is.na(max_check)) == 0 & sum(max_check) - 1 < -.Machine$double.eps^0.5) {
     stop0("fixed_probs or max_probs specified for all arms, but they sum to less than 1.")
+  }
+
+  # Check validity of rescale_probs
+  if (!is.null(rescale_probs)) {
+    # Check validity of value
+    if (isTRUE(length(rescale_probs) == 1 & rescale_probs %in% c("fixed", "limits", "both"))) {
+      # Must be null for two-arm trials or if control_prob_fixed is "sqrt-based fixed"
+      if (n_arms == 2) {
+        stop0("rescale_probs must be NULL for trial specifications with 2 arms.")
+      } else if (isTRUE(control_prob_fixed_orig == "sqrt-based fixed")) {
+        stop0("rescale_probs must be NULL when control_prob_fixed is set to 'sqrt-based fixed'.")
+      }
+      # Valid values to be rescaled must be provided
+      if (rescale_probs %in% c("fixed", "both")) {
+        if (sum(!is.na(fixed_probs)) <= 0 + isTRUE(control_prob_fixed_orig %in% c("sqrt-based", "sqrt-based start")) ) {
+          stop0("rescale_probs is '", rescale_probs, "' but no fixed_probs that can be rescaled are specified.")
+        }
+      }
+      if (rescale_probs %in% c("limits", "both")) {
+        if (sum(!is.na(min_probs), !is.na(min_probs)) == 0) {
+          stop0("rescale_probs is '", rescale_probs, "' but no min_probs or max_probs that can be rescaled are specified.")
+        }
+      }
+    } else {
+      stop0("rescale_probs must be either NULL or 'fixed', 'limits' or 'both'.")
+    }
   }
 
   # Check or setup data looks
@@ -407,6 +434,7 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
   trial_arms <- data.frame(arms, true_ys, start_probs, fixed_probs, min_probs, max_probs,
                            stringsAsFactors = FALSE)
   structure(list(trial_arms = trial_arms,
+                 rescale_probs = rescale_probs,
                  data_looks = data_looks,
                  max_n = max_n,
                  look_after_every = look_after_every,
@@ -482,6 +510,28 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #'   probabilities; higher probabilities will be rounded down to these values.
 #'   Must be `NA` (default for all arms) if no threshold is wanted and for arms
 #'   using fixed allocation probabilities.
+#' @param rescale_probs `NULL` (default) or one of either `"fixed"`, `"limits"`,
+#'   or `"both"`. Rescales `fixed_probs` (if `"fixed"` or `"both"`) and
+#'   `min_probs/max_probs` (if `"limits"` or `"both"`) after arm dropping in
+#'   trial specifications with `>2 arms` using a `rescale_factor` defined as
+#'   `initial number of arms/number of active arms`. `"fixed_probs` and
+#'   `min_probs` are rescaled as `initial value * rescale factor`, except for
+#'   `fixed_probs` controlled by the `control_prob_fixed` argument, which are
+#'   never rescaled. `max_probs` are rescaled as
+#'   `1 - ( (1 - initial value) * rescale_factor)`.\cr
+#'   Must be `NULL` if there are only `2 arms` or if `control_prob_fixed` is
+#'   `"sqrt-based fixed"`. If not `NULL`, one or more valid non-`NA` values must
+#'   be specified for either `min_probs/max_probs` or `fixed_probs` (not
+#'   counting a fixed value for the original `control` if `control_prob_fixed`
+#'   is `"sqrt-based"/"sqrt-based start"/"sqrt-based fixed"`).\cr
+#'   **Note:** using this argument and specific combinations of values in
+#'   the other arguments may lead to invalid combined (total) allocation
+#'   probabilities after arm dropping, in which case all probabilities will
+#'   ultimately be rescaled to sum to `1`. It is the responsibility of the user
+#'   to ensure that rescaling probabilities will not lead to invalid
+#'   invalid or unexpected allocation probabilities after arm dropping. Finally,
+#'   any initial values that are overwritten by the `control_prob_fixed`
+#'   argument after arm dropping will not be rescaled.
 #' @param data_looks vector of increasing integers, specifies when to conduct
 #'   adaptive analyses (= the total number of patients with available outcome
 #'   data at each adaptive analysis). The last number in the vector represents
@@ -892,6 +942,7 @@ setup_trial <- function(arms, true_ys, fun_y_gen = NULL, fun_draws = NULL,
                         start_probs = NULL, fixed_probs = NULL,
                         min_probs = rep(NA, length(arms)),
                         max_probs = rep(NA, length(arms)),
+                        rescale_probs = NULL,
                         data_looks = NULL,
                         max_n = NULL, look_after_every = NULL,
                         randomised_at_looks = NULL,
@@ -906,8 +957,9 @@ setup_trial <- function(arms, true_ys, fun_y_gen = NULL, fun_draws = NULL,
                         add_info = NULL) {
 
   validate_trial(arms = arms, true_ys = true_ys, start_probs = start_probs, fixed_probs = fixed_probs,
-                 min_probs = min_probs, max_probs = max_probs, data_looks = data_looks, max_n = max_n,
-                 look_after_every = look_after_every, randomised_at_looks = randomised_at_looks,
+                 min_probs = min_probs, max_probs = max_probs, rescale_probs = rescale_probs,
+                 data_looks = data_looks, max_n = max_n, look_after_every = look_after_every,
+                 randomised_at_looks = randomised_at_looks,
                  control = control, control_prob_fixed = control_prob_fixed, inferiority = inferiority,
                  superiority = superiority, equivalence_prob = equivalence_prob,
                  equivalence_diff = equivalence_diff, equivalence_only_first = equivalence_only_first,
@@ -974,6 +1026,7 @@ setup_trial_binom <- function(arms, true_ys, start_probs = NULL,
                               fixed_probs = NULL,
                               min_probs = rep(NA, length(arms)),
                               max_probs = rep(NA, length(arms)),
+                              rescale_probs = NULL,
                               data_looks = NULL,
                               max_n = NULL, look_after_every = NULL,
                               randomised_at_looks = NULL,
@@ -995,8 +1048,9 @@ setup_trial_binom <- function(arms, true_ys, start_probs = NULL,
 
   # General setup and validation
   trial <- validate_trial(arms = arms, true_ys = true_ys, start_probs = start_probs, fixed_probs = fixed_probs,
-                          min_probs = min_probs, max_probs = max_probs, data_looks = data_looks, max_n = max_n,
-                          look_after_every = look_after_every, randomised_at_looks = randomised_at_looks,
+                          min_probs = min_probs, max_probs = max_probs, rescale_probs = rescale_probs,
+                          data_looks = data_looks, max_n = max_n, look_after_every = look_after_every,
+                          randomised_at_looks = randomised_at_looks,
                           control = control, control_prob_fixed = control_prob_fixed, inferiority = inferiority,
                           superiority = superiority, equivalence_prob = equivalence_prob,
                           equivalence_diff = equivalence_diff, equivalence_only_first = equivalence_only_first,
@@ -1091,6 +1145,7 @@ setup_trial_norm <- function(arms, true_ys, sds, start_probs = NULL,
                              fixed_probs = NULL,
                              min_probs = rep(NA, length(arms)),
                              max_probs = rep(NA, length(arms)),
+                             rescale_probs = NULL,
                              data_looks = NULL,
                              max_n = NULL, look_after_every = NULL,
                              randomised_at_looks = NULL,
@@ -1112,8 +1167,9 @@ setup_trial_norm <- function(arms, true_ys, sds, start_probs = NULL,
 
   # General setup and validation and return
   validate_trial(arms = arms, true_ys = true_ys, start_probs = start_probs, fixed_probs = fixed_probs,
-                 min_probs = min_probs, max_probs = max_probs, data_looks = data_looks, max_n = max_n,
-                 look_after_every = look_after_every, randomised_at_looks = randomised_at_looks,
+                 min_probs = min_probs, max_probs = max_probs, rescale_probs = rescale_probs,
+                 data_looks = data_looks, max_n = max_n, look_after_every = look_after_every,
+                 randomised_at_looks = randomised_at_looks,
                  control = control, control_prob_fixed = control_prob_fixed, inferiority = inferiority,
                  superiority = superiority, equivalence_prob = equivalence_prob,
                  equivalence_diff = equivalence_diff, equivalence_only_first = equivalence_only_first,

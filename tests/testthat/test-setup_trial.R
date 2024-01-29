@@ -181,6 +181,16 @@ test_that("setup/validate_trial functions errors on invalid inputs", {
   expect_error(validate_trial(arms = 1:3, start_probs = c(0.5, 0.25, 0.25), min_probs = c(0.5, 0.1, 0.1),
                               max_probs = c(0.5, NA, NA)))
 
+  expect_error(validate_trial(arms = 1:3, rescale_probs = "invalid"))
+  expect_error(validate_trial(arms = 1:3, rescale_probs = c("fixed", "both")))
+  expect_error(validate_trial(arms = 1:2, rescale_probs = "both"))
+  expect_error(validate_trial(arms = 1:3, control = 1, control_prob_fixed == "sqrt_based_fixed",
+                              rescale_probs = "both"))
+  expect_error(validate_trial(arms = 1:3, rescale_probs = "fixed"))
+  expect_error(validate_trial(arms = 1:3, control = 1, control_prob_fixed = "sqrt-based",
+                              rescale_probs = "fixed"))
+  expect_error(validate_trial(arms = 1:3, rescale_probs = "limits"))
+
   expect_error(validate_trial(arms = 1:3, data_looks = c(100, 100, 200)))
   expect_error(validate_trial(arms = 1:3, data_looks = c(100, 200, 300), look_after_every = 100, max_n = 300))
   expect_error(validate_trial(arms = 1:3))

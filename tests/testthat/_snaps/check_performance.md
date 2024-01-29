@@ -84,7 +84,8 @@
 
     Code
       check_performance(res, uncertainty = TRUE, boot_seed = 4131, n_boot = 100)
-    Warning <simpleWarning>
+    Condition
+      Warning:
       values for n_boot < 1000 are not recommended, as they may cause instable results.
     Output
                     metric      est  err_sd err_mad    lo_ci    hi_ci
@@ -128,7 +129,8 @@
     Code
       check_performance(res, uncertainty = TRUE, ci_width = 0.75, boot_seed = 4131,
         n_boot = 100)
-    Warning <simpleWarning>
+    Condition
+      Warning:
       values for n_boot < 1000 are not recommended, as they may cause instable results.
     Output
                     metric      est  err_sd err_mad    lo_ci    hi_ci
@@ -254,7 +256,8 @@
     Code
       check_performance(res, restrict = "superior", uncertainty = TRUE, boot_seed = "base",
         n_boot = 100)
-    Warning <simpleWarning>
+    Condition
+      Warning:
       values for n_boot < 1000 are not recommended, as they may cause instable results.
     Output
                     metric      est  err_sd err_mad    lo_ci    hi_ci
@@ -298,7 +301,8 @@
     Code
       check_performance(res, restrict = "selected", uncertainty = TRUE, boot_seed = "base",
         n_boot = 100)
-    Warning <simpleWarning>
+    Condition
+      Warning:
       values for n_boot < 1000 are not recommended, as they may cause instable results.
     Output
                     metric      est  err_sd err_mad    lo_ci    hi_ci
