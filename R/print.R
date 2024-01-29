@@ -76,8 +76,14 @@ print.trial_spec <- function(x, prob_digits = 3, ...) {
     cat("* Best arms:", paste0(x$best_arm, collapse = " and "))
   }
 
-  cat0("\n\nArms, true outcomes, starting allocation probabilities \n",
-       "and allocation probability limits:\n")
+  cat0(paste0("\n\nArms, true outcomes, starting allocation probabilities \n",
+       "and allocation probability limits",
+       ifelse(is.null(x$rescale_probs), "", c(
+         fixed = " (fixed_probs rescaled)",
+         limits = " (min/max_probs rescaled)",
+         both = " (fixed/min/max_probs rescaled)"
+       )[x$rescale_probs]),
+       ":\n"))
   print(x$trial_arms, digits = prob_digits, row.names = FALSE)
 
   # Samples size and looks

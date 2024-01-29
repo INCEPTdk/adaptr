@@ -182,7 +182,7 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
         }
       }
       if (rescale_probs %in% c("limits", "both")) {
-        if (sum(!is.na(min_probs), !is.na(min_probs)) == 0) {
+        if (sum(!is.na(min_probs), !is.na(max_probs)) == 0) {
           stop0("rescale_probs is '", rescale_probs, "' but no min_probs or max_probs that can be rescaled are specified.")
         }
       }
