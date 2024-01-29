@@ -162,13 +162,15 @@ reallocate_probs <- function(probs_best, fixed_probs, min_probs, max_probs,
   }
 
   # Rescale fixed_probs, min_probs, and max_probs
-  rescale_idx <- which(!(1:length(probs_best) %in% rescale_ignore))
-  if (rescale_fixed & length(rescale_idx) > 0) {
-    fixed_probs[rescale_idx] <- fixed_probs[rescale_idx] * rescale_factor
-  }
-  if (rescale_limits & length(rescale_idx) > 0) {
-    min_probs[rescale_idx] <- min_probs[rescale_idx] * rescale_factor
-    max_probs[rescale_idx] <- 1 - ( (1 - max_probs[rescale_idx]) * rescale_factor)
+  if ((rescale_factor - 1) > .Machine$double.eps^0.5) { # Ignore if unnecessary
+    rescale_idx <- which(!(1:length(probs_best) %in% rescale_ignore))
+    if (rescale_fixed & length(rescale_idx) > 0) {
+      fixed_probs[rescale_idx] <- fixed_probs[rescale_idx] * rescale_factor
+    }
+    if (rescale_limits & length(rescale_idx) > 0) {
+      min_probs[rescale_idx] <- min_probs[rescale_idx] * rescale_factor
+      max_probs[rescale_idx] <- 1 - ( (1 - max_probs[rescale_idx]) * rescale_factor)
+    }
   }
 
   # If all probabilities are fixed, just return those unless some arms are
