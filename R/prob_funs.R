@@ -124,6 +124,14 @@ prob_all_equi <- function(m, equivalence_diff = NULL) {
 #' @param match_arm index of the `control` arm. If not `NULL` (default), the
 #'   control arm allocation probability will be similar to that of the best
 #'   non-control arm. Must be `NULL` in designs without a common control arm.
+#' @param rescale_fixed logical indicating whether `fixed_probs` should be
+#'   rescaled following arm dropping.
+#' @param rescale_limits logical indicating whether `min/max_probs` should be
+#'   rescaled following arm dropping.
+#' @param rescale_factor numerical, rescale factor defined as
+#'   `initial number of arms/number of active arms`.
+#' @param rescale_ignore `NULL` or index of an arm that will be ignored by the
+#'   `rescale_fixed` and `rescale_limits` arguments.
 #'
 #' @return A named (according to the `arms`) numeric vector with updated
 #'   allocation probabilities.
@@ -133,7 +141,9 @@ prob_all_equi <- function(m, equivalence_diff = NULL) {
 #' @keywords internal
 #'
 reallocate_probs <- function(probs_best, fixed_probs, min_probs, max_probs,
-                             soften_power = 1, match_arm = NULL) {
+                             soften_power = 1, match_arm = NULL,
+                             rescale_fixed = FALSE,  rescale_limits = FALSE,
+                             rescale_factor = 1, rescale_ignore = NULL) {
 
   # Match the control arm allocation ratio to the best arm's ratio if specified
   if (!is.null(match_arm) & length(probs_best) > 1) {
@@ -149,6 +159,16 @@ reallocate_probs <- function(probs_best, fixed_probs, min_probs, max_probs,
   # raising to soften_power and rescaling, if needed)
   if (all(is.na(c(fixed_probs, min_probs, max_probs)))) {
     return(setNames(rescale(probs_best^soften_power), names(probs_best)))
+  }
+
+  # Rescale fixed_probs, min_probs, and max_probs
+  rescale_idx <- which(!(1:length(probs_best) %in% rescale_ignore))
+  if (rescale_fixed & length(rescale_idx) > 0) {
+    fixed_probs[rescale_idx] <- fixed_probs[rescale_idx] * rescale_factor
+  }
+  if (rescale_limits & length(rescale_idx) > 0) {
+    min_probs[rescale_idx] <- min_probs[rescale_idx] * rescale_factor
+    max_probs[rescale_idx] <- 1 - ( (1 - max_probs[rescale_idx]) * rescale_factor)
   }
 
   # If all probabilities are fixed, just return those unless some arms are

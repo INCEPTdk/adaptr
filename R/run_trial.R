@@ -193,6 +193,8 @@ run_trial <- function(trial_spec, seed = NULL, sparse = FALSE) {
   # Prepare variables/extract from specification
   trial_arms <- as.list(trial_spec$trial_arms)
   arms <- trial_arms$arms
+  rescale_fixed <- isTRUE(trial_spec$rescale_probs %in% c("fixed", "both"))
+  rescale_limits <- isTRUE(trial_spec$rescale_probs %in% c("limits", "both"))
   control <- trial_spec$control
   control_prob_fixed <- trial_spec$control_prob_fixed
   match_arm <- isTRUE(control_prob_fixed == "match") # Match control arm allocation probability to highest non-control arm
@@ -387,7 +389,10 @@ run_trial <- function(trial_spec, seed = NULL, sparse = FALSE) {
           fixed_probs = trial_arms$fixed_probs[aai],
           min_probs = trial_arms$min_probs[aai],
           max_probs = trial_arms$max_probs[aai],
-          soften_power = soften_power[look]
+          soften_power = soften_power[look],
+          rescale_fixed = rescale_fixed,
+          rescale_limits = rescale_limits,
+          rescale_factor = n_arms/length(aai)
         )
       }
 
@@ -596,7 +601,11 @@ run_trial <- function(trial_spec, seed = NULL, sparse = FALSE) {
             min_probs = min_probs_control,
             max_probs = max_probs_control,
             soften_power = soften_power[look],
-            if (match_arm) active_control_arm else NULL
+            match_arm = if (match_arm) active_control_arm else NULL,
+            rescale_fixed = rescale_fixed,
+            rescale_limits = rescale_limits,
+            rescale_factor = n_arms/length(aai),
+            rescale_ignore = if (!is.null(control_prob_fixed)) which(trial_arms$arms[aai] == control) else NULL
           )
         }
 
