@@ -10,6 +10,7 @@ test_that("updating outdated trials objects works", {
   # Test v1.1.1 or before
   pseudo_old_res <- res
   pseudo_old_res$adaptr_version <- NULL # mimic what happened in adaptr until v1.1.1
+  pseudo_old_res$trial_spec$rescale_probs <- NULL
 
   saveRDS(res, tmp_file)
   expect_warning(update_saved_trials(tmp_file))
@@ -26,8 +27,9 @@ test_that("updating outdated trials objects works", {
   saveRDS(1:10, tmp_file)
   expect_error(update_saved_trials(tmp_file))
 
-  # Test v1.2.0
+  # Test v1.2.0-1.3.2
   pseudo_old_res <- res
+  pseudo_old_res$trial_spec$rescale_probs <- NULL
   pseudo_old_res$adaptr_version <- as.package_version("1.2.0")
 
   saveRDS(pseudo_old_res, tmp_file)

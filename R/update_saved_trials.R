@@ -36,12 +36,14 @@
 #' The following changes are made according to the version of `adaptr` used to
 #' generate the original `"trial_results"` object:
 #'   \itemize{
-#'     \item `v1.2.0+`: only updates the version number.
+#'     \item `v1.2.0+`: updates version number and the `reallocate_probs`
+#'       argument in the embedded trial specification.
 #'     \item `v1.1.1 or earlier`: updates version number and everything related
 #'       to follow-up and data collection lag (in these versions, the
 #'       `randomised_at_looks` argument in the [setup_trial()] functions did not
 #'       exist, but for practical purposes was identical to the number of
-#'       patients with available data at each look).
+#'       patients with available data at each look) and the `reallocate_probs`
+#'       argument in the embedded trial specification.
 #'    }
 #'
 #' @return Invisibly returns the updated `"trial_results"`-object.
@@ -69,7 +71,8 @@ update_saved_trials <- function(path, version = NULL, compress = TRUE) {
 
     # Update the trial_spec-part of the object, re-arrange order of objects, set class
     object$trial_spec$randomised_at_looks <- object$trial_spec$data_looks
-    object$trial_spec <- object$trial_spec[c("trial_arms", "data_looks", "max_n", "look_after_every",
+    object$trial_spec <- c(object$trial_spec, list(rescale_probs = NULL))
+    object$trial_spec <- object$trial_spec[c("trial_arms", "rescale_probs", "data_looks", "max_n", "look_after_every",
                                              "n_data_looks", "randomised_at_looks", "control", "control_prob_fixed",
                                              "inferiority", "superiority", "equivalence_prob", "equivalence_diff",
                                              "equivalence_only_first", "futility_prob", "futility_diff", "futility_only_first",
@@ -119,7 +122,17 @@ update_saved_trials <- function(path, version = NULL, compress = TRUE) {
       class(object$trial_results[[i]]) <- c("trial_result", "list")
     }
   } else if (.adaptr_version >= "1.2.0") {
-    # Only update the version number in the saved object
+    # Update the trial_spec-part of the object, re-arrange order of objects, set class
+    object$trial_spec <- c(object$trial_spec, list(rescale_probs = NULL))
+    object$trial_spec <- object$trial_spec[c("trial_arms", "rescale_probs", "data_looks", "max_n", "look_after_every",
+                                             "n_data_looks", "randomised_at_looks", "control", "control_prob_fixed",
+                                             "inferiority", "superiority", "equivalence_prob", "equivalence_diff",
+                                             "equivalence_only_first", "futility_prob", "futility_diff", "futility_only_first",
+                                             "highest_is_best", "soften_power", "best_arm", "cri_width", "n_draws", "robust",
+                                             "description", "add_info", "fun_y_gen", "fun_draws", "fun_raw_est")]
+    class(object$trial_spec) <- c("trial_spec", "list")
+
+    # Updated the version number
     object$adaptr_version <- .adaptr_version
   }
   # Save and return invisibly
