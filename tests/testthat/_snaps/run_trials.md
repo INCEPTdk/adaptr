@@ -80,6 +80,47 @@
       * Number of posterior draws: 5000
       * Posterior estimation method: medians with MAD-SDs
 
+---
+
+    Code
+      run_trial(setup_rescale_probs, seed = 12345)
+    Output
+      Single simulation result: generic binomially distributed outcome trial
+      * Undesirable outcome
+      * Initial/final common control arms: B/B
+      
+      Final status: conclusive, stopped for superiority
+      Final/maximum allowed sample sizes: 1500/2000 (75.0%)
+      Available outcome data at last adaptive analysis: 1500/1500 (100.0%)
+      
+      Trial results overview:
+       arms true_ys final_status status_look status_probs final_alloc
+          A    0.20     inferior        1500       0.0046        0.60
+          B    0.15     superior        1500       0.9954        0.40
+          C    0.30     inferior        1000       0.0010        0.15
+      
+      Esimates from final analysis (all patients):
+       arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
+          A        143    701        0.204         0.205        0.0152      0.176
+          B         88    593        0.148         0.149        0.0151      0.122
+          C         56    206        0.272         0.273        0.0310      0.213
+       hi_cri_all
+            0.235
+            0.179
+            0.336
+      
+      Estimates from last adaptive analysis including each arm:
+       arms sum_ys  ns raw_ests post_ests post_errs lo_cri hi_cri
+          A    143 701    0.204     0.205    0.0151  0.176  0.235
+          B     88 593    0.148     0.149    0.0144  0.122  0.180
+          C     56 206    0.272     0.274    0.0303  0.216  0.334
+      
+      Simulation details:
+      * Random seed: 12345
+      * Credible interval width: 95%
+      * Number of posterior draws: 5000
+      * Posterior estimation method: medians with MAD-SDs
+
 # dispatch_trial_runs works
 
     Code

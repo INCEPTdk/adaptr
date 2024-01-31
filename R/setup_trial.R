@@ -528,10 +528,11 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #'   the other arguments may lead to invalid combined (total) allocation
 #'   probabilities after arm dropping, in which case all probabilities will
 #'   ultimately be rescaled to sum to `1`. It is the responsibility of the user
-#'   to ensure that rescaling probabilities will not lead to invalid
-#'   invalid or unexpected allocation probabilities after arm dropping. Finally,
-#'   any initial values that are overwritten by the `control_prob_fixed`
-#'   argument after arm dropping will not be rescaled.
+#'   to ensure that rescaling fixed allocation probabilities and minimum/maximum
+#'   allocation probability limits will not lead to invalid or unexpected
+#'   allocation probabilities after arm dropping.\cr
+#'   Finally, any initial values that are overwritten by the
+#'   `control_prob_fixed` argument after arm dropping will not be rescaled.
 #' @param data_looks vector of increasing integers, specifies when to conduct
 #'   adaptive analyses (= the total number of patients with available outcome
 #'   data at each adaptive analysis). The last number in the vector represents
