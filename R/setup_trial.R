@@ -41,6 +41,9 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
   if (length(unique(arms)) != length(arms)) {
     stop0("All arms must have unique names.")
   }
+  if (n_arms < 2) {
+    stop0("Two or more arms required.")
+  }
 
   # If control_prob_fixed is set to a valid non-numeric value, then set according to that
   control_prob_fixed_orig <- control_prob_fixed # Save original before editing
@@ -1042,6 +1045,7 @@ setup_trial_binom <- function(arms, true_ys, start_probs = NULL,
                               description = "generic binomially distributed outcome trial") {
 
   # Validate specific arguments to trials with binary outcomes
+  if (missing(true_ys)) true_ys <- NULL # to avoid incorrect error
   if (!isFALSE(length(arms) != length(true_ys) | any(is.na(true_ys)) | any(true_ys > 1) | any(true_ys < 0) | !is.numeric(true_ys))) {
     stop0("true_ys must be a vector of the same length as the number of arms containing ",
           "values (event probabilities) between 0 and 1 with no missing values.")
@@ -1161,6 +1165,8 @@ setup_trial_norm <- function(arms, true_ys, sds, start_probs = NULL,
                              description = "generic normally distributed outcome trial") {
 
   # Validate specific arguments to generic continuous, normally distributed outcome trials
+  if (missing(true_ys)) true_ys <- NULL # to avoid incorrect error
+  if (missing(sds)) sds <- NULL # to avoid incorrect error
   if (!isFALSE(length(arms) != length(true_ys) | any(is.na(true_ys)) | !is.numeric(true_ys) |
                length(arms) != length(sds) | any(is.na(sds)) | !is.numeric(sds) | any(sds <= 0))) {
     stop0("true_ys and sds must be vectors of the same length as the number of arms and all sds must be > 0.")

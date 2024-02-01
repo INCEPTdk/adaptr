@@ -157,6 +157,7 @@ test_that("validate setup trial specifications", {
 test_that("setup/validate_trial functions errors on invalid inputs", {
   expect_error(validate_trial(arms = NULL))
   expect_error(validate_trial(arms = c("A", "A", "B")))
+  expect_error(validate_trial(arms = "A"))
   expect_error(validate_trial(arms = c(1, 2, 3), control = 1))
   expect_error(validate_trial(arms = c("A", "B", "C"), control_prob_fixed = 0.4))
   expect_error(validate_trial(arms = c("A", "B", "C"), control = "A",

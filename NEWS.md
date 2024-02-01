@@ -13,6 +13,13 @@
     using `adaptr` to assess the performance of adaptive clinical trials
     according to different follow-up/data collection lags
     (<https://doi.org/10.1002/pst.2342>).
+    
+*   The `setup_trial()` family of functions now stops with an error if less than
+    two `arms` are provided.
+    
+*   Improved error message when `true_ys`-argument is missing in
+    `setup_trial_binom()` or when `true-ys`- or `sds`-argument is missing in
+    `setup_trial_norm()`.
 
 # adaptr 1.3.2
 
