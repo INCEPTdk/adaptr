@@ -214,7 +214,9 @@ setup_trial_binom(
   # Minimum probabilities of 20% for non-control arms, must be NA for the
   # control arm with fixed allocation probability
   # Limits are ignored for arms that become subsequent controls
+  # Limits are rescaled (i.e., increased proportionally) when arms are dropped
   min_probs = c(NA, 0.2, 0.2, 0.2),
+  rescale_probs = "limits",
   
   # Constant softening of 0.5 (= square-root transformation)
   soften_power = 0.5
