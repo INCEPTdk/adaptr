@@ -1,5 +1,10 @@
 # adaptr (development version)
 
+*   Added the `rescale_probs` argument to the `setup_trial()` family of
+    functions, allowing automatic rescaling of fixed allocation probabilities
+    and or minimum/maximum allocation probability limits when arms are dropped
+    in simulations of trial designs with `>2 arms`.
+
 *   Added reference to open access article (with code) of a simulation study
     using `adaptr` to assess the performance of adaptive clinical trials
     according to different follow-up/data collection lags
