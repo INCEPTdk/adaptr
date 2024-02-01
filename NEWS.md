@@ -4,6 +4,10 @@
     functions, allowing automatic rescaling of fixed allocation probabilities
     and or minimum/maximum allocation probability limits when arms are dropped
     in simulations of trial designs with `>2 arms`.
+    
+*   Added the `update_saved_calibration()`-function to update calibrated trial
+    objects (including embedded trial specifications and results) saved by the
+    `calibrate_trial()` using previous versions of the package.
 
 *   Added reference to open access article (with code) of a simulation study
     using `adaptr` to assess the performance of adaptive clinical trials

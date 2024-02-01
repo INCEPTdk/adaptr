@@ -44,4 +44,5 @@ reference:
   contents:
   - setup_cluster
   - update_saved_trials
+  - updated_saved_calibration
   - find_beta_params
