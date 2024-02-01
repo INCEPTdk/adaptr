@@ -97,5 +97,10 @@ if (FALSE) {
 
   res <- run_trials(trial, n_rep = 20, base_seed = 12345)
   save_testdata(res, "norm__results__3_arms__common_control__fixed__all_arms_fixed")
+
+  # Calibration object (settings to facilitate speed)
+  trial <- setup_trial_binom(arms = c("A", "B"), true_ys = c(0.5, 0.5), data_looks = 100, n_draws = 1000)
+  res <- calibrate_trial(trial_spec = trial, search_range = c(0.95, 0.9999), tol = 0.05, base_seed = 12345)
+  save_testdata(res, "binom___calibration___setup2_arms__no_difference___rar")
 }
 
