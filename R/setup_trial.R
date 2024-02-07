@@ -262,6 +262,10 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
           stop0("When control_prob_fixed is specified and is not 'match', fixed_probs for ",
                 "the control arm must be set to the first value of control_prob_fixed.")
         }
+      } else {
+        if (!is.na(fixed_probs[control_index])) {
+          stop0("When control_prob_fixed is 'match', no fixed_probs can be specified for the control arm.")
+        }
       }
     }
   }

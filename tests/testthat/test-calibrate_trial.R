@@ -77,6 +77,10 @@ test_that("calibrate_trial errors/warns/messages correctly", {
   expect_error(calibrate_trial(spec, base_seed = 1, plot = NULL))
   expect_error(calibrate_trial(spec, base_seed = 1, fun = "mean"))
 
+  spec <- setup_trial_binom(arms = 1:2, true_ys = rep(0.35, 2), data_looks = 100)
+  expect_message(calibrate_trial(spec, target = 1, tol = 1))
+  expect_message(calibrate_trial(spec, target = 1, tol = 1, base_seed = 123, n_rep = 100))
+
   # Check that reloading errors correctly
   # Run and save
   tmp_file <- tempfile()

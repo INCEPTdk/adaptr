@@ -17,9 +17,15 @@
 *   The `setup_trial()` family of functions now stops with an error if less than
     two `arms` are provided.
     
+*   The `setup_trial()` family of functions now stops with an error if
+    `control_prob_fixed` is `"match"` and `fixed_probs` is provided for the
+    common control arm.
+    
 *   Improved error message when `true_ys`-argument is missing in
     `setup_trial_binom()` or when `true-ys`- or `sds`-argument is missing in
     `setup_trial_norm()`.
+    
+*   Improved test coverage.
 
 # adaptr 1.3.2
 
