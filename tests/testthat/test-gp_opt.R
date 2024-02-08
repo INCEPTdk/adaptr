@@ -31,5 +31,5 @@ test_that("gp_opt works", {
                       lengthscale = 0.95)$next_x, 0.979759519038076120989)
   expect_equal(gp_opt(x, y, target = 0.1, resolution = 500, noisy = TRUE,
                       lengthscale = 0.95, scale_x = FALSE)$next_x,
-               0.97975951903807612098)
+               0.97014028056112222576)
 })

@@ -368,8 +368,9 @@ print.trial_results_summary <- function(x, digits = 1, ...) {
       "* Selection probabilities: ", paste0(vapply_str(which(substr(names(x), 1, 12) == "prob_select_"),
                                                        function(i){ paste0(ifelse(names(x)[i] == "prob_select_none", "None", substr(names(x)[i], 17, nchar(names(x)[i]))), ": ", fmt_dig(x[[names(x)[i]]]*100, digits), "%")}),
                                             collapse = " | "), "\n",
-      "* RMSE: ", fmt_dig(x$rmse, 5), "\n",
-      "* RMSE treatment effect: ", ifelse(is.na(x$rmse_te), "not estimated", fmt_dig(x$rmse_te, 5)), "\n",
+      "* RMSE / MAE: ", fmt_dig(x$rmse, 5), " / ", fmt_dig(x$mae, 5), "\n",
+      "* RMSE / MAE treatment effect: ", ifelse(is.na(x$rmse_te), "not estimated", fmt_dig(x$rmse_te, 5)),
+      " / ", ifelse(is.na(x$mae_te), "not estimated", fmt_dig(x$mae_te, 5)), "\n",
       "* Ideal design percentage: ", ifelse(is.na(x$idp), "not estimable", paste0(fmt_dig(x$idp, digits), "%")),
 
       # Technical simulation details

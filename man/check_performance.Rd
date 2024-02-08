@@ -74,19 +74,19 @@ available in the trial.}
 \item{te_comp}{character string, treatment-effect comparator. Can be either
 \code{NULL} (the default) in which case the \strong{first} \code{control} arm is used for
 trial designs with a common control arm, or a string naming a single trial
-\code{arm}. Will be used when calculating \code{sq_err_te} (the squared error of the
-treatment effect comparing the selected arm to the comparator arm, as
-described below).}
+\code{arm}. Will be used when calculating \code{err_te} and \code{sq_err_te} (the error
+and the squared error of the treatment effect comparing the selected arm to
+the comparator arm, as described below).}
 
 \item{raw_ests}{single logical. If \code{FALSE} (default), the
 posterior estimates (\code{post_ests} or \code{post_ests_all}, see \code{\link[=setup_trial]{setup_trial()}}
-and \code{\link[=run_trial]{run_trial()}}) will be used to calculate \code{sq_err} (the squared error of
-the estimated compared to the specified effect in the selected arm) and
-\code{sq_err_te} (the squared error of the treatment effect comparing the
-selected arm to the comparator arm, as described for \code{te_comp} and below).
-If \code{TRUE}, the raw estimates (\code{raw_ests} or \code{raw_ests_all}, see
-\code{\link[=setup_trial]{setup_trial()}} and \code{\link[=run_trial]{run_trial()}}) will be used instead of the posterior
-estimates.}
+and \code{\link[=run_trial]{run_trial()}}) will be used to calculate \code{err} and \code{sq_err} (the error
+and the squared error of the estimated compared to the specified effect in
+the selected arm) and \code{err_te} and \code{sq_err_te} (the error and the squared
+error of the treatment effect comparing the selected arm to the comparator
+arm, as described for \code{te_comp} and below). If \code{TRUE}, the raw estimates
+(\code{raw_ests} or \code{raw_ests_all}, see \code{\link[=setup_trial]{setup_trial()}} and \code{\link[=run_trial]{run_trial()}}) will
+be used instead of the posterior estimates.}
 
 \item{final_ests}{single logical. If \code{TRUE} (recommended) the final estimates
 calculated using outcome data from all patients randomised when trials are
@@ -193,7 +193,10 @@ results are \code{restricted}.
 selection, according to the specified selection strategy. Contains one
 element per \code{arm}, named \verb{prob_select_arm_<arm name>} and
 \code{prob_select_none} for the probability of selecting no arm.
-\item \code{rmse}, \code{rmse_te}: the root mean squared error of the estimates for
+\item \code{rmse}, \code{rmse_te}: the root mean squared errors of the estimates for
+the selected arm and for the treatment effect, as described in
+\code{\link[=extract_results]{extract_results()}}.
+\item \code{mae}, \code{mae_te}: the median absolute errors of the estimates for
 the selected arm and for the treatment effect, as described in
 \code{\link[=extract_results]{extract_results()}}.
 \item \code{idp}: the ideal design percentage (IDP; 0-100\%), see \strong{Details}.

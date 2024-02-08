@@ -1,13 +1,29 @@
 # adaptr (development version)
 
+This is a minor release implementing new functionality, and including updates
+to documentation, argument checking and test coverage.
+
+### New features and major changes:
+
 *   Added the `rescale_probs` argument to the `setup_trial()` family of
     functions, allowing automatic rescaling of fixed allocation probabilities
     and or minimum/maximum allocation probability limits when arms are dropped
     in simulations of trial designs with `>2 arms`.
     
+*   The `extract_results()` function now also returns errors for each simulation
+    (in addition to squared errors) and the `check_performance()`,
+    `plot_convergence()`, and `summary()` functions (including their `print()`
+    methods) now calculate and present median absolute errors (in addition to
+    root mean squared errors).
+    
+*   The `plot_metrics_ecdf()` function now supports plotting errors and squared
+    errors.
+    
 *   Added the `update_saved_calibration()`-function to update calibrated trial
     objects (including embedded trial specifications and results) saved by the
     `calibrate_trial()` using previous versions of the package.
+    
+### Minor changes:
 
 *   Added reference to open access article (with code) of a simulation study
     using `adaptr` to assess the performance of adaptive clinical trials

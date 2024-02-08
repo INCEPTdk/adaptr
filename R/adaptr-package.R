@@ -1,9 +1,5 @@
 #' adaptr: Adaptive Trial Simulator
 #'
-#' @docType package
-#' @name adaptr-package
-#' @aliases adaptr
-#'
 #' @description
 #' \if{html}{
 #'   \figure{adaptr.png}{options: width="120" alt="logo"}
@@ -90,4 +86,4 @@
 #' [check_remaining_arms()], [plot_convergence()], [plot_metrics_ecdf()],
 #' [print()], [plot_status()], [plot_history()].
 #'
-NULL
+"_PACKAGE"

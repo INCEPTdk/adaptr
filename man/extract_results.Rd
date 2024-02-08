@@ -69,19 +69,19 @@ available in the trial.}
 \item{te_comp}{character string, treatment-effect comparator. Can be either
 \code{NULL} (the default) in which case the \strong{first} \code{control} arm is used for
 trial designs with a common control arm, or a string naming a single trial
-\code{arm}. Will be used when calculating \code{sq_err_te} (the squared error of the
-treatment effect comparing the selected arm to the comparator arm, as
-described below).}
+\code{arm}. Will be used when calculating \code{err_te} and \code{sq_err_te} (the error
+and the squared error of the treatment effect comparing the selected arm to
+the comparator arm, as described below).}
 
 \item{raw_ests}{single logical. If \code{FALSE} (default), the
 posterior estimates (\code{post_ests} or \code{post_ests_all}, see \code{\link[=setup_trial]{setup_trial()}}
-and \code{\link[=run_trial]{run_trial()}}) will be used to calculate \code{sq_err} (the squared error of
-the estimated compared to the specified effect in the selected arm) and
-\code{sq_err_te} (the squared error of the treatment effect comparing the
-selected arm to the comparator arm, as described for \code{te_comp} and below).
-If \code{TRUE}, the raw estimates (\code{raw_ests} or \code{raw_ests_all}, see
-\code{\link[=setup_trial]{setup_trial()}} and \code{\link[=run_trial]{run_trial()}}) will be used instead of the posterior
-estimates.}
+and \code{\link[=run_trial]{run_trial()}}) will be used to calculate \code{err} and \code{sq_err} (the error
+and the squared error of the estimated compared to the specified effect in
+the selected arm) and \code{err_te} and \code{sq_err_te} (the error and the squared
+error of the treatment effect comparing the selected arm to the comparator
+arm, as described for \code{te_comp} and below). If \code{TRUE}, the raw estimates
+(\code{raw_ests} or \code{raw_ests_all}, see \code{\link[=setup_trial]{setup_trial()}} and \code{\link[=run_trial]{run_trial()}}) will
+be used instead of the posterior estimates.}
 
 \item{final_ests}{single logical. If \code{TRUE} (recommended) the final estimates
 calculated using outcome data from all patients randomised when trials are
@@ -131,17 +131,21 @@ superiority. Will be \code{NA} in simulations not stopped for superiority.
 \item \code{selected_arm}: the final selected arm (as described above). Will
 correspond to the \code{superior_arm} in simulations stopped for superiority
 and be \code{NA} if no arm is selected. See \code{select_strategy} above.
+\item \code{err}: the squared error of the estimate in the selected arm,
+calculated as \verb{estimated effect - true effect} for the selected
+arm.
 \item \verb{sq_err:} the squared error of the estimate in the selected arm,
-calculated as \verb{(estimated effect - true effect)^2} for the selected
-arms.
-\item \code{sq_err_te}: the squared error of the treatment effect comparing
-the selected arm to the comparator arm (as specified in \code{te_comp}).
-Calculated as:\cr
-\verb{((estimated effect in the selected arm - estimated effect in the comparator arm) -}
-\verb{(true effect in the selected arm - true effect in the comparator arm))^2} \cr
-Will be \code{NA} for simulations without a selected arm, with no
+calculated as \code{err^2} for the selected arm, with \code{err} defined above.
+\item \code{err_te}: the error of the treatment effect comparing the selected
+arm to the comparator arm (as specified in \code{te_comp}). Calculated as:\cr
+\verb{(estimated effect in the selected arm - estimated effect in the comparator arm) -}
+\verb{(true effect in the selected arm - true effect in the comparator arm)}
+\cr Will be \code{NA} for simulations without a selected arm, with no
 comparator specified (see \code{te_comp} above), and when the selected arm
 is the comparator arm.
+\item \code{sq_err_te}: the squared error of the treatment effect comparing
+the selected arm to the comparator arm (as specified in \code{te_comp}),
+calculated as \code{err_te^2}, with \code{err_te} defined above.
 }
 }
 \description{

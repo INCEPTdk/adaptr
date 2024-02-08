@@ -72,9 +72,9 @@ available in the trial.}
 \item{te_comp}{character string, treatment-effect comparator. Can be either
 \code{NULL} (the default) in which case the \strong{first} \code{control} arm is used for
 trial designs with a common control arm, or a string naming a single trial
-\code{arm}. Will be used when calculating \code{sq_err_te} (the squared error of the
-treatment effect comparing the selected arm to the comparator arm, as
-described below).}
+\code{arm}. Will be used when calculating \code{err_te} and \code{sq_err_te} (the error
+and the squared error of the treatment effect comparing the selected arm to
+the comparator arm, as described below).}
 
 \item{which_ests}{single character string, a combination of the \code{raw_ests}
 and \code{final_ests} arguments from \code{\link[=extract_results]{extract_results()}}.}

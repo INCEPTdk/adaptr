@@ -19,9 +19,10 @@ function.}
 
 \item{metrics}{the performance metrics to plot, as described in
 \code{\link[=extract_results]{extract_results()}}. Multiple metrics may be plotted at the same time.
-Valid metrics include: \code{size}, \code{sum_ys}, and \code{ratio_ys_mean}. All may be
-specified using either spaces or underlines (case sensitive). Defaults to
-plotting all three.}
+Valid metrics include: \code{size}, \code{sum_ys}, \code{ratio_ys_mean}, \code{sq_err},
+\code{sq_err_te}, \code{err}, and \code{err_te} (as described in \code{\link[=extract_results]{extract_results()}}. All
+may be specified using either spaces or underlines (case sensitive).
+Defaults to plotting \code{size}, \code{sum_ys}, and \code{ratio_ys_mean}.}
 
 \item{restrict}{single character string or \code{NULL}. If \code{NULL} (default),
 results are summarised for all simulations; if \code{"superior"}, results are

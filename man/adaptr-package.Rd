@@ -2,8 +2,8 @@
 % Please edit documentation in R/adaptr-package.R
 \docType{package}
 \name{adaptr-package}
-\alias{adaptr-package}
 \alias{adaptr}
+\alias{adaptr-package}
 \title{adaptr: Adaptive Trial Simulator}
 \description{
 \if{html}{
@@ -89,4 +89,19 @@ performance of adaptive clinical trials. Pharm Stat. \doi{10.1002/pst.2342}
 \code{\link[=extract_results]{extract_results()}}, \code{\link[=check_performance]{check_performance()}}, \code{\link[=summary]{summary()}},
 \code{\link[=check_remaining_arms]{check_remaining_arms()}}, \code{\link[=plot_convergence]{plot_convergence()}}, \code{\link[=plot_metrics_ecdf]{plot_metrics_ecdf()}},
 \code{\link[=print]{print()}}, \code{\link[=plot_status]{plot_status()}}, \code{\link[=plot_history]{plot_history()}}.
+}
+\author{
+\strong{Maintainer}: Anders Granholm \email{andersgran@gmail.com} (\href{https://orcid.org/0000-0001-5799-7655}{ORCID})
+
+Authors:
+\itemize{
+  \item Benjamin Skov Kaas-Hansen \email{epiben@hey.com} (\href{https://orcid.org/0000-0003-1023-0371}{ORCID})
+}
+
+Other contributors:
+\itemize{
+  \item Aksel Karl Georg Jensen \email{akje@sund.ku.dk} (\href{https://orcid.org/0000-0002-1459-0465}{ORCID}) [contributor]
+  \item Theis Lange \email{thlan@sund.ku.dk} (\href{https://orcid.org/0000-0001-6807-8347}{ORCID}) [contributor]
+}
+
 }

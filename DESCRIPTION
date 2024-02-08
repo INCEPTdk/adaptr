@@ -37,7 +37,7 @@ URL: https://inceptdk.github.io/adaptr/,
     https://github.com/INCEPTdk/adaptr/,
     https://incept.dk/
 BugReports: https://github.com/INCEPTdk/adaptr/issues/
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 Suggests:
     ggplot2,
     covr,

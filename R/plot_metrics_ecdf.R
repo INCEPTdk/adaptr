@@ -9,9 +9,10 @@
 #' @inheritParams check_performance
 #' @param metrics the performance metrics to plot, as described in
 #'   [extract_results()]. Multiple metrics may be plotted at the same time.
-#'   Valid metrics include: `size`, `sum_ys`, and `ratio_ys_mean`. All may be
-#'   specified using either spaces or underlines (case sensitive). Defaults to
-#'   plotting all three.
+#'   Valid metrics include: `size`, `sum_ys`, `ratio_ys_mean`, `sq_err`,
+#'   `sq_err_te`, `err`, and `err_te` (as described in [extract_results()]. All
+#'   may be specified using either spaces or underlines (case sensitive).
+#'   Defaults to plotting `size`, `sum_ys`, and `ratio_ys_mean`.
 #' @param nrow,ncol the number of rows and columns when plotting multiple
 #'   metrics in the same plot (using faceting in `ggplot2`). Defaults to `NULL`,
 #'   in which case this will be determined automatically.
@@ -59,7 +60,7 @@ plot_metrics_ecdf <- function(object, metrics = c("size", "sum_ys", "ratio_ys"),
           "to plot, and each metric must be specified only once.")
   } else {
     metrics <- chartr("_", " ", metrics) # Replace underlines with spaces
-    if (!all(metrics %in% c("size", "sum ys", "ratio ys"))) {
+    if (!all(metrics %in% c("size", "sum ys", "ratio ys", "sq err", "sq err te", "err", "err te"))) {
       stop0("Invalid metric(s) specified. Type 'help(plot_metrics_ecdf)' to see a list of the metrics ",
             "that may be specified.")
     }
@@ -83,6 +84,10 @@ plot_metrics_ecdf <- function(object, metrics = c("size", "sum_ys", "ratio_ys"),
   } else if (isTRUE(restrict == "selected")) {
     extr_res <- extr_res[!is.na(extr_res$selected_arm), ]
   }
+  if (nrow(extr_res) <= 1) {
+    stop0("Empirical cumulative distributions cannot be plotted as the number of simulation ",
+          "results to plot is <= 1", ifelse(is.null(restrict), ".", " after restriction."))
+  }
 
   # Prepare data for plotting
   plot_dta <- data.frame(metric = character(0), value = numeric(0))
@@ -101,7 +106,38 @@ plot_metrics_ecdf <- function(object, metrics = c("size", "sum_ys", "ratio_ys"),
                       data.frame(metric = "Ratio ys",
                                  value = extr_res$ratio_ys))
   }
+  if ("sq err" %in% metrics) {
+    plot_dta <- rbind(plot_dta,
+                      data.frame(metric = "Error^2",
+                                 value = extr_res$sq_err))
+  }
+  if ("sq err te" %in% metrics) {
+    if (sum(!is.na(extr_res$sq_err_te)) <= 1) {
+      stop0("Empirical cumulative distribution of sq_err_te cannot be plotted as the number of non-NA values is <= 1.")
+    }
+    plot_dta <- rbind(plot_dta,
+                      data.frame(metric = "Error TE^2",
+                                 value = extr_res$sq_err_te))
+  }
+  if ("err" %in% metrics) {
+    plot_dta <- rbind(plot_dta,
+                      data.frame(metric = "Error",
+                                 value = extr_res$err))
+  }
+  if ("err te" %in% metrics) {
+    if (sum(!is.na(extr_res$err_te)) <= 1) {
+      stop0("Empirical cumulative distribution of err_te can not be plotted as the number of non-NA values is <= 1.")
+    }
+    plot_dta <- rbind(plot_dta,
+                      data.frame(metric = "Error TE",
+                                 value = extr_res$err_te))
+  }
+  plot_dta <- na.omit(plot_dta) # Ignore NAs for error metrics
   substr(metrics, 1, 1) <- toupper(substr(metrics, 1, 1))
+  metrics[metrics == "Sq err"] <- "Error^2"
+  metrics[metrics == "Sq err te"] <- "Error TE^2"
+  metrics[metrics == "Err"] <- "Error"
+  metrics[metrics == "Err te"] <- "Error TE"
   plot_dta <- transform(plot_dta,
                         metric = factor(metric, levels = metrics))
 

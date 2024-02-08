@@ -104,7 +104,10 @@ calculate_idp <- function(sels, arms, true_ys, highest_is_best) {
 #'     selection, according to the specified selection strategy. Contains one
 #'     element per `arm`, named `prob_select_arm_<arm name>` and
 #'     `prob_select_none` for the probability of selecting no arm.
-#'   \item `rmse`, `rmse_te`: the root mean squared error of the estimates for
+#'   \item `rmse`, `rmse_te`: the root mean squared errors of the estimates for
+#'     the selected arm and for the treatment effect, as described in
+#'     [extract_results()].
+#'   \item `mae`, `mae_te`: the median absolute errors of the estimates for
 #'     the selected arm and for the treatment effect, as described in
 #'     [extract_results()].
 #'   \item `idp`: the ideal design percentage (IDP; 0-100%), see **Details**.
@@ -228,7 +231,7 @@ check_performance <- function(object, select_strategy = "control if available",
                                "ratio_ys_p25", "ratio_ys_p75", "ratio_ys_p0", "ratio_ys_p100",
                                "prob_conclusive", "prob_superior", "prob_equivalence",
                                "prob_futility", "prob_max", paste0("prob_select_", c(paste0("arm_", arms), "none")),
-                               "rmse", "rmse_te", "idp"),
+                               "rmse", "rmse_te", "mae", "mae_te", "idp"),
                     est = NA, err_sd = NA, err_mad = NA, lo_ci = NA, hi_ci = NA)
 
   # Restrict simulations summarised
@@ -255,6 +258,8 @@ check_performance <- function(object, select_strategy = "control if available",
                mean(is.na(extr_res$selected_arm[restrict_idx])),
                sqrt(mean(extr_res$sq_err[restrict_idx], na.rm = TRUE)) %f|% NA,
                sqrt(mean(extr_res$sq_err_te[restrict_idx], na.rm = TRUE)) %f|% NA,
+               median(abs(extr_res$err[restrict_idx]), na.rm = TRUE) %f|% NA,
+               median(abs(extr_res$err_te[restrict_idx]), na.rm = TRUE) %f|% NA,
                calculate_idp(extr_res$selected_arm[restrict_idx], arms, true_ys, highest_is_best) %f|% NA)
 
   # Simply object or do bootstrapping
@@ -309,6 +314,8 @@ check_performance <- function(object, select_strategy = "control if available",
                            mean(is.na(extr_boot$selected_arm[restrict_idx])),
                            sqrt(mean(extr_boot$sq_err[restrict_idx], na.rm = TRUE)) %f|% NA,
                            sqrt(mean(extr_boot$sq_err_te[restrict_idx], na.rm = TRUE)) %f|% NA,
+                           median(abs(extr_boot$err[restrict_idx]), na.rm = TRUE) %f|% NA,
+                           median(abs(extr_boot$err_te[restrict_idx]), na.rm = TRUE) %f|% NA,
                            calculate_idp(extr_boot$selected_arm[restrict_idx], arms, true_ys, highest_is_best) %f|% NA)
       }
       boot_mat

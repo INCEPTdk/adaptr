@@ -72,19 +72,19 @@ available in the trial.}
 \item{te_comp}{character string, treatment-effect comparator. Can be either
 \code{NULL} (the default) in which case the \strong{first} \code{control} arm is used for
 trial designs with a common control arm, or a string naming a single trial
-\code{arm}. Will be used when calculating \code{sq_err_te} (the squared error of the
-treatment effect comparing the selected arm to the comparator arm, as
-described below).}
+\code{arm}. Will be used when calculating \code{err_te} and \code{sq_err_te} (the error
+and the squared error of the treatment effect comparing the selected arm to
+the comparator arm, as described below).}
 
 \item{raw_ests}{single logical. If \code{FALSE} (default), the
 posterior estimates (\code{post_ests} or \code{post_ests_all}, see \code{\link[=setup_trial]{setup_trial()}}
-and \code{\link[=run_trial]{run_trial()}}) will be used to calculate \code{sq_err} (the squared error of
-the estimated compared to the specified effect in the selected arm) and
-\code{sq_err_te} (the squared error of the treatment effect comparing the
-selected arm to the comparator arm, as described for \code{te_comp} and below).
-If \code{TRUE}, the raw estimates (\code{raw_ests} or \code{raw_ests_all}, see
-\code{\link[=setup_trial]{setup_trial()}} and \code{\link[=run_trial]{run_trial()}}) will be used instead of the posterior
-estimates.}
+and \code{\link[=run_trial]{run_trial()}}) will be used to calculate \code{err} and \code{sq_err} (the error
+and the squared error of the estimated compared to the specified effect in
+the selected arm) and \code{err_te} and \code{sq_err_te} (the error and the squared
+error of the treatment effect comparing the selected arm to the comparator
+arm, as described for \code{te_comp} and below). If \code{TRUE}, the raw estimates
+(\code{raw_ests} or \code{raw_ests_all}, see \code{\link[=setup_trial]{setup_trial()}} and \code{\link[=run_trial]{run_trial()}}) will
+be used instead of the posterior estimates.}
 
 \item{final_ests}{single logical. If \code{TRUE} (recommended) the final estimates
 calculated using outcome data from all patients randomised when trials are
@@ -137,11 +137,11 @@ A \code{"trial_results_summary"} object containing the following values:
 \code{ratio_ys_p0}, \code{ratio_ys_p100}, \code{prob_conclusive}, \code{prob_superior},
 \code{prob_equivalence}, \code{prob_futility}, \code{prob_max}, \verb{prob_select_*} (with
 \code{*} being either "\verb{arm_<name>} for all \code{arm} names or \code{none}), \code{rmse},
-\code{rmse_te}, and \code{idp}: performance metrics as described in
-\code{\link[=check_performance]{check_performance()}}. Note that all \code{sum_ys_} and \code{ratio_ys_} measures
-use outcome data from all randomised patients, regardless of whether they
-had outcome data available at the last analysis or not, as described in
-\code{\link[=extract_results]{extract_results()}}.
+\code{rmse_te}, \code{mae}, \code{mae_te}, and \code{idp}: performance metrics as described
+in \code{\link[=check_performance]{check_performance()}}. Note that all \code{sum_ys_} and \code{ratio_ys_}
+measures use outcome data from all randomised patients, regardless of
+whether they had outcome data available at the last analysis or not, as
+described in \code{\link[=extract_results]{extract_results()}}.
 \item \code{select_strategy}, \code{select_last_arm}, \code{select_preferences},
 \code{te_comp}, \code{raw_ests}, \code{final_ests}, \code{restrict}: as specified above.
 \item \code{control}: the control arm specified by \code{\link[=setup_trial]{setup_trial()}},
