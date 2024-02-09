@@ -242,7 +242,7 @@ plot_convergence <- function(object, metrics = "size mean", resolution = 100,
       ggplot2::scale_y_continuous(name = plot_dta$labels[1])
   } else { # Multiple metrics plotted
     if (is.null(nrow) & is.null(ncol)) { # Set nrow if both nrow and ncol are NULL
-      nrow <- ceiling(sqrt(length(metrics)))
+      nrow <- ifelse(length(metrics) <= 3, length(metrics), ceiling(sqrt(length(metrics))))
     }
     p <- p +
       ggplot2::scale_y_continuous(name = NULL) +

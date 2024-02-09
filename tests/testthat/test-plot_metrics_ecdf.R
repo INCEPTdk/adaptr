@@ -9,7 +9,9 @@ test_that("plot_metrics_ecdf works and errors correctly", {
   vdiffr::expect_doppelganger("selected", p)
   p <- plot_metrics_ecdf(res, metrics = "size")
   vdiffr::expect_doppelganger("size only", p)
-  p <- plot_metrics_ecdf(res, metrics = c("err", "sq_err", "err_te", "sq_err_te"))
+  p <- plot_metrics_ecdf(res, metrics = c("err", "sq_err", "err_te", "sq_err_te",
+                                          "abs_err", "abs_err_te"), te_comp = "A")
+  vdiffr::expect_doppelganger("errors", p)
 
   # Errors
   expect_error(plot_metrics_ecdf(res, metrics = TRUE))
@@ -21,4 +23,7 @@ test_that("plot_metrics_ecdf works and errors correctly", {
   res_no_concl <- run_trials(spec_no_concl, n_rep = 1, base_seed = 1)
   expect_error(plot_metrics_ecdf(res_no_concl, restrict = "superior"))
 
+  expect_error(plot_metrics_ecdf(res, metrics = "sq_err_te"))
+  expect_error(plot_metrics_ecdf(res, metrics = "err_te"))
+  expect_error(plot_metrics_ecdf(res, metrics = "abs_err_te"))
 })

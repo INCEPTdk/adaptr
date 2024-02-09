@@ -10,12 +10,19 @@
 #' @param metrics the performance metrics to plot, as described in
 #'   [extract_results()]. Multiple metrics may be plotted at the same time.
 #'   Valid metrics include: `size`, `sum_ys`, `ratio_ys_mean`, `sq_err`,
-#'   `sq_err_te`, `err`, and `err_te` (as described in [extract_results()]. All
+#'   `sq_err_te`, `err`, `err_te`, `abs_err`, `abs_err_te`, (as described in
+#'   [extract_results()], with the addition of `abs_err` and `abs_err_te`, which
+#'   are the absolute errors, i.e., `abs(err)` and `abs(err_te)`). All
 #'   may be specified using either spaces or underlines (case sensitive).
 #'   Defaults to plotting `size`, `sum_ys`, and `ratio_ys_mean`.
 #' @param nrow,ncol the number of rows and columns when plotting multiple
 #'   metrics in the same plot (using faceting in `ggplot2`). Defaults to `NULL`,
 #'   in which case this will be determined automatically.
+#'
+#' @details
+#'
+#' Note that the arguments related to arm selection and error calculation are
+#' only relevant if errors are visualised.
 #'
 #' @return A `ggplot2` plot object.
 #'
@@ -48,6 +55,9 @@
 #' [plot_convergence()], [check_remaining_arms()].
 #'
 plot_metrics_ecdf <- function(object, metrics = c("size", "sum_ys", "ratio_ys"),
+                              select_strategy = "control if available",
+                              select_last_arm = FALSE, select_preferences = NULL,
+                              te_comp = NULL, raw_ests = FALSE, final_ests = NULL,
                               restrict = NULL, nrow = NULL, ncol = NULL,
                               cores = NULL) {
 
@@ -60,7 +70,8 @@ plot_metrics_ecdf <- function(object, metrics = c("size", "sum_ys", "ratio_ys"),
           "to plot, and each metric must be specified only once.")
   } else {
     metrics <- chartr("_", " ", metrics) # Replace underlines with spaces
-    if (!all(metrics %in% c("size", "sum ys", "ratio ys", "sq err", "sq err te", "err", "err te"))) {
+    if (!all(metrics %in% c("size", "sum ys", "ratio ys", "sq err", "sq err te",
+                            "err", "err te", "abs err", "abs err te"))) {
       stop0("Invalid metric(s) specified. Type 'help(plot_metrics_ecdf)' to see a list of the metrics ",
             "that may be specified.")
     }
@@ -77,7 +88,11 @@ plot_metrics_ecdf <- function(object, metrics = c("size", "sum_ys", "ratio_ys"),
   }
 
   # Extract results and values from trial specification object
-  extr_res <- extract_results(object, cores = cores) # Other arguments not used
+  extr_res <- extract_results(object, select_strategy = select_strategy,
+                              select_last_arm = select_last_arm,
+                              select_preferences = select_preferences,
+                              te_comp = te_comp, raw_ests = raw_ests,
+                              final_ests = final_ests, cores = cores)
 
   if (isTRUE(restrict == "superior")) {
     extr_res <- extr_res[!is.na(extr_res$superior_arm), ]
@@ -132,12 +147,27 @@ plot_metrics_ecdf <- function(object, metrics = c("size", "sum_ys", "ratio_ys"),
                       data.frame(metric = "Error TE",
                                  value = extr_res$err_te))
   }
+  if ("abs err" %in% metrics) {
+    plot_dta <- rbind(plot_dta,
+                      data.frame(metric = "Abs(error)",
+                                 value = abs(extr_res$err)))
+  }
+  if ("abs err te" %in% metrics) {
+    if (sum(!is.na(extr_res$err_te)) <= 1) {
+      stop0("Empirical cumulative distribution of abs_err_te can not be plotted as the number of non-NA values is <= 1.")
+    }
+    plot_dta <- rbind(plot_dta,
+                      data.frame(metric = "Abs(error TE)",
+                                 value = abs(extr_res$err_te)))
+  }
   plot_dta <- na.omit(plot_dta) # Ignore NAs for error metrics
   substr(metrics, 1, 1) <- toupper(substr(metrics, 1, 1))
   metrics[metrics == "Sq err"] <- "Error^2"
   metrics[metrics == "Sq err te"] <- "Error TE^2"
   metrics[metrics == "Err"] <- "Error"
   metrics[metrics == "Err te"] <- "Error TE"
+  metrics[metrics == "Abs err"] <- "Abs(error)"
+  metrics[metrics == "Abs err te"] <- "Abs(error TE)"
   plot_dta <- transform(plot_dta,
                         metric = factor(metric, levels = metrics))
 
@@ -152,7 +182,7 @@ plot_metrics_ecdf <- function(object, metrics = c("size", "sum_ys", "ratio_ys"),
       ggplot2::scale_y_continuous(name = metrics, breaks = 0:5 * 0.2, labels = paste0(0:5 * 20, "%"), limits = 0:1, expand = c(0, 0))
   } else { # Multiple metrics plotted
     if (is.null(nrow) & is.null(ncol)) { # Set nrow if both nrow and ncol are NULL
-      nrow <- length(metrics)
+      nrow <- ifelse(length(metrics) <= 3, length(metrics), ceiling(sqrt(length(metrics))))
     }
     p <- p +
       ggplot2::scale_y_continuous(name = NULL, breaks = 0:5 * 0.2, labels = paste0(0:5 * 20, "%"), limits = 0:1, expand = c(0, 0)) +

@@ -16,8 +16,9 @@ to documentation, argument checking and test coverage.
     methods) now calculate and present median absolute errors (in addition to
     root mean squared errors).
     
-*   The `plot_metrics_ecdf()` function now supports plotting errors and squared
-    errors.
+*   The `plot_metrics_ecdf()` function now supports plotting errors (raw,
+    squared, and absolute) and has gained the additional arguments required to
+    be passed to `extract_results()`.
     
 *   Added the `update_saved_calibration()`-function to update calibrated trial
     objects (including embedded trial specifications and results) saved by the
@@ -40,6 +41,9 @@ to documentation, argument checking and test coverage.
 *   Improved error message when `true_ys`-argument is missing in
     `setup_trial_binom()` or when `true-ys`- or `sds`-argument is missing in
     `setup_trial_norm()`.
+    
+*   Changed the number of rows used in `plot_convergence()` and `plot_status()`
+    if the total number of plots is `<= 3` and `nrow` and `ncol` are `NULL`.
     
 *   Improved test coverage.
 
