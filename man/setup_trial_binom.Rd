@@ -131,10 +131,11 @@ behaviour with respect to these comparisons.}
 be set \code{NULL} (the default), in which case the control arm allocation
 probability will not be fixed if control arms change (the allocation
 probability for the first control arm may still be fixed using
-\code{fixed_probs}). If not \code{NULL}, a vector of probabilities of either length
-\code{1} or \verb{number of arms - 1} can be provided, or one of the special
-arguments \code{"sqrt-based"}, \code{"sqrt-based start"}, \code{"sqrt-based fixed"} or
-\code{"match"}. See \code{\link[=setup_trial]{setup_trial()}} \strong{Details} for details on how this affects
+\code{fixed_probs}, but will not be 'reused' for the new control arm).\cr
+If not \code{NULL}, a vector of probabilities of either length \code{1} or
+\verb{number of arms - 1} can be provided, or one of the special arguments
+\code{"sqrt-based"}, \code{"sqrt-based start"}, \code{"sqrt-based fixed"} or \code{"match"}.\cr
+See \code{\link[=setup_trial]{setup_trial()}} \strong{Details} for details on how this affects
 trial behaviour.}
 
 \item{inferiority}{single numeric value or vector of numeric values of the

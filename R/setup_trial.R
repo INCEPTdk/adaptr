@@ -580,10 +580,11 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #'   be set `NULL` (the default), in which case the control arm allocation
 #'   probability will not be fixed if control arms change (the allocation
 #'   probability for the first control arm may still be fixed using
-#'   `fixed_probs`). If not `NULL`, a vector of probabilities of either length
-#'   `1` or `number of arms - 1` can be provided, or one of the special
-#'   arguments `"sqrt-based"`, `"sqrt-based start"`, `"sqrt-based fixed"` or
-#'   `"match"`. See [setup_trial()] **Details** for details on how this affects
+#'   `fixed_probs`, but will not be 'reused' for the new control arm).\cr
+#'   If not `NULL`, a vector of probabilities of either length `1` or
+#'   `number of arms - 1` can be provided, or one of the special arguments
+#'   `"sqrt-based"`, `"sqrt-based start"`, `"sqrt-based fixed"` or `"match"`.\cr
+#'   See [setup_trial()] **Details** for details on how this affects
 #'   trial behaviour.
 #' @param inferiority single numeric value or vector of numeric values of the
 #'   same length as the maximum number of possible adaptive analyses, specifying
@@ -766,8 +767,8 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' user-specified functions (or uses objects defined by the user outside these
 #' functions or the [setup_trial()]-call) or functions from external packages
 #' and simulations are conducted on multiple cores, these objects or functions
-#' must be exported or prefixed with their namespaces, respectively, as
-#' described in [setup_cluster()] and [run_trials()].
+#' must be prefixed with their namespaces (i.e., `package::function()`) or
+#' exported, as described in [setup_cluster()] and [run_trials()].
 #'
 #' \strong{More information on arguments}
 #' - `control`: if one or more treatment arms are superior to the control arm
@@ -797,14 +798,17 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' scaled to sum to 1, which will generally increase power for comparisons
 #' against the common `control`, as discussed in, e.g., *Park et al, 2020*
 #' \doi{10.1016/j.jclinepi.2020.04.025}.\cr
-#' If `"sqrt-based"`, square-root-transformation-based allocation probabilities
-#' will also be used for new controls when arms are dropped. If
-#' `"sqrt-based start"`, the control arm will be fixed to this allocation
-#' probability at all times (also after arm dropping, with rescaling as
-#' necessary, as specified above). If `"sqrt-based fixed"` is chosen,
-#' square-root-transformation-based allocation probabilities will be used and
-#' all allocation probabilities will be fixed throughout the trial (with
-#' rescaling when arms are dropped).\cr
+#' If `"sqrt-based"` or `"sqrt-based fixed"`, square-root-transformation-based
+#' allocation probabilities will be used initially and also for new controls
+#' when arms are dropped (with probabilities always calculated based on the
+#' number of active non-control arms). If `"sqrt-based"`, response-adaptive
+#' randomisation will be used for non-control arms, while the non-control arms
+#' will use fixed, square-root based allocation probabilities at all times (with
+#' probabilities always calculated based on the number of active non-control
+#' arms). If `"sqrt-based start"`, the control arm allocation probability will
+#' be fixed to a square-root based probability at all times calculated according
+#' to the initial number of arms (with this probability also being used for new
+#' control(s) when the original control is dropped).\cr
 #' If `"match"` is specified, the control group allocation probability will
 #' always be *matched* to be similar to the highest non-control arm allocation
 #' probability.

@@ -145,10 +145,11 @@ behaviour with respect to these comparisons.}
 be set \code{NULL} (the default), in which case the control arm allocation
 probability will not be fixed if control arms change (the allocation
 probability for the first control arm may still be fixed using
-\code{fixed_probs}). If not \code{NULL}, a vector of probabilities of either length
-\code{1} or \verb{number of arms - 1} can be provided, or one of the special
-arguments \code{"sqrt-based"}, \code{"sqrt-based start"}, \code{"sqrt-based fixed"} or
-\code{"match"}. See \code{\link[=setup_trial]{setup_trial()}} \strong{Details} for details on how this affects
+\code{fixed_probs}, but will not be 'reused' for the new control arm).\cr
+If not \code{NULL}, a vector of probabilities of either length \code{1} or
+\verb{number of arms - 1} can be provided, or one of the special arguments
+\code{"sqrt-based"}, \code{"sqrt-based start"}, \code{"sqrt-based fixed"} or \code{"match"}.\cr
+See \code{\link[=setup_trial]{setup_trial()}} \strong{Details} for details on how this affects
 trial behaviour.}
 
 \item{inferiority}{single numeric value or vector of numeric values of the
@@ -374,8 +375,8 @@ If the \code{fun_y_gen}, \code{fun_draws}, or \code{fun_raw_est} functions calls
 user-specified functions (or uses objects defined by the user outside these
 functions or the \code{\link[=setup_trial]{setup_trial()}}-call) or functions from external packages
 and simulations are conducted on multiple cores, these objects or functions
-must be exported or prefixed with their namespaces, respectively, as
-described in \code{\link[=setup_cluster]{setup_cluster()}} and \code{\link[=run_trials]{run_trials()}}.
+must be prefixed with their namespaces (i.e., \verb{package::function()}) or
+exported, as described in \code{\link[=setup_cluster]{setup_cluster()}} and \code{\link[=run_trials]{run_trials()}}.
 
 \strong{More information on arguments}
 \itemize{
@@ -406,14 +407,17 @@ allocation probabilities. These are defined as:\cr
 scaled to sum to 1, which will generally increase power for comparisons
 against the common \code{control}, as discussed in, e.g., \emph{Park et al, 2020}
 \doi{10.1016/j.jclinepi.2020.04.025}.\cr
-If \code{"sqrt-based"}, square-root-transformation-based allocation probabilities
-will also be used for new controls when arms are dropped. If
-\code{"sqrt-based start"}, the control arm will be fixed to this allocation
-probability at all times (also after arm dropping, with rescaling as
-necessary, as specified above). If \code{"sqrt-based fixed"} is chosen,
-square-root-transformation-based allocation probabilities will be used and
-all allocation probabilities will be fixed throughout the trial (with
-rescaling when arms are dropped).\cr
+If \code{"sqrt-based"} or \code{"sqrt-based fixed"}, square-root-transformation-based
+allocation probabilities will be used initially and also for new controls
+when arms are dropped (with probabilities always calculated based on the
+number of active non-control arms). If \code{"sqrt-based"}, response-adaptive
+randomisation will be used for non-control arms, while the non-control arms
+will use fixed, square-root based allocation probabilities at all times (with
+probabilities always calculated based on the number of active non-control
+arms). If \code{"sqrt-based start"}, the control arm allocation probability will
+be fixed to a square-root based probability at all times calculated according
+to the initial number of arms (with this probability also being used for new
+control(s) when the original control is dropped).\cr
 If \code{"match"} is specified, the control group allocation probability will
 always be \emph{matched} to be similar to the highest non-control arm allocation
 probability.

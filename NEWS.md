@@ -20,16 +20,11 @@ to documentation, argument checking and test coverage.
     squared, and absolute) and has gained the additional arguments required to
     be passed to `extract_results()`.
     
-*   Added the `update_saved_calibration()`-function to update calibrated trial
+*   Added the `update_saved_calibration()` function to update calibrated trial
     objects (including embedded trial specifications and results) saved by the
     `calibrate_trial()` using previous versions of the package.
     
 ### Minor changes:
-
-*   Added reference to open access article (with code) of a simulation study
-    using `adaptr` to assess the performance of adaptive clinical trials
-    according to different follow-up/data collection lags
-    (<https://doi.org/10.1002/pst.2342>).
     
 *   The `setup_trial()` family of functions now stops with an error if less than
     two `arms` are provided.
@@ -46,6 +41,13 @@ to documentation, argument checking and test coverage.
     if the total number of plots is `<= 3` and `nrow` and `ncol` are `NULL`.
     
 *   Improved test coverage.
+
+*   Minor edits and clarification to documentation.
+
+*   Added reference to open access article (with code) of a simulation study
+    using `adaptr` to assess the performance of adaptive clinical trials
+    according to different follow-up/data collection lags
+    (<https://doi.org/10.1002/pst.2342>).
 
 # adaptr 1.3.2
 
