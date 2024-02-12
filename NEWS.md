@@ -24,7 +24,7 @@ to documentation, argument checking and test coverage.
     objects (including embedded trial specifications and results) saved by the
     `calibrate_trial()` using previous versions of the package.
     
-### Minor changes:
+### Minor changes and bug fixes:
     
 *   The `setup_trial()` family of functions now stops with an error if less than
     two `arms` are provided.
@@ -39,6 +39,11 @@ to documentation, argument checking and test coverage.
     
 *   Changed the number of rows used in `plot_convergence()` and `plot_status()`
     if the total number of plots is `<= 3` and `nrow` and `ncol` are `NULL`.
+    
+*   Fixed a bug in `extract_results()` (and thus all functions relying on it),
+    causing arm selection in inconclusive trial simulations to error when
+    stopped for practical equivalence and more simulated patients were
+    randomised than included in the last analysis.
     
 *   Improved test coverage.
 

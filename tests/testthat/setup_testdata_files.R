@@ -58,6 +58,19 @@ if (FALSE) {
   res <- run_trials(trial, n_rep = 20, base_seed = 12345, sparse = FALSE)
   save_testdata(res, "binom__results__3_arms__common_control__equivalence__futility__softened")
 
+  # Binomial trial without common control, equivalence testing and actual stopping for equivalence
+  trial <- setup_trial_binom(
+    arms = c("A", "B"),
+    true_ys = c(0.25, 0.23),
+    fixed_probs = c(0.5, 0.5),
+    data_looks = 1:20 * 100,
+    randomised_at_looks = 1:20 * 100 + 100,
+    equivalence_prob = 0.8,
+    equivalence_diff = 0.03
+  )
+  res <- run_trials(trial, n_rep = 20, base_seed = 12345)
+  save_testdata(res, "binom__results__3_arms__no_control__equivalence__stopping")
+
   # Normally distributed outcome trial with common control, "matched" control
   # group allocation, multiple best arms, varying probability thresholds, and
   # additional info (by default)

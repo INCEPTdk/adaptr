@@ -814,6 +814,54 @@
       19  0.004395604 1.932134e-05     NA        NA
       20  0.004633205 2.146659e-05     NA        NA
 
+# Selection works with practical equivalence and outcome-data lag works
+
+    Code
+      extract_results(res, select_strategy = "best")
+    Output
+         sim final_n sum_ys  ratio_ys final_status superior_arm selected_arm
+      1    1    1500    351 0.2340000  equivalence         <NA>            A
+      2    2    1500    339 0.2260000  equivalence         <NA>            B
+      3    3    2100    481 0.2290476          max         <NA>            B
+      4    4    1500    349 0.2326667  superiority            B            B
+      5    5    1900    462 0.2431579  equivalence         <NA>            B
+      6    6    2100    487 0.2319048          max         <NA>            B
+      7    7    1500    344 0.2293333  equivalence         <NA>            B
+      8    8    1700    430 0.2529412  equivalence         <NA>            B
+      9    9    2100    526 0.2504762          max         <NA>            B
+      10  10     200     40 0.2000000  superiority            B            B
+      11  11    1600    377 0.2356250  equivalence         <NA>            A
+      12  12    1600    369 0.2306250  equivalence         <NA>            B
+      13  13    1800    476 0.2644444  equivalence         <NA>            B
+      14  14    2100    508 0.2419048  equivalence         <NA>            B
+      15  15     200     51 0.2550000  superiority            B            B
+      16  16    2100    480 0.2285714          max         <NA>            B
+      17  17    2100    482 0.2295238          max         <NA>            B
+      18  18    1500    339 0.2260000  equivalence         <NA>            B
+      19  19    1500    352 0.2346667  equivalence         <NA>            A
+      20  20    1900    440 0.2315789  equivalence         <NA>            A
+                  err       sq_err err_te sq_err_te
+      1  -0.020294048 4.118484e-04     NA        NA
+      2  -0.007014838 4.920796e-05     NA        NA
+      3  -0.014463951 2.092059e-04     NA        NA
+      4  -0.024881085 6.190684e-04     NA        NA
+      5   0.007033408 4.946882e-05     NA        NA
+      6  -0.017663275 3.119913e-04     NA        NA
+      7  -0.003116444 9.712220e-06     NA        NA
+      8   0.017648868 3.114825e-04     NA        NA
+      9   0.015377199 2.364583e-04     NA        NA
+      10 -0.099895742 9.979159e-03     NA        NA
+      11 -0.016594114 2.753646e-04     NA        NA
+      12 -0.001521558 2.315138e-06     NA        NA
+      13  0.031967991 1.021952e-03     NA        NA
+      14  0.007552201 5.703574e-05     NA        NA
+      15 -0.047414042 2.248091e-03     NA        NA
+      16 -0.014629099 2.140105e-04     NA        NA
+      17 -0.006069625 3.684034e-05     NA        NA
+      18 -0.006869535 4.719051e-05     NA        NA
+      19 -0.014451375 2.088422e-04     NA        NA
+      20 -0.020764240 4.311537e-04     NA        NA
+
 # Metric history of specific trial works
 
     Code

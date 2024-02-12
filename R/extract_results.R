@@ -61,7 +61,7 @@ extract_results_batch <- function(trial_results,
       # Do not consider arms dropped for equivalence before final stop
       if (cur_status == "equivalence") { # Stopped for equivalence
         # Only consider equivalent arms declared equivalent at final look
-        tmp_sel <- tmp_sel[tmp_sel$final_status %in% c("equivalence", "control") & tmp_sel$status_look == df$final_n[[i]], ]
+        tmp_sel <- tmp_sel[tmp_sel$final_status %in% c("equivalence", "control") & tmp_sel$status_look == trial_results[[i]]$followed_n, ]
       } else {
         # Only consider arms not stopped for equivalence
         tmp_sel <- tmp_sel[tmp_sel$final_status != "equivalence", ]
