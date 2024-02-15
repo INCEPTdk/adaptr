@@ -17,8 +17,9 @@ to documentation, argument checking and test coverage.
     root mean squared errors).
     
 *   The `plot_metrics_ecdf()` function now supports plotting errors (raw,
-    squared, and absolute) and has gained the additional arguments required to
-    be passed to `extract_results()`.
+    squared, and absolute), and now takes the necessary additional arguments
+    passed to `extract_results()` used for arm selection in simulated trials not
+    stopped for superiority.
     
 *   Added the `update_saved_calibration()` function to update calibrated trial
     objects (including embedded trial specifications and results) saved by the
@@ -34,7 +35,7 @@ to documentation, argument checking and test coverage.
     common control arm.
     
 *   Improved error message when `true_ys`-argument is missing in
-    `setup_trial_binom()` or when `true-ys`- or `sds`-argument is missing in
+    `setup_trial_binom()` or when `true_ys`- or `sds`-argument is missing in
     `setup_trial_norm()`.
     
 *   Changed the number of rows used in `plot_convergence()` and `plot_status()`
