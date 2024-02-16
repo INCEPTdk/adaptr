@@ -54,6 +54,8 @@ to documentation, argument checking and test coverage.
     using `adaptr` to assess the performance of adaptive clinical trials
     according to different follow-up/data collection lags
     (<https://doi.org/10.1002/pst.2342>).
+    
+*   Minor editing of the function reference page on the package website.
 
 # adaptr 1.3.2
 

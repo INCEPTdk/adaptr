@@ -15,6 +15,10 @@ reference:
   contents:
   - 'adaptr-package'
 
+- title: Parallelisation
+  contents:
+  - setup_cluster
+
 - title: Setup, calibrate, and run trials
   contents:
   - starts_with("setup_trial")
@@ -42,7 +46,6 @@ reference:
 
 - title: Helper functions
   contents:
-  - setup_cluster
   - update_saved_trials
   - update_saved_calibration
   - find_beta_params
