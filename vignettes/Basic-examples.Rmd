@@ -348,3 +348,24 @@ setup_trial_binom(
 )
 ```
 
+### Example 9: minimum allocation probabilities rescaled whn arms are dropped
+
+In this example, a trial design with four arms and restricted RAR (minimum
+allocation limits) is specified, with additional specification that the minimum
+allocation limits should be rescaled proportionally when arms are dropped
+(rescaling can similarly be applied to fixed allocation probabilities):
+
+```{r}
+setup_trial_binom(
+  arms = c("A", "B", "C", "D"),
+  control = "A",
+  true_ys = c(0.2, 0.2, 0.2, 0.2),
+  
+  min_probs = rep(0.15, 4), # Specify initial minimum allocation probabilities
+  # Rescale allocation probability limits as arms are dropped
+  rescale_probs = "limits", 
+  
+  data_looks = seq(from = 100, to = 1000, by = 100)
+)
+```
+
