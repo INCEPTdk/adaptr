@@ -78,6 +78,10 @@
 #' BS (2023). Effects of duration of follow-up and lag in data collection on the
 #' performance of adaptive clinical trials. Pharm Stat. \doi{10.1002/pst.2342}
 #'
+#' Granholm A, Lange T, Harhay MO, Perner A, Møller MH, Kaas-Hansen BS (2024).
+#' Effects of sceptical priors on the performance of adaptive clinical trials
+#' with binary outcomes. Pharm Stat. \doi{10.1002/pst.2387}
+#'
 #'
 #' @seealso
 #' [setup_cluster()], [setup_trial()], [setup_trial_binom()],
