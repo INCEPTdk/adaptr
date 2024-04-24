@@ -45,6 +45,11 @@ supported by a grant from [Sygeforsikringen
     Pharmaceutical Statistics describing a simulation study (with code)
     using `adaptr` to assess the performance of adaptive clinical trials
     according to different follow-up/data collection lags.
+-   [Effects of sceptical priors on the performance of adaptive clinical
+    trials with binary outcomes](https://doi.org/10.1002/pst.2387) -
+    article in Pharmaceutical Statistics describing a simulation study
+    (with code) using `adaptr` to assess the performance of adaptive
+    clinical trials according to different sceptical priors.
 
 ## Installation
 
@@ -183,13 +188,13 @@ head(extr_res)
 #> 4   4    1300    274 0.2107692  superiority        Arm B        Arm B
 #> 5   5    1400    354 0.2528571  equivalence         <NA>         <NA>
 #> 6   6    1700    373 0.2194118  superiority        Arm B        Arm B
-#>         sq_err sq_err_te
-#> 1 8.118136e-06        NA
-#> 2           NA        NA
-#> 3           NA        NA
-#> 4 3.801078e-04        NA
-#> 5           NA        NA
-#> 6 3.871855e-05        NA
+#>            err       sq_err err_te sq_err_te
+#> 1  0.002849234 8.118136e-06     NA        NA
+#> 2           NA           NA     NA        NA
+#> 3           NA           NA     NA        NA
+#> 4 -0.019496354 3.801078e-04     NA        NA
+#> 5           NA           NA     NA        NA
+#> 6 -0.006222423 3.871855e-05     NA        NA
 
 # Summarise trial results
 # See function documentation for details, including on arm selection in trials
@@ -214,12 +219,12 @@ print(res_sum, digits = 1)
 #> * Futility: 0.0% [not assessed]
 #> * Inconclusive at max sample size: 20.0%
 #> * Selection probabilities: Arm A: 0.0% | Arm B: 40.0% | Arm C: 0.0% | None: 60.0%
-#> * RMSE: 0.01675
-#> * RMSE treatment effect: not estimated
+#> * RMSE / MAE: 0.01675 / 0.01286
+#> * RMSE / MAE treatment effect: not estimated / not estimated
 #> * Ideal design percentage: 100.0%
 #> 
 #> Simulation details:
-#> * Simulation time: 0.448 secs
+#> * Simulation time: 0.609 secs
 #> * Base random seed: 67890
 #> * Credible interval width: 95%
 #> * Number of posterior draws: 5000

@@ -50,10 +50,11 @@ to documentation, argument checking and test coverage.
 
 *   Minor edits and clarification to documentation.
 
-*   Added reference to open access article (with code) of a simulation study
-    using `adaptr` to assess the performance of adaptive clinical trials
+*   Added references to two open access articles (with code) of simulation
+    studies using `adaptr` to assess the performance of adaptive clinical trials
     according to different follow-up/data collection lags
-    (<https://doi.org/10.1002/pst.2342>).
+    (<https://doi.org/10.1002/pst.2342>) and different sceptical priors
+    (<https://doi.org/10.1002/pst.2387>)
     
 *   Minor editing of the function reference page on the package website.
 
