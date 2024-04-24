@@ -25,6 +25,8 @@ to documentation, argument checking and test coverage.
     objects (including embedded trial specifications and results) saved by the
     `calibrate_trial()` using previous versions of the package.
     
+*   Rewritten README to better reflect the typical workflow.
+    
 ### Minor changes and bug fixes:
     
 *   The `setup_trial()` family of functions now stops with an error if less than
