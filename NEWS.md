@@ -25,7 +25,8 @@ to documentation, argument checking and test coverage.
     objects (including embedded trial specifications and results) saved by the
     `calibrate_trial()` using previous versions of the package.
     
-*   Rewritten README to better reflect the typical workflow.
+*   Rewritten README and 'Overview' vignette to better reflect the typical usage
+    and workflow.
     
 ### Minor changes and bug fixes:
     
