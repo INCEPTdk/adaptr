@@ -6,7 +6,7 @@
 #' with a common `control`) across multiple simulated trial results. The
 #' function supplements the [extract_results()], [check_performance()], and
 #' [summary()] functions, and is especially useful for designs with `> 2` arms,
-#' where it provides details that the other functionality mentioned do not.
+#' where it provides details that the other functions mentioned do not.
 #'
 #' @param object `trial_results` object, output from the [run_trials()]
 #'   function.
