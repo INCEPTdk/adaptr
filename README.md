@@ -85,10 +85,7 @@ library(adaptr)
 #> For instructions, type 'help("adaptr")'
 #> or see https://inceptdk.github.io/adaptr/.
 
-# Setup a cluster of parallel workers to be used as default
 setup_cluster(2)
-# Alternatively, a new cluster of workers may be initiated with each relevant
-# function call using `options(mc.cores = <number>)` or the `cores` argument
 ```
 
 ### Specify trial design
@@ -174,7 +171,6 @@ calibrated_binom_trial <- calibrate_trial(
   search_range = c(0.9, 1), # Search range for superiority stopping threshold
   tol = 0.01, # Tolerance range
   dir = -1 # Tolerance range only applies below target
-  # Results may be saved (and reloaded) if the 'path' argument is used
 )
 
 # Print result (to check if calibration is successful)
@@ -200,7 +196,7 @@ calibrated_binom_trial
 #> Calibration/simulation details:
 #> * Total evaluations: 6 (previous + grid + iterations)
 #> * Repetitions: 1000
-#> * Calibration time: 3.13 mins
+#> * Calibration time: 3.42 mins
 #> * Base random seed: 4131
 #> 
 #> See 'help("calibrate_trial")' for details.
@@ -216,6 +212,9 @@ trial specification may be extracted using
 `calibrated_binom_trial$best_trial_spec` and, if printed, will also
 include the calibrated stopping thresholds.
 
+Of note, results may be saved (and reloaded) by using the `path`
+argument, to avoid unnecessary repeated simulations.
+
 ### Summarising results
 
 The results of the simulations using the calibrated trial specification
@@ -228,14 +227,15 @@ used in clinical practice if no arm is ultimately superior.
 
 The `check_performance()` function summarises performance metrics in a
 tidy `data.frame`, with uncertainty measures (bootstrapped confidence
-intervals) if requested:
+intervals) if requested. Here, performance metrics are calculated
+considering the ‘best’ arm (i.e., the one with the highest probability
+of being overall best) selected in simulations not ending with
+superiority:
 
 ``` r
 # Calculate performance metrics with uncertainty measures
 binom_trial_performance <- check_performance(
   calibrated_binom_trial$best_sims,
-  # Select the remaining arm with highest probability of being overall best
-  # in simulations not ending with superiority
   select_strategy = "best",
   uncertainty = TRUE, # Calculate uncertainty measures
   n_boot = 1000, # 1000 bootstrap samples (more typically recommended)
@@ -291,7 +291,7 @@ method providing formatted results:
 ``` r
 binom_trial_summary <- summary(
   calibrated_binom_trial$best_sims,
-  select_strategy = "best" # As above
+  select_strategy = "best"
 )
 
 print(binom_trial_summary)
@@ -318,7 +318,7 @@ print(binom_trial_summary)
 #> * Ideal design percentage: not estimable
 #> 
 #> Simulation details:
-#> * Simulation time: 35.4 secs
+#> * Simulation time: 38.6 secs
 #> * Base random seed: 4131
 #> * Credible interval width: 95%
 #> * Number of posterior draws: 5000
@@ -368,7 +368,7 @@ assessed using `plot_convergence()` function:
 plot_convergence(
   calibrated_binom_trial$best_sims,
   metrics = c("size mean", "prob_superior", "prob_equivalence"),
-  # select_strategy can be specified here, but does not affect these metrics
+  # select_strategy can be specified, but does not affect the chosen metrics
 )
 ```
 
@@ -442,7 +442,6 @@ binom_trial_diff_sims <- run_trials(
   binom_trial_calib_diff,
   n_rep = 1000, # 1000 simulations (more generally recommended)
   base_seed = 1234 # Reproducible results
-  # Results may be saved (and reloaded) if the 'path' argument is used
 )
 
 check_performance(
@@ -491,6 +490,8 @@ check_performance(
 #> 35                mae_te       NA     NA      NA       NA       NA
 #> 36                   idp   98.350  0.276   0.297   97.800   98.900
 ```
+
+Again, simulations may be saved and reloaded using the `path` argument.
 
 Similarly, overall trial statuses for the scenario with differences are
 visualised:

@@ -42,7 +42,6 @@ the `setup_cluster()` function to facilitate parallel computing:
 ```{r}
 library(adaptr)
 
-# Setup a cluster of parallel workers to be used as default
 setup_cluster(2)
 ```
 
@@ -144,7 +143,6 @@ calibrated_binom_trial <- calibrate_trial(
   search_range = c(0.9, 1), # Search range for superiority stopping threshold
   tol = 0.01, # Tolerance range
   dir = -1 # Tolerance range only applies below target
-  # Results may be saved (and reloaded) if the 'path' argument is used
 )
 
 # Print result (to check if calibration is successful)
@@ -162,6 +160,9 @@ i.e., `1 - stopping threshold for superiority`
 may be extracted using `calibrated_binom_trial$best_trial_spec` and, if printed,
 will also include the calibrated stopping thresholds.
 
+Of note, results may be saved and reloaded by using the `path` argument, to
+avoid unnecessary repeated simulations.
+
 
 ### Summarising results
 
@@ -175,14 +176,14 @@ is ultimately superior.
 
 The `check_performance()` function summarises performance metrics in a tidy
 `data.frame`, with uncertainty measures (bootstrapped confidence intervals) if
-requested:
+requested. Here, performance metrics are calculated considering the 'best' arm
+(i.e., the one with the highest probability of being overall best) selected in
+simulations not ending with superiority:
 
 ```{r}
 # Calculate performance metrics with uncertainty measures
 binom_trial_performance <- check_performance(
   calibrated_binom_trial$best_sims,
-  # Select the remaining arm with highest probability of being overall best
-  # in simulations not ending with superiority
   select_strategy = "best",
   uncertainty = TRUE, # Calculate uncertainty measures
   n_boot = 1000, # 1000 bootstrap samples (more typically recommended)
@@ -204,7 +205,7 @@ directly supplied to the `print()` method).
 ```{r}
 binom_trial_summary <- summary(
   calibrated_binom_trial$best_sims,
-  select_strategy = "best" # As above
+  select_strategy = "best"
 )
 
 print(binom_trial_summary, digits = 2)
@@ -216,7 +217,7 @@ Individual simulation results can be extracted in a tidy `data.frame` using
 ```{r}
 binom_trial_results <- extract_results(
   calibrated_binom_trial$best_sims,
-  select_strategy = "best" # As above
+  select_strategy = "best"
 )
 
 nrow(binom_trial_results) # Number of rows/simulations
@@ -248,7 +249,7 @@ assessed using `plot_convergence()` function:
 plot_convergence(
   calibrated_binom_trial$best_sims,
   metrics = c("size mean", "prob_superior", "prob_equivalence"),
-  # select_strategy can be specified here, but does not affect these metrics
+  # select_strategy can be specified, but does not affect the chosen metrics
 )
 ```
 
@@ -330,9 +331,10 @@ binom_trial_diff_sims <- run_trials(
   n_rep = 1000, # 1000 simulations (more generally recommended)
   base_seed = 1234, # Reproducible results
   sparse = FALSE # Return additional results for visualisation
-  # Results may be saved (and reloaded) if the 'path' argument is used
 )
 ```
+
+Again, simulations may be saved and reloaded using the `path` argument.
 
 We then calculate performance metrics as above:
 
