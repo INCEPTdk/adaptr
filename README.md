@@ -81,7 +81,7 @@ computing:
 
 ``` r
 library(adaptr)
-#> Loading 'adaptr' package v1.3.2.9000.
+#> Loading 'adaptr' package v1.4.0.
 #> For instructions, type 'help("adaptr")'
 #> or see https://inceptdk.github.io/adaptr/.
 
@@ -196,7 +196,7 @@ calibrated_binom_trial
 #> Calibration/simulation details:
 #> * Total evaluations: 7 (previous + grid + iterations)
 #> * Repetitions: 1000
-#> * Calibration time: 3.12 mins
+#> * Calibration time: 3.1 mins
 #> * Base random seed: 4131
 #> 
 #> See 'help("calibrate_trial")' for details.
@@ -318,7 +318,7 @@ print(binom_trial_summary)
 #> * Ideal design percentage: not estimable
 #> 
 #> Simulation details:
-#> * Simulation time: 29.4 secs
+#> * Simulation time: 28.9 secs
 #> * Base random seed: 4131
 #> * Credible interval width: 95%
 #> * Number of posterior draws: 5000

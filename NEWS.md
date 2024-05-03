@@ -1,7 +1,7 @@
-# adaptr (development version)
+# adaptr 1.4.0
 
-This is a minor release implementing new functionality, and including updates
-to documentation, argument checking and test coverage.
+This is a minor release implementing new functionality, and including bug fixes,
+updates to documentation, argument checking and test coverage.
 
 ### New features and major changes:
 
