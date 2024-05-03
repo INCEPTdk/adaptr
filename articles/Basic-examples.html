@@ -8,10 +8,10 @@
 <meta name="description" content="adaptr">
 <title>Basic examples • adaptr</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Basic examples">
+<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js" integrity="sha512-7O5pXpc0oCRrxk8RUfDYFgn0nO1t+jLuIOQdOMRp4APB7uZ4vSjspzp5y6YDtDs4VzUSTbWzBFZ/LKJhnyFOKw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Basic examples">
 <meta property="og:description" content="adaptr">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -22,11 +22,11 @@
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light" data-bs-theme="light"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">adaptr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -112,7 +112,7 @@ for generating outcomes and yielding posterior draws, is provided in
 <p>First, the package is loaded:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://inceptdk.github.io/adaptr/">adaptr</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Loading 'adaptr' package v1.3.2.</span></span>
+<span><span class="co">#&gt; Loading 'adaptr' package v1.4.0.</span></span>
 <span><span class="co">#&gt; For instructions, type 'help("adaptr")'</span></span>
 <span><span class="co">#&gt; or see https://inceptdk.github.io/adaptr/.</span></span></code></pre></div>
 <div class="section level2">
@@ -366,7 +366,9 @@ arms</li>
 <span>  <span class="co"># Minimum probabilities of 20% for non-control arms, must be NA for the</span></span>
 <span>  <span class="co"># control arm with fixed allocation probability</span></span>
 <span>  <span class="co"># Limits are ignored for arms that become subsequent controls</span></span>
+<span>  <span class="co"># Limits are rescaled (i.e., increased proportionally) when arms are dropped</span></span>
 <span>  min_probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">0.2</span>, <span class="fl">0.2</span>, <span class="fl">0.2</span><span class="op">)</span>,</span>
+<span>  rescale_probs <span class="op">=</span> <span class="st">"limits"</span>,</span>
 <span>  </span>
 <span>  <span class="co"># Constant softening of 0.5 (= square-root transformation)</span></span>
 <span>  soften_power <span class="op">=</span> <span class="fl">0.5</span></span>
@@ -378,7 +380,7 @@ arms</li>
 <span><span class="co">#&gt; * Best arm: D</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Arms, true outcomes, starting allocation probabilities </span></span>
-<span><span class="co">#&gt; and allocation probability limits:</span></span>
+<span><span class="co">#&gt; and allocation probability limits (min/max_probs rescaled):</span></span>
 <span><span class="co">#&gt;  arms true_ys start_probs fixed_probs min_probs max_probs</span></span>
 <span><span class="co">#&gt;     A    0.20       0.366       0.366        NA        NA</span></span>
 <span><span class="co">#&gt;     B    0.22       0.211          NA       0.2        NA</span></span>
@@ -621,6 +623,52 @@ stopped and arms will not be dropped due to these rules).</p>
 <span><span class="co">#&gt; No futility threshold</span></span>
 <span><span class="co">#&gt; Soften power for all analyses: 1 (no softening)</span></span></code></pre></div>
 </div>
+<div class="section level3">
+<h3 id="example-9-minimum-allocation-probabilities-rescaled-when-arms-are-dropped">Example 9: minimum allocation probabilities rescaled when arms are
+dropped<a class="anchor" aria-label="anchor" href="#example-9-minimum-allocation-probabilities-rescaled-when-arms-are-dropped"></a>
+</h3>
+<p>In this example, a trial design with four arms and restricted RAR
+(minimum allocation limits) is specified, with additional specification
+that the minimum allocation limits should be rescaled proportionally
+when arms are dropped (rescaling can similarly be applied to fixed
+allocation probabilities):</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/setup_trial_binom.html">setup_trial_binom</a></span><span class="op">(</span></span>
+<span>  arms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>, <span class="st">"D"</span><span class="op">)</span>,</span>
+<span>  control <span class="op">=</span> <span class="st">"A"</span>,</span>
+<span>  true_ys <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.2</span>, <span class="fl">0.2</span>, <span class="fl">0.2</span><span class="op">)</span>,</span>
+<span>  </span>
+<span>  min_probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.15</span>, <span class="fl">4</span><span class="op">)</span>, <span class="co"># Specify initial minimum allocation probabilities</span></span>
+<span>  <span class="co"># Rescale allocation probability limits as arms are dropped</span></span>
+<span>  rescale_probs <span class="op">=</span> <span class="st">"limits"</span>, </span>
+<span>  </span>
+<span>  data_looks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">100</span>, to <span class="op">=</span> <span class="fl">1000</span>, by <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Trial specification: generic binomially distributed outcome trial</span></span>
+<span><span class="co">#&gt; * Undesirable outcome</span></span>
+<span><span class="co">#&gt; * Common control arm: A </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; * Best arms: A and B and C and D</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Arms, true outcomes, starting allocation probabilities </span></span>
+<span><span class="co">#&gt; and allocation probability limits (min/max_probs rescaled):</span></span>
+<span><span class="co">#&gt;  arms true_ys start_probs fixed_probs min_probs max_probs</span></span>
+<span><span class="co">#&gt;     A     0.2        0.25          NA      0.15        NA</span></span>
+<span><span class="co">#&gt;     B     0.2        0.25          NA      0.15        NA</span></span>
+<span><span class="co">#&gt;     C     0.2        0.25          NA      0.15        NA</span></span>
+<span><span class="co">#&gt;     D     0.2        0.25          NA      0.15        NA</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Maximum sample size: 1000 </span></span>
+<span><span class="co">#&gt; Maximum number of data looks: 10</span></span>
+<span><span class="co">#&gt; Planned data looks after:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 patients have reached follow-up</span></span>
+<span><span class="co">#&gt; Number of patients randomised at each look:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Superiority threshold: 0.99 (all analyses)</span></span>
+<span><span class="co">#&gt; Inferiority threshold: 0.01 (all analyses)</span></span>
+<span><span class="co">#&gt; No equivalence threshold</span></span>
+<span><span class="co">#&gt; No futility threshold</span></span>
+<span><span class="co">#&gt; Soften power for all analyses: 1 (no softening)</span></span></code></pre></div>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
@@ -629,13 +677,11 @@ stopped and arms will not be dropped due to these rules).</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p>
-<p>Developed by Anders Granholm, Benjamin Skov Kaas-Hansen.</p>
+  <p>Developed by Anders Granholm, Benjamin Skov Kaas-Hansen.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
 </div>
 
     </footer>

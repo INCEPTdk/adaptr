@@ -9,7 +9,7 @@ of trial designs for common outcome types. For additional trial specification
 examples, see the the Basic examples vignette
 (vignette("Basic-examples", package = "adaptr")) and the
 Advanced example vignette
-(vignette("Advanced-example", package = "adaptr")).'><title>Setup a generic trial specification — setup_trial • adaptr</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Setup a generic trial specification — setup_trial"><meta property="og:description" content='Specifies the design of an adaptive trial with any type of outcome and
+(vignette("Advanced-example", package = "adaptr")).'><title>Setup a generic trial specification — setup_trial • adaptr</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js" integrity="sha512-7O5pXpc0oCRrxk8RUfDYFgn0nO1t+jLuIOQdOMRp4APB7uZ4vSjspzp5y6YDtDs4VzUSTbWzBFZ/LKJhnyFOKw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Setup a generic trial specification — setup_trial"><meta property="og:description" content='Specifies the design of an adaptive trial with any type of outcome and
 validates all inputs. Use calibrate_trial() to calibrate the trial
 specification to obtain a specific value for a certain performance metric
 (e.g., the Bayesian type 1 error rate). Use run_trial() or run_trials()
@@ -26,11 +26,11 @@ Advanced example vignette
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light" data-bs-theme="light"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">adaptr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -98,6 +98,7 @@ examples, see the the <strong>Basic examples</strong> vignette
 <span>  fixed_probs <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  min_probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">arms</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  max_probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">arms</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  rescale_probs <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  data_looks <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  max_n <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  look_after_every <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -176,6 +177,31 @@ Must be <code>NA</code> (default for all arms) if no threshold is wanted and for
 using fixed allocation probabilities.</p></dd>
 
 
+<dt>rescale_probs</dt>
+<dd><p><code>NULL</code> (default) or one of either <code>"fixed"</code>, <code>"limits"</code>,
+or <code>"both"</code>. Rescales <code>fixed_probs</code> (if <code>"fixed"</code> or <code>"both"</code>) and
+<code>min_probs/max_probs</code> (if <code>"limits"</code> or <code>"both"</code>) after arm dropping in
+trial specifications with <code>&gt;2 arms</code> using a <code>rescale_factor</code> defined as
+<code>initial number of arms/number of active arms</code>. <code>"fixed_probs</code> and
+<code>min_probs</code> are rescaled as <code>initial value * rescale factor</code>, except for
+<code>fixed_probs</code> controlled by the <code>control_prob_fixed</code> argument, which are
+never rescaled. <code>max_probs</code> are rescaled as
+<code>1 - ( (1 - initial value) * rescale_factor)</code>.<br>
+Must be <code>NULL</code> if there are only <code>2 arms</code> or if <code>control_prob_fixed</code> is
+<code>"sqrt-based fixed"</code>. If not <code>NULL</code>, one or more valid non-<code>NA</code> values must
+be specified for either <code>min_probs/max_probs</code> or <code>fixed_probs</code> (not
+counting a fixed value for the original <code>control</code> if <code>control_prob_fixed</code>
+is <code>"sqrt-based"/"sqrt-based start"/"sqrt-based fixed"</code>).<br><strong>Note:</strong> using this argument and specific combinations of values in
+the other arguments may lead to invalid combined (total) allocation
+probabilities after arm dropping, in which case all probabilities will
+ultimately be rescaled to sum to <code>1</code>. It is the responsibility of the user
+to ensure that rescaling fixed allocation probabilities and minimum/maximum
+allocation probability limits will not lead to invalid or unexpected
+allocation probabilities after arm dropping.<br>
+Finally, any initial values that are overwritten by the
+<code>control_prob_fixed</code> argument after arm dropping will not be rescaled.</p></dd>
+
+
 <dt>data_looks</dt>
 <dd><p>vector of increasing integers, specifies when to conduct
 adaptive analyses (= the total number of patients with available outcome
@@ -232,10 +258,11 @@ behaviour with respect to these comparisons.</p></dd>
 be set <code>NULL</code> (the default), in which case the control arm allocation
 probability will not be fixed if control arms change (the allocation
 probability for the first control arm may still be fixed using
-<code>fixed_probs</code>). If not <code>NULL</code>, a vector of probabilities of either length
-<code>1</code> or <code>number of arms - 1</code> can be provided, or one of the special
-arguments <code>"sqrt-based"</code>, <code>"sqrt-based start"</code>, <code>"sqrt-based fixed"</code> or
-<code>"match"</code>. See <code>setup_trial()</code> <strong>Details</strong> for details on how this affects
+<code>fixed_probs</code>, but will not be 'reused' for the new control arm).<br>
+If not <code>NULL</code>, a vector of probabilities of either length <code>1</code> or
+<code>number of arms - 1</code> can be provided, or one of the special arguments
+<code>"sqrt-based"</code>, <code>"sqrt-based start"</code>, <code>"sqrt-based fixed"</code> or <code>"match"</code>.<br>
+See <code>setup_trial()</code> <strong>Details</strong> for details on how this affects
 trial behaviour.</p></dd>
 
 
@@ -467,8 +494,8 @@ custom functions</strong></p>
 user-specified functions (or uses objects defined by the user outside these
 functions or the <code>setup_trial()</code>-call) or functions from external packages
 and simulations are conducted on multiple cores, these objects or functions
-must be exported or prefixed with their namespaces, respectively, as
-described in <code><a href="setup_cluster.html">setup_cluster()</a></code> and <code><a href="run_trials.html">run_trials()</a></code>.</p>
+must be prefixed with their namespaces (i.e., <code>package::function()</code>) or
+exported, as described in <code><a href="setup_cluster.html">setup_cluster()</a></code> and <code><a href="run_trials.html">run_trials()</a></code>.</p>
 <p><strong>More information on arguments</strong></p><ul><li><p><code>control</code>: if one or more treatment arms are superior to the control arm
 (i.e., passes the superiority threshold as defined above), this arm will
 become the new control (if multiple arms are superior, the one with the
@@ -496,14 +523,17 @@ scaled to sum to 1, which will generally increase power for comparisons
 against the common <code>control</code>, as discussed in, e.g., <em>Park et al, 2020</em>
 <a href="https://doi.org/10.1016/j.jclinepi.2020.04.025" class="external-link">doi:10.1016/j.jclinepi.2020.04.025</a>
 .<br>
-If <code>"sqrt-based"</code>, square-root-transformation-based allocation probabilities
-will also be used for new controls when arms are dropped. If
-<code>"sqrt-based start"</code>, the control arm will be fixed to this allocation
-probability at all times (also after arm dropping, with rescaling as
-necessary, as specified above). If <code>"sqrt-based fixed"</code> is chosen,
-square-root-transformation-based allocation probabilities will be used and
-all allocation probabilities will be fixed throughout the trial (with
-rescaling when arms are dropped).<br>
+If <code>"sqrt-based"</code> or <code>"sqrt-based fixed"</code>, square-root-transformation-based
+allocation probabilities will be used initially and also for new controls
+when arms are dropped (with probabilities always calculated based on the
+number of active non-control arms). If <code>"sqrt-based"</code>, response-adaptive
+randomisation will be used for non-control arms, while the non-control arms
+will use fixed, square-root based allocation probabilities at all times (with
+probabilities always calculated based on the number of active non-control
+arms). If <code>"sqrt-based start"</code>, the control arm allocation probability will
+be fixed to a square-root based probability at all times calculated according
+to the initial number of arms (with this probability also being used for new
+control(s) when the original control is dropped).<br>
 If <code>"match"</code> is specified, the control group allocation probability will
 always be <em>matched</em> to be similar to the highest non-control arm allocation
 probability.</p></li>
@@ -663,11 +693,11 @@ See the <strong>Basic examples</strong> vignette
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Anders Granholm, Benjamin Skov Kaas-Hansen.</p>
+  <p>Developed by Anders Granholm, Benjamin Skov Kaas-Hansen.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
 </div>
 
     </footer></div>

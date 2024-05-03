@@ -4,7 +4,7 @@ simulation results from the run_trials() function, with bootstrapped
 uncertainty measures if requested. Uses extract_results(), which may be
 used directly to extract key trial results without summarising. This function
 is also used by summary() to calculate the performance metrics presented by
-that function."><title>Check performance metrics for trial simulations — check_performance • adaptr</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Check performance metrics for trial simulations — check_performance"><meta property="og:description" content="Calculates performance metrics for a trial specification based on
+that function."><title>Check performance metrics for trial simulations — check_performance • adaptr</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js" integrity="sha512-7O5pXpc0oCRrxk8RUfDYFgn0nO1t+jLuIOQdOMRp4APB7uZ4vSjspzp5y6YDtDs4VzUSTbWzBFZ/LKJhnyFOKw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Check performance metrics for trial simulations — check_performance"><meta property="og:description" content="Calculates performance metrics for a trial specification based on
 simulation results from the run_trials() function, with bootstrapped
 uncertainty measures if requested. Uses extract_results(), which may be
 used directly to extract key trial results without summarising. This function
@@ -16,11 +16,11 @@ that function."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/l
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light" data-bs-theme="light"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">adaptr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.4.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -153,21 +153,21 @@ available in the trial.</p></dd>
 <dd><p>character string, treatment-effect comparator. Can be either
 <code>NULL</code> (the default) in which case the <strong>first</strong> <code>control</code> arm is used for
 trial designs with a common control arm, or a string naming a single trial
-<code>arm</code>. Will be used when calculating <code>sq_err_te</code> (the squared error of the
-treatment effect comparing the selected arm to the comparator arm, as
-described below).</p></dd>
+<code>arm</code>. Will be used when calculating <code>err_te</code> and <code>sq_err_te</code> (the error
+and the squared error of the treatment effect comparing the selected arm to
+the comparator arm, as described below).</p></dd>
 
 
 <dt>raw_ests</dt>
 <dd><p>single logical. If <code>FALSE</code> (default), the
 posterior estimates (<code>post_ests</code> or <code>post_ests_all</code>, see <code><a href="setup_trial.html">setup_trial()</a></code>
-and <code><a href="run_trial.html">run_trial()</a></code>) will be used to calculate <code>sq_err</code> (the squared error of
-the estimated compared to the specified effect in the selected arm) and
-<code>sq_err_te</code> (the squared error of the treatment effect comparing the
-selected arm to the comparator arm, as described for <code>te_comp</code> and below).
-If <code>TRUE</code>, the raw estimates (<code>raw_ests</code> or <code>raw_ests_all</code>, see
-<code><a href="setup_trial.html">setup_trial()</a></code> and <code><a href="run_trial.html">run_trial()</a></code>) will be used instead of the posterior
-estimates.</p></dd>
+and <code><a href="run_trial.html">run_trial()</a></code>) will be used to calculate <code>err</code> and <code>sq_err</code> (the error
+and the squared error of the estimated compared to the specified effect in
+the selected arm) and <code>err_te</code> and <code>sq_err_te</code> (the error and the squared
+error of the treatment effect comparing the selected arm to the comparator
+arm, as described for <code>te_comp</code> and below). If <code>TRUE</code>, the raw estimates
+(<code>raw_ests</code> or <code>raw_ests_all</code>, see <code><a href="setup_trial.html">setup_trial()</a></code> and <code><a href="run_trial.html">run_trial()</a></code>) will
+be used instead of the posterior estimates.</p></dd>
 
 
 <dt>final_ests</dt>
@@ -253,9 +253,9 @@ SDs), <code>"err_mad"</code> (bootstrapped MAD-SDs, as described in <code><a hre
 
 <p>and <code><a href="https://rdrr.io/r/stats/mad.html" class="external-link">stats::mad()</a></code>), <code>"lo_ci"</code>, and <code>"hi_ci"</code>, the latter two corresponding
 to the lower/upper limits of the percentile-based bootstrapped confidence
-intervals. Bootstrap estimates are <strong>not</strong> calculated for the mininum
+intervals. Bootstrap estimates are <strong>not</strong> calculated for the minimum
 (<code>_p0</code>) and maximum values (<code>_p100</code>) of <code>size</code>, <code>sum_ys</code>, and <code>ratio_ys</code>,
-as non-parametric bootstrapping for mininum/maximum values is not
+as non-parametric bootstrapping for minimum/maximum values is not
 sensible - bootstrap estimates for these values will be <code>NA</code>.<br></p>
 
 
@@ -293,7 +293,10 @@ results are <code>restricted</code>.</p></li>
 selection, according to the specified selection strategy. Contains one
 element per <code>arm</code>, named <code>prob_select_arm_&lt;arm name&gt;</code> and
 <code>prob_select_none</code> for the probability of selecting no arm.</p></li>
-<li><p><code>rmse</code>, <code>rmse_te</code>: the root mean squared error of the estimates for
+<li><p><code>rmse</code>, <code>rmse_te</code>: the root mean squared errors of the estimates for
+the selected arm and for the treatment effect, as described in
+<code><a href="extract_results.html">extract_results()</a></code>.</p></li>
+<li><p><code>mae</code>, <code>mae_te</code>: the median absolute errors of the estimates for
 the selected arm and for the treatment effect, as described in
 <code><a href="extract_results.html">extract_results()</a></code>.</p></li>
 <li><p><code>idp</code>: the ideal design percentage (IDP; 0-100%), see <strong>Details</strong>.</p></li>
@@ -370,7 +373,9 @@ simulations with no selected arm). The IDP is then calculated as:</p><ul><li><p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 32  prob_select_none    0.900   0.102   0.148    0.700    1.000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 33              rmse    0.023   0.000   0.000    0.023    0.023</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 34           rmse_te    0.182   0.000   0.000    0.182    0.182</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 35               idp  100.000   0.000   0.000  100.000  100.000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35               mae    0.023   0.000   0.000    0.023    0.023</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36            mae_te    0.182   0.000   0.000    0.182    0.182</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37               idp  100.000   0.000   0.000  100.000  100.000</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
@@ -379,11 +384,11 @@ simulations with no selected arm). The IDP is then calculated as:</p><ul><li><p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Anders Granholm, Benjamin Skov Kaas-Hansen.</p>
+  <p>Developed by Anders Granholm, Benjamin Skov Kaas-Hansen.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
 </div>
 
     </footer></div>
