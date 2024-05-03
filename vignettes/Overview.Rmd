@@ -71,7 +71,7 @@ follow-up and data collection/verification)
 (default thresholds of < 1% and > 99%, respectively, apply)
 - Equivalence stopping rule defined as > 90% probability (`equivalence_prob`) of
 between-arm differences of all remaining arms being < 5 %-points
-- Response-adaptive randomisation with minimum allocation probabilities of 15%
+- Response-adaptive randomisation with minimum allocation probabilities of 20%
 and softening of allocation ratios by a constant factor (`soften_power`)
 
 See `?setup_trial()` for details on all the arguments or
@@ -87,7 +87,7 @@ Below, the trial specification is setup and a human-readable overview printed:
 binom_trial <- setup_trial_binom(
   arms = c("Arm A", "Arm B", "Arm C"),
   true_ys = c(0.25, 0.25, 0.25),
-  min_probs = rep(0.15, 3),
+  min_probs = rep(0.20, 3),
   data_looks = seq(from = 300, to = 2000, by = 100),
   randomised_at_looks = c(seq(from = 400, to = 2000, by = 100), 2000),
   equivalence_prob = 0.9,
@@ -112,7 +112,7 @@ In the example trial specification, there are no true between-arm differences,
 and stopping rules for inferiority and superiority are not explicitly defined.
 This is intentional, as these stopping rules will be calibrated to obtain a
 desired probability of stopping for superiority in the scenario with no
-between-arm differences, corresponding to the Bayesian type 1 error rate. Trial
+between-arm differences (corresponding to the Bayesian type 1 error rate). Trial
 specifications do not necessarily have to be calibrated. Instead,simulations can
 be run directly using the `run_trials()` function covered below (or
 `run_trial()` for a single simulation). This can be followed by assessment of
@@ -160,7 +160,7 @@ i.e., `1 - stopping threshold for superiority`
 may be extracted using `calibrated_binom_trial$best_trial_spec` and, if printed,
 will also include the calibrated stopping thresholds.
 
-Of note, results may be saved and reloaded by using the `path` argument, to
+Calibration results may be saved and reloaded by using the `path` argument, to
 avoid unnecessary repeated simulations.
 
 
@@ -242,7 +242,7 @@ check_remaining_arms(
 Several visualisation functions are included (all are optional, and all require
 the `ggplot2` package installed).
 
-Convergence and stability of performance metrics may be visually
+Convergence and stability of one or more performance metrics may be visually
 assessed using `plot_convergence()` function:
 
 ```{r}
@@ -296,18 +296,18 @@ all other functions work with sparse results). This will be illustrated below.
 
 The calibrated stopping thresholds (calibrated in a scenario with no between-arm
 differences) may be used to run simulations with the same overall trial
-specification, but according to a different scenario (i.e., between-arm
+specification, but according to a different scenario (i.e., with between-arm
 differences present) to assess performance metrics (including the Bayesian
-analogues of power and type 2 error rates).
+analogue of power).
 
-First, a new trial specification is setup using the same settings as before and
-the calibrated stopping thresholds:
+First, a new trial specification is setup using the same settings as before,
+except for between-arm differences and the calibrated stopping thresholds:
 
 ```{r}
 binom_trial_calib_diff <- setup_trial_binom(
   arms = c("Arm A", "Arm B", "Arm C"),
   true_ys = c(0.25, 0.20, 0.30), # Different outcomes in the arms
-  min_probs = rep(0.15, 3),
+  min_probs = rep(0.20, 3),
   data_looks = seq(from = 300, to = 2000, by = 100),
   randomised_at_looks = c(seq(from = 400, to = 2000, by = 100), 2000),
   # Stopping rules for inferiority/superiority explicitly defined
@@ -323,7 +323,7 @@ binom_trial_calib_diff <- setup_trial_binom(
 Simulations using the trial specification with calibrated stopping thresholds
 and differences present can then be conducted using the `run_trials()` function.
 Here, we specify that non-sparse results will be returned (to illustrate the
-`plot_history()` function below).
+`plot_history()` function).
 
 ```{r}
 binom_trial_diff_sims <- run_trials(

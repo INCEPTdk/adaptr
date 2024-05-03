@@ -101,7 +101,8 @@ binom_trial <- setup_trial_binom(
   arms = c("Arm A", "Arm B", "Arm C"),
   # Scenario with identical outcomes in all arms
   true_ys = c(0.25, 0.25, 0.25),
-  min_probs = rep(0.15, 3), # Minimum allocation of 15% in all arms
+  # Response-adaptive randomisation with minimum 20% allocation in all arms
+  min_probs = rep(0.20, 3),
   # Number of patients with data available at each analysis
   data_looks = seq(from = 300, to = 2000, by = 100),
   # Number of patients randomised at each analysis (higher than the numbers
@@ -110,8 +111,7 @@ binom_trial <- setup_trial_binom(
   # Stopping rules for inferiority/superiority not explicitly defined
   # Stop for equivalence at > 90% probability of differences < 5 %-points
   equivalence_prob = 0.9,
-  equivalence_diff = 0.05,
-  soften_power = 0.5 # Soften allocation ratios
+  equivalence_diff = 0.05
 )
 
 # Print trial specification
@@ -124,7 +124,7 @@ In the example trial specification, there are no true between-arm differences,
 and stopping rules for inferiority and superiority are not explicitly defined.
 This is intentional, as these stopping rules will be calibrated to obtain a
 desired probability of stopping for superiority in the scenario with no
-between-arm differences, corresponding to the Bayesian type 1 error rate. Trial
+between-arm differences (corresponding to the Bayesian type 1 error rate). Trial
 specifications do not necessarily have to be calibrated, and simulations can be
 run directly using the `run_trials()` function covered below (or `run_trial()`
 for a single simulation).
@@ -160,7 +160,7 @@ inferiority is symmetrical, i.e., `1 - stopping threshold for superiority`
 may be extracted using `calibrated_binom_trial$best_trial_spec` and, if printed,
 will also include the calibrated stopping thresholds.
 
-Of note, results may be saved (and reloaded) by using the `path` argument, to
+Calibration results may be saved (and reloaded) by using the `path` argument, to
 avoid unnecessary repeated simulations.
 
 ### Summarising results
@@ -207,25 +207,18 @@ print(binom_trial_summary)
 ```
 
 Individual simulation results may be extracted in a tidy `data.frame` using
-`extract_results()`. Finally, the probabilities of different remaining arms and
-their statuses (with uncertainty) at the last adaptive analysis can be
-summarised using the `check_remaining_arms()` function (dropped arms will
-be shown with an empty text string):
-`
+`extract_results()`.
 
-```{r}
-check_remaining_arms(
-  calibrated_binom_trial$best_sims,
-  ci_width = 0.95 # 95% confidence intervals (default)
-)
-```
+Finally, the probabilities of different remaining arms and
+their statuses (with uncertainty) at the last adaptive analysis can be
+summarised using the `check_remaining_arms()` function.
 
 ### Visualising results
 
 Several visualisation functions are included (all are optional, and all require
 the `ggplot2` package installed).
 
-Convergence and stability of performance metrics may be visually
+Convergence and stability of one or more performance metrics may be visually
 assessed using `plot_convergence()` function:
 
 ```{r}
@@ -250,6 +243,7 @@ The status probabilities for the overall trial (or for specific arms) according
 to trial progress can be visualised using the `plot_status()` function:
 
 ```{r}
+# Overall trial status probabilities
 plot_status(
   calibrated_binom_trial$best_sims,
   x_value = "total n" # Total number of randomised patients at X-axis
@@ -265,18 +259,18 @@ results (the `sparse` argument must be `FALSE` in `calibrate_trials()`,
 
 The calibrated stopping thresholds (calibrated in a scenario with no between-arm
 differences) may be used to run simulations with the same overall trial
-specification, but according to a different scenario (i.e., between-arm
+specification, but according to a different scenario (i.e., with between-arm
 differences present) to assess performance metrics (including the Bayesian
-analogues of power and type 2 error rates).
+analogue of power).
 
-First, a new trial specification is setup using the same settings as before and
-the calibrated stopping thresholds:
+First, a new trial specification is setup using the same settings as before,
+except for between-arm differences and the calibrated stopping thresholds:
 
 ```{r}
 binom_trial_calib_diff <- setup_trial_binom(
   arms = c("Arm A", "Arm B", "Arm C"),
   true_ys = c(0.25, 0.20, 0.30), # Different outcomes in the arms
-  min_probs = rep(0.15, 3),
+  min_probs = rep(0.20, 3),
   data_looks = seq(from = 300, to = 2000, by = 100),
   randomised_at_looks = c(seq(from = 400, to = 2000, by = 100), 2000),
   # Stopping rules for inferiority/superiority explicitly defined
@@ -284,8 +278,7 @@ binom_trial_calib_diff <- setup_trial_binom(
   inferiority = 1 - calibrated_binom_trial$best_x,
   superiority = calibrated_binom_trial$best_x,
   equivalence_prob = 0.9,
-  equivalence_diff = 0.05,
-  soften_power = 0.5
+  equivalence_diff = 0.05
 )
 ```
 
@@ -312,7 +305,7 @@ check_performance(
 
 Again, simulations may be saved and reloaded using the `path` argument.
 
-Similarly, overall trial statuses for the scenario with differences are
+Similarly, overall trial statuses for the scenario with differences can be
 visualised:
 
 ```{r}

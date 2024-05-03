@@ -102,7 +102,8 @@ binom_trial <- setup_trial_binom(
   arms = c("Arm A", "Arm B", "Arm C"),
   # Scenario with identical outcomes in all arms
   true_ys = c(0.25, 0.25, 0.25),
-  min_probs = rep(0.15, 3), # Minimum allocation of 15% in all arms
+  # Response-adaptive randomisation with minimum 20% allocation in all arms
+  min_probs = rep(0.20, 3),
   # Number of patients with data available at each analysis
   data_looks = seq(from = 300, to = 2000, by = 100),
   # Number of patients randomised at each analysis (higher than the numbers
@@ -111,8 +112,7 @@ binom_trial <- setup_trial_binom(
   # Stopping rules for inferiority/superiority not explicitly defined
   # Stop for equivalence at > 90% probability of differences < 5 %-points
   equivalence_prob = 0.9,
-  equivalence_diff = 0.05,
-  soften_power = 0.5 # Soften allocation ratios
+  equivalence_diff = 0.05
 )
 
 # Print trial specification
@@ -125,9 +125,9 @@ print(binom_trial, prob_digits = 3)
 #> Arms, true outcomes, starting allocation probabilities 
 #> and allocation probability limits:
 #>   arms true_ys start_probs fixed_probs min_probs max_probs
-#>  Arm A    0.25       0.333          NA      0.15        NA
-#>  Arm B    0.25       0.333          NA      0.15        NA
-#>  Arm C    0.25       0.333          NA      0.15        NA
+#>  Arm A    0.25       0.333          NA       0.2        NA
+#>  Arm B    0.25       0.333          NA       0.2        NA
+#>  Arm C    0.25       0.333          NA       0.2        NA
 #> 
 #> Maximum sample size: 2000 
 #> Maximum number of data looks: 18
@@ -139,7 +139,7 @@ print(binom_trial, prob_digits = 3)
 #> Equivalence threshold: 0.9 (all analyses) (no common control)
 #> Absolute equivalence difference: 0.05
 #> No futility threshold (not relevant - no common control)
-#> Soften power for all analyses: 0.5
+#> Soften power for all analyses: 1 (no softening)
 ```
 
 ### Calibration
@@ -148,9 +148,9 @@ In the example trial specification, there are no true between-arm
 differences, and stopping rules for inferiority and superiority are not
 explicitly defined. This is intentional, as these stopping rules will be
 calibrated to obtain a desired probability of stopping for superiority
-in the scenario with no between-arm differences, corresponding to the
-Bayesian type 1 error rate. Trial specifications do not necessarily have
-to be calibrated, and simulations can be run directly using the
+in the scenario with no between-arm differences (corresponding to the
+Bayesian type 1 error rate). Trial specifications do not necessarily
+have to be calibrated, and simulations can be run directly using the
 `run_trials()` function covered below (or `run_trial()` for a single
 simulation).
 
@@ -177,8 +177,8 @@ calibrated_binom_trial <- calibrate_trial(
 calibrated_binom_trial
 #> Trial calibration:
 #> * Result: calibration successful
-#> * Best x: 0.9860036
-#> * Best y: 0.049
+#> * Best x: 0.9814318
+#> * Best y: 0.048
 #> 
 #> Central settings:
 #> * Target: 0.05
@@ -194,25 +194,25 @@ calibrated_binom_trial
 #> * Narrowing: yes
 #> 
 #> Calibration/simulation details:
-#> * Total evaluations: 6 (previous + grid + iterations)
+#> * Total evaluations: 7 (previous + grid + iterations)
 #> * Repetitions: 1000
-#> * Calibration time: 3.42 mins
+#> * Calibration time: 3.12 mins
 #> * Base random seed: 4131
 #> 
 #> See 'help("calibrate_trial")' for details.
 ```
 
 The calibration is successful - the calibrated, constant stopping
-threshold for superiority is printed with the results (0.9860036) and
+threshold for superiority is printed with the results (0.9814318) and
 can be extracted using `calibrated_binom_trial$best_x`. Using the
 default calibration functionality, the calibrated, constant stopping
 threshold for inferiority is symmetrical, i.e.,
-`1 - stopping threshold for superiority` (0.0139964). The calibrated
+`1 - stopping threshold for superiority` (0.0185682). The calibrated
 trial specification may be extracted using
 `calibrated_binom_trial$best_trial_spec` and, if printed, will also
 include the calibrated stopping thresholds.
 
-Of note, results may be saved (and reloaded) by using the `path`
+Calibration results may be saved (and reloaded) by using the `path`
 argument, to avoid unnecessary repeated simulations.
 
 ### Summarising results
@@ -247,35 +247,35 @@ binom_trial_performance <- check_performance(
 print(binom_trial_performance, digits = 2)
 #>                   metric     est err_sd err_mad   lo_ci   hi_ci
 #> 1           n_summarised 1000.00   0.00    0.00 1000.00 1000.00
-#> 2              size_mean 1782.50  11.04   11.27 1760.79 1804.40
-#> 3                size_sd  360.52   9.70   10.03  341.56  379.87
+#> 2              size_mean 1749.60  11.36   10.97 1727.20 1772.10
+#> 3                size_sd  373.74   9.64    9.74  355.15  392.58
 #> 4            size_median 2000.00   0.00    0.00 2000.00 2000.00
-#> 5               size_p25 1600.00  72.16  148.26 1500.00 1700.00
+#> 5               size_p25 1400.00  52.43    0.00 1400.00 1500.00
 #> 6               size_p75 2000.00   0.00    0.00 2000.00 2000.00
 #> 7                size_p0  400.00     NA      NA      NA      NA
 #> 8              size_p100 2000.00     NA      NA      NA      NA
-#> 9            sum_ys_mean  446.48   2.82    2.85  441.04  451.90
-#> 10             sum_ys_sd   92.78   2.45    2.50   88.02   97.50
-#> 11         sum_ys_median  489.00   1.61    1.48  486.00  492.00
-#> 12            sum_ys_p25  391.50  15.62   15.94  367.75  429.76
-#> 13            sum_ys_p75  508.00   1.06    1.48  506.00  510.00
+#> 9            sum_ys_mean  438.69   2.95    2.85  432.74  444.66
+#> 10             sum_ys_sd   96.20   2.42    2.37   91.28  100.79
+#> 11         sum_ys_median  486.00   1.98    2.97  483.00  490.00
+#> 12            sum_ys_p25  364.75  10.95    9.64  352.00  395.00
+#> 13            sum_ys_p75  506.00   1.15    1.48  504.00  508.00
 #> 14             sum_ys_p0   88.00     NA      NA      NA      NA
-#> 15           sum_ys_p100  577.00     NA      NA      NA      NA
+#> 15           sum_ys_p100  565.00     NA      NA      NA      NA
 #> 16         ratio_ys_mean    0.25   0.00    0.00    0.25    0.25
 #> 17           ratio_ys_sd    0.01   0.00    0.00    0.01    0.01
 #> 18       ratio_ys_median    0.25   0.00    0.00    0.25    0.25
 #> 19          ratio_ys_p25    0.24   0.00    0.00    0.24    0.24
 #> 20          ratio_ys_p75    0.26   0.00    0.00    0.26    0.26
-#> 21           ratio_ys_p0    0.21     NA      NA      NA      NA
+#> 21           ratio_ys_p0    0.20     NA      NA      NA      NA
 #> 22         ratio_ys_p100    0.30     NA      NA      NA      NA
-#> 23       prob_conclusive    0.38   0.01    0.01    0.35    0.40
+#> 23       prob_conclusive    0.43   0.02    0.01    0.40    0.46
 #> 24         prob_superior    0.05   0.01    0.01    0.04    0.06
-#> 25      prob_equivalence    0.33   0.01    0.01    0.30    0.35
+#> 25      prob_equivalence    0.38   0.02    0.01    0.35    0.41
 #> 26         prob_futility    0.00   0.00    0.00    0.00    0.00
-#> 27              prob_max    0.62   0.01    0.01    0.60    0.65
-#> 28 prob_select_arm_Arm A    0.34   0.02    0.01    0.31    0.36
-#> 29 prob_select_arm_Arm B    0.33   0.01    0.01    0.30    0.36
-#> 30 prob_select_arm_Arm C    0.34   0.02    0.01    0.30    0.37
+#> 27              prob_max    0.57   0.02    0.01    0.54    0.60
+#> 28 prob_select_arm_Arm A    0.32   0.02    0.01    0.29    0.35
+#> 29 prob_select_arm_Arm B    0.31   0.01    0.01    0.28    0.34
+#> 30 prob_select_arm_Arm C    0.37   0.02    0.02    0.34    0.40
 #> 31      prob_select_none    0.00   0.00    0.00    0.00    0.00
 #> 32                  rmse    0.02   0.00    0.00    0.02    0.02
 #> 33               rmse_te      NA     NA      NA      NA      NA
@@ -304,21 +304,21 @@ print(binom_trial_summary)
 #> * Treatment effect compared to: no comparison
 #> 
 #> Performance metrics (using posterior estimates from final analysis [all patients]):
-#> * Sample sizes: mean 1782.5 (SD: 360.5) | median 2000.0 (IQR: 1600.0 to 2000.0) [range: 400.0 to 2000.0]
-#> * Total summarised outcomes: mean 446.5 (SD: 92.8) | median 489.0 (IQR: 391.5 to 508.0) [range: 88.0 to 577.0]
-#> * Total summarised outcome rates: mean 0.250 (SD: 0.011) | median 0.250 (IQR: 0.244 to 0.257) [range: 0.207 to 0.295]
-#> * Conclusive: 37.7%
-#> * Superiority: 4.9%
-#> * Equivalence: 32.8%
+#> * Sample sizes: mean 1749.6 (SD: 373.7) | median 2000.0 (IQR: 1400.0 to 2000.0) [range: 400.0 to 2000.0]
+#> * Total summarised outcomes: mean 438.7 (SD: 96.2) | median 486.0 (IQR: 364.8 to 506.0) [range: 88.0 to 565.0]
+#> * Total summarised outcome rates: mean 0.251 (SD: 0.011) | median 0.250 (IQR: 0.244 to 0.258) [range: 0.198 to 0.295]
+#> * Conclusive: 42.9%
+#> * Superiority: 4.8%
+#> * Equivalence: 38.1%
 #> * Futility: 0.0% [not assessed]
-#> * Inconclusive at max sample size: 62.3%
-#> * Selection probabilities: Arm A: 33.5% | Arm B: 32.9% | Arm C: 33.6% | None: 0.0%
-#> * RMSE / MAE: 0.01753 / 0.01177
+#> * Inconclusive at max sample size: 57.1%
+#> * Selection probabilities: Arm A: 31.8% | Arm B: 31.0% | Arm C: 37.2% | None: 0.0%
+#> * RMSE / MAE: 0.01730 / 0.01102
 #> * RMSE / MAE treatment effect: not estimated / not estimated
 #> * Ideal design percentage: not estimable
 #> 
 #> Simulation details:
-#> * Simulation time: 38.6 secs
+#> * Simulation time: 29.4 secs
 #> * Base random seed: 4131
 #> * Credible interval width: 95%
 #> * Number of posterior draws: 5000
@@ -326,43 +326,19 @@ print(binom_trial_summary)
 ```
 
 Individual simulation results may be extracted in a tidy `data.frame`
-using `extract_results()`. Finally, the probabilities of different
-remaining arms and their statuses (with uncertainty) at the last
-adaptive analysis can be summarised using the `check_remaining_arms()`
-function (dropped arms will be shown with an empty text string): \`
+using `extract_results()`.
 
-``` r
-check_remaining_arms(
-  calibrated_binom_trial$best_sims,
-  ci_width = 0.95 # 95% confidence intervals (default)
-)
-#>     arm_Arm A   arm_Arm B   arm_Arm C   n  prop         se      lo_ci
-#> 1      active      active      active 573 0.573 0.02066398 0.53249935
-#> 2 equivalence             equivalence 107 0.107 0.02988311 0.04843019
-#> 3             equivalence equivalence 102 0.102 0.02996665 0.04326645
-#> 4 equivalence equivalence              91 0.091 0.03014963 0.03190782
-#> 5 equivalence equivalence equivalence  28 0.028 0.03117691 0.00000000
-#> 6                            superior  23 0.023 0.03125700 0.00000000
-#> 7    superior                          13 0.013 0.03141656 0.00000000
-#> 8                superior              13 0.013 0.03141656 0.00000000
-#>        hi_ci
-#> 1 0.61350065
-#> 2 0.16556981
-#> 3 0.16073355
-#> 4 0.15009218
-#> 5 0.08910563
-#> 6 0.08426259
-#> 7 0.07457532
-#> 8 0.07457532
-```
+Finally, the probabilities of different remaining arms and their
+statuses (with uncertainty) at the last adaptive analysis can be
+summarised using the `check_remaining_arms()` function.
 
 ### Visualising results
 
 Several visualisation functions are included (all are optional, and all
 require the `ggplot2` package installed).
 
-Convergence and stability of performance metrics may be visually
-assessed using `plot_convergence()` function:
+Convergence and stability of one or more performance metrics may be
+visually assessed using `plot_convergence()` function:
 
 ``` r
 plot_convergence(
@@ -372,7 +348,7 @@ plot_convergence(
 )
 ```
 
-<img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
 
 The empirical cumulative distribution functions for continuous
 performance metrics may also be visualised:
@@ -384,20 +360,21 @@ plot_metrics_ecdf(
 )
 ```
 
-<img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />
 
 The status probabilities for the overall trial (or for specific arms)
 according to trial progress can be visualised using the `plot_status()`
 function:
 
 ``` r
+# Overall trial status probabilities
 plot_status(
   calibrated_binom_trial$best_sims,
   x_value = "total n" # Total number of randomised patients at X-axis
 )
 ```
 
-<img src="man/figures/README-unnamed-chunk-12-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />
 
 Finally, various metrics may be summarised over the progress of one or
 multiple trial simulations using the `plot_history()` function, which
@@ -410,17 +387,18 @@ additional results being saved).
 The calibrated stopping thresholds (calibrated in a scenario with no
 between-arm differences) may be used to run simulations with the same
 overall trial specification, but according to a different scenario
-(i.e., between-arm differences present) to assess performance metrics
-(including the Bayesian analogues of power and type 2 error rates).
+(i.e., with between-arm differences present) to assess performance
+metrics (including the Bayesian analogue of power).
 
 First, a new trial specification is setup using the same settings as
-before and the calibrated stopping thresholds:
+before, except for between-arm differences and the calibrated stopping
+thresholds:
 
 ``` r
 binom_trial_calib_diff <- setup_trial_binom(
   arms = c("Arm A", "Arm B", "Arm C"),
   true_ys = c(0.25, 0.20, 0.30), # Different outcomes in the arms
-  min_probs = rep(0.15, 3),
+  min_probs = rep(0.20, 3),
   data_looks = seq(from = 300, to = 2000, by = 100),
   randomised_at_looks = c(seq(from = 400, to = 2000, by = 100), 2000),
   # Stopping rules for inferiority/superiority explicitly defined
@@ -428,8 +406,7 @@ binom_trial_calib_diff <- setup_trial_binom(
   inferiority = 1 - calibrated_binom_trial$best_x,
   superiority = calibrated_binom_trial$best_x,
   equivalence_prob = 0.9,
-  equivalence_diff = 0.05,
-  soften_power = 0.5
+  equivalence_diff = 0.05
 )
 ```
 
@@ -454,53 +431,53 @@ check_performance(
 )
 #>                   metric      est err_sd err_mad    lo_ci    hi_ci
 #> 1           n_summarised 1000.000  0.000   0.000 1000.000 1000.000
-#> 2              size_mean 1293.700 16.147  16.457 1263.590 1326.007
-#> 3                size_sd  512.341  7.405   7.174  497.835  527.245
-#> 4            size_median 1300.000 25.730   0.000 1200.000 1300.000
-#> 5               size_p25  900.000 30.514   0.000  800.000 1000.000
-#> 6               size_p75 1800.000 50.212   0.000 1700.000 1800.625
+#> 2              size_mean 1242.300 16.620  16.976 1209.895 1273.025
+#> 3                size_sd  531.190  7.251   7.604  516.617  544.091
+#> 4            size_median 1200.000 22.220   0.000 1200.000 1300.000
+#> 5               size_p25  800.000 36.095   0.000  700.000  800.000
+#> 6               size_p75 1700.000 42.453   0.000 1700.000 1800.000
 #> 7                size_p0  400.000     NA      NA       NA       NA
 #> 8              size_p100 2000.000     NA      NA       NA       NA
-#> 9            sum_ys_mean  296.494  3.584   3.528  289.684  303.647
-#> 10             sum_ys_sd  113.257  1.716   1.647  109.988  116.602
-#> 11         sum_ys_median  296.000  4.520   2.965  283.988  303.000
-#> 12            sum_ys_p25  208.000  6.059   5.930  197.994  219.750
-#> 13            sum_ys_p75  400.000  7.089   6.301  383.244  414.000
-#> 14             sum_ys_p0   85.000     NA      NA       NA       NA
-#> 15           sum_ys_p100  517.000     NA      NA       NA       NA
-#> 16         ratio_ys_mean    0.232  0.000   0.000    0.231    0.233
-#> 17           ratio_ys_sd    0.015  0.000   0.000    0.015    0.016
-#> 18       ratio_ys_median    0.230  0.001   0.001    0.229    0.232
-#> 19          ratio_ys_p25    0.221  0.001   0.001    0.219    0.222
-#> 20          ratio_ys_p75    0.241  0.001   0.001    0.240    0.243
+#> 9            sum_ys_mean  284.999  3.695   3.726  277.724  291.991
+#> 10             sum_ys_sd  117.265  1.701   1.732  113.765  120.311
+#> 11         sum_ys_median  279.000  5.268   4.448  269.500  289.512
+#> 12            sum_ys_p25  186.000  6.682   7.413  174.000  197.019
+#> 13            sum_ys_p75  390.000  7.633   7.413  374.000  402.250
+#> 14             sum_ys_p0   81.000     NA      NA       NA       NA
+#> 15           sum_ys_p100  519.000     NA      NA       NA       NA
+#> 16         ratio_ys_mean    0.232  0.000   0.001    0.231    0.233
+#> 17           ratio_ys_sd    0.016  0.000   0.000    0.015    0.017
+#> 18       ratio_ys_median    0.230  0.001   0.000    0.230    0.232
+#> 19          ratio_ys_p25    0.221  0.000   0.000    0.220    0.222
+#> 20          ratio_ys_p75    0.242  0.001   0.001    0.240    0.243
 #> 21           ratio_ys_p0    0.195     NA      NA       NA       NA
-#> 22         ratio_ys_p100    0.295     NA      NA       NA       NA
-#> 23       prob_conclusive    0.866  0.011   0.010    0.843    0.885
-#> 24         prob_superior    0.694  0.014   0.013    0.665    0.721
-#> 25      prob_equivalence    0.172  0.012   0.012    0.148    0.194
+#> 22         ratio_ys_p100    0.298     NA      NA       NA       NA
+#> 23       prob_conclusive    0.877  0.011   0.010    0.857    0.898
+#> 24         prob_superior    0.731  0.014   0.015    0.706    0.759
+#> 25      prob_equivalence    0.146  0.011   0.011    0.125    0.167
 #> 26         prob_futility    0.000  0.000   0.000    0.000    0.000
-#> 27              prob_max    0.134  0.011   0.010    0.115    0.157
-#> 28 prob_select_arm_Arm A    0.033  0.006   0.006    0.022    0.044
-#> 29 prob_select_arm_Arm B    0.967  0.006   0.006    0.956    0.978
+#> 27              prob_max    0.123  0.011   0.010    0.102    0.143
+#> 28 prob_select_arm_Arm A    0.038  0.006   0.006    0.026    0.049
+#> 29 prob_select_arm_Arm B    0.962  0.006   0.006    0.951    0.974
 #> 30 prob_select_arm_Arm C    0.000  0.000   0.000    0.000    0.000
 #> 31      prob_select_none    0.000  0.000   0.000    0.000    0.000
-#> 32                  rmse    0.020  0.001   0.001    0.018    0.021
+#> 32                  rmse    0.020  0.001   0.001    0.019    0.022
 #> 33               rmse_te       NA     NA      NA       NA       NA
 #> 34                   mae    0.011  0.000   0.000    0.010    0.012
 #> 35                mae_te       NA     NA      NA       NA       NA
-#> 36                   idp   98.350  0.276   0.297   97.800   98.900
+#> 36                   idp   98.100  0.306   0.297   97.549   98.700
 ```
 
 Again, simulations may be saved and reloaded using the `path` argument.
 
-Similarly, overall trial statuses for the scenario with differences are
-visualised:
+Similarly, overall trial statuses for the scenario with differences can
+be visualised:
 
 ``` r
 plot_status(binom_trial_diff_sims, x_value = "total n")
 ```
 
-<img src="man/figures/README-unnamed-chunk-15-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-14-1.png" width="100%" />
 
 ## Issues and enhancements
 

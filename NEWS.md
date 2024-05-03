@@ -23,9 +23,9 @@ to documentation, argument checking and test coverage.
     
 *   Added the `update_saved_calibration()` function to update calibrated trial
     objects (including embedded trial specifications and results) saved by the
-    `calibrate_trial()` using previous versions of the package.
+    `calibrate_trial()` function using previous versions of the package.
     
-*   Rewritten README and 'Overview' vignette to better reflect the typical usage
+*   Rewritten README and 'Overview' vignette to better reflect the typicalusage
     and workflow.
     
 ### Minor changes and bug fixes:
