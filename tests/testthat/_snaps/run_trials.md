@@ -80,6 +80,47 @@
       * Number of posterior draws: 5000
       * Posterior estimation method: medians with MAD-SDs
 
+---
+
+    Code
+      run_trial(setup_rescale_probs, seed = 12345)
+    Output
+      Single simulation result: generic binomially distributed outcome trial
+      * Undesirable outcome
+      * Initial/final common control arms: B/B
+      
+      Final status: conclusive, stopped for superiority
+      Final/maximum allowed sample sizes: 1500/2000 (75.0%)
+      Available outcome data at last adaptive analysis: 1500/1500 (100.0%)
+      
+      Trial results overview:
+       arms true_ys final_status status_look status_probs final_alloc
+          A    0.20     inferior        1500       0.0046        0.60
+          B    0.15     superior        1500       0.9954        0.40
+          C    0.30     inferior        1000       0.0010        0.15
+      
+      Esimates from final analysis (all patients):
+       arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
+          A        143    701        0.204         0.205        0.0152      0.176
+          B         88    593        0.148         0.149        0.0151      0.122
+          C         56    206        0.272         0.273        0.0310      0.213
+       hi_cri_all
+            0.235
+            0.179
+            0.336
+      
+      Estimates from last adaptive analysis including each arm:
+       arms sum_ys  ns raw_ests post_ests post_errs lo_cri hi_cri
+          A    143 701    0.204     0.205    0.0151  0.176  0.235
+          B     88 593    0.148     0.149    0.0144  0.122  0.180
+          C     56 206    0.272     0.274    0.0303  0.216  0.334
+      
+      Simulation details:
+      * Random seed: 12345
+      * Credible interval width: 95%
+      * Number of posterior draws: 5000
+      * Posterior estimation method: medians with MAD-SDs
+
 # dispatch_trial_runs works
 
     Code
@@ -548,25 +589,25 @@
       18  18    2000    472 0.2360000          max         <NA>         <NA>
       19  19    1600    372 0.2325000  superiority            B            B
       20  20     500    135 0.2700000  superiority            B            B
-               sq_err sq_err_te
-      1  1.403445e-03        NA
-      2  6.546625e-05        NA
-      3  8.482272e-05        NA
-      4  6.368035e-04        NA
-      5  1.355680e-05        NA
-      6  1.071614e-03        NA
-      7  1.475723e-06        NA
-      8            NA        NA
-      9  1.059480e-05        NA
-      10           NA        NA
-      11 1.336775e-04        NA
-      12 1.254923e-03        NA
-      13           NA        NA
-      14           NA        NA
-      15 3.127227e-04        NA
-      16           NA        NA
-      17           NA        NA
-      18           NA        NA
-      19 2.154692e-05        NA
-      20 4.407718e-05        NA
+                  err       sq_err err_te sq_err_te
+      1  -0.037462579 1.403445e-03     NA        NA
+      2  -0.008091122 6.546625e-05     NA        NA
+      3  -0.009209925 8.482272e-05     NA        NA
+      4  -0.025234966 6.368035e-04     NA        NA
+      5  -0.003681956 1.355680e-05     NA        NA
+      6  -0.032735518 1.071614e-03     NA        NA
+      7  -0.001214794 1.475723e-06     NA        NA
+      8            NA           NA     NA        NA
+      9  -0.003254965 1.059480e-05     NA        NA
+      10           NA           NA     NA        NA
+      11 -0.011561899 1.336775e-04     NA        NA
+      12 -0.035424899 1.254923e-03     NA        NA
+      13           NA           NA     NA        NA
+      14           NA           NA     NA        NA
+      15 -0.017683969 3.127227e-04     NA        NA
+      16           NA           NA     NA        NA
+      17           NA           NA     NA        NA
+      18           NA           NA     NA        NA
+      19  0.004641866 2.154692e-05     NA        NA
+      20  0.006639065 4.407718e-05     NA        NA
 

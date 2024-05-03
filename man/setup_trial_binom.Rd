@@ -11,6 +11,7 @@ setup_trial_binom(
   fixed_probs = NULL,
   min_probs = rep(NA, length(arms)),
   max_probs = rep(NA, length(arms)),
+  rescale_probs = NULL,
   data_looks = NULL,
   max_n = NULL,
   look_after_every = NULL,
@@ -61,6 +62,30 @@ probabilities; higher probabilities will be rounded down to these values.
 Must be \code{NA} (default for all arms) if no threshold is wanted and for arms
 using fixed allocation probabilities.}
 
+\item{rescale_probs}{\code{NULL} (default) or one of either \code{"fixed"}, \code{"limits"},
+or \code{"both"}. Rescales \code{fixed_probs} (if \code{"fixed"} or \code{"both"}) and
+\code{min_probs/max_probs} (if \code{"limits"} or \code{"both"}) after arm dropping in
+trial specifications with \verb{>2 arms} using a \code{rescale_factor} defined as
+\verb{initial number of arms/number of active arms}. \verb{"fixed_probs} and
+\code{min_probs} are rescaled as \verb{initial value * rescale factor}, except for
+\code{fixed_probs} controlled by the \code{control_prob_fixed} argument, which are
+never rescaled. \code{max_probs} are rescaled as
+\verb{1 - ( (1 - initial value) * rescale_factor)}.\cr
+Must be \code{NULL} if there are only \verb{2 arms} or if \code{control_prob_fixed} is
+\code{"sqrt-based fixed"}. If not \code{NULL}, one or more valid non-\code{NA} values must
+be specified for either \code{min_probs/max_probs} or \code{fixed_probs} (not
+counting a fixed value for the original \code{control} if \code{control_prob_fixed}
+is \code{"sqrt-based"/"sqrt-based start"/"sqrt-based fixed"}).\cr
+\strong{Note:} using this argument and specific combinations of values in
+the other arguments may lead to invalid combined (total) allocation
+probabilities after arm dropping, in which case all probabilities will
+ultimately be rescaled to sum to \code{1}. It is the responsibility of the user
+to ensure that rescaling fixed allocation probabilities and minimum/maximum
+allocation probability limits will not lead to invalid or unexpected
+allocation probabilities after arm dropping.\cr
+Finally, any initial values that are overwritten by the
+\code{control_prob_fixed} argument after arm dropping will not be rescaled.}
+
 \item{data_looks}{vector of increasing integers, specifies when to conduct
 adaptive analyses (= the total number of patients with available outcome
 data at each adaptive analysis). The last number in the vector represents
@@ -106,10 +131,11 @@ behaviour with respect to these comparisons.}
 be set \code{NULL} (the default), in which case the control arm allocation
 probability will not be fixed if control arms change (the allocation
 probability for the first control arm may still be fixed using
-\code{fixed_probs}). If not \code{NULL}, a vector of probabilities of either length
-\code{1} or \verb{number of arms - 1} can be provided, or one of the special
-arguments \code{"sqrt-based"}, \code{"sqrt-based start"}, \code{"sqrt-based fixed"} or
-\code{"match"}. See \code{\link[=setup_trial]{setup_trial()}} \strong{Details} for details on how this affects
+\code{fixed_probs}, but will not be 'reused' for the new control arm).\cr
+If not \code{NULL}, a vector of probabilities of either length \code{1} or
+\verb{number of arms - 1} can be provided, or one of the special arguments
+\code{"sqrt-based"}, \code{"sqrt-based start"}, \code{"sqrt-based fixed"} or \code{"match"}.\cr
+See \code{\link[=setup_trial]{setup_trial()}} \strong{Details} for details on how this affects
 trial behaviour.}
 
 \item{inferiority}{single numeric value or vector of numeric values of the

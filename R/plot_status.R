@@ -110,7 +110,7 @@ plot_status.trial_results <- function(object, x_value = "look", arm = NULL,
   # Facet if plotting one or more arms (to add arm labels to the top)
   if (!arm_null) {
     if (is.null(nrow) & is.null(ncol)) { # Set nrow if both nrow and ncol are NULL
-      nrow <- ceiling(sqrt(length(arm)))
+      nrow <- ifelse(length(arm) <= 3, length(arm), ceiling(sqrt(length(arm))))
     }
     p <- p +
       ggplot2::facet_wrap(ggplot2::vars(arm_facet), scales = "free_x", nrow = nrow, ncol = ncol, strip.position = "top") +

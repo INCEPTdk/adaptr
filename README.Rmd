@@ -28,9 +28,8 @@ using adaptive stopping, adaptive arm dropping and/or response-adaptive
 randomisation.
 
 The package has been developed as part of the
-[INCEPT (Intensive Care Platform Trial) project](https://incept.dk/), which
-is primarily supported by a grant from
-[Sygeforsikringen "danmark"](https://www.sygeforsikring.dk/).
+[INCEPT (Intensive Care Platform Trial) project](https://incept.dk/), primarily
+supported by a grant from [Sygeforsikringen "danmark"](https://www.sygeforsikring.dk/).
 
 ## Resources
 
@@ -43,6 +42,17 @@ Clinical Epidemiology describing key methodological considerations in adaptive
 trials with description of the workflow and a simulation-based example using the
 package
 
+**Examples:**
+
+* [Effects of duration of follow-up and lag in data collection on the performance of adaptive clinical trials](https://doi.org/10.1002/pst.2342) - article in Pharmaceutical
+Statistics describing a simulation study (with code) using `adaptr` to assess
+the performance of adaptive clinical trials according to different
+follow-up/data collection lags.
+* [Effects of sceptical priors on the performance of adaptive clinical trials with binary outcomes](https://doi.org/10.1002/pst.2387) -
+article in Pharmaceutical Statistics describing a simulation study (with code)
+using `adaptr` to assess the performance of adaptive clinical trials according to different
+sceptical priors.
+
 ## Installation
 
 The easiest way is to install from CRAN directly:
@@ -53,105 +63,254 @@ install.packages("adaptr")
 
 Alternatively, you can install the **development version** from GitHub - this
 requires the *remotes*-package installed. The development version may contain
-additional features not yet available in the CRAN version (including preliminary
-functions), but may not be stable or fully documented:
+additional features not yet available in the CRAN version, but may not be stable
+or fully documented:
 
 ```{r eval = FALSE}
 # install.packages("remotes") 
 remotes::install_github("INCEPTdk/adaptr@dev")
 ```
 
-## Example
+## Usage and workflow overview
 
-The basic functionality of `adaptr` is illustrated below.
+The central functionality of `adaptr` and the typical workflow is illustrated
+here.
 
-First, load the library and setup a trial specification using the general
-`setup_trial()` function, or one of the special case functions,
-`setup_trial_binom()` (used in the example) or `setup_trial_norm()`.
+### Setup
+
+First, the package is loaded and a cluster of parallel workers is initiated by
+the `setup_cluster()` function to facilitate parallel computing:
 
 ```{r}
 library(adaptr)
 
+setup_cluster(2)
+```
+
+### Specify trial design
+
+Setup a trial specification (defining the trial design and scenario) using
+the general `setup_trial()` function, or one of the special case variants using
+default priors `setup_trial_binom()` (for binary, binomially distributed
+outcomes; used in this example) or `setup_trial_norm()` (for continuous,
+normally distributed outcomes).
+
+```{r}
 # Setup a trial using a binary, binomially distributed, undesirable outcome
 binom_trial <- setup_trial_binom(
   arms = c("Arm A", "Arm B", "Arm C"),
-  true_ys = c(0.25, 0.20, 0.30),
-  min_probs = rep(0.15, 3), # Minimum allocation of 15% in all arms
+  # Scenario with identical outcomes in all arms
+  true_ys = c(0.25, 0.25, 0.25),
+  # Response-adaptive randomisation with minimum 20% allocation in all arms
+  min_probs = rep(0.20, 3),
+  # Number of patients with data available at each analysis
   data_looks = seq(from = 300, to = 2000, by = 100),
+  # Number of patients randomised at each analysis (higher than the numbers
+  # with data, except at last look, due to follow-up/data collection lag)
+  randomised_at_looks = c(seq(from = 400, to = 2000, by = 100), 2000),
+  # Stopping rules for inferiority/superiority not explicitly defined
   # Stop for equivalence at > 90% probability of differences < 5 %-points
   equivalence_prob = 0.9,
-  equivalence_diff = 0.05,
-  soften_power = 0.5 # Soften allocation ratios
+  equivalence_diff = 0.05
 )
 
 # Print trial specification
 print(binom_trial, prob_digits = 3)
 ```
 
-The resulting trial specification may be calibrated to obtain a specific value
-for a certain performance metric (e.g., the Bayesian type 1 error rate for
-trial specifications with no between-arm differences) by using the
-`calibrate_trial()` function.
+### Calibration
 
-Simulate a single trial using a reproducible random seed:
+In the example trial specification, there are no true between-arm differences,
+and stopping rules for inferiority and superiority are not explicitly defined.
+This is intentional, as these stopping rules will be calibrated to obtain a
+desired probability of stopping for superiority in the scenario with no
+between-arm differences (corresponding to the Bayesian type 1 error rate). Trial
+specifications do not necessarily have to be calibrated, and simulations can be
+run directly using the `run_trials()` function covered below (or `run_trial()`
+for a single simulation).
+
+Calibration of a trial specification is done using the `calibrate_trial()`
+function, which defaults to calibrate constant, symmetrical stopping rules
+for inferiority and superiority (expecting a trial specification with
+identical outcomes in each arm), but can be used to calibrate any parameter in a
+trial specification towards any performance metric.
 
 ```{r}
-trial_res <- run_trial(binom_trial, seed = 12345)
-print(trial_res, digits = 3)
+# Calibrate the trial specification
+calibrated_binom_trial <- calibrate_trial(
+  trial_spec = binom_trial,
+  n_rep = 1000, # 1000 simulations for each step (more generally recommended)
+  base_seed = 4131, # Base random seed (for reproducible results)
+  target = 0.05, # Target value for calibrated metric (default value)
+  search_range = c(0.9, 1), # Search range for superiority stopping threshold
+  tol = 0.01, # Tolerance range
+  dir = -1 # Tolerance range only applies below target
+)
+
+# Print result (to check if calibration is successful)
+calibrated_binom_trial
 ```
 
-Simulate multiple trials using a reproducible random seed:
+The calibration is successful - the calibrated, constant stopping threshold for
+superiority is printed with the results (`r calibrated_binom_trial$best_x`) and
+can be extracted using `calibrated_binom_trial$best_x`. Using the default
+calibration functionality, the calibrated, constant stopping threshold for
+inferiority is symmetrical, i.e., `1 - stopping threshold for superiority`
+(`r 1 - calibrated_binom_trial$best_x`). The calibrated trial specification
+may be extracted using `calibrated_binom_trial$best_trial_spec` and, if printed,
+will also include the calibrated stopping thresholds.
+
+Calibration results may be saved (and reloaded) by using the `path` argument, to
+avoid unnecessary repeated simulations.
+
+### Summarising results
+
+The results of the simulations using the calibrated trial specification
+conducted during the calibration procedure may be extracted using
+`calibrated_binom_trial$best_sims`. These results can be summarised with several
+functions. Most of these functions support different 'selection strategies' for
+simulations not ending with superiority, i.e., performance metrics can be
+calculated assuming different arms would be used in clinical practice if no arm
+is ultimately superior.
+
+The `check_performance()` function summarises performance metrics in a tidy
+`data.frame`, with uncertainty measures (bootstrapped confidence intervals) if
+requested. Here, performance metrics are calculated considering the 'best' arm
+(i.e., the one with the highest probability of being overall best) selected in
+simulations not ending with superiority:
 
 ```{r}
-# Simulate multiple trials - only 10 simulations for speed in the example
-trial_res_mult <- run_trials(binom_trial, n_rep = 10, base_seed = 67890)
+# Calculate performance metrics with uncertainty measures
+binom_trial_performance <- check_performance(
+  calibrated_binom_trial$best_sims,
+  select_strategy = "best",
+  uncertainty = TRUE, # Calculate uncertainty measures
+  n_boot = 1000, # 1000 bootstrap samples (more typically recommended)
+  ci_width = 0.95, # 95% confidence intervals (default)
+  boot_seed = "base" # Use same random seed for bootstrapping as for simulations
+)
 
-# Extract results in a tidy data.frame (1 simulation per row)
-# See function documentation for details, including on arm selection in trials
-# not ending with a superior arm
-extr_res <- extract_results(trial_res_mult)
-head(extr_res)
+# Print results 
+print(binom_trial_performance, digits = 2)
+```
+Similar results in `list` format (without uncertainty measures) can be obtained
+using the `summary()` method, which comes with a `print()` method providing
+formatted results:
 
-# Summarise trial results
-# See function documentation for details, including on arm selection in trials
-# not ending with a superior arm
-res_sum <- summary(trial_res_mult)
-print(res_sum, digits = 1)
+```{r}
+binom_trial_summary <- summary(
+  calibrated_binom_trial$best_sims,
+  select_strategy = "best"
+)
+
+print(binom_trial_summary)
 ```
 
-Performance metrics may also be calculated and returned in a tidy
-`data.frame` (with bootstrapped uncertainty measures, if requested) by
-the `check_performance()` function, and the empirical cumulative distribution
-functions of numerical performance metrics may be plotted by the
-`plot_metrics_ecdf()` function. The `plot_convergence()` function may be used to
-visually assess stability of performance metrics according to the number of
-simulations. Finally, the `check_remaining_arms()` function may be used to
-summarise all combinations of remaining arms across multiple simulations.
+Individual simulation results may be extracted in a tidy `data.frame` using
+`extract_results()`.
 
-Plot trial statuses or history of trial metrics over time:
+Finally, the probabilities of different remaining arms and
+their statuses (with uncertainty) at the last adaptive analysis can be
+summarised using the `check_remaining_arms()` function.
 
-```{r plot, fig.align="center", fig.width=6, fig.height=3}
-# Simulate multiple trials - 25 simulations only for speed
-# sparse = FALSE is required for plot_history (but not plot_status)
-trial_res_mult <- run_trials(binom_trial, n_rep = 25, base_seed = 67890, sparse = FALSE)
+### Visualising results
 
-# Plot overall trial statuses according to the total number
-# of patients randomised
-plot_status(trial_res_mult, x_value = "total n")
+Several visualisation functions are included (all are optional, and all require
+the `ggplot2` package installed).
 
-# Plot allocation probabilities at each adaptive look (requires sparse = FALSE)
-plot_history(trial_res_mult)
+Convergence and stability of one or more performance metrics may be visually
+assessed using `plot_convergence()` function:
+
+```{r}
+plot_convergence(
+  calibrated_binom_trial$best_sims,
+  metrics = c("size mean", "prob_superior", "prob_equivalence"),
+  # select_strategy can be specified, but does not affect the chosen metrics
+)
 ```
 
-Plotting statuses for individual trial arms and other summary metrics is
-possible, too.
+The empirical cumulative distribution functions for continuous performance
+metrics may also be visualised:
 
-Running simulations and extracting and processing results may be done in
-parallel by either using the `setup_cluster()` function to set up a cluster of
-parallel workers that may be used throughout the session, or with new clusters
-each time parallel computation is done by setting the `"mc.cores"` global option
-via `options(mc.cores = <number>)` or by using the `cores` argument of many
-functions in the package.
+```{r}
+plot_metrics_ecdf(
+  calibrated_binom_trial$best_sims, 
+  metrics = "size"
+)
+```
+
+The status probabilities for the overall trial (or for specific arms) according
+to trial progress can be visualised using the `plot_status()` function:
+
+```{r}
+# Overall trial status probabilities
+plot_status(
+  calibrated_binom_trial$best_sims,
+  x_value = "total n" # Total number of randomised patients at X-axis
+)
+```
+
+Finally, various metrics may be summarised over the progress of one or multiple
+trial simulations using the `plot_history()` function, which requires non-sparse
+results (the `sparse` argument must be `FALSE` in `calibrate_trials()`,
+`run_trials()`, or `run_trial()`, leading to additional results being saved).
+
+### Use calibrated stopping thresholds in another scenario
+
+The calibrated stopping thresholds (calibrated in a scenario with no between-arm
+differences) may be used to run simulations with the same overall trial
+specification, but according to a different scenario (i.e., with between-arm
+differences present) to assess performance metrics (including the Bayesian
+analogue of power).
+
+First, a new trial specification is setup using the same settings as before,
+except for between-arm differences and the calibrated stopping thresholds:
+
+```{r}
+binom_trial_calib_diff <- setup_trial_binom(
+  arms = c("Arm A", "Arm B", "Arm C"),
+  true_ys = c(0.25, 0.20, 0.30), # Different outcomes in the arms
+  min_probs = rep(0.20, 3),
+  data_looks = seq(from = 300, to = 2000, by = 100),
+  randomised_at_looks = c(seq(from = 400, to = 2000, by = 100), 2000),
+  # Stopping rules for inferiority/superiority explicitly defined
+  # using the calibration results
+  inferiority = 1 - calibrated_binom_trial$best_x,
+  superiority = calibrated_binom_trial$best_x,
+  equivalence_prob = 0.9,
+  equivalence_diff = 0.05
+)
+```
+
+Simulations using the trial specification with calibrated stopping thresholds
+and differences present can then be conducted using the `run_trials()` function
+and performance metrics calculated as above:
+
+```{r}
+binom_trial_diff_sims <- run_trials(
+  binom_trial_calib_diff,
+  n_rep = 1000, # 1000 simulations (more generally recommended)
+  base_seed = 1234 # Reproducible results
+)
+
+check_performance(
+  binom_trial_diff_sims,
+  select_strategy = "best",
+  uncertainty = TRUE,
+  n_boot = 1000, # 1000 bootstrap samples (more typically recommended)
+  ci_width = 0.95,
+  boot_seed = "base"
+)
+```
+
+Again, simulations may be saved and reloaded using the `path` argument.
+
+Similarly, overall trial statuses for the scenario with differences can be
+visualised:
+
+```{r}
+plot_status(binom_trial_diff_sims, x_value = "total n")
+```
 
 ## Issues and enhancements
 
@@ -177,7 +336,7 @@ of `adaptr`
 
 ## Citation
 
-If using the package, please consider citing it:
+If you use the package, please consider citing it:
 
 ```{r}
 citation(package = "adaptr")

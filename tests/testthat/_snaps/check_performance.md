@@ -37,7 +37,9 @@
       31  prob_select_none    0.350
       32              rmse    0.020
       33           rmse_te       NA
-      34               idp  100.000
+      34               mae    0.009
+      35            mae_te       NA
+      36               idp  100.000
 
 ---
 
@@ -78,13 +80,16 @@
       31  prob_select_none    0.350
       32              rmse    0.020
       33           rmse_te       NA
-      34               idp  100.000
+      34               mae    0.009
+      35            mae_te       NA
+      36               idp  100.000
 
 ---
 
     Code
       check_performance(res, uncertainty = TRUE, boot_seed = 4131, n_boot = 100)
-    Warning <simpleWarning>
+    Condition
+      Warning:
       values for n_boot < 1000 are not recommended, as they may cause instable results.
     Output
                     metric      est  err_sd err_mad    lo_ci    hi_ci
@@ -121,14 +126,17 @@
       31  prob_select_none    0.350   0.103   0.111    0.200    0.550
       32              rmse    0.020   0.004   0.003    0.011    0.026
       33           rmse_te       NA      NA      NA       NA       NA
-      34               idp  100.000   0.000   0.000  100.000  100.000
+      34               mae    0.009   0.005   0.003    0.005    0.025
+      35            mae_te       NA      NA      NA       NA       NA
+      36               idp  100.000   0.000   0.000  100.000  100.000
 
 ---
 
     Code
       check_performance(res, uncertainty = TRUE, ci_width = 0.75, boot_seed = 4131,
         n_boot = 100)
-    Warning <simpleWarning>
+    Condition
+      Warning:
       values for n_boot < 1000 are not recommended, as they may cause instable results.
     Output
                     metric      est  err_sd err_mad    lo_ci    hi_ci
@@ -165,7 +173,9 @@
       31  prob_select_none    0.350   0.103   0.111    0.250    0.500
       32              rmse    0.020   0.004   0.003    0.014    0.023
       33           rmse_te       NA      NA      NA       NA       NA
-      34               idp  100.000   0.000   0.000  100.000  100.000
+      34               mae    0.009   0.005   0.003    0.007    0.018
+      35            mae_te       NA      NA      NA       NA       NA
+      36               idp  100.000   0.000   0.000  100.000  100.000
 
 ---
 
@@ -206,7 +216,9 @@
       31  prob_select_none    0.000
       32              rmse    0.020
       33           rmse_te       NA
-      34               idp  100.000
+      34               mae    0.009
+      35            mae_te       NA
+      36               idp  100.000
 
 ---
 
@@ -247,14 +259,17 @@
       31  prob_select_none    0.000
       32              rmse    0.020
       33           rmse_te       NA
-      34               idp  100.000
+      34               mae    0.009
+      35            mae_te       NA
+      36               idp  100.000
 
 ---
 
     Code
       check_performance(res, restrict = "superior", uncertainty = TRUE, boot_seed = "base",
         n_boot = 100)
-    Warning <simpleWarning>
+    Condition
+      Warning:
       values for n_boot < 1000 are not recommended, as they may cause instable results.
     Output
                     metric      est  err_sd err_mad    lo_ci    hi_ci
@@ -291,14 +306,17 @@
       31  prob_select_none    0.000   0.000   0.000    0.000    0.000
       32              rmse    0.020   0.003   0.004    0.013    0.025
       33           rmse_te       NA      NA      NA       NA       NA
-      34               idp  100.000   0.000   0.000  100.000  100.000
+      34               mae    0.009   0.005   0.003    0.006    0.025
+      35            mae_te       NA      NA      NA       NA       NA
+      36               idp  100.000   0.000   0.000  100.000  100.000
 
 ---
 
     Code
       check_performance(res, restrict = "selected", uncertainty = TRUE, boot_seed = "base",
         n_boot = 100)
-    Warning <simpleWarning>
+    Condition
+      Warning:
       values for n_boot < 1000 are not recommended, as they may cause instable results.
     Output
                     metric      est  err_sd err_mad    lo_ci    hi_ci
@@ -335,5 +353,7 @@
       31  prob_select_none    0.000   0.000   0.000    0.000    0.000
       32              rmse    0.020   0.003   0.004    0.013    0.025
       33           rmse_te       NA      NA      NA       NA       NA
-      34               idp  100.000   0.000   0.000  100.000  100.000
+      34               mae    0.009   0.005   0.003    0.006    0.025
+      35            mae_te       NA      NA      NA       NA       NA
+      36               idp  100.000   0.000   0.000  100.000  100.000
 

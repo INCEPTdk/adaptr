@@ -39,7 +39,9 @@ extract_results_batch <- function(trial_results,
                    final_status = vapply_str(1:n_rep, function(x) trial_results[[x]]$final_status),
                    superior_arm = NA,
                    selected_arm = NA,
+                   err = NA,
                    sq_err = NA,
+                   err_te = NA,
                    sq_err_te = NA,
                    stringsAsFactors = FALSE)
 
@@ -59,7 +61,7 @@ extract_results_batch <- function(trial_results,
       # Do not consider arms dropped for equivalence before final stop
       if (cur_status == "equivalence") { # Stopped for equivalence
         # Only consider equivalent arms declared equivalent at final look
-        tmp_sel <- tmp_sel[tmp_sel$final_status %in% c("equivalence", "control") & tmp_sel$status_look == df$final_n[[i]], ]
+        tmp_sel <- tmp_sel[tmp_sel$final_status %in% c("equivalence", "control") & tmp_sel$status_look == trial_results[[i]]$followed_n, ]
       } else {
         # Only consider arms not stopped for equivalence
         tmp_sel <- tmp_sel[tmp_sel$final_status != "equivalence", ]
@@ -101,10 +103,12 @@ extract_results_batch <- function(trial_results,
       selected_index <- which(tmp_res$arms == cur_select)
       selected_est_y <- tmp_res[[which_ests]][selected_index]
       selected_true_y <- tmp_res$true_ys[selected_index]
+      df$err[i] <- selected_est_y - selected_true_y
       df$sq_err[i] <- (selected_est_y - selected_true_y)^2
       if (!is.null(te_comp)){
         if (cur_select != te_comp){
           te_comp_est_y <- tmp_res[[which_ests]][te_comp_index]
+          df$err_te[i] <- (selected_est_y - te_comp_est_y) - (selected_true_y - te_comp_true_y)
           df$sq_err_te[i] <- ( (selected_est_y - te_comp_est_y) - (selected_true_y - te_comp_true_y) )^2
         }
       }
@@ -173,18 +177,18 @@ extract_results_batch <- function(trial_results,
 #' @param te_comp character string, treatment-effect comparator. Can be either
 #'   `NULL` (the default) in which case the **first** `control` arm is used for
 #'   trial designs with a common control arm, or a string naming a single trial
-#'   `arm`. Will be used when calculating `sq_err_te` (the squared error of the
-#'   treatment effect comparing the selected arm to the comparator arm, as
-#'   described below).
+#'   `arm`. Will be used when calculating `err_te` and `sq_err_te` (the error
+#'   and the squared error of the treatment effect comparing the selected arm to
+#'   the comparator arm, as described below).
 #' @param raw_ests single logical. If `FALSE` (default), the
 #'   posterior estimates (`post_ests` or `post_ests_all`, see [setup_trial()]
-#'   and [run_trial()]) will be used to calculate `sq_err` (the squared error of
-#'   the estimated compared to the specified effect in the selected arm) and
-#'   `sq_err_te` (the squared error of the treatment effect comparing the
-#'   selected arm to the comparator arm, as described for `te_comp` and below).
-#'   If `TRUE`, the raw estimates (`raw_ests` or `raw_ests_all`, see
-#'   [setup_trial()] and [run_trial()]) will be used instead of the posterior
-#'   estimates.
+#'   and [run_trial()]) will be used to calculate `err` and `sq_err` (the error
+#'   and the squared error of the estimated compared to the specified effect in
+#'   the selected arm) and `err_te` and `sq_err_te` (the error and the squared
+#'   error of the treatment effect comparing the selected arm to the comparator
+#'   arm, as described for `te_comp` and below). If `TRUE`, the raw estimates
+#'   (`raw_ests` or `raw_ests_all`, see [setup_trial()] and [run_trial()]) will
+#'   be used instead of the posterior estimates.
 #' @param final_ests single logical. If `TRUE` (recommended) the final estimates
 #'   calculated using outcome data from all patients randomised when trials are
 #'   stopped are used (`post_ests_all` or `raw_ests_all`, see [setup_trial()]
@@ -231,17 +235,21 @@ extract_results_batch <- function(trial_results,
 #'     \item `selected_arm`: the final selected arm (as described above). Will
 #'       correspond to the `superior_arm` in simulations stopped for superiority
 #'       and be `NA` if no arm is selected. See `select_strategy` above.
+#'     \item `err`: the squared error of the estimate in the selected arm,
+#'       calculated as `estimated effect - true effect` for the selected
+#'       arm.
 #'     \item `sq_err:` the squared error of the estimate in the selected arm,
-#'       calculated as `(estimated effect - true effect)^2` for the selected
-#'       arms.
-#'     \item `sq_err_te`: the squared error of the treatment effect comparing
-#'       the selected arm to the comparator arm (as specified in `te_comp`).
-#'       Calculated as:\cr
-#'       `((estimated effect in the selected arm - estimated effect in the comparator arm) -`
-#'       `(true effect in the selected arm - true effect in the comparator arm))^2` \cr
-#'       Will be `NA` for simulations without a selected arm, with no
+#'       calculated as `err^2` for the selected arm, with `err` defined above.
+#'     \item `err_te`: the error of the treatment effect comparing the selected
+#'     arm to the comparator arm (as specified in `te_comp`). Calculated as:\cr
+#'       `(estimated effect in the selected arm - estimated effect in the comparator arm) -`
+#'       `(true effect in the selected arm - true effect in the comparator arm)`
+#'       \cr Will be `NA` for simulations without a selected arm, with no
 #'       comparator specified (see `te_comp` above), and when the selected arm
 #'       is the comparator arm.
+#'     \item `sq_err_te`: the squared error of the treatment effect comparing
+#'       the selected arm to the comparator arm (as specified in `te_comp`),
+#'       calculated as `err_te^2`, with `err_te` defined above.
 #'   }
 #'
 #' @examples

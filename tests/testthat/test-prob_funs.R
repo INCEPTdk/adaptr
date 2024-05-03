@@ -97,4 +97,54 @@ test_that("reallocate_probs works", {
     reallocate_probs(probs_best, fixed_probs = c(0.4, 0.3, 0.3), min_probs = rep(NA, 3), max_probs = rep(NA, 3)),
     c(A = 0.4, B = 0.3, C = 0.3)
   )
+
+  # rescaling of of fixed probabilities/probability limits, various versions
+
+  probs_best_rescale <- setNames(c(0.75, 0.1, 0.15), names(probs_best))
+  expect_equal(
+    tolerance = 10^-6,
+    reallocate_probs(probs_best_rescale, fixed_probs = c(0.40, NA, NA),
+                     min_probs = c(NA, 0.15, 0.15), max_probs = c(NA, 0.85, 0.85),
+                     rescale_fixed = TRUE, rescale_limits = TRUE, rescale_factor = 4/3),
+    c(A = 0.5333333, B = 0.2, C = 0.2666667)
+  )
+
+  probs_best_rescale <- setNames(c(0.1, 0.15, 0.75), names(probs_best))
+  expect_equal(
+    tolerance = 10^-6,
+    reallocate_probs(probs_best_rescale, fixed_probs = c(0.40, NA, NA),
+                     min_probs = c(NA, 0.15, 0.15), max_probs = c(NA, 0.85, 0.85),
+                     rescale_fixed = FALSE, rescale_limits = TRUE,
+                     rescale_factor = 4/3),
+    c(A = 0.4, B = 0.2, C = 0.4)
+  )
+
+  probs_best_rescale <- setNames(c(0.1, 0.15, 0.75), names(probs_best))
+  expect_equal(
+    tolerance = 10^-6,
+    reallocate_probs(probs_best_rescale, fixed_probs = c(0.40, NA, NA),
+                     min_probs = c(NA, 0.15, 0.15), max_probs = c(NA, 0.85, 0.85),
+                     rescale_fixed = TRUE, rescale_limits = FALSE, rescale_factor = 4/3),
+    c(A = 0.5333333, B = 0.15, C = 0.3166667)
+  )
+
+  # invalid combinations obtained by rescaling, but this is normalised
+  probs_best_rescale <- setNames(c(0.1, 0.9), c("A", "B"))
+  expect_equal(
+    tolerance = 10^-6,
+    reallocate_probs(probs_best_rescale, fixed_probs = c(0.40, NA),
+                     min_probs = c(NA, 0.25), max_probs = c(NA, 0.75),
+                     rescale_fixed = TRUE, rescale_limits = TRUE, rescale_factor = 4/2),
+    c(A = 0.6153846, B = 0.3846154)
+  )
+
+  probs_best_rescale <- setNames(c(0.1, 0.15, 0.75), names(probs_best))
+  expect_equal(
+    tolerance = 10^-6,
+    reallocate_probs(probs_best_rescale, fixed_probs = c(0.40, NA, NA),
+                     min_probs = c(NA, 0.15, 0.15), max_probs = c(NA, 0.85, 0.85),
+                     rescale_fixed = TRUE, rescale_limits = TRUE, rescale_factor = 4/3,
+                     rescale_ignore = 1),
+    c(A = 0.4, B = 0.2, C = 0.4)
+  )
 })

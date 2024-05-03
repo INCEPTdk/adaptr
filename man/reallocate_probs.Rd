@@ -10,7 +10,11 @@ reallocate_probs(
   min_probs,
   max_probs,
   soften_power = 1,
-  match_arm = NULL
+  match_arm = NULL,
+  rescale_fixed = FALSE,
+  rescale_limits = FALSE,
+  rescale_factor = 1,
+  rescale_ignore = NULL
 )
 }
 \arguments{
@@ -46,6 +50,18 @@ then no \emph{softening} is applied.}
 \item{match_arm}{index of the \code{control} arm. If not \code{NULL} (default), the
 control arm allocation probability will be similar to that of the best
 non-control arm. Must be \code{NULL} in designs without a common control arm.}
+
+\item{rescale_fixed}{logical indicating whether \code{fixed_probs} should be
+rescaled following arm dropping.}
+
+\item{rescale_limits}{logical indicating whether \code{min/max_probs} should be
+rescaled following arm dropping.}
+
+\item{rescale_factor}{numerical, rescale factor defined as
+\verb{initial number of arms/number of active arms}.}
+
+\item{rescale_ignore}{\code{NULL} or index of an arm that will be ignored by the
+\code{rescale_fixed} and \code{rescale_limits} arguments.}
 }
 \value{
 A named (according to the \code{arms}) numeric vector with updated

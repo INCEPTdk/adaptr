@@ -141,12 +141,12 @@
       * Futility: 75.0%
       * Inconclusive at max sample size: 0.0%
       * Selection probabilities: A: 0.0% | B: 0.0% | C: 25.0% | None: 75.0%
-      * RMSE: 0.02621
-      * RMSE treatment effect: 0.02309
+      * RMSE / MAE: 0.02621 / 0.01865
+      * RMSE / MAE treatment effect: 0.02309 / 0.02339
       * Ideal design percentage: 100.0%
       
       Simulation details:
-      * Simulation time: 0.73 secs
+      * Simulation time: 1.05 secs
       * Base random seed: 12345
       * Credible interval width: 95%
       * Number of posterior draws: 5000
@@ -175,12 +175,12 @@
       * Futility: 75.0%
       * Inconclusive at max sample size: 0.0%
       * Selection probabilities: A: 0.0% | B: 0.0% | C: 25.0% | None: 75.0%
-      * RMSE: 0.02621
-      * RMSE treatment effect: 0.02309
+      * RMSE / MAE: 0.02621 / 0.01865
+      * RMSE / MAE treatment effect: 0.02309 / 0.02339
       * Ideal design percentage: 100.0%
       
       Simulation details:
-      * Simulation time: 0.73 secs
+      * Simulation time: 1.05 secs
       * Base random seed: 12345
       * Credible interval width: 95%
       * Number of posterior draws: 5000

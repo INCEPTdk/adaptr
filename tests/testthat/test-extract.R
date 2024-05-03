@@ -29,6 +29,11 @@ test_that("Tidy results of simulations from binomial-outcome trial without commo
   expect_snapshot(extract_results(res, raw_ests = TRUE))
 })
 
+test_that("Selection works with practical equivalence and outcome-data lag works", {
+  res <- read_testdata("binom__results__3_arms__no_control__equivalence__stopping") # Sims with actual stopping for equivalence
+  expect_snapshot(extract_results(res, select_strategy = "best"))
+})
+
 test_that("Sequential and parallel extraction works similarly", {
   res <- read_testdata("binom__results__3_arms__common_control__equivalence__futility__softened")
   expect_identical(extract_results(res, cores = 1),

@@ -157,8 +157,10 @@ test_that("validate setup trial specifications", {
 test_that("setup/validate_trial functions errors on invalid inputs", {
   expect_error(validate_trial(arms = NULL))
   expect_error(validate_trial(arms = c("A", "A", "B")))
+  expect_error(validate_trial(arms = "A"))
   expect_error(validate_trial(arms = c(1, 2, 3), control = 1))
-  expect_error(validate_trial(arms = c("A", "B", "C"), control_prob_fixed = 0.4))
+  expect_error(validate_trial(arms = c("A", "B", "C"), control_prob_fixed = 0.4,
+                              data_looks = 1:5 * 100))
   expect_error(validate_trial(arms = c("A", "B", "C"), control = "A",
                               control_prob_fixed = "sqrt-based", start_probs = rep(1/3, 3)))
   expect_error(validate_trial(arms = c("A", "B", "C"), control = "A", control_prob_fixed = "sqrt-based fixed",
@@ -166,9 +168,9 @@ test_that("setup/validate_trial functions errors on invalid inputs", {
   expect_error(validate_trial(arms = c("A", "B", "C"), control = "A", control_prob_fixed = "sqrt-based start",
                               fixed_probs = rep(1/3, 3)))
   expect_error(validate_trial(arms = c("A", "B", "C"), control = "A", control_prob_fixed = "match",
-                              fixed_probs = c(0.3, 0.3, 0.4)))
-  expect_error(validate_trial(arms = c("A", "B", "C"), control = "A", control_prob_fixed = "match",
                               start_probs = c(0.3, 0.3, 0.4)))
+  expect_error(validate_trial(arms = c("A", "B", "C"), control = "A", control_prob_fixed = "match",
+                              fixed_probs = c(1/3, NA, NA), data_looks = 1:5 * 100))
 
   expect_error(validate_trial(arms = c("A", "B", "C"), start_probs = rep(0.25, 4)))
   expect_error(validate_trial(arms = 1:3, start_probs = rep(0.32, 3)))
@@ -180,6 +182,16 @@ test_that("setup/validate_trial functions errors on invalid inputs", {
                               min_probs = c(0.1, NA, NA)))
   expect_error(validate_trial(arms = 1:3, start_probs = c(0.5, 0.25, 0.25), min_probs = c(0.5, 0.1, 0.1),
                               max_probs = c(0.5, NA, NA)))
+
+  expect_error(validate_trial(arms = 1:3, rescale_probs = "invalid"))
+  expect_error(validate_trial(arms = 1:3, rescale_probs = c("fixed", "both")))
+  expect_error(validate_trial(arms = 1:2, rescale_probs = "both"))
+  expect_error(validate_trial(arms = 1:3, control = 1, control_prob_fixed = "sqrt-based fixed",
+                              rescale_probs = "fixed", data_looks = 1:5 * 100))
+  expect_error(validate_trial(arms = 1:3, rescale_probs = "fixed"))
+  expect_error(validate_trial(arms = 1:3, control = 1, control_prob_fixed = "sqrt-based",
+                              rescale_probs = "fixed"))
+  expect_error(validate_trial(arms = 1:3, rescale_probs = "limits"))
 
   expect_error(validate_trial(arms = 1:3, data_looks = c(100, 100, 200)))
   expect_error(validate_trial(arms = 1:3, data_looks = c(100, 200, 300), look_after_every = 100, max_n = 300))
@@ -255,6 +267,7 @@ test_that("setup/validate_trial functions errors on invalid inputs", {
                                  futility_prob = 0.9, futility_diff = 2, futility_only_first = TRUE))
 
   expect_error(setup_trial_norm(arms = 1:3, data_looks = 1:3 * 100, true_ys = 1:3, sds = -1))
+  expect_error(setup_trial_norm(arms = 1:3, data_looks = 1:3 * 100))
 
   expect_error(setup_trial_binom(arms = 1:3, max_n = 28.9, look_after_every = 1.23, true_ys = 1:3 * 0.1))
   expect_error(setup_trial_binom(arms = 1:3, true_ys = 1:3 * 0.1, data_looks = 100 / 3 * 1:3))

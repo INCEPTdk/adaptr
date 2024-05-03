@@ -18,9 +18,9 @@
 #'   `ratio_ys_p75`, `ratio_ys_p0`, `ratio_ys_p100`, `prob_conclusive`,
 #'   `prob_superior`, `prob_equivalence`, `prob_futility`, `prob_max`,
 #'   `prob_select_*` (with `*` being either "`arm_<name>` for all `arm` names or
-#'   `none`), `rmse`, `rmse_te`, and `idp`. All may be specified as above,
-#'   case sensitive, but with either spaces or underlines. Defaults to
-#'   `"size mean"`.
+#'   `none`), `rmse`, `rmse_te`, `mae`, `mae_te`, and `idp`. All may be
+#'   specified as above, case sensitive, but with either spaces or underlines.
+#'   Defaults to `"size mean"`.
 #' @param resolution single positive integer, the number of points calculated
 #'   and plotted, defaults to `100` and must be `>= 10`. Higher numbers lead to
 #'   smoother plots, but increases computation time. If the value specified is
@@ -98,7 +98,7 @@ plot_convergence <- function(object, metrics = "size mean", resolution = 100,
                      "ratio_ys_p0", "ratio_ys_p100", "prob_conclusive", "prob_superior",
                      "prob_equivalence", "prob_futility", "prob_max",
                      paste0("prob_select_", c(paste0("arm_", arms), "none")),
-                     "rmse", "rmse_te", "idp")
+                     "rmse", "rmse_te", "mae", "mae_te", "idp")
 
   # Validate metrics
   if (!isTRUE(is.character(metrics) & length(metrics) >= 1)) {
@@ -187,6 +187,8 @@ plot_convergence <- function(object, metrics = "size mean", resolution = 100,
                         prob_select_none = function(i) mean(is.na(extr_res$selected_arm[start_id:i])) * 100,
                         rmse = function(i) sqrt(mean(extr_res$sq_err[start_id:i], na.rm = TRUE)) %f|% NA,
                         rmse_te = function(i) sqrt(mean(extr_res$sq_err_te[start_id:i], na.rm = TRUE)) %f|% NA,
+                        mae = function(i) median(abs(extr_res$err[start_id:i]), na.rm = TRUE) %f|% NA,
+                        mae_te = function(i) median(abs(extr_res$err_te[start_id:i]), na.rm = TRUE) %f|% NA,
                         idp = function(i) calculate_idp(extr_res$selected_arm[start_id:i], arms, true_ys, highest_is_best) %f|% NA
       )
     }
@@ -221,6 +223,8 @@ plot_convergence <- function(object, metrics = "size mean", resolution = 100,
   metric_labels[metric_labels == "Idp"] <- "IDP (%)"
   metric_labels[metric_labels == "Rmse"] <- "RMSE"
   metric_labels[metric_labels == "Rmse te"] <- "RMSE TE"
+  metric_labels[metric_labels == "Mae"] <- "MAE"
+  metric_labels[metric_labels == "Mae te"] <- "MAE TE"
   metric_labels <- gsub("select ", "", metric_labels)
   plot_dta$labels <- factor(vapply_str(plot_dta$metric, function(l) metric_labels[which(l == valid_metrics)]),
                             levels = vapply_str(metrics, function(l) metric_labels[which(l == valid_metrics)]))
@@ -238,7 +242,7 @@ plot_convergence <- function(object, metrics = "size mean", resolution = 100,
       ggplot2::scale_y_continuous(name = plot_dta$labels[1])
   } else { # Multiple metrics plotted
     if (is.null(nrow) & is.null(ncol)) { # Set nrow if both nrow and ncol are NULL
-      nrow <- ceiling(sqrt(length(metrics)))
+      nrow <- ifelse(length(metrics) <= 3, length(metrics), ceiling(sqrt(length(metrics))))
     }
     p <- p +
       ggplot2::scale_y_continuous(name = NULL) +

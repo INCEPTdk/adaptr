@@ -14,6 +14,7 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
                            fixed_probs = NULL,
                            min_probs = rep(NA, length(arms)),
                            max_probs = rep(NA, length(arms)),
+                           rescale_probs = NULL,
                            data_looks = NULL,
                            max_n = NULL, look_after_every = NULL,
                            randomised_at_looks = NULL,
@@ -40,14 +41,17 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
   if (length(unique(arms)) != length(arms)) {
     stop0("All arms must have unique names.")
   }
+  if (n_arms < 2) {
+    stop0("Two or more arms required.")
+  }
 
   # If control_prob_fixed is set to a valid non-numeric value, then set according to that
+  control_prob_fixed_orig <- control_prob_fixed # Save original before editing
   if (!is.null(control_prob_fixed)) {
     if (is.null(control) | sum(control %in% arms) != 1) {
       stop0("control_prob_fixed is specified, but no single valid control is specified.")
     }
     if (isTRUE(length(control_prob_fixed) == 1 & control_prob_fixed %in% c("sqrt-based", "sqrt-based start", "sqrt-based fixed"))) {
-      control_prob_fixed_orig <- control_prob_fixed
       if (!is.null(start_probs)) {
         stop0("When control_prob_fixed is set to 'sqrt-based', 'sqrt-based start', ",
               "or 'sqrt-based fixed', start_probs must be NULL.")
@@ -164,6 +168,32 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
     stop0("fixed_probs or max_probs specified for all arms, but they sum to less than 1.")
   }
 
+  # Check validity of rescale_probs
+  if (!is.null(rescale_probs)) {
+    # Check validity of value
+    if (isTRUE(length(rescale_probs) == 1 & rescale_probs %in% c("fixed", "limits", "both"))) {
+      # Must be null for two-arm trials or if control_prob_fixed is "sqrt-based fixed"
+      if (n_arms == 2) {
+        stop0("rescale_probs must be NULL for trial specifications with 2 arms.")
+      } else if (isTRUE(control_prob_fixed_orig == "sqrt-based fixed")) {
+        stop0("rescale_probs must be NULL when control_prob_fixed is set to 'sqrt-based fixed'.")
+      }
+      # Valid values to be rescaled must be provided
+      if (rescale_probs %in% c("fixed", "both")) {
+        if (sum(!is.na(fixed_probs)) <= 0 + isTRUE(control_prob_fixed_orig %in% c("sqrt-based", "sqrt-based start")) ) {
+          stop0("rescale_probs is '", rescale_probs, "' but no fixed_probs that can be rescaled are specified.")
+        }
+      }
+      if (rescale_probs %in% c("limits", "both")) {
+        if (sum(!is.na(min_probs), !is.na(max_probs)) == 0) {
+          stop0("rescale_probs is '", rescale_probs, "' but no min_probs or max_probs that can be rescaled are specified.")
+        }
+      }
+    } else {
+      stop0("rescale_probs must be either NULL or 'fixed', 'limits' or 'both'.")
+    }
+  }
+
   # Check or setup data looks
   if (!is.null(data_looks)) { # data_looks is specified, validate that
     n_data_looks <- length(data_looks)
@@ -231,6 +261,10 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
         } else if (abs(fixed_probs[control_index] - control_prob_fixed[1]) > .Machine$double.eps^0.5) {
           stop0("When control_prob_fixed is specified and is not 'match', fixed_probs for ",
                 "the control arm must be set to the first value of control_prob_fixed.")
+        }
+      } else {
+        if (!is.na(fixed_probs[control_index])) {
+          stop0("When control_prob_fixed is 'match', no fixed_probs can be specified for the control arm.")
         }
       }
     }
@@ -407,6 +441,7 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
   trial_arms <- data.frame(arms, true_ys, start_probs, fixed_probs, min_probs, max_probs,
                            stringsAsFactors = FALSE)
   structure(list(trial_arms = trial_arms,
+                 rescale_probs = rescale_probs,
                  data_looks = data_looks,
                  max_n = max_n,
                  look_after_every = look_after_every,
@@ -482,6 +517,29 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #'   probabilities; higher probabilities will be rounded down to these values.
 #'   Must be `NA` (default for all arms) if no threshold is wanted and for arms
 #'   using fixed allocation probabilities.
+#' @param rescale_probs `NULL` (default) or one of either `"fixed"`, `"limits"`,
+#'   or `"both"`. Rescales `fixed_probs` (if `"fixed"` or `"both"`) and
+#'   `min_probs/max_probs` (if `"limits"` or `"both"`) after arm dropping in
+#'   trial specifications with `>2 arms` using a `rescale_factor` defined as
+#'   `initial number of arms/number of active arms`. `"fixed_probs` and
+#'   `min_probs` are rescaled as `initial value * rescale factor`, except for
+#'   `fixed_probs` controlled by the `control_prob_fixed` argument, which are
+#'   never rescaled. `max_probs` are rescaled as
+#'   `1 - ( (1 - initial value) * rescale_factor)`.\cr
+#'   Must be `NULL` if there are only `2 arms` or if `control_prob_fixed` is
+#'   `"sqrt-based fixed"`. If not `NULL`, one or more valid non-`NA` values must
+#'   be specified for either `min_probs/max_probs` or `fixed_probs` (not
+#'   counting a fixed value for the original `control` if `control_prob_fixed`
+#'   is `"sqrt-based"/"sqrt-based start"/"sqrt-based fixed"`).\cr
+#'   **Note:** using this argument and specific combinations of values in
+#'   the other arguments may lead to invalid combined (total) allocation
+#'   probabilities after arm dropping, in which case all probabilities will
+#'   ultimately be rescaled to sum to `1`. It is the responsibility of the user
+#'   to ensure that rescaling fixed allocation probabilities and minimum/maximum
+#'   allocation probability limits will not lead to invalid or unexpected
+#'   allocation probabilities after arm dropping.\cr
+#'   Finally, any initial values that are overwritten by the
+#'   `control_prob_fixed` argument after arm dropping will not be rescaled.
 #' @param data_looks vector of increasing integers, specifies when to conduct
 #'   adaptive analyses (= the total number of patients with available outcome
 #'   data at each adaptive analysis). The last number in the vector represents
@@ -522,10 +580,11 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #'   be set `NULL` (the default), in which case the control arm allocation
 #'   probability will not be fixed if control arms change (the allocation
 #'   probability for the first control arm may still be fixed using
-#'   `fixed_probs`). If not `NULL`, a vector of probabilities of either length
-#'   `1` or `number of arms - 1` can be provided, or one of the special
-#'   arguments `"sqrt-based"`, `"sqrt-based start"`, `"sqrt-based fixed"` or
-#'   `"match"`. See [setup_trial()] **Details** for details on how this affects
+#'   `fixed_probs`, but will not be 'reused' for the new control arm).\cr
+#'   If not `NULL`, a vector of probabilities of either length `1` or
+#'   `number of arms - 1` can be provided, or one of the special arguments
+#'   `"sqrt-based"`, `"sqrt-based start"`, `"sqrt-based fixed"` or `"match"`.\cr
+#'   See [setup_trial()] **Details** for details on how this affects
 #'   trial behaviour.
 #' @param inferiority single numeric value or vector of numeric values of the
 #'   same length as the maximum number of possible adaptive analyses, specifying
@@ -708,8 +767,8 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' user-specified functions (or uses objects defined by the user outside these
 #' functions or the [setup_trial()]-call) or functions from external packages
 #' and simulations are conducted on multiple cores, these objects or functions
-#' must be exported or prefixed with their namespaces, respectively, as
-#' described in [setup_cluster()] and [run_trials()].
+#' must be prefixed with their namespaces (i.e., `package::function()`) or
+#' exported, as described in [setup_cluster()] and [run_trials()].
 #'
 #' \strong{More information on arguments}
 #' - `control`: if one or more treatment arms are superior to the control arm
@@ -739,14 +798,17 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' scaled to sum to 1, which will generally increase power for comparisons
 #' against the common `control`, as discussed in, e.g., *Park et al, 2020*
 #' \doi{10.1016/j.jclinepi.2020.04.025}.\cr
-#' If `"sqrt-based"`, square-root-transformation-based allocation probabilities
-#' will also be used for new controls when arms are dropped. If
-#' `"sqrt-based start"`, the control arm will be fixed to this allocation
-#' probability at all times (also after arm dropping, with rescaling as
-#' necessary, as specified above). If `"sqrt-based fixed"` is chosen,
-#' square-root-transformation-based allocation probabilities will be used and
-#' all allocation probabilities will be fixed throughout the trial (with
-#' rescaling when arms are dropped).\cr
+#' If `"sqrt-based"` or `"sqrt-based fixed"`, square-root-transformation-based
+#' allocation probabilities will be used initially and also for new controls
+#' when arms are dropped (with probabilities always calculated based on the
+#' number of active non-control arms). If `"sqrt-based"`, response-adaptive
+#' randomisation will be used for non-control arms, while the non-control arms
+#' will use fixed, square-root based allocation probabilities at all times (with
+#' probabilities always calculated based on the number of active non-control
+#' arms). If `"sqrt-based start"`, the control arm allocation probability will
+#' be fixed to a square-root based probability at all times calculated according
+#' to the initial number of arms (with this probability also being used for new
+#' control(s) when the original control is dropped).\cr
 #' If `"match"` is specified, the control group allocation probability will
 #' always be *matched* to be similar to the highest non-control arm allocation
 #' probability.
@@ -892,6 +954,7 @@ setup_trial <- function(arms, true_ys, fun_y_gen = NULL, fun_draws = NULL,
                         start_probs = NULL, fixed_probs = NULL,
                         min_probs = rep(NA, length(arms)),
                         max_probs = rep(NA, length(arms)),
+                        rescale_probs = NULL,
                         data_looks = NULL,
                         max_n = NULL, look_after_every = NULL,
                         randomised_at_looks = NULL,
@@ -906,8 +969,9 @@ setup_trial <- function(arms, true_ys, fun_y_gen = NULL, fun_draws = NULL,
                         add_info = NULL) {
 
   validate_trial(arms = arms, true_ys = true_ys, start_probs = start_probs, fixed_probs = fixed_probs,
-                 min_probs = min_probs, max_probs = max_probs, data_looks = data_looks, max_n = max_n,
-                 look_after_every = look_after_every, randomised_at_looks = randomised_at_looks,
+                 min_probs = min_probs, max_probs = max_probs, rescale_probs = rescale_probs,
+                 data_looks = data_looks, max_n = max_n, look_after_every = look_after_every,
+                 randomised_at_looks = randomised_at_looks,
                  control = control, control_prob_fixed = control_prob_fixed, inferiority = inferiority,
                  superiority = superiority, equivalence_prob = equivalence_prob,
                  equivalence_diff = equivalence_diff, equivalence_only_first = equivalence_only_first,
@@ -974,6 +1038,7 @@ setup_trial_binom <- function(arms, true_ys, start_probs = NULL,
                               fixed_probs = NULL,
                               min_probs = rep(NA, length(arms)),
                               max_probs = rep(NA, length(arms)),
+                              rescale_probs = NULL,
                               data_looks = NULL,
                               max_n = NULL, look_after_every = NULL,
                               randomised_at_looks = NULL,
@@ -988,6 +1053,7 @@ setup_trial_binom <- function(arms, true_ys, start_probs = NULL,
                               description = "generic binomially distributed outcome trial") {
 
   # Validate specific arguments to trials with binary outcomes
+  if (missing(true_ys)) true_ys <- NULL # to avoid incorrect error
   if (!isFALSE(length(arms) != length(true_ys) | any(is.na(true_ys)) | any(true_ys > 1) | any(true_ys < 0) | !is.numeric(true_ys))) {
     stop0("true_ys must be a vector of the same length as the number of arms containing ",
           "values (event probabilities) between 0 and 1 with no missing values.")
@@ -995,8 +1061,9 @@ setup_trial_binom <- function(arms, true_ys, start_probs = NULL,
 
   # General setup and validation
   trial <- validate_trial(arms = arms, true_ys = true_ys, start_probs = start_probs, fixed_probs = fixed_probs,
-                          min_probs = min_probs, max_probs = max_probs, data_looks = data_looks, max_n = max_n,
-                          look_after_every = look_after_every, randomised_at_looks = randomised_at_looks,
+                          min_probs = min_probs, max_probs = max_probs, rescale_probs = rescale_probs,
+                          data_looks = data_looks, max_n = max_n, look_after_every = look_after_every,
+                          randomised_at_looks = randomised_at_looks,
                           control = control, control_prob_fixed = control_prob_fixed, inferiority = inferiority,
                           superiority = superiority, equivalence_prob = equivalence_prob,
                           equivalence_diff = equivalence_diff, equivalence_only_first = equivalence_only_first,
@@ -1091,6 +1158,7 @@ setup_trial_norm <- function(arms, true_ys, sds, start_probs = NULL,
                              fixed_probs = NULL,
                              min_probs = rep(NA, length(arms)),
                              max_probs = rep(NA, length(arms)),
+                             rescale_probs = NULL,
                              data_looks = NULL,
                              max_n = NULL, look_after_every = NULL,
                              randomised_at_looks = NULL,
@@ -1105,6 +1173,8 @@ setup_trial_norm <- function(arms, true_ys, sds, start_probs = NULL,
                              description = "generic normally distributed outcome trial") {
 
   # Validate specific arguments to generic continuous, normally distributed outcome trials
+  if (missing(true_ys)) true_ys <- NULL # to avoid incorrect error
+  if (missing(sds)) sds <- NULL # to avoid incorrect error
   if (!isFALSE(length(arms) != length(true_ys) | any(is.na(true_ys)) | !is.numeric(true_ys) |
                length(arms) != length(sds) | any(is.na(sds)) | !is.numeric(sds) | any(sds <= 0))) {
     stop0("true_ys and sds must be vectors of the same length as the number of arms and all sds must be > 0.")
@@ -1112,8 +1182,9 @@ setup_trial_norm <- function(arms, true_ys, sds, start_probs = NULL,
 
   # General setup and validation and return
   validate_trial(arms = arms, true_ys = true_ys, start_probs = start_probs, fixed_probs = fixed_probs,
-                 min_probs = min_probs, max_probs = max_probs, data_looks = data_looks, max_n = max_n,
-                 look_after_every = look_after_every, randomised_at_looks = randomised_at_looks,
+                 min_probs = min_probs, max_probs = max_probs, rescale_probs = rescale_probs,
+                 data_looks = data_looks, max_n = max_n, look_after_every = look_after_every,
+                 randomised_at_looks = randomised_at_looks,
                  control = control, control_prob_fixed = control_prob_fixed, inferiority = inferiority,
                  superiority = superiority, equivalence_prob = equivalence_prob,
                  equivalence_diff = equivalence_diff, equivalence_only_first = equivalence_only_first,

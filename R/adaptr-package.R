@@ -1,9 +1,5 @@
 #' adaptr: Adaptive Trial Simulator
 #'
-#' @docType package
-#' @name adaptr-package
-#' @aliases adaptr
-#'
 #' @description
 #' \if{html}{
 #'   \figure{adaptr.png}{options: width="120" alt="logo"}
@@ -76,6 +72,16 @@
 #'
 #' [GitHub repository](https://github.com/INCEPTdk/adaptr/)
 #'
+#' **Examples of studies using `adaptr`:**
+#'
+#' Granholm A, Lange T, Harhay MO, Jensen AKG, Perner A, Møller MH, Kaas-Hansen
+#' BS (2023). Effects of duration of follow-up and lag in data collection on the
+#' performance of adaptive clinical trials. Pharm Stat. \doi{10.1002/pst.2342}
+#'
+#' Granholm A, Lange T, Harhay MO, Perner A, Møller MH, Kaas-Hansen BS (2024).
+#' Effects of sceptical priors on the performance of adaptive clinical trials
+#' with binary outcomes. Pharm Stat. \doi{10.1002/pst.2387}
+#'
 #'
 #' @seealso
 #' [setup_cluster()], [setup_trial()], [setup_trial_binom()],
@@ -84,4 +90,4 @@
 #' [check_remaining_arms()], [plot_convergence()], [plot_metrics_ecdf()],
 #' [print()], [plot_status()], [plot_history()].
 #'
-NULL
+"_PACKAGE"

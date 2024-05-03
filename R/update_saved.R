@@ -36,12 +36,14 @@
 #' The following changes are made according to the version of `adaptr` used to
 #' generate the original `"trial_results"` object:
 #'   \itemize{
-#'     \item `v1.2.0+`: only updates the version number.
+#'     \item `v1.2.0+`: updates version number and the `reallocate_probs`
+#'       argument in the embedded trial specification.
 #'     \item `v1.1.1 or earlier`: updates version number and everything related
 #'       to follow-up and data collection lag (in these versions, the
 #'       `randomised_at_looks` argument in the [setup_trial()] functions did not
 #'       exist, but for practical purposes was identical to the number of
-#'       patients with available data at each look).
+#'       patients with available data at each look) and the `reallocate_probs`
+#'       argument in the embedded trial specification.
 #'    }
 #'
 #' @return Invisibly returns the updated `"trial_results"`-object.
@@ -69,7 +71,8 @@ update_saved_trials <- function(path, version = NULL, compress = TRUE) {
 
     # Update the trial_spec-part of the object, re-arrange order of objects, set class
     object$trial_spec$randomised_at_looks <- object$trial_spec$data_looks
-    object$trial_spec <- object$trial_spec[c("trial_arms", "data_looks", "max_n", "look_after_every",
+    object$trial_spec <- c(object$trial_spec, list(rescale_probs = NULL))
+    object$trial_spec <- object$trial_spec[c("trial_arms", "rescale_probs", "data_looks", "max_n", "look_after_every",
                                              "n_data_looks", "randomised_at_looks", "control", "control_prob_fixed",
                                              "inferiority", "superiority", "equivalence_prob", "equivalence_diff",
                                              "equivalence_only_first", "futility_prob", "futility_diff", "futility_only_first",
@@ -119,8 +122,112 @@ update_saved_trials <- function(path, version = NULL, compress = TRUE) {
       class(object$trial_results[[i]]) <- c("trial_result", "list")
     }
   } else if (.adaptr_version >= "1.2.0") {
-    # Only update the version number in the saved object
+    # Update the trial_spec-part of the object, re-arrange order of objects, set class
+    object$trial_spec <- c(object$trial_spec, list(rescale_probs = NULL))
+    object$trial_spec <- object$trial_spec[c("trial_arms", "rescale_probs", "data_looks", "max_n", "look_after_every",
+                                             "n_data_looks", "randomised_at_looks", "control", "control_prob_fixed",
+                                             "inferiority", "superiority", "equivalence_prob", "equivalence_diff",
+                                             "equivalence_only_first", "futility_prob", "futility_diff", "futility_only_first",
+                                             "highest_is_best", "soften_power", "best_arm", "cri_width", "n_draws", "robust",
+                                             "description", "add_info", "fun_y_gen", "fun_draws", "fun_raw_est")]
+    class(object$trial_spec) <- c("trial_spec", "list")
+
+    # Updated the version number
     object$adaptr_version <- .adaptr_version
+  }
+  # Save and return invisibly
+  if (save_object) {
+    saveRDS(object, file = path, version = version, compress = compress)
+  }
+  invisible(object)
+}
+
+
+
+#' Update previously saved calibration result
+#'
+#' This function updates a previously saved `"trial_calibration"`-object created
+#' and saved by [calibrate_trial()] using a previous version of `adaptr`,
+#' including the embedded trial specification and trial results objects
+#' (internally using the [update_saved_trials()] function). This allows the
+#' use of calibration results, including the calibrated trial specification and
+#' the best simulations results from the calibration process, to be used without
+#' errors by this version of the package. The function should be run only once
+#' per saved simulation object and will issue a warning if the object is already
+#' up to date. And overview of the changes made according to the `adaptr` package
+#' version used to generate the original object is provided in **Details**.\cr
+#'
+#' @param path single character; the path to the saved
+#'   `"trial_calibration"`-object containing the calibration result saved by
+#'   [calibrate_trial()].
+#' @param version passed to [saveRDS()] when saving the updated object, defaults
+#'   to `NULL` (as in [saveRDS()]), which means that the current default version
+#'   is used.
+#' @param compress passed to [saveRDS()] when saving the updated object,
+#'   defaults to `TRUE` (as in [saveRDS()]), see [saveRDS()] for other options.
+#'
+#' @details
+#'
+#' The following changes are made according to the version of `adaptr` used to
+#' generate the original `"trial_calibration"` object:
+#'   \itemize{
+#'     \item `v1.3.0+`: updates version number of the
+#'       `"trial_calibration"`-object and updates the embedded
+#'       `"trial_results"`-object (saved in `$best_sims`, if any) and
+#'       `"trial_spec"`-objects (saved in `$input_trial_spec` and
+#'       `$best_trial_spec`) as described in [update_saved_trials()].
+#'    }
+#'
+#' @return Invisibly returns the updated `"trial_calibration"`-object.
+#'
+#' @export
+#'
+#' @seealso
+#' [run_trials()].
+#'
+update_saved_calibration <- function(path, version = NULL, compress = TRUE) {
+  # Check if file exists at path
+  if (!file.exists(path)) stop0("path must be a valid path to a trial_calibration-object.")
+  object <- readRDS(path)
+  if (!inherits(object, "trial_calibration")) {
+    stop0("path must lead to a valid trial_calibration-object previously saved by calibrate_trial().")
+  }
+  prev_version <- object$adaptr_version
+  save_object <- TRUE
+  if (isTRUE(!is.null(prev_version) & prev_version == .adaptr_version)) { # Already up-to-date
+    save_object <- FALSE
+    warning0("path leads to a trial_calibration-object that is already up to date; object not updated.")
+  } else { # Currently, the same is done for all previous versions - update later if required
+
+    # Update overall object
+    object$adaptr_version <- .adaptr_version
+
+    # Update the input and updated trial specifications
+    # Only contents changed after calibration introduced updated
+    if (!"rescale_probs" %in% names(object$input_trial_spec)) { # if rescale_probs is missing, add to both
+      object$input_trial_spec <- c(object$input_trial_spec, list(rescale_probs = NULL))
+      object$best_trial_spec <- c(object$best_trial_spec, list(rescale_probs = NULL))
+      list_order <- c("trial_arms", "rescale_probs", "data_looks", "max_n", "look_after_every",
+                      "n_data_looks", "randomised_at_looks", "control", "control_prob_fixed",
+                      "inferiority", "superiority", "equivalence_prob", "equivalence_diff",
+                      "equivalence_only_first", "futility_prob", "futility_diff", "futility_only_first",
+                      "highest_is_best", "soften_power", "best_arm", "cri_width", "n_draws", "robust",
+                      "description", "add_info", "fun_y_gen", "fun_draws", "fun_raw_est")
+      object$input_trial_spec <- object$input_trial_spec[list_order]
+      class(object$input_trial_spec) <- c("trial_spec", "list")
+      object$best_trial_spec <- object$best_trial_spec[list_order]
+      class(object$best_trial_spec) <- c("trial_spec", "list")
+    }
+
+    # Updated a saved results object if any (not saved if new simulations not necessary for calibration)
+    if (!is.null(object$best_sims)) {
+      # Save in a temporary file to allow updated_saved_trials to update it
+      tmp_file <- tempfile()
+      on.exit(try(file.remove(tmp_file)), add = TRUE, after = FALSE)
+      saveRDS(object$best_sims, file = tmp_file, version = version, compress = compress)
+      object$best_sims <- update_saved_trials(tmp_file, version = version, compress = compress)
+    }
+
   }
   # Save and return invisibly
   if (save_object) {

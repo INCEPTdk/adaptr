@@ -23,11 +23,11 @@
 #'     `ratio_ys_p0`, `ratio_ys_p100`, `prob_conclusive`, `prob_superior`,
 #'     `prob_equivalence`, `prob_futility`, `prob_max`, `prob_select_*` (with
 #'     `*` being either "`arm_<name>` for all `arm` names or `none`), `rmse`,
-#'     `rmse_te`, and `idp`: performance metrics as described in
-#'     [check_performance()]. Note that all `sum_ys_` and `ratio_ys_` measures
-#'     use outcome data from all randomised patients, regardless of whether they
-#'     had outcome data available at the last analysis or not, as described in
-#'     [extract_results()].
+#'     `rmse_te`, `mae`, `mae_te`, and `idp`: performance metrics as described
+#'     in [check_performance()]. Note that all `sum_ys_` and `ratio_ys_`
+#'     measures use outcome data from all randomised patients, regardless of
+#'     whether they had outcome data available at the last analysis or not, as
+#'     described in [extract_results()].
 #'   \item `select_strategy`, `select_last_arm`, `select_preferences`,
 #'     `te_comp`, `raw_ests`, `final_ests`, `restrict`: as specified above.
 #'   \item `control`: the control arm specified by [setup_trial()],

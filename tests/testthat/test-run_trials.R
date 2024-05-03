@@ -43,6 +43,20 @@ test_that("single trial simulation works", {
   )
   expect_snapshot(run_trial(setup_equi_futil_only_first, seed = 12345))
 
+  # Check that trial with rescaled probabilities works
+  setup_rescale_probs <- setup_trial_binom(
+    arms = c("A", "B", "C"),
+    control = "B",
+    start_probs = c(0.4, 0.3, 0.3),
+    fixed_probs = c(0.4, NA, NA),
+    min_probs = c(NA, 0.15, 0.15),
+    max_probs = c(NA, 0.85, 0.85),
+    rescale_probs = "both",
+    true_ys = c(0.2, 0.15, 0.3),
+    data_looks = seq(from = 500, to = 2000, by = 500)
+  )
+  expect_snapshot(run_trial(setup_rescale_probs, seed = 12345))
+
   # Check that seed is unchanged
   expect_identical(oldseed, get(".Random.seed", envir = globalenv()))
 })

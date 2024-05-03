@@ -41,7 +41,7 @@ test_that("calibrate_trial works", {
   expect_identical(oldseed, get(".Random.seed", envir = globalenv()))
 })
 
-test_that("calibrate_trial errors/warns/messages correctly", {
+test_that("calibrate_trial errors/warns correctly", {
   spec <- setup_trial_binom(arms = 1:2, true_ys = rep(0.35, 2), data_looks = 500 * 1:5)
 
   err_spec <- spec
@@ -132,4 +132,11 @@ test_that("calibrate_trial errors/warns/messages correctly", {
                     # starting with prev x and prev y just to check
                     prev_x = 1, prev_y = 0,
                     path = tmp_file)))
+})
+
+
+test_that("calibrate_trial messages correctly", {
+  spec <- suppressWarnings(setup_trial_binom(arms = 1:2, true_ys = rep(0.35, 2), data_looks = 100, n_draws = 100))
+  expect_message(calibrate_trial(spec, target = 1, tol = 1))
+  expect_message(calibrate_trial(spec, target = 1, tol = 1, base_seed = 123, n_rep = 100))
 })

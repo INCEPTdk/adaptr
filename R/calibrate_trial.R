@@ -555,11 +555,16 @@ calibrate_trial <- function(
   # Check if a previous version should be loaded and returned (only if overwrite is FALSE)
   if (ifelse(!is.null(path) & !overwrite, file.exists(path), FALSE)) {
     prev <- readRDS(path)
-    # Compare previous/current trial_specs
+    # Compare previous/current objects
     prev_spec_nofun <- prev$input_trial_spec
     spec_nofun <- trial_spec
     prev_spec_nofun$fun_y_gen <- prev_spec_nofun$fun_draws <- prev_spec_nofun$fun_raw_est <- spec_nofun$fun_y_gen <- spec_nofun$fun_draws <- spec_nofun$fun_raw_est <- NULL
-    if (!isTRUE(all.equal(prev_spec_nofun, spec_nofun)) |
+    # Compare
+    if ((prev$adaptr_version != .adaptr_version)) { # Check version
+      stop0("The object in path was created by a previous version of adaptr and ",
+            "cannot be used by this version of adaptr unless the object is updated. ",
+            "Type 'help(\"update_saved_calibration\")' for help on updating.")
+    } else if (!isTRUE(all.equal(prev_spec_nofun, spec_nofun)) | # Check spec besides version
         !equivalent_funs(prev$input_trial_spec$fun_y_gen, trial_spec$fun_y_gen) |
         !equivalent_funs(prev$input_trial_spec$fun_draws, trial_spec$fun_draws) |
         !equivalent_funs(prev$input_trial_spec$fun_raw_est, trial_spec$fun_raw_est)) {
@@ -577,10 +582,6 @@ calibrate_trial <- function(
     } else if (!equivalent_funs(fun, prev$fun)){
       stop0("The calibration function (argument 'fun') in the object in path ",
             "is different from the current calibration function.")
-    } else if ((prev$adaptr_version != .adaptr_version)) { # Check version
-      # Included for future use - later, stopping will only be needed when
-      # differences in behaviour of the used functions are required
-      stop0("the object in path was created by a previous version of adaptr.")
     }
     if (verbose) {
       message(paste0(

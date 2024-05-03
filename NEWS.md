@@ -1,3 +1,64 @@
+# adaptr 1.4.0
+
+This is a minor release implementing new functionality, and including bug fixes,
+updates to documentation, argument checking and test coverage.
+
+### New features and major changes:
+
+*   Added the `rescale_probs` argument to the `setup_trial()` family of
+    functions, allowing automatic rescaling of fixed allocation probabilities
+    and or minimum/maximum allocation probability limits when arms are dropped
+    in simulations of trial designs with `>2 arms`.
+    
+*   The `extract_results()` function now also returns errors for each simulation
+    (in addition to squared errors) and the `check_performance()`,
+    `plot_convergence()`, and `summary()` functions (including their `print()`
+    methods) now calculate and present median absolute errors (in addition to
+    root mean squared errors).
+    
+*   The `plot_metrics_ecdf()` function now supports plotting errors (raw,
+    squared, and absolute), and now takes the necessary additional arguments
+    passed to `extract_results()` used for arm selection in simulated trials not
+    stopped for superiority.
+    
+*   Added the `update_saved_calibration()` function to update calibrated trial
+    objects (including embedded trial specifications and results) saved by the
+    `calibrate_trial()` function using previous versions of the package.
+    
+*   Rewritten README and 'Overview' vignette to better reflect the typical usage
+    and workflow.
+    
+### Minor changes and bug fixes:
+    
+*   The `setup_trial()` family of functions now stops with an error if less than
+    two `arms` are provided.
+    
+*   The `setup_trial()` family of functions now stops with an error if
+    `control_prob_fixed` is `"match"` and `fixed_probs` is provided for the
+    common control arm.
+    
+*   Improved error message when `true_ys`-argument is missing in
+    `setup_trial_binom()` or when `true_ys`- or `sds`-argument is missing in
+    `setup_trial_norm()`.
+    
+*   Changed the number of rows used in `plot_convergence()` and `plot_status()`
+    if the total number of plots is `<= 3` and `nrow` and `ncol` are `NULL`.
+    
+*   Fixed a bug in `extract_results()` (and thus all functions relying on it),
+    causing arm selection in inconclusive trial simulations to error when
+    stopped for practical equivalence and more simulated patients were
+    randomised than included in the last analysis.
+    
+*   Improved test coverage.
+
+*   Minor edits and clarification to package documentation.
+
+*   Added references to two open access articles (with code) of simulation
+    studies using `adaptr` to assess the performance of adaptive clinical trials
+    according to different follow-up/data collection lags
+    (<https://doi.org/10.1002/pst.2342>) and different sceptical priors
+    (<https://doi.org/10.1002/pst.2387>)
+
 # adaptr 1.3.2
 
 This is a patch release with bug fixes and documentation updates.

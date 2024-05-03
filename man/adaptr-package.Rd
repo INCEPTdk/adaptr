@@ -2,8 +2,8 @@
 % Please edit documentation in R/adaptr-package.R
 \docType{package}
 \name{adaptr-package}
-\alias{adaptr-package}
 \alias{adaptr}
+\alias{adaptr-package}
 \title{adaptr: Adaptive Trial Simulator}
 \description{
 \if{html}{
@@ -76,6 +76,16 @@ trials. J Clin Epidemiol. \doi{10.1016/j.jclinepi.2022.11.002}
 \href{https://inceptdk.github.io/adaptr/}{Website/manual}
 
 \href{https://github.com/INCEPTdk/adaptr/}{GitHub repository}
+
+\strong{Examples of studies using \code{adaptr}:}
+
+Granholm A, Lange T, Harhay MO, Jensen AKG, Perner A, Møller MH, Kaas-Hansen
+BS (2023). Effects of duration of follow-up and lag in data collection on the
+performance of adaptive clinical trials. Pharm Stat. \doi{10.1002/pst.2342}
+
+Granholm A, Lange T, Harhay MO, Perner A, Møller MH, Kaas-Hansen BS (2024).
+Effects of sceptical priors on the performance of adaptive clinical trials
+with binary outcomes. Pharm Stat. \doi{10.1002/pst.2387}
 }
 \seealso{
 \code{\link[=setup_cluster]{setup_cluster()}}, \code{\link[=setup_trial]{setup_trial()}}, \code{\link[=setup_trial_binom]{setup_trial_binom()}},
@@ -83,4 +93,19 @@ trials. J Clin Epidemiol. \doi{10.1016/j.jclinepi.2022.11.002}
 \code{\link[=extract_results]{extract_results()}}, \code{\link[=check_performance]{check_performance()}}, \code{\link[=summary]{summary()}},
 \code{\link[=check_remaining_arms]{check_remaining_arms()}}, \code{\link[=plot_convergence]{plot_convergence()}}, \code{\link[=plot_metrics_ecdf]{plot_metrics_ecdf()}},
 \code{\link[=print]{print()}}, \code{\link[=plot_status]{plot_status()}}, \code{\link[=plot_history]{plot_history()}}.
+}
+\author{
+\strong{Maintainer}: Anders Granholm \email{andersgran@gmail.com} (\href{https://orcid.org/0000-0001-5799-7655}{ORCID})
+
+Authors:
+\itemize{
+  \item Benjamin Skov Kaas-Hansen \email{epiben@hey.com} (\href{https://orcid.org/0000-0003-1023-0371}{ORCID})
+}
+
+Other contributors:
+\itemize{
+  \item Aksel Karl Georg Jensen \email{akje@sund.ku.dk} (\href{https://orcid.org/0000-0002-1459-0465}{ORCID}) [contributor]
+  \item Theis Lange \email{thlan@sund.ku.dk} (\href{https://orcid.org/0000-0001-6807-8347}{ORCID}) [contributor]
+}
+
 }
