@@ -125,7 +125,7 @@ function, which defaults to calibrate constant, symmetrical stopping rules
 for inferiority and superiority (expecting a trial specification with
 identical outcomes in each arm), but can be used to calibrate any parameter in a
 trial specification towards any performance metric if a user-defined calibration
-functio (`fun`) is specified.
+function (`fun`) is specified.
 
 To perform the calibration, a `target` value, a `search_range`, a tolerance
 value (`tol`), and the allowed direction of the tolerance value (`dir`) must be

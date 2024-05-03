@@ -25,7 +25,7 @@ updates to documentation, argument checking and test coverage.
     objects (including embedded trial specifications and results) saved by the
     `calibrate_trial()` function using previous versions of the package.
     
-*   Rewritten README and 'Overview' vignette to better reflect the typicalusage
+*   Rewritten README and 'Overview' vignette to better reflect the typical usage
     and workflow.
     
 ### Minor changes and bug fixes:

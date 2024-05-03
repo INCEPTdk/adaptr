@@ -63,9 +63,9 @@ calculate_idp <- function(sels, arms, true_ys, highest_is_best) {
 #'   SDs), `"err_mad"` (bootstrapped MAD-SDs, as described in [setup_trial()]
 #'   and [stats::mad()]), `"lo_ci"`, and `"hi_ci"`, the latter two corresponding
 #'   to the lower/upper limits of the percentile-based bootstrapped confidence
-#'   intervals. Bootstrap estimates are **not** calculated for the mininum
+#'   intervals. Bootstrap estimates are **not** calculated for the minimum
 #'   (`_p0`) and maximum values (`_p100`) of `size`, `sum_ys`, and `ratio_ys`,
-#'   as non-parametric bootstrapping for mininum/maximum values is not
+#'   as non-parametric bootstrapping for minimum/maximum values is not
 #'   sensible - bootstrap estimates for these values will be `NA`.\cr
 #'   The following performance metrics are calculated:
 #' \itemize{

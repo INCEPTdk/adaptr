@@ -152,9 +152,9 @@ following four columns if \code{uncertainty = TRUE}: \code{"err_sd"}(bootstrappe
 SDs), \code{"err_mad"} (bootstrapped MAD-SDs, as described in \code{\link[=setup_trial]{setup_trial()}}
 and \code{\link[stats:mad]{stats::mad()}}), \code{"lo_ci"}, and \code{"hi_ci"}, the latter two corresponding
 to the lower/upper limits of the percentile-based bootstrapped confidence
-intervals. Bootstrap estimates are \strong{not} calculated for the mininum
+intervals. Bootstrap estimates are \strong{not} calculated for the minimum
 (\verb{_p0}) and maximum values (\verb{_p100}) of \code{size}, \code{sum_ys}, and \code{ratio_ys},
-as non-parametric bootstrapping for mininum/maximum values is not
+as non-parametric bootstrapping for minimum/maximum values is not
 sensible - bootstrap estimates for these values will be \code{NA}.\cr
 The following performance metrics are calculated:
 \itemize{

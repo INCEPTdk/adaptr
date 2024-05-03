@@ -348,7 +348,7 @@ setup_trial_binom(
 )
 ```
 
-### Example 9: minimum allocation probabilities rescaled whn arms are dropped
+### Example 9: minimum allocation probabilities rescaled when arms are dropped
 
 In this example, a trial design with four arms and restricted RAR (minimum
 allocation limits) is specified, with additional specification that the minimum
