@@ -1,3 +1,7 @@
+# adaptr (development version)
+
+No changes yet.
+
 # adaptr 1.4.0
 
 This is a minor release implementing new functionality, and including bug fixes,
