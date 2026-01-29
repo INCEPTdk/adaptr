@@ -37,6 +37,13 @@ the Basic examples vignette (see `vignette("Basic-examples", "adaptr")`) with
 more basic examples using the simplified `setup_trial_binom()` function and a
 thorough discussion of the settings applicable to all trial designs.
 
+In addition to this vignette, a detailed tutorial on how to design and
+evaluate Bayesian advanced adaptive clinical trials can be found in the open
+access article
+*"[Designing and Evaluating Bayesian Advanced Adaptive Randomised Clinical Trials: A Practical Guide](https://doi.org/10.1002/pst.70042)"*
+available in Pharmaceutical Statistics. The supporting information (appendices)
+for this article contains additional advanced examples.
+
 ## Preamble
 
 In this example, we set up a trial with three `arms`, one of which is a common
@@ -122,7 +129,7 @@ To illustrate how the function works, we first generate random allocations for
 allocations are printed:
 
 ```{r}
-(allocs <- sample(c("Control", "Experimental arm A", "Experimental arm  B"),
+(allocs <- sample(c("Control", "Experimental arm A", "Experimental arm B"),
                   size = 50, replace = TRUE))
 ```
 

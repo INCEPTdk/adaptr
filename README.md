@@ -24,31 +24,40 @@ grant from [Sygeforsikringen “danmark”](https://www.sygeforsikring.dk/).
 
 ## Resources
 
--   [Website](https://inceptdk.github.io/adaptr/) - stand-alone website
-    with full package documentation
--   [adaptr: an R package for simulating and comparing adaptive clinical
-    trials](https://doi.org/10.21105/joss.04284) - article in the
-    Journal of Open Source Software describing the package
--   [An overview of methodological considerations regarding adaptive
-    stopping, arm dropping and randomisation in clinical
-    trials](https://doi.org/10.1016/j.jclinepi.2022.11.002) - article in
-    Journal of Clinical Epidemiology describing key methodological
-    considerations in adaptive trials with description of the workflow
-    and a simulation-based example using the package
+- [Website](https://inceptdk.github.io/adaptr/) - stand-alone website
+  with full package documentation
+- [Designing and Evaluating Bayesian Advanced Adaptive Randomised
+  Clinical Trials: A Practical
+  Guide](https://doi.org/10.1002/pst.70042) - tutorial article in
+  Pharmaceutical Statistical providing an extensive introduction to the
+  package and the workflow of using it to design and evaluate Bayesian
+  advanced adaptive trials
+- [adaptr: an R package for simulating and comparing adaptive clinical
+  trials](https://doi.org/10.21105/joss.04284) - article in the Journal
+  of Open Source Software describing the package
+- [An overview of methodological considerations regarding adaptive
+  stopping, arm dropping and randomisation in clinical
+  trials](https://doi.org/10.1016/j.jclinepi.2022.11.002) - article in
+  Journal of Clinical Epidemiology describing key methodological
+  considerations in adaptive trials with description of the workflow and
+  a simulation-based example using the package
 
 **Examples:**
 
--   [Effects of duration of follow-up and lag in data collection on the
-    performance of adaptive clinical
-    trials](https://doi.org/10.1002/pst.2342) - article in
-    Pharmaceutical Statistics describing a simulation study (with code)
-    using `adaptr` to assess the performance of adaptive clinical trials
-    according to different follow-up/data collection lags.
--   [Effects of sceptical priors on the performance of adaptive clinical
-    trials with binary outcomes](https://doi.org/10.1002/pst.2387) -
-    article in Pharmaceutical Statistics describing a simulation study
-    (with code) using `adaptr` to assess the performance of adaptive
-    clinical trials according to different sceptical priors.
+- [Effects of duration of follow-up and lag in data collection on the
+  performance of adaptive clinical
+  trials](https://doi.org/10.1002/pst.2342) - article in Pharmaceutical
+  Statistics describing a simulation study (with code) using `adaptr` to
+  assess the performance of adaptive clinical trials according to
+  different follow-up/data collection lags.
+- [Effects of sceptical priors on the performance of adaptive clinical
+  trials with binary outcomes](https://doi.org/10.1002/pst.2387) -
+  article in Pharmaceutical Statistics describing a simulation study
+  (with code) using `adaptr` to assess the performance of adaptive
+  clinical trials according to different sceptical priors.
+- For examples of actual trials designed end evaluated using `adaptr`,
+  see [INCEPT](https://www.incept.dk) and
+  [EMPRESS](https://www.cric.nu/empress).
 
 ## Installation
 
@@ -81,7 +90,7 @@ computing:
 
 ``` r
 library(adaptr)
-#> Loading 'adaptr' package v1.4.0.
+#> Loading 'adaptr' package v1.4.0.9000.
 #> For instructions, type 'help("adaptr")'
 #> or see https://inceptdk.github.io/adaptr/.
 
@@ -196,7 +205,7 @@ calibrated_binom_trial
 #> Calibration/simulation details:
 #> * Total evaluations: 7 (previous + grid + iterations)
 #> * Repetitions: 1000
-#> * Calibration time: 3.66 mins
+#> * Calibration time: 4.54 mins
 #> * Base random seed: 4131
 #> 
 #> See 'help("calibrate_trial")' for details.
@@ -318,7 +327,7 @@ print(binom_trial_summary)
 #> * Ideal design percentage: not estimable
 #> 
 #> Simulation details:
-#> * Simulation time: 33.1 secs
+#> * Simulation time: 44.6 secs
 #> * Base random seed: 4131
 #> * Credible interval width: 95%
 #> * Number of posterior draws: 5000
@@ -348,7 +357,7 @@ plot_convergence(
 )
 ```
 
-<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-9-1.png" alt="" width="100%" />
 
 The empirical cumulative distribution functions for continuous
 performance metrics may also be visualised:
@@ -360,7 +369,7 @@ plot_metrics_ecdf(
 )
 ```
 
-<img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-10-1.png" alt="" width="100%" />
 
 The status probabilities for the overall trial (or for specific arms)
 according to trial progress can be visualised using the `plot_status()`
@@ -374,7 +383,7 @@ plot_status(
 )
 ```
 
-<img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-11-1.png" alt="" width="100%" />
 
 Finally, various metrics may be summarised over the progress of one or
 multiple trial simulations using the `plot_history()` function, which
@@ -477,7 +486,7 @@ be visualised:
 plot_status(binom_trial_diff_sims, x_value = "total n")
 ```
 
-<img src="man/figures/README-unnamed-chunk-14-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-14-1.png" alt="" width="100%" />
 
 ## Issues and enhancements
 
@@ -493,19 +502,19 @@ motivate it in an [issue](https://github.com/INCEPTdk/adaptr/issues).
 
 Changes to the code base should follow these steps:
 
--   [Fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo)
-    the repository
--   [Make a
-    branch](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-and-deleting-branches-within-your-repository)
-    with an appropriate name in your fork
--   Implement changes in your fork, make sure it passes R CMD check
-    (with neither errors, warnings, nor notes) and add a bullet at the
-    top of NEWS.md with a short description of the change, your GitHub
-    handle and the id of the pull request implementing the change (check
-    the `NEWS.md` file to see the formatting)
--   Create a [pull
-    request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork)
-    into the `dev` branch of `adaptr`
+- [Fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo)
+  the repository
+- [Make a
+  branch](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-and-deleting-branches-within-your-repository)
+  with an appropriate name in your fork
+- Implement changes in your fork, make sure it passes R CMD check (with
+  neither errors, warnings, nor notes) and add a bullet at the top of
+  NEWS.md with a short description of the change, your GitHub handle and
+  the id of the pull request implementing the change (check the
+  `NEWS.md` file to see the formatting)
+- Create a [pull
+  request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork)
+  into the `dev` branch of `adaptr`
 
 ## Citation
 
@@ -513,7 +522,6 @@ If you use the package, please consider citing it:
 
 ``` r
 citation(package = "adaptr")
-#> 
 #> To cite package 'adaptr' in publications use:
 #> 
 #>   Granholm A, Jensen AKG, Lange T, Kaas-Hansen BS (2022). adaptr: an R
@@ -521,17 +529,12 @@ citation(package = "adaptr")
 #>   Journal of Open Source Software, 7(72), 4284. URL
 #>   https://doi.org/10.21105/joss.04284.
 #> 
-#> A BibTeX entry for LaTeX users is
+#>   Granholm A, Jensen AKG, Lange T, Perner A, Møller MH, Kaas-Hansen BS
+#>   (2025). Designing and Evaluating Bayesian Advanced Adaptive
+#>   Randomised Clinical Trials: A Practical Guide. Pharmaceutical
+#>   Statistics, 24(6), e70042. URL https://doi.org/10.1002/pst.70042.
 #> 
-#>   @Article{,
-#>     title = {{adaptr}: an R package for simulating and comparing adaptive clinical trials},
-#>     author = {Anders Granholm and Aksel Karl Georg Jensen and Theis Lange and Benjamin Skov Kaas-Hansen},
-#>     journal = {Journal of Open Source Software},
-#>     year = {2022},
-#>     volume = {7},
-#>     number = {72},
-#>     pages = {4284},
-#>     url = {https://doi.org/10.21105/joss.04284},
-#>     doi = {10.21105/joss.04284},
-#>   }
+#> To see these entries in BibTeX format, use 'print(<citation>,
+#> bibtex=TRUE)', 'toBibtex(.)', or set
+#> 'options(citation.bibtex.max=999)'.
 ```

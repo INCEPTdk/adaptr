@@ -1,6 +1,16 @@
 # adaptr (development version)
 
-No changes yet.
+*   References to new tutorial article using the package
+    (<https://doi.org/10.1002/pst.70042>) added to the package documentation
+    where relevant.
+
+*   References to the `INCEPT` and `EMPRESS` trials added to the README.
+
+*   Fixed a typo in the code in the 'Advanced example' vignette that led to the
+    example generating incorrect allocations, which in turn got incorrect
+    simulated outcomes (#14, thanks @brockk).
+    
+*   Minor updates to package documentation and tests.
 
 # adaptr 1.4.0
 

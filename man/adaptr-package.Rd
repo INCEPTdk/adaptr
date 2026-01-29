@@ -51,9 +51,10 @@ overall trial/arm statuses for multiple simulated trials or the history of
 trial metrics over time for single/multiple simulated trials, respectively.
 }
 
-For further information see the documentation of each function or the
-\strong{Overview} vignette (\code{vignette("Overview", package = "adaptr")}) for an
-example of how the functions work in combination.
+For further information see the documentation of each function, or the
+\strong{Overview} vignette (\code{vignette("Overview", package = "adaptr")}) or the
+practical guide (under \strong{References} below) for examples of how the
+functions work in combination.
 For further examples and guidance on setting up trial specifications, see the
 \code{\link[=setup_trial]{setup_trial()}} documentation, the \strong{Basic examples} vignette
 (\code{vignette("Basic-examples", package = "adaptr")}) and the
@@ -72,6 +73,10 @@ Granholm A, Kaas-Hansen BS, Lange T, Schjørring OL, Andersen LW, Perner A,
 Jensen AKG, Møller MH (2022). An overview of methodological considerations
 regarding adaptive stopping, arm dropping and randomisation in clinical
 trials. J Clin Epidemiol. \doi{10.1016/j.jclinepi.2022.11.002}
+
+Granholm A, Jensen AKG, Lange T, Perner A, Møller MH, Kaas-Hansen BS (2025).
+Designing and Evaluating Bayesian Advanced Adaptive Randomised Clinical
+Trials: A Practical Guide. Pharm Stat 24(6); e70042. \doi{10.1002/pst.70042}
 
 \href{https://inceptdk.github.io/adaptr/}{Website/manual}
 

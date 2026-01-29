@@ -35,6 +35,10 @@ supported by a grant from [Sygeforsikringen "danmark"](https://www.sygeforsikrin
 
 * [Website](https://inceptdk.github.io/adaptr/) - stand-alone website with full
 package documentation
+* [Designing and Evaluating Bayesian Advanced Adaptive Randomised Clinical Trials: A Practical Guide](https://doi.org/10.1002/pst.70042) -
+tutorial article in Pharmaceutical Statistical providing an extensive
+introduction to the package and the workflow of using it to design and evaluate
+Bayesian advanced adaptive trials
 * [adaptr: an R package for simulating and comparing adaptive clinical trials](https://doi.org/10.21105/joss.04284) -
 article in the Journal of Open Source Software describing the package
 * [An overview of methodological considerations regarding adaptive stopping, arm dropping and randomisation in clinical trials](https://doi.org/10.1016/j.jclinepi.2022.11.002) - article in Journal of
@@ -52,6 +56,8 @@ follow-up/data collection lags.
 article in Pharmaceutical Statistics describing a simulation study (with code)
 using `adaptr` to assess the performance of adaptive clinical trials according to different
 sceptical priors.
+* For examples of actual trials designed end evaluated using `adaptr`, see
+[INCEPT](https://www.incept.dk) and [EMPRESS](https://www.cric.nu/empress).
 
 ## Installation
 

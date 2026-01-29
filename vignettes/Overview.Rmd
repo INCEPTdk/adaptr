@@ -24,6 +24,12 @@ The package has been developed as part of the
 [INCEPT (Intensive Care Platform Trial) project](https://incept.dk/), primarily
 supported by a grant from [Sygeforsikringen "danmark"](https://www.sygeforsikring.dk/).
 
+In addition to the package vignettes, a detailed tutorial on how to design and
+evaluate Bayesian advanced adaptive clinical trials can be found in the open
+access article
+*"[Designing and Evaluating Bayesian Advanced Adaptive Randomised Clinical Trials: A Practical Guide](https://doi.org/10.1002/pst.70042)"*
+available in Pharmaceutical Statistics.
+
 Additional guidance on the key methodological considerations when planning and
 comparing adaptive clinical trials can be found in the open access article
 *"[An overview of methodological considerations regarding adaptive stopping, arm dropping and randomisation in clinical trials](https://doi.org/10.1016/j.jclinepi.2022.11.002)"*
