@@ -10,7 +10,8 @@
     example generating incorrect allocations, which in turn got incorrect
     simulated outcomes (#14, thanks @brockk).
     
-*   The `plot_metrics_ecdf()` function now adds padding to eCDFs (lines start at 0% on the vertical axis).
+*   The `plot_metrics_ecdf()` function now adds padding to eCDFs (lines start at
+    0% on the vertical axis).
     
 *   Minor updates to package documentation and tests.
 
