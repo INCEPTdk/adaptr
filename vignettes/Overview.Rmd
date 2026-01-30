@@ -51,11 +51,6 @@ library(adaptr)
 setup_cluster(2)
 ```
 
-```{r include=FALSE}
-# TEMPORARY TEST TO SEE IF THIS FIXED R CMD CHECK ERROR ON GITHUB ATIONS / WIN RELEASE ONLY
-parallel::clusterEvalQ(setup_cluster(), library(adaptr))
-```
-
 Parallelisation is supported in many `adaptr` functions, and a cluster of
 parallel workers can be setup for the entire session using `setup_cluster()`
 early in the script as in this example. Alternatively, parallelisation
