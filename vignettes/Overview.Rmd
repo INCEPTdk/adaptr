@@ -400,3 +400,8 @@ If you use the package, please consider citing it:
 ```{r}
 citation(package = "adaptr")
 ```
+
+```{r include=FALSE}
+# Remove cluster to avoid R CMD check note
+setup_cluster(NULL)
+```

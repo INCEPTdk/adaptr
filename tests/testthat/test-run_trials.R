@@ -89,8 +89,8 @@ test_that("dispatch_trial_runs works", {
      # Parallel run
      # Test only run conditionally, see check_cluster_version() function for
      # explanation.
-     cl <- parallel::makeCluster(2)
-     on.exit(parallel::stopCluster(cl))
+     cl <- parallel::makePSOCKcluster(2)
+     on.exit(parallel::stopCluster(cl), add = TRUE, after = FALSE)
      parallel::clusterEvalQ(cl, RNGkind("L'Ecuyer-CMRG", "default", "default"))
      if (check_cluster_version(cl)) {
        expect_snapshot(
@@ -146,8 +146,8 @@ test_that("Multiple trials simulation works on multiple cores", {
 
   # Tests only run conditionally, see check_cluster_version() function for
   # explanation. This cluster is only used to check version of adaptr on the cluster
-  cl <- parallel::makeCluster(2)
-  on.exit(parallel::stopCluster(cl))
+  cl <- parallel::makePSOCKcluster(2)
+  on.exit(parallel::stopCluster(cl), add = TRUE, after = FALSE)
 
   if (check_cluster_version(cl, "1.0.0")) { # Any released version of adaptr installed
     # Run trials on multiple cores
@@ -181,7 +181,7 @@ test_that("run_trials errors on invalid input", {
 
   res <- run_trials(setup, n_rep = 10, base_seed = 4131)
   temp_res_file <- tempfile()
-  on.exit(try(rm(temp_res_file), silent = TRUE), add = TRUE, after = FALSE)
+  on.exit(try(file.remove(temp_res_file), silent = TRUE), add = TRUE, after = FALSE)
 
   # Error growing object from pseudo-previous version
   res_err <- res
@@ -238,7 +238,7 @@ test_that("Growing trial objects works", {
 
   # Run in two "batches", saving results in a file
   temp_res_file <- tempfile()
-  on.exit(try(rm(temp_res_file), silent = TRUE), add = TRUE, after = FALSE)
+  on.exit(try(file.remove(temp_res_file), silent = TRUE), add = TRUE, after = FALSE)
   res2 <- run_trials(setup, n_rep = 10, base_seed = 12345, path = temp_res_file)
   # Grow with progress bar to test
   sink_file <- tempfile() # diverts progress bar to not distort test output
