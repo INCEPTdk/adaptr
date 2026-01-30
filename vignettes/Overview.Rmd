@@ -42,14 +42,22 @@ here.
 
 ### Setup
 
-First, the package is loaded and a cluster of parallel workers is initiated by
-the `setup_cluster()` function to facilitate parallel computing:
+First, the package is loaded:
 
 ```{r}
 library(adaptr)
-
-setup_cluster(2)
 ```
+
+Following this, a cluster of parallel workers can be initiated by the
+`setup_cluster()` function to facilitate parallel computing:
+
+```{r}
+setup_cluster(NULL) # Replace NULL with number of parallel workers wanted
+```
+
+For practical purposes, this vignette does not use parallelisation (and thus
+`NULL` is used in the call above), but it is generally recommended when using
+`adaptr`.
 
 Parallelisation is supported in many `adaptr` functions, and a cluster of
 parallel workers can be setup for the entire session using `setup_cluster()`
