@@ -126,8 +126,8 @@ and stopping rules for inferiority and superiority are not explicitly defined.
 This is intentional, as these stopping rules will be calibrated to obtain a
 desired probability of stopping for superiority in the scenario with no
 between-arm differences (corresponding to the Bayesian type 1 error rate). Trial
-specifications do not necessarily have to be calibrated. Instead,simulations can
-be run directly using the `run_trials()` function covered below (or
+specifications do not necessarily have to be calibrated. Instead, simulations
+can be run directly using the `run_trials()` function covered below (or
 `run_trial()` for a single simulation). This can be followed by assessment of
 performance metrics, and manually changing the specification (including the
 stopping rules) until performance metrics are considered acceptable. In this
