@@ -173,7 +173,7 @@ plot_metrics_ecdf <- function(object, metrics = c("size", "sum_ys", "ratio_ys"),
 
   # Make the base plot
   p <- ggplot2::ggplot(data = plot_dta, ggplot2::aes(value)) +
-    ggplot2::stat_ecdf(geom = "step", pad = "FALSE") +
+    ggplot2::stat_ecdf(geom = "step", pad = TRUE) +
     ggplot2::labs(x = "Value", y = NULL) +
     ggplot2::theme_bw()
   # Add y-label or facet
