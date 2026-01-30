@@ -53,7 +53,7 @@ setup_cluster(2)
 
 ```{r include=FALSE}
 # TEMPORARY TEST TO SEE IF THIS FIXED R CMD CHECK ERROR ON GITHUB ATIONS / WIN RELEASE ONLY
-clusterEvalQ(setup_cluster(), library(adaptr))
+parallel::clusterEvalQ(setup_cluster(), library(adaptr))
 ```
 
 Parallelisation is supported in many `adaptr` functions, and a cluster of
