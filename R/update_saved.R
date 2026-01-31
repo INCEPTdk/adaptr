@@ -10,7 +10,7 @@
 #' version used to generate the original object is provided in **Details**.\cr
 #' **NOTE:** some values cannot be updated and will be set to `NA` (the
 #' posterior estimates from the 'final' analysis conducted after the last
-#' adaptive analysis and including outcome data for all patients), and thus
+#' adaptive analysis and including outcome data for all participants), and thus
 #' using both `raw_ests = TRUE` and `final_ests = TRUE` in the
 #' [extract_results()] and [summary()] functions will lead to missing values for
 #' some of the values calculated for updated simulation objects.\cr
@@ -42,8 +42,8 @@
 #'       to follow-up and data collection lag (in these versions, the
 #'       `randomised_at_looks` argument in the [setup_trial()] functions did not
 #'       exist, but for practical purposes was identical to the number of
-#'       patients with available data at each look) and the `reallocate_probs`
-#'       argument in the embedded trial specification.
+#'       participants with available data at each look) and the
+#'       `reallocate_probs` argument in the embedded trial specification.
 #'    }
 #'
 #' @return Invisibly returns the updated `"trial_results"`-object.

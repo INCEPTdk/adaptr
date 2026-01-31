@@ -17,7 +17,7 @@
           B    0.21      control         500           NA       0.333
           C    0.70     inferior         500            0       0.333
       
-      Esimates from final analysis (all patients):
+      Esimates from final analysis (all participants):
        arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
           A         39    195        0.200         0.202        0.0286      0.151
           B         25    152        0.164         0.168        0.0294      0.115
@@ -58,7 +58,7 @@
           B    0.21      control         500           NA       0.333
           C    0.70     inferior         500            0       0.333
       
-      Esimates from final analysis (all patients):
+      Esimates from final analysis (all participants):
        arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
           A         39    195        0.200         0.202        0.0286      0.151
           B         25    152        0.164         0.168        0.0294      0.115
@@ -99,7 +99,7 @@
           B    0.15     superior        1500       0.9954        0.40
           C    0.30     inferior        1000       0.0010        0.15
       
-      Esimates from final analysis (all patients):
+      Esimates from final analysis (all participants):
        arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
           A        143    701        0.204         0.205        0.0152      0.176
           B         88    593        0.148         0.149        0.0151      0.122
@@ -141,7 +141,7 @@
           B    0.20     inferior         500        0.006       0.150
           C    0.30      control         500           NA       0.384
       
-      Esimates from final analysis (all patients):
+      Esimates from final analysis (all participants):
        arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
           A         44    182        0.242         0.243        0.0309     0.1855
           B         18    123        0.146         0.151        0.0321     0.0962
@@ -178,7 +178,7 @@
           B    0.20     inferior         500       0.0092       0.150
           C    0.30     superior         500       0.9908       0.850
       
-      Esimates from final analysis (all patients):
+      Esimates from final analysis (all participants):
        arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
           A         20    116        0.172         0.176        0.0351      0.115
           B         26    119        0.218         0.221        0.0384      0.151
@@ -215,7 +215,7 @@
           B    0.20     inferior         700       0.0094       0.150
           C    0.30      control         700           NA       0.537
       
-      Esimates from final analysis (all patients):
+      Esimates from final analysis (all participants):
        arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
           A         59    253        0.233         0.234        0.0266      0.185
           B         27    152        0.178         0.180        0.0312      0.124
@@ -252,7 +252,7 @@
           B    0.20     inferior         900        0.008       0.150
           C    0.30      control         900           NA       0.522
       
-      Esimates from final analysis (all patients):
+      Esimates from final analysis (all participants):
        arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
           A         83    318        0.261         0.262        0.0246      0.216
           B         38    191        0.199         0.201        0.0288      0.150
@@ -289,7 +289,7 @@
           B    0.20     inferior        1200       0.0096       0.150
           C    0.30     superior        1200       0.9904       0.850
       
-      Esimates from final analysis (all patients):
+      Esimates from final analysis (all participants):
        arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
           A         16     88        0.182         0.186        0.0398      0.114
           B         70    292        0.240         0.241        0.0251      0.194
@@ -330,7 +330,7 @@
           B    0.20     inferior         500        0.006       0.150
           C    0.30      control         500           NA       0.384
       
-      Esimates from final analysis (all patients):
+      Esimates from final analysis (all participants):
        arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
           A         44    182        0.242         0.243        0.0309     0.1855
           B         18    123        0.146         0.151        0.0321     0.0962
@@ -362,7 +362,7 @@
           B    0.20     inferior         500       0.0092       0.150
           C    0.30     superior         500       0.9908       0.850
       
-      Esimates from final analysis (all patients):
+      Esimates from final analysis (all participants):
        arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
           A         20    116        0.172         0.176        0.0351      0.115
           B         26    119        0.218         0.221        0.0384      0.151
@@ -394,7 +394,7 @@
           B    0.20     inferior         700       0.0094       0.150
           C    0.30      control         700           NA       0.537
       
-      Esimates from final analysis (all patients):
+      Esimates from final analysis (all participants):
        arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
           A         59    253        0.233         0.234        0.0266      0.185
           B         27    152        0.178         0.180        0.0312      0.124
@@ -426,7 +426,7 @@
           B    0.20     inferior         900        0.008       0.150
           C    0.30      control         900           NA       0.522
       
-      Esimates from final analysis (all patients):
+      Esimates from final analysis (all participants):
        arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
           A         83    318        0.261         0.262        0.0246      0.216
           B         38    191        0.199         0.201        0.0288      0.150
@@ -458,7 +458,7 @@
           B    0.20     inferior        1200       0.0096       0.150
           C    0.30     superior        1200       0.9904       0.850
       
-      Esimates from final analysis (all patients):
+      Esimates from final analysis (all participants):
        arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
           A         16     88        0.182         0.186        0.0398      0.114
           B         70    292        0.240         0.241        0.0251      0.194

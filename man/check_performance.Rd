@@ -89,18 +89,19 @@ arm, as described for \code{te_comp} and below). If \code{TRUE}, the raw estimat
 be used instead of the posterior estimates.}
 
 \item{final_ests}{single logical. If \code{TRUE} (recommended) the final estimates
-calculated using outcome data from all patients randomised when trials are
-stopped are used (\code{post_ests_all} or \code{raw_ests_all}, see \code{\link[=setup_trial]{setup_trial()}}
-and \code{\link[=run_trial]{run_trial()}}); if \code{FALSE}, the estimates calculated for each arm when
-an arm is stopped (or at the last adaptive analysis if not before) using
-data from patients having reach followed up at this time point and not all
-patients randomised are used (\code{post_ests} or \code{raw_ests}, see
-\code{\link[=setup_trial]{setup_trial()}} and \code{\link[=run_trial]{run_trial()}}). If \code{NULL} (the default), this argument
-will be set to \code{FALSE} if outcome data are available immediate after
-randomisation for all patients (for backwards compatibility, as final
-posterior estimates may vary slightly in this situation, even if using the
-same data); otherwise it will be said to \code{TRUE}. See \code{\link[=setup_trial]{setup_trial()}} for
-more details on how these estimates are calculated.}
+calculated using outcome data from all participants randomised when trials
+are stopped are used (\code{post_ests_all} or \code{raw_ests_all}, see
+\code{\link[=setup_trial]{setup_trial()}} and \code{\link[=run_trial]{run_trial()}}); if \code{FALSE}, the estimates calculated
+for each arm when an arm is stopped (or at the last adaptive analysis if
+not before) using data from participants having reach followed up at this
+time point and not all participants randomised are used (\code{post_ests} or
+\code{raw_ests}, see \code{\link[=setup_trial]{setup_trial()}} and \code{\link[=run_trial]{run_trial()}}). If \code{NULL} (the
+default), this argument will be set to \code{FALSE} if outcome data are
+available immediate after randomisation for all participants (for backwards
+compatibility, as final posterior estimates may vary slightly in this
+situation, even if using the same data); otherwise it will be said to
+\code{TRUE}. See \code{\link[=setup_trial]{setup_trial()}} for more details on how these estimates are
+calculated.}
 
 \item{restrict}{single character string or \code{NULL}. If \code{NULL} (default),
 results are summarised for all simulations; if \code{"superior"}, results are
@@ -162,23 +163,23 @@ The following performance metrics are calculated:
 \item \code{size_mean}, \code{size_sd}, \code{size_median}, \code{size_p25}, \code{size_p75},
 \code{size_p0}, \code{size_p100}: the mean, standard deviation, median as well as
 25-, 75-, 0- (min), and 100- (max) percentiles of the sample sizes
-(number of patients randomised in each simulated trial) of the summarised
-trial simulations.
+(number of participants randomised in each simulated trial) of the
+summarised trial simulations.
 \item \code{sum_ys_mean}, \code{sum_ys_sd}, \code{sum_ys_median}, \code{sum_ys_p25},
 \code{sum_ys_p75}, \code{sum_ys_p0}, \code{sum_ys_p100}: the mean, standard deviation,
 median as well as 25-, 75-, 0- (min), and 100- (max) percentiles of the
 total \code{sum_ys} across all arms in the summarised trial simulations (e.g.,
 the total number of events in trials with a binary outcome, or the sums
-of continuous values for all patients across all arms in trials with a
-continuous outcome). Always uses all outcomes from all randomised
-patients regardless of whether or not all patients had outcome data
-available at the time of trial stopping (corresponding to \code{sum_ys_all} in
-results from \code{\link[=run_trial]{run_trial()}}).
+of continuous values for all participants across all arms in trials with
+a continuous outcome). Always uses all outcomes from all randomised
+participants regardless of whether or not all participants had outcome
+data available at the time of trial stopping (corresponding to
+\code{sum_ys_all} in results from \code{\link[=run_trial]{run_trial()}}).
 \item \code{ratio_ys_mean}, \code{ratio_ys_sd}, \code{ratio_ys_median}, \code{ratio_ys_p25},
 \code{ratio_ys_p75}, \code{ratio_ys_p0}, \code{ratio_ys_p100}: the mean, standard
 deviation, median as well as 25-, 75-, 0- (min), and 100- (max)
 percentiles of the final \code{ratio_ys} (\code{sum_ys} as described above divided
-by the total number of patients randomised) across all arms in the
+by the total number of participants randomised) across all arms in the
 summarised trial simulations.
 \item \code{prob_conclusive}: the proportion (\code{0} to \code{1}) of conclusive trial
 simulations, i.e., simulations not stopped at the maximum sample size

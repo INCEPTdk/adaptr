@@ -222,7 +222,7 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
     stop0("data_looks must only include whole numbers > 0.")
   }
 
-  # Check or setup total number of patients randomised
+  # Check or setup total number of participants randomised
   if (is.null(randomised_at_looks)) {
     randomised_at_looks <- data_looks
   } else if (!is.numeric(randomised_at_looks) | any(randomised_at_looks != cummax(randomised_at_looks)) | isTRUE(any(randomised_at_looks < 1)) |
@@ -230,7 +230,7 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
     stop0("randomised_at_looks must be a numeric vector with values > 0 and of increasing size.")
   } else if (length(randomised_at_looks) != length(data_looks) | isTRUE(any(data_looks > randomised_at_looks))) {
     stop0("randomised_at_looks must match the number of adaptive analyses specified and ",
-          "all numbers must be >= the number of patients with available outcome data ",
+          "all numbers must be >= the number of participants with available outcome data ",
           "at each analysis, as specified by data_looks or max_n/look_after_every.")
   }
   randomised_at_looks <- round(randomised_at_looks, digits = 10) # Round to avoid floating point errors
@@ -393,7 +393,7 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
   if (isTRUE(is.null(fun_draws) | !(class(fun_draws) == "function"))) {
     stop0("A valid function to generate posterior draws (fun_draws) must be specified (see '?setup_trial').")
   } else {
-    test_draws1 <- fun_draws(arms, c(arms, arms), test_y, control, n_draws) # Two patients in each arm
+    test_draws1 <- fun_draws(arms, c(arms, arms), test_y, control, n_draws) # Two participants in each arm
     test_draws2 <- fun_draws(arms, rep(c(arms[2:n_arms], arms[2]), 2), test_y, control, n_draws) # One arm without allocations, but should still work
     if (isTRUE(any(is.na(test_draws1)) | any(is.na(test_draws2)) | class(test_draws1)[1] != "matrix" | class(test_draws2)[1] != "matrix" |
                is.null(colnames(test_draws1)) | is.null(colnames(test_draws2)) | isTRUE(colnames(test_draws1) != arms) | isTRUE(colnames(test_draws2) != arms) |
@@ -541,35 +541,35 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #'   Finally, any initial values that are overwritten by the
 #'   `control_prob_fixed` argument after arm dropping will not be rescaled.
 #' @param data_looks vector of increasing integers, specifies when to conduct
-#'   adaptive analyses (= the total number of patients with available outcome
-#'   data at each adaptive analysis). The last number in the vector represents
-#'   the final adaptive analysis, i.e., the final analysis where superiority,
-#'   inferiority, practical equivalence, or futility can be claimed.
-#'   Instead of specifying `data_looks`, the `max_n` and `look_after_every`
-#'   arguments can be used in combination (in which case `data_looks` must be
-#'   `NULL`, the default value).
-#' @param max_n single integer, number of patients with available outcome data
-#'   at the last possible adaptive analysis (defaults to `NULL`).
+#'   adaptive analyses (= the total number of participants with available
+#'   outcome data at each adaptive analysis). The last number in the vector
+#'   represents the final adaptive analysis, i.e., the final analysis where
+#'   superiority, inferiority, practical equivalence, or futility can be
+#'   claimed. Instead of specifying `data_looks`, the `max_n` and
+#'   `look_after_every` arguments can be used in combination (in which case
+#'   `data_looks` must be `NULL`, the default value).
+#' @param max_n single integer, number of participants with available outcome
+#'   data at the last possible adaptive analysis (defaults to `NULL`).
 #'   Must only be specified if `data_looks` is `NULL`. Requires specification of
 #'   the `look_after_every` argument.
 #' @param look_after_every single integer, specified together with `max_n`.
 #'   Adaptive analyses will be conducted after every `look_after_every`
-#'   patients have available outcome data, and at the total sample size as
+#'   participants have available outcome data, and at the total sample size as
 #'   specified by `max_n` (`max_n` does not need to be a multiple of
 #'   `look_after_every`). If specified, `data_looks` must be `NULL` (default).
 #' @param randomised_at_looks vector of increasing integers or `NULL`,
-#'   specifying the number of patients randomised at the time of each adaptive
-#'   analysis, with new patients randomised using the current allocation
-#'   probabilities at said analysis.
-#'   If `NULL` (the default), the number of patients randomised at each analysis
-#'   will match the number of patients with available outcome data at said
-#'   analysis, as specified by `data_looks` or `max_n` and `look_after_every`,
-#'   i.e., outcome data will be available immediately after randomisation for
-#'   all patients.\cr
+#'   specifying the number of participants randomised at the time of each
+#'   adaptive analysis, with new participants randomised using the current
+#'   allocation probabilities at said analysis.
+#'   If `NULL` (the default), the number of participants randomised at each
+#'   analysis will match the number of participants with available outcome data
+#'   at said analysis, as specified by `data_looks` or `max_n` and
+#'   `look_after_every`, i.e., outcome data will be available immediately after
+#'   randomisation for all participants.\cr
 #'   If not `NULL`, the vector must be of the same length as the number of
 #'   adaptive analyses specified by `data_looks` or `max_n` and
 #'   `look_after_every`, and all values must be larger than or equal to the
-#'   number of patients with available outcome data at each analysis.
+#'   number of participants with available outcome data at each analysis.
 #' @param control single character string, name of one of the `arms` or `NULL`
 #'   (default). If specified, this arm will serve as a common control arm, to
 #'   which all other arms will be compared and the
@@ -699,12 +699,12 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' \strong{How to specify the `fun_y_gen` function}
 #'
 #' The function must take the following arguments:
-#' - `allocs`: character vector, the trial `arms` that new patients allocated
-#' since the last adaptive analysis are randomised to.
+#' - `allocs`: character vector, the trial `arms` that new participants
+#' allocated since the last adaptive analysis are randomised to.
 #'
 #' The function must return a single numeric vector, corresponding to the
-#' outcomes for all patients allocated since the last adaptive analysis, in the
-#' same order as `allocs`.\cr
+#' outcomes for all participants allocated since the last adaptive analysis, in
+#' the same order as `allocs`.\cr
 #' See the **Advanced example** vignette
 #' (`vignette("Advanced-example", package = "adaptr")`) for an example with
 #' further details.
@@ -715,11 +715,11 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' - `arms`: character vector, the unique trial `arms`, in the same order as
 #' above, but only the **currently active** arms are included when the function
 #' is called.
-#' - `allocs`: a vector of allocations for all patients, corresponding to the
-#' trial `arms`, including patients allocated to both
+#' - `allocs`: a vector of allocations for all participants, corresponding to
+#' the trial `arms`, including participants allocated to both
 #' **currently active AND inactive** `arms` when called.
-#' - `ys`: a vector of outcomes for all patients in the same order as `allocs`,
-#' including outcomes for patients allocated to both
+#' - `ys`: a vector of outcomes for all participants in the same order as
+#' `allocs`, including outcomes for participants allocated to both
 #' **currently active AND inactive** `arms` when called.
 #' - `control`: single character, the current `control` arm, will be `NULL` for
 #' designs without a common control arm, but required regardless as the argument
@@ -732,9 +732,9 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' single posterior draw for each arm on the original outcome
 #' scale: if they are estimated as, e.g., the *log(odds)*, these estimates must
 #' be transformed to probabilities and similarly for other measures.\cr
-#' Important: the `matrix` cannot contain `NA`s, even if no patients have been
-#' randomised to an arm yet. See the provided example for one way to alleviate
-#' this.\cr
+#' Important: the `matrix` cannot contain `NA`s, even if no participants have
+#' been randomised to an arm yet. See the provided example for one way to
+#' alleviate this.\cr
 #' See the **Advanced examples** vignette
 #' (`vignette("Advanced-example", package = "adaptr")`) for an example with
 #' further details.
@@ -836,9 +836,9 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' dropped arms may be included in the analyses, even if posterior distributions
 #' are not returned for those).
 #' Similarly, in actual clinical trials and when `randomised_at_looks` is
-#' specified with numbers higher than the number of patients with available
+#' specified with numbers higher than the number of participants with available
 #' outcome data at each analysis, final probabilities may change somewhat when
-#' the all patients are have completed follow-up and are included in a final
+#' all participants have completed follow-up and are included in a final
 #' analysis.
 #'
 #' \strong{Equivalence}
@@ -905,10 +905,10 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #'     ii <- which(allocs == arm)
 #'     n <- length(ii)
 #'     if (n > 1) {
-#'       # Necessary to avoid errors if too few patients randomised to this arm
+#'       # Necessary to avoid errors if too few participants randomised to this arm
 #'       draws[[arm]] <- exp(rnorm(n_draws, mean = mean(logys[ii]), sd = sd(logys[ii])/sqrt(n - 1)))
 #'     } else {
-#'       # Too few patients randomised to this arm - extreme uncertainty
+#'       # Too few participants randomised to this arm - extreme uncertainty
 #'       draws[[arm]] <- exp(rnorm(n_draws, mean = mean(logys), sd = 1000 * (max(logys) - min(logys))))
 #'     }
 #'   }
@@ -989,11 +989,12 @@ setup_trial <- function(arms, true_ys, fun_y_gen = NULL, fun_draws = NULL,
 #' Specifies the design of an adaptive trial with a binary, binomially
 #' distributed outcome and validates all inputs. Uses *beta-binomial*
 #' conjugate models with `beta(1, 1)` prior distributions, corresponding to a
-#' uniform prior (or the addition of 2 patients, 1 with an event and 1 without,
-#' in each `arm`) to the trial. Use [calibrate_trial()] to calibrate the trial
-#' specification to obtain a specific value for a certain performance metric
-#' (e.g., the Bayesian type 1 error rate). Use [run_trial()] or [run_trials()]
-#' to conduct single/multiple simulations of the specified trial, respectively.
+#' uniform prior (or the addition of 2 participants, 1 with an event and 1
+#' without, in each `arm`) to the trial. Use [calibrate_trial()] to calibrate
+#' the trial specification to obtain a specific value for a certain performance
+#' metric (e.g., the Bayesian type 1 error rate). Use [run_trial()] or
+#' [run_trials()] to conduct single/multiple simulations of the specified trial,
+#' respectively.
 #' \cr
 #' **Note:** `add_info` as specified in [setup_trial()] is set to `NULL` for
 #' trial specifications setup by this function.\cr

@@ -39,7 +39,7 @@ cluster will be setup using the \code{parallel} library and removed once the
 function completes. See \code{\link[=setup_cluster]{setup_cluster()}} for details.}
 }
 \value{
-List containing \code{breaks} (the number of patients at each break),
+List containing \code{breaks} (the number of participants at each break),
 \code{start_mess} and \code{prog_mess} (the basis of the first and subsequent
 progress messages), and \code{batches} (a list with each entry corresponding to
 the simulation numbers in each batch).

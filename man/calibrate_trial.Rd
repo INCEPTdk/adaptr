@@ -87,8 +87,8 @@ calibration that cannot succeed regardless of the number of iterations.\cr
 \strong{Important:} even when a large number of simulations are conducted,
 using a very low \code{tol} may lead to calibration not succeeding as it may
 also be affected by other factors, e.g., the total number of simulated
-patients, the possible maximum differences in simulated outcomes, and the
-number of posterior draws (\code{n_draws} in the \code{\link[=setup_trial]{setup_trial()}} family of
+participants, the possible maximum differences in simulated outcomes, and
+the number of posterior draws (\code{n_draws} in the \code{\link[=setup_trial]{setup_trial()}} family of
 functions), which affects the minimum differences in posterior
 probabilities when simulating trials and thus can affect calibration,
 including when using the default calibration function. Increasing the

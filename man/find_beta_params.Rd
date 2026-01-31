@@ -29,14 +29,14 @@ defaults to \code{0.95}.}
 
 \item{n_dec}{single non-negative integer; the returned parameters are rounded
 to this number of decimals. Defaults to \code{0}, in which case the parameters
-will correspond to whole number of patients.}
+will correspond to whole number of participants.}
 
 \item{max_n}{single integer \verb{> 0} (default \code{10000}), the maximum total sum of
-the parameters, corresponding to the maximum total number of patients that
-will be considered by the function when finding the optimal parameter
-values. Corresponds to the maximum number of patients contributing
-information to a beta prior; more than the default number of patients are
-unlikely to be used in a beta prior.}
+the parameters, corresponding to the maximum total number of participants
+that will be considered by the function when finding the optimal parameter
+values. Corresponds to the maximum number of participants contributing
+information to a beta prior; more than the default number of participants
+are unlikely to be used in a beta prior.}
 }
 \value{
 A single-row \code{data.frame} with five columns: the two shape parameters
@@ -47,8 +47,8 @@ and the actual lower and upper boundaries of the interval and the median
 }
 \description{
 Helper function to find a beta distribution with parameters corresponding
-to the fewest possible patients with events/non-events and a specified event
-proportion. Used in the \strong{Advanced example} vignette
+to the fewest possible participants with events/non-events and a specified
+event proportion. Used in the \strong{Advanced example} vignette
 (\code{vignette("Advanced-example", "adaptr")}) to derive \code{beta} prior
 distributions for use in \emph{beta-binomial conjugate models}, based on a belief
 that the true event probability lies within a specified percentile-based

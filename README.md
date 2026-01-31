@@ -113,9 +113,9 @@ binom_trial <- setup_trial_binom(
   true_ys = c(0.25, 0.25, 0.25),
   # Response-adaptive randomisation with minimum 20% allocation in all arms
   min_probs = rep(0.20, 3),
-  # Number of patients with data available at each analysis
+  # Number of participants with data available at each analysis
   data_looks = seq(from = 300, to = 2000, by = 100),
-  # Number of patients randomised at each analysis (higher than the numbers
+  # Number of participants randomised at each analysis (higher than the numbers
   # with data, except at last look, due to follow-up/data collection lag)
   randomised_at_looks = c(seq(from = 400, to = 2000, by = 100), 2000),
   # Stopping rules for inferiority/superiority not explicitly defined
@@ -140,8 +140,8 @@ print(binom_trial, prob_digits = 3)
 #> 
 #> Maximum sample size: 2000 
 #> Maximum number of data looks: 18
-#> Planned data looks after:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000 patients have reached follow-up
-#> Number of patients randomised at each look:  400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000, 2000
+#> Planned data looks after:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000 participants have reached follow-up
+#> Number of participants randomised at each look:  400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000, 2000
 #> 
 #> Superiority threshold: 0.99 (all analyses)
 #> Inferiority threshold: 0.01 (all analyses)
@@ -205,7 +205,7 @@ calibrated_binom_trial
 #> Calibration/simulation details:
 #> * Total evaluations: 7 (previous + grid + iterations)
 #> * Repetitions: 1000
-#> * Calibration time: 4.5 mins
+#> * Calibration time: 4.06 mins
 #> * Base random seed: 4131
 #> 
 #> See 'help("calibrate_trial")' for details.
@@ -312,7 +312,7 @@ print(binom_trial_summary)
 #> * Selection strategy: best remaining available
 #> * Treatment effect compared to: no comparison
 #> 
-#> Performance metrics (using posterior estimates from final analysis [all patients]):
+#> Performance metrics (using posterior estimates from final analysis [all participants]):
 #> * Sample sizes: mean 1749.6 (SD: 373.7) | median 2000.0 (IQR: 1400.0 to 2000.0) [range: 400.0 to 2000.0]
 #> * Total summarised outcomes: mean 438.7 (SD: 96.2) | median 486.0 (IQR: 364.8 to 506.0) [range: 88.0 to 565.0]
 #> * Total summarised outcome rates: mean 0.251 (SD: 0.011) | median 0.250 (IQR: 0.244 to 0.258) [range: 0.198 to 0.295]
@@ -327,7 +327,7 @@ print(binom_trial_summary)
 #> * Ideal design percentage: not estimable
 #> 
 #> Simulation details:
-#> * Simulation time: 43.1 secs
+#> * Simulation time: 38.2 secs
 #> * Base random seed: 4131
 #> * Credible interval width: 95%
 #> * Number of posterior draws: 5000
@@ -379,7 +379,7 @@ function:
 # Overall trial status probabilities
 plot_status(
   calibrated_binom_trial$best_sims,
-  x_value = "total n" # Total number of randomised patients at X-axis
+  x_value = "total n" # Total number of randomised participants at X-axis
 )
 ```
 

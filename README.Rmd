@@ -109,9 +109,9 @@ binom_trial <- setup_trial_binom(
   true_ys = c(0.25, 0.25, 0.25),
   # Response-adaptive randomisation with minimum 20% allocation in all arms
   min_probs = rep(0.20, 3),
-  # Number of patients with data available at each analysis
+  # Number of participants with data available at each analysis
   data_looks = seq(from = 300, to = 2000, by = 100),
-  # Number of patients randomised at each analysis (higher than the numbers
+  # Number of participants randomised at each analysis (higher than the numbers
   # with data, except at last look, due to follow-up/data collection lag)
   randomised_at_looks = c(seq(from = 400, to = 2000, by = 100), 2000),
   # Stopping rules for inferiority/superiority not explicitly defined
@@ -252,7 +252,7 @@ to trial progress can be visualised using the `plot_status()` function:
 # Overall trial status probabilities
 plot_status(
   calibrated_binom_trial$best_sims,
-  x_value = "total n" # Total number of randomised patients at X-axis
+  x_value = "total n" # Total number of randomised participants at X-axis
 )
 ```
 

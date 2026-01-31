@@ -13,20 +13,20 @@
 #' @inheritParams extract_results
 #' @param x_value single character string, determining whether the number of
 #'  adaptive analysis looks (`"look"`, default), the total cumulated number of
-#'  patients randomised (`"total n"`) or the total cumulated number of patients
-#'  with outcome data available at each adaptive analysis (`"followed n"`) are
-#'  plotted on the x-axis.
+#'  participants randomised (`"total n"`) or the total cumulated number of
+#'  participants with outcome data available at each adaptive analysis
+#'  (`"followed n"`) are plotted on the x-axis.
 #' @param y_value single character string, determining which values are plotted
 #'   on the y-axis. The following options are available: allocation
-#'   probabilities (`"prob"`, default), the total number of patients with
+#'   probabilities (`"prob"`, default), the total number of participants with
 #'   outcome data available (`"n"`) or randomised (`"n all"`) to each arm,
-#'   the percentage of patients with outcome data available (`"pct"`) or
+#'   the percentage of participants with outcome data available (`"pct"`) or
 #'   randomised (`"pct all"`) to each arm out of the current total, the sum of
 #'   all available (`"sum ys"`) outcome data or all outcome data for randomised
-#'   patients including outcome data not available at the time of the current
-#'   adaptive analysis (`"sum ys all"`), the ratio of outcomes as defined for
-#'   `"sum ys"`/`"sum ys all"` divided by the corresponding number of patients
-#'   in each arm.
+#'   participants including outcome data not available at the time of the
+#'   current adaptive analysis (`"sum ys all"`), the ratio of outcomes as
+#'   defined for `"sum ys"`/`"sum ys all"` divided by the corresponding number
+#'   of participants in each arm.
 #' @param line list styling the lines as per `ggplot2` conventions (e.g.,
 #'   `linetype`, `linewidth`).
 #' @param ... additional arguments, not used.
@@ -219,27 +219,29 @@ plot_history.trial_results <- function(object,
 #'   with argument `sparse = FALSE`.
 #' @param metric either `"prob"` (default), in which case allocation
 #'   probabilities at each adaptive analysis are returned; `"n"`/`"n all"`, in
-#'   which case the total number of patients with available follow-up data
+#'   which case the total number of participants with available follow-up data
 #'   (`"n"`) or allocated (`"n all"`) to each `arm` during each adaptive
 #'   analysis are returned; `"pct"`/`"pct all"` in which case the proportions of
-#'   of patients allocated and having available follow-up data (`"pct"`) or
+#'   of participants allocated and having available follow-up data (`"pct"`) or
 #'   allocated in total (`"pct all"`) to each arm out of the total number of
-#'   patients are returned; `"sum ys"`/`"sum ys all"`, in which case the total
-#'   summed available outcome data (`"sum ys"`) or total summed outcome data
-#'   including outcomes of patients randomised that have not necessarily reached
-#'   follow-up yet (`"sum ys all"`) in each arm after each adaptive analysis are
-#'   returned; or `"ratio ys"`/`"ratio ys all"`, in which case the total summed
-#'   outcomes as specified for `"sum ys"`/`"sum ys all"` divided by the number
-#'   of patients after each analysis adaptive are returned.
+#'   participants are returned; `"sum ys"`/`"sum ys all"`, in which case the
+#'   total summed available outcome data (`"sum ys"`) or total summed outcome
+#'   data including outcomes of participants randomised that have not
+#'   necessarily reached follow-up yet (`"sum ys all"`) in each arm after each
+#'   adaptive analysis are returned; or `"ratio ys"`/`"ratio ys all"`, in which
+#'   case the total summed outcomes as specified for `"sum ys"`/`"sum ys all"`
+#'   divided by the number of participants after each analysis adaptive are
+#'   returned.
 #'
 #' @return A tidy `data.frame` (one row per arm per look) containing the following
 #'   columns:
 #'   \itemize{
 #'     \item `look`: consecutive numbers (integers) of each interim look.
-#'     \item `look_ns`: total number of patients (integers) with outcome data
-#'       available at current adaptive analysis look to all arms in the trial.
-#'     \item `look_ns_all`: total number of patients (integers) randomised at
-#'       current adaptive analysis look to all arms in the trial.
+#'     \item `look_ns`: total number of participants (integers) with outcome
+#'       data available at current adaptive analysis look to all arms in the
+#'       trial.
+#'     \item `look_ns_all`: total number of participants (integers) randomised
+#'       at current adaptive analysis look to all arms in the trial.
 #'     \item `arm`: the current `arm` in the trial.
 #'     \item `value`: as described under `metric`.
 #'   }

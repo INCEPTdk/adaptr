@@ -90,12 +90,12 @@ print.trial_spec <- function(x, prob_digits = 3, ...) {
   cat("\nMaximum sample size:", max(x$randomised_at_looks),
       "\nMaximum number of data looks:", x$n_data_looks)
   if (is.null(x$look_after_every)) {
-    cat0(paste("\nPlanned data looks after: ", paste(x$data_looks, collapse = ", "), "patients have reached follow-up"), fill = TRUE)
+    cat0(paste("\nPlanned data looks after: ", paste(x$data_looks, collapse = ", "), "participants have reached follow-up"), fill = TRUE)
   } else {
     cat0("\nPlanned looks after every ", x$look_after_every,
-         " patients have reached follow-up until final look after ", max(x$data_looks), " patients", fill = TRUE)
+         " participants have reached follow-up until final look after ", max(x$data_looks), " participants", fill = TRUE)
   }
-  cat0(paste("Number of patients randomised at each look: ", paste(x$randomised_at_looks, collapse = ", ")), fill = TRUE)
+  cat0(paste("Number of participants randomised at each look: ", paste(x$randomised_at_looks, collapse = ", ")), fill = TRUE)
 
   # Superiority and inferiority specifications
   if (length(x$superiority) == 1) {
@@ -230,7 +230,7 @@ print.trial_result <- function(x, prob_digits = 3, ...) {
 
   cat0("Trial results overview:\n")
   print(x$trial_res[cols_general], digits = prob_digits, row.names = FALSE)
-  cat0("\nEsimates from final analysis (all patients):\n")
+  cat0("\nEsimates from final analysis (all participants):\n")
   print(x$trial_res[cols_ests_all], digits = prob_digits, row.names = FALSE)
   cat0("\nEstimates from last adaptive analysis including each arm:\n")
   print(x$trial_res[cols_ests], digits = prob_digits, row.names = FALSE)
@@ -353,7 +353,7 @@ print.trial_results_summary <- function(x, digits = 1, ...) {
 
       # Performance metrics
       "Performance metrics ", ifelse(x$raw_ests, "(using raw estimates ", "(using posterior estimates "),
-      ifelse(x$final_ests, "from final analysis [all patients]", "from last adaptive analysis"), "):\n",
+      ifelse(x$final_ests, "from final analysis [all participants]", "from last adaptive analysis"), "):\n",
       "* Sample sizes: mean ", fmt_dig(x$size_mean, digits), " (SD: ", fmt_dig(x$size_sd, digits), ") | median ", fmt_dig(x$size_median, digits), " (IQR: ", fmt_dig(x$size_p25, digits), " to ", fmt_dig(x$size_p75, digits),
       ") [range: ", fmt_dig(x$size_p0, digits), " to ", fmt_dig(x$size_p100, digits), "]\n",
       "* Total summarised outcomes: mean ", fmt_dig(x$sum_ys_mean, digits), " (SD: ", fmt_dig(x$sum_ys_sd, digits), ") | median ", fmt_dig(x$sum_ys_median, digits), " (IQR: ", fmt_dig(x$sum_ys_p25, digits), " to ", fmt_dig(x$sum_ys_p75, digits),

@@ -133,13 +133,13 @@ plot_status.trial_results <- function(object, x_value = "look", arm = NULL,
 #' @return A tidy `data.frame` (one row possible status per look) containing the
 #'   following columns:
 #'   \itemize{
-#'     \item `x`: the look numbers or total number of patients at each look,
+#'     \item `x`: the look numbers or total number of participants at each look,
 #'       as specified in `x_value`.
 #'     \item `status`: each possible status (`"Recruiting"`, `"Inferiority"`
 #'       (only relevant for individual arms), `"Futility"`, `"Equivalence"`, and
 #'       `"Superiority"`, as relevant).
-#'     \item `p`: the proportion (`0-1`) of patients with each `status` at each
-#'       value of `x`.
+#'     \item `p`: the proportion (`0-1`) of participants with each `status` at
+#'       each value of `x`.
 #'     \item `value`: as described under `metric`.
 #'   }
 #'

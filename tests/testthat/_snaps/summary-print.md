@@ -17,7 +17,7 @@
           B    0.20     inferior         900       0.0012        0.15
           C    0.30      control         900           NA        0.70
       
-      Esimates from final analysis (all patients):
+      Esimates from final analysis (all participants):
        arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
           A         48    244        0.197         0.198        0.0258      0.151
           B         41    223        0.184         0.186        0.0257      0.138
@@ -56,7 +56,7 @@
           B    0.20       active          NA           NA       0.656
           C    0.30     inferior        2000        0.007       0.150
       
-      Esimates from final analysis (all patients):
+      Esimates from final analysis (all participants):
        arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
           A        180    742        0.243         0.243        0.0161      0.213
           B        178    841        0.212         0.212        0.0141      0.185
@@ -94,7 +94,7 @@
           B    0.25      control          NA           NA       0.333
           C    0.30       active          NA           NA       0.333
       
-      Esimates from final analysis (all patients):
+      Esimates from final analysis (all participants):
        arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
           A       81.8    355        0.230         0.229        0.0550      0.120
           B       69.9    328        0.213         0.213        0.0560      0.105
@@ -203,7 +203,7 @@
           B    0.20       active          NA           NA       0.656
           C    0.30     inferior        2000        0.007       0.150
       
-      Esimates from final analysis (all patients):
+      Esimates from final analysis (all participants):
        arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
           A        180    742        0.243         0.243        0.0161      0.213
           B        178    841        0.212         0.212        0.0141      0.185
@@ -255,8 +255,8 @@
       
       Maximum sample size: 2000 
       Maximum number of data looks: 18
-      Planned data looks after:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000 patients have reached follow-up
-      Number of patients randomised at each look:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000
+      Planned data looks after:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000 participants have reached follow-up
+      Number of participants randomised at each look:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000
       
       Superiority threshold: 0.99 (all analyses)
       Inferiority threshold: 0.01 (all analyses)
@@ -288,8 +288,8 @@
       
       Maximum sample size: 1000 
       Maximum number of data looks: 5
-      Planned data looks after:  200, 400, 600, 800, 1000 patients have reached follow-up
-      Number of patients randomised at each look:  200, 400, 600, 800, 1000
+      Planned data looks after:  200, 400, 600, 800, 1000 participants have reached follow-up
+      Number of participants randomised at each look:  200, 400, 600, 800, 1000
       
       Superiority thresholds: 0.99, 0.98, 0.97, 0.96, 0.95
       Inferiority thresholds: 0.01, 0.02, 0.03, 0.04, 0.05
@@ -323,8 +323,8 @@
       
       Maximum sample size: 1000 
       Maximum number of data looks: 5
-      Planned data looks after:  200, 400, 600, 800, 1000 patients have reached follow-up
-      Number of patients randomised at each look:  200, 400, 600, 800, 1000
+      Planned data looks after:  200, 400, 600, 800, 1000 participants have reached follow-up
+      Number of participants randomised at each look:  200, 400, 600, 800, 1000
       
       Superiority threshold: 0.99 (all analyses)
       Inferiority threshold: 0.01 (all analyses)
@@ -354,8 +354,8 @@
       
       Maximum sample size: 1000 
       Maximum number of data looks: 5
-      Planned data looks after:  200, 400, 600, 800, 1000 patients have reached follow-up
-      Number of patients randomised at each look:  200, 400, 600, 800, 1000
+      Planned data looks after:  200, 400, 600, 800, 1000 participants have reached follow-up
+      Number of participants randomised at each look:  200, 400, 600, 800, 1000
       
       Superiority thresholds: 0.99, 0.98, 0.97, 0.96, 0.95
       Inferiority thresholds: 0.01, 0.02, 0.03, 0.04, 0.05

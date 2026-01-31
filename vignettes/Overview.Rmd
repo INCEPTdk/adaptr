@@ -77,8 +77,8 @@ The example trial specification has the following characteristics:
 - A binary, binomially distributed, undesirable (default) outcome
 - Three arms with no designated common control
 - Identical underlying outcome probabilities of 25% in each arm
-- Analyses conducted when specific number of patients have outcome data
-available, with more patients randomised at all but the last look (lag due to
+- Analyses conducted when specific number of participants have outcome data
+available, with more participants randomised at all but the last look (lag due to
 follow-up and data collection/verification)
 - No explicitly defined stopping thresholds for `inferiority` or `superiority`
 (default thresholds of < 1% and > 99%, respectively, apply)
@@ -284,7 +284,7 @@ be visualised using the `plot_status()` function:
 ```{r}
 plot_status(
   calibrated_binom_trial$best_sims,
-  x_value = "total n" # Total number of randomised patients at X-axis
+  x_value = "total n" # Total number of randomised participants at X-axis
 )
 ```
 
@@ -387,8 +387,8 @@ plot_history(
 )
 ```
 
-Similarly, the median (interquartile range) number of patients allocated to each
-arm as the trial progresses can be visualised:
+Similarly, the median (interquartile range) number of participants allocated to
+each arm as the trial progresses can be visualised:
 
 ```{r}
 plot_history(

@@ -73,23 +73,23 @@ calculate_idp <- function(sels, arms, true_ys, highest_is_best) {
 #'   \item `size_mean`, `size_sd`, `size_median`, `size_p25`, `size_p75`,
 #'     `size_p0`, `size_p100`: the mean, standard deviation, median as well as
 #'     25-, 75-, 0- (min), and 100- (max) percentiles of the sample sizes
-#'     (number of patients randomised in each simulated trial) of the summarised
-#'     trial simulations.
+#'     (number of participants randomised in each simulated trial) of the
+#'     summarised trial simulations.
 #'   \item `sum_ys_mean`, `sum_ys_sd`, `sum_ys_median`, `sum_ys_p25`,
 #'     `sum_ys_p75`, `sum_ys_p0`, `sum_ys_p100`: the mean, standard deviation,
 #'     median as well as 25-, 75-, 0- (min), and 100- (max) percentiles of the
 #'     total `sum_ys` across all arms in the summarised trial simulations (e.g.,
 #'     the total number of events in trials with a binary outcome, or the sums
-#'     of continuous values for all patients across all arms in trials with a
-#'     continuous outcome). Always uses all outcomes from all randomised
-#'     patients regardless of whether or not all patients had outcome data
-#'     available at the time of trial stopping (corresponding to `sum_ys_all` in
-#'     results from [run_trial()]).
+#'     of continuous values for all participants across all arms in trials with
+#'     a continuous outcome). Always uses all outcomes from all randomised
+#'     participants regardless of whether or not all participants had outcome
+#'     data available at the time of trial stopping (corresponding to
+#'     `sum_ys_all` in results from [run_trial()]).
 #'   \item `ratio_ys_mean`, `ratio_ys_sd`, `ratio_ys_median`, `ratio_ys_p25`,
 #'     `ratio_ys_p75`, `ratio_ys_p0`, `ratio_ys_p100`: the mean, standard
 #'     deviation, median as well as 25-, 75-, 0- (min), and 100- (max)
 #'     percentiles of the final `ratio_ys` (`sum_ys` as described above divided
-#'     by the total number of patients randomised) across all arms in the
+#'     by the total number of participants randomised) across all arms in the
 #'     summarised trial simulations.
 #'   \item `prob_conclusive`: the proportion (`0` to `1`) of conclusive trial
 #'     simulations, i.e., simulations not stopped at the maximum sample size

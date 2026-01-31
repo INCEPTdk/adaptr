@@ -56,8 +56,8 @@
 #'   **Important:** even when a large number of simulations are conducted,
 #'   using a very low `tol` may lead to calibration not succeeding as it may
 #'   also be affected by other factors, e.g., the total number of simulated
-#'   patients, the possible maximum differences in simulated outcomes, and the
-#'   number of posterior draws (`n_draws` in the [setup_trial()] family of
+#'   participants, the possible maximum differences in simulated outcomes, and
+#'   the number of posterior draws (`n_draws` in the [setup_trial()] family of
 #'   functions), which affects the minimum differences in posterior
 #'   probabilities when simulating trials and thus can affect calibration,
 #'   including when using the default calibration function. Increasing the

@@ -31,7 +31,7 @@ date. And overview of the changes made according to the \code{adaptr} package
 version used to generate the original object is provided in \strong{Details}.\cr
 \strong{NOTE:} some values cannot be updated and will be set to \code{NA} (the
 posterior estimates from the 'final' analysis conducted after the last
-adaptive analysis and including outcome data for all patients), and thus
+adaptive analysis and including outcome data for all participants), and thus
 using both \code{raw_ests = TRUE} and \code{final_ests = TRUE} in the
 \code{\link[=extract_results]{extract_results()}} and \code{\link[=summary]{summary()}} functions will lead to missing values for
 some of the values calculated for updated simulation objects.\cr
@@ -54,8 +54,8 @@ argument in the embedded trial specification.
 to follow-up and data collection lag (in these versions, the
 \code{randomised_at_looks} argument in the \code{\link[=setup_trial]{setup_trial()}} functions did not
 exist, but for practical purposes was identical to the number of
-patients with available data at each look) and the \code{reallocate_probs}
-argument in the embedded trial specification.
+participants with available data at each look) and the
+\code{reallocate_probs} argument in the embedded trial specification.
 }
 }
 \seealso{

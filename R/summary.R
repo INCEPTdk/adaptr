@@ -25,7 +25,7 @@
 #'     `*` being either "`arm_<name>` for all `arm` names or `none`), `rmse`,
 #'     `rmse_te`, `mae`, `mae_te`, and `idp`: performance metrics as described
 #'     in [check_performance()]. Note that all `sum_ys_` and `ratio_ys_`
-#'     measures use outcome data from all randomised patients, regardless of
+#'     measures use outcome data from all randomised participants, regardless of
 #'     whether they had outcome data available at the last analysis or not, as
 #'     described in [extract_results()].
 #'   \item `select_strategy`, `select_last_arm`, `select_preferences`,

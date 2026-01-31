@@ -26,21 +26,21 @@ function.}
 
 \item{x_value}{single character string, determining whether the number of
 adaptive analysis looks (\code{"look"}, default), the total cumulated number of
-patients randomised (\code{"total n"}) or the total cumulated number of patients
-with outcome data available at each adaptive analysis (\code{"followed n"}) are
-plotted on the x-axis.}
+participants randomised (\code{"total n"}) or the total cumulated number of
+participants with outcome data available at each adaptive analysis
+(\code{"followed n"}) are plotted on the x-axis.}
 
 \item{y_value}{single character string, determining which values are plotted
 on the y-axis. The following options are available: allocation
-probabilities (\code{"prob"}, default), the total number of patients with
+probabilities (\code{"prob"}, default), the total number of participants with
 outcome data available (\code{"n"}) or randomised (\code{"n all"}) to each arm,
-the percentage of patients with outcome data available (\code{"pct"}) or
+the percentage of participants with outcome data available (\code{"pct"}) or
 randomised (\code{"pct all"}) to each arm out of the current total, the sum of
 all available (\code{"sum ys"}) outcome data or all outcome data for randomised
-patients including outcome data not available at the time of the current
-adaptive analysis (\code{"sum ys all"}), the ratio of outcomes as defined for
-\code{"sum ys"}/\code{"sum ys all"} divided by the corresponding number of patients
-in each arm.}
+participants including outcome data not available at the time of the
+current adaptive analysis (\code{"sum ys all"}), the ratio of outcomes as
+defined for \code{"sum ys"}/\code{"sum ys all"} divided by the corresponding number
+of participants in each arm.}
 
 \item{line}{list styling the lines as per \code{ggplot2} conventions (e.g.,
 \code{linetype}, \code{linewidth}).}

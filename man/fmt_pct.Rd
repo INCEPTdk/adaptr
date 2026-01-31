@@ -9,7 +9,7 @@ fmt_pct(e, n, dec = 1)
 \arguments{
 \item{e}{integer, the numerator (e.g., the number of events).}
 
-\item{n}{integer, the denominator (e.g., the total number of patients).}
+\item{n}{integer, the denominator (e.g., the total number of participants).}
 
 \item{dec}{integer, the number of decimals for the percentage.}
 }

@@ -20,8 +20,8 @@
       Maximum sample size: 500 
       Maximum number of data looks: 10
       Planned looks after every 50
-       patients have reached follow-up until final look after 500 patients
-      Number of patients randomised at each look:  50, 100, 150, 200, 250, 300, 350, 400, 450, 500
+       participants have reached follow-up until final look after 500 participants
+      Number of participants randomised at each look:  50, 100, 150, 200, 250, 300, 350, 400, 450, 500
       
       Superiority threshold: 0.99 (all analyses)
       Inferiority threshold: 0.01 (all analyses)
@@ -50,8 +50,8 @@
       
       Maximum sample size: 2000 
       Maximum number of data looks: 18
-      Planned data looks after:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000 patients have reached follow-up
-      Number of patients randomised at each look:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000
+      Planned data looks after:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000 participants have reached follow-up
+      Number of participants randomised at each look:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000
       
       Superiority threshold: 0.99 (all analyses)
       Inferiority threshold: 0.01 (all analyses)
@@ -79,8 +79,8 @@
       
       Maximum sample size: 2000 
       Maximum number of data looks: 18
-      Planned data looks after:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000 patients have reached follow-up
-      Number of patients randomised at each look:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000
+      Planned data looks after:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000 participants have reached follow-up
+      Number of participants randomised at each look:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000
       
       Superiority threshold: 0.99 (all analyses)
       Inferiority threshold: 0.01 (all analyses)
@@ -110,8 +110,8 @@
       Maximum sample size: 5000 
       Maximum number of data looks: 25
       Planned looks after every 200
-       patients have reached follow-up until final look after 5000 patients
-      Number of patients randomised at each look:  200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000, 2200, 2400, 2600, 2800, 3000, 3200, 3400, 3600, 3800, 4000, 4200, 4400, 4600, 4800, 5000
+       participants have reached follow-up until final look after 5000 participants
+      Number of participants randomised at each look:  200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000, 2200, 2400, 2600, 2800, 3000, 3200, 3400, 3600, 3800, 4000, 4200, 4400, 4600, 4800, 5000
       
       Superiority threshold: 0.99 (all analyses)
       Inferiority threshold: 0.01 (all analyses)

@@ -87,18 +87,19 @@ arm, as described for \code{te_comp} and below). If \code{TRUE}, the raw estimat
 be used instead of the posterior estimates.}
 
 \item{final_ests}{single logical. If \code{TRUE} (recommended) the final estimates
-calculated using outcome data from all patients randomised when trials are
-stopped are used (\code{post_ests_all} or \code{raw_ests_all}, see \code{\link[=setup_trial]{setup_trial()}}
-and \code{\link[=run_trial]{run_trial()}}); if \code{FALSE}, the estimates calculated for each arm when
-an arm is stopped (or at the last adaptive analysis if not before) using
-data from patients having reach followed up at this time point and not all
-patients randomised are used (\code{post_ests} or \code{raw_ests}, see
-\code{\link[=setup_trial]{setup_trial()}} and \code{\link[=run_trial]{run_trial()}}). If \code{NULL} (the default), this argument
-will be set to \code{FALSE} if outcome data are available immediate after
-randomisation for all patients (for backwards compatibility, as final
-posterior estimates may vary slightly in this situation, even if using the
-same data); otherwise it will be said to \code{TRUE}. See \code{\link[=setup_trial]{setup_trial()}} for
-more details on how these estimates are calculated.}
+calculated using outcome data from all participants randomised when trials
+are stopped are used (\code{post_ests_all} or \code{raw_ests_all}, see
+\code{\link[=setup_trial]{setup_trial()}} and \code{\link[=run_trial]{run_trial()}}); if \code{FALSE}, the estimates calculated
+for each arm when an arm is stopped (or at the last adaptive analysis if
+not before) using data from participants having reach followed up at this
+time point and not all participants randomised are used (\code{post_ests} or
+\code{raw_ests}, see \code{\link[=setup_trial]{setup_trial()}} and \code{\link[=run_trial]{run_trial()}}). If \code{NULL} (the
+default), this argument will be set to \code{FALSE} if outcome data are
+available immediate after randomisation for all participants (for backwards
+compatibility, as final posterior estimates may vary slightly in this
+situation, even if using the same data); otherwise it will be said to
+\code{TRUE}. See \code{\link[=setup_trial]{setup_trial()}} for more details on how these estimates are
+calculated.}
 
 \item{restrict}{single character string or \code{NULL}. If \code{NULL} (default),
 results are summarised for all simulations; if \code{"superior"}, results are
@@ -139,7 +140,7 @@ A \code{"trial_results_summary"} object containing the following values:
 \code{*} being either "\verb{arm_<name>} for all \code{arm} names or \code{none}), \code{rmse},
 \code{rmse_te}, \code{mae}, \code{mae_te}, and \code{idp}: performance metrics as described
 in \code{\link[=check_performance]{check_performance()}}. Note that all \code{sum_ys_} and \code{ratio_ys_}
-measures use outcome data from all randomised patients, regardless of
+measures use outcome data from all randomised participants, regardless of
 whether they had outcome data available at the last analysis or not, as
 described in \code{\link[=extract_results]{extract_results()}}.
 \item \code{select_strategy}, \code{select_last_arm}, \code{select_preferences},

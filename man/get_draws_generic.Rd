@@ -7,11 +7,11 @@
 \item{arms}{character vector, \strong{currently active} \code{arms} as specified in
 \code{\link[=setup_trial]{setup_trial()}} / \code{\link[=setup_trial_binom]{setup_trial_binom()}} / \code{\link[=setup_trial_norm]{setup_trial_norm()}}.}
 
-\item{allocs}{character vector, allocations of all patients (including
+\item{allocs}{character vector, allocations of all participants (including
 allocations to \strong{currently inactive} \code{arms}).}
 
-\item{ys}{numeric vector, outcomes of all patients in the same order
-as \code{alloc} (including outcomes of patients in \strong{currently inactive}
+\item{ys}{numeric vector, outcomes of all participants in the same order
+as \code{alloc} (including outcomes of participants in \strong{currently inactive}
 \code{arms}).}
 
 \item{control}{unused argument in the built-in functions for

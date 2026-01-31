@@ -86,14 +86,14 @@ code chunk of this vignette).
 ## Functions for generating outcomes
 
 This function should take a single argument (`allocs`), a character vector
-containing the allocations (names of trial `arms`) of all patients included
+containing the allocations (names of trial `arms`) of all participants included
 since the last adaptive analysis. The function must return a *numeric* vector,
 regardless of actual outcome type (so, e.g., categorical outcomes must be
 encoded as numeric). The returned numeric vector must be of the same length, and
 the values in the same order as `allocs`. That is, the third element of `allocs`
-specifies the allocation of the third patient randomised since the last adaptive
-analysis, and (correspondingly) the third element of the returned vector is that
-patient's outcome.
+specifies the allocation of the third participant randomised since the last
+adaptive analysis, and (correspondingly) the third element of the returned
+vector is that participant's outcome.
 
 It sounds complicated, but it becomes clearer when we actually specify the 
 function (essentially a re-implementation of the built-in function used by
@@ -112,9 +112,9 @@ get_ys_binom_custom <- function(allocs) {
   
   # Loop through arms and generate outcomes
   for (i in seq_along(arms)) {
-    # Indices of patients allocated to the current arm
+    # Indices of participants allocated to the current arm
     ii <- which(allocs == arms[i])
-    # Generate outcomes for all patients allocated to current arm
+    # Generate outcomes for all participants allocated to current arm
     y[ii] <- rbinom(length(ii), 1, true_ys[i])
   }
   
@@ -124,7 +124,7 @@ get_ys_binom_custom <- function(allocs) {
 ```
 
 To illustrate how the function works, we first generate random allocations for
-50 patients using equal allocation probabilities, the default behaviour of
+50 participants using equal allocation probabilities, the default behaviour of
 `sample()`. By enclosing the call in parentheses, the resulting
 allocations are printed:
 
@@ -133,7 +133,7 @@ allocations are printed:
                   size = 50, replace = TRUE))
 ```
 
-Next, we generate random outcomes for these patients: 
+Next, we generate random outcomes for these participants: 
 ```{r}
 (ys <- get_ys_binom_custom(allocs))
 ```
@@ -143,7 +143,7 @@ Next, we generate random outcomes for these patients:
 The `setup_trial_binom()` function uses *beta-binomial conjugate prior models*
 in each arm, with `beta(1, 1)` priors. These priors are uniform (≈
 "non-informative") on the probability scale and corresponds to the same amount
-of information as provided by 2 patients (1 with and 1 without an event),
+of information as provided by 2 participants (1 with and 1 without an event),
 described in greater detail by, e.g., *Ryan et al, 2019*
 ([10.1136/bmjopen-2018-024256](https://doi.org/10.1136/bmjopen-2018-024256)).
 
@@ -162,7 +162,7 @@ We assume that we have prior knowledge corresponding to a belief that the best
 estimate for the true event probability in the `control` arm is 0.25 (25%),
 and that the true event probability is between 0.15 and 0.35 (15-35%) with
 95% probability. The mean of a beta distribution is simply
-`[number of events]/[number of patients]`.
+`[number of events]/[number of participants]`.
 
 To derive a beta distribution that reflects this prior belief, we use
 `find_beta_params()`, a helper function included in the `adaptr` (see
@@ -178,8 +178,8 @@ find_beta_params(
 ```
 
 We thus see that our prior belief prior roughly corresponds to previous
-randomisation of 60 patients of whom 15 (`alpha`) experienced the event and 45
-(`beta`) did not.
+randomisation of 60 participants of whom 15 (`alpha`) experienced the event and
+45 (`beta`) did not.
 
 Even though we may expect event probabilities to differ in the non-control arms,
 for this example we consider this prior appropriate for all arms as we consider
@@ -187,9 +187,9 @@ event probabilities smaller/larger than those represented by the prior unlikely.
 
 Below, we illustrate the effects of this prior compared to the default
 `beta(1, 1)` prior used in `setup_trial_binom()` for a single trial arm with 20
-patients randomised, 12 events and 8 non-events. This corresponds to an
+participants randomised, 12 events and 8 non-events. This corresponds to an
 estimated event probability of 0.6 (60%), far more than the expected 0.25 (25%).
-This could come about by random fluctuations when few patients have been
+This could come about by random fluctuations when few participants have been
 randomised, even if our prior beliefs are correct.
 
 ```{r, echo = FALSE}
@@ -214,7 +214,7 @@ plot_prior_posterior <- function(events, non_events, prior_events, prior_non_eve
                                 labels = paste0(0:10 * 10, "%"), expand = c(0.01, 0.01)) +
     ggplot2::scale_y_continuous(breaks = NULL, expand = c(0, 0), name = NULL) + 
     ggplot2::labs(x = "Event probability",
-                  title = sprintf("Single trial arm - %i patients (%i events, %i non-events)", events + non_events, events, non_events)
+                  title = sprintf("Single trial arm - %i participants (%i events, %i non-events)", events + non_events, events, non_events)
   )
 }
 ```
@@ -223,8 +223,8 @@ plot_prior_posterior <- function(events, non_events, prior_events, prior_non_eve
 plot_prior_posterior(12, 8, 15, 45)
 ```
 
-Next, we illustrate the effects on the same prior after 200 patients have been
-randomised to the same arm, with 56 events and 144 non-events, which
+Next, we illustrate the effects on the same prior after 200 participants have
+been randomised to the same arm, with 56 events and 144 non-events, which
 corresponds to an estimated event probability of 0.28 (28%), which
 is more similar to the expected event probability.
 
@@ -232,8 +232,8 @@ is more similar to the expected event probability.
 plot_prior_posterior(56, 144, 15, 45)
 ```
 
-When comparing to the previous plot, we clearly see that once more patients have
-been randomised, the larger sample of observed data starts to dominate the
+When comparing to the previous plot, we clearly see that once more participants
+have been randomised, the larger sample of observed data starts to dominate the
 posterior, so that the prior exerts less influence on the posterior
 distribution (both posterior distributions are very alike despite the very
 different prior distributions).
@@ -246,9 +246,9 @@ names, *even* if they are not used in the function):
 
 - `arms`: character vector of the *currently active* `arms` in the trial.
 - `allocs`: character vector of the allocations (trial `arms`) of *all*
-patients randomised in the trial, *including* those randomised to `arms`
+participants randomised in the trial, *including* those randomised to `arms`
 that are no longer active.
-- `ys`: numeric vector of the outcomes of *all* patients randomised in the
+- `ys`: numeric vector of the outcomes of *all* participants randomised in the
 trial, *including* those randomised to `arms` that are no longer active.
 - `control`: single character, the *current* `control` arm; `NULL` in trials
 without a common `control`.
@@ -259,10 +259,10 @@ Alternatively, unused arguments can be left out and the ellipsis (`...`)
 included as the final argument in your function.
 
 Second, the order of `allocs` and `ys` must match: the fifth element of `allocs`
-represents the allocation of the fifth patient, while the fifth element of `ys`
-represent the outcome of the same patient.
+represents the allocation of the fifth participant, while the fifth element of
+`ys` represent the outcome of the same participant.
 
-Third, `allocs` and `ys` are provided for **all** patients, including
+Third, `allocs` and `ys` are provided for **all** participants, including
 those randomised to `arms` that are no longer active. This is done as users in
 some situations may want to use these data when generating posterior draws for
 the other (and currently **active**) `arms`.
@@ -277,7 +277,7 @@ simpler models are well-suited for use in simulations.
 Fifth, the function must return a `matrix` of numeric values with `length(arms)`
 columns and `n_draws` rows, with the **currently active** `arms` as column
 names. That is, each row must contain one posterior draw for each arm. `NA`'s
-are not allowed, so even if no patients have been randomised to an arm yet,
+are not allowed, so even if no participants have been randomised to an arm yet,
 valid numeric values should be returned (e.g., drawn from the prior or from
 another very diffuse *posterior* distribution). Even if the outcome is not truly
 numeric, both the vector of outcomes provided to the function (`ys`) and the
@@ -292,17 +292,17 @@ get_draws_binom_custom <- function(arms, allocs, ys, control, n_draws) {
   
   # Loop through the ACTIVE arms and generate posterior draws
   for (a in arms) {
-    # Indices of patients allocated to the current arm
+    # Indices of participants allocated to the current arm
     ii <- which(allocs == a)
     # Sum the number of events in the current arm
     n_events <- sum(ys[ii])
-    # Compute the number of patients in the current arm
-    n_patients <- length(ii)
-    # Generate draws using the number of events, the number of patients
+    # Compute the number of participants in the current arm
+    n_participants <- length(ii)
+    # Generate draws using the number of events, the number of participants
     # and the prior specified above: beta(15, 45)
     # Saved using the current arms' name in the list, ensuring that the
     # resulting matrix has column names corresponding to the ACTIVE arms
-    draws[[a]] <- rbeta(n_draws, 15 + n_events, 45 + n_patients - n_events)
+    draws[[a]] <- rbeta(n_draws, 15 + n_events, 45 + n_participants - n_events)
   }
   
   # Bind all elements of the list column-wise to form a matrix with

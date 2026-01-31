@@ -1,8 +1,8 @@
 #' Find beta distribution parameters from thresholds
 #'
 #' Helper function to find a beta distribution with parameters corresponding
-#' to the fewest possible patients with events/non-events and a specified event
-#' proportion. Used in the **Advanced example** vignette
+#' to the fewest possible participants with events/non-events and a specified
+#' event proportion. Used in the **Advanced example** vignette
 #' (`vignette("Advanced-example", "adaptr")`) to derive `beta` prior
 #' distributions for use in *beta-binomial conjugate models*, based on a belief
 #' that the true event probability lies within a specified percentile-based
@@ -20,13 +20,13 @@
 #'   defaults to `0.95`.
 #' @param n_dec single non-negative integer; the returned parameters are rounded
 #'   to this number of decimals. Defaults to `0`, in which case the parameters
-#'   will correspond to whole number of patients.
+#'   will correspond to whole number of participants.
 #' @param max_n single integer `> 0` (default `10000`), the maximum total sum of
-#'   the parameters, corresponding to the maximum total number of patients that
-#'   will be considered by the function when finding the optimal parameter
-#'   values. Corresponds to the maximum number of patients contributing
-#'   information to a beta prior; more than the default number of patients are
-#'   unlikely to be used in a beta prior.
+#'   the parameters, corresponding to the maximum total number of participants
+#'   that will be considered by the function when finding the optimal parameter
+#'   values. Corresponds to the maximum number of participants contributing
+#'   information to a beta prior; more than the default number of participants
+#'   are unlikely to be used in a beta prior.
 #'
 #' @return A single-row `data.frame` with five columns: the two shape parameters
 #'   of the beta distribution (`alpha`, `beta`), rounded according to `n_dec`,

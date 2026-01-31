@@ -5,10 +5,10 @@
 #'
 #' @param arms character vector, **currently active** `arms` as specified in
 #'   [setup_trial()] / [setup_trial_binom()] / [setup_trial_norm()].
-#' @param allocs character vector, allocations of all patients (including
+#' @param allocs character vector, allocations of all participants (including
 #'   allocations to **currently inactive** `arms`).
-#' @param ys numeric vector, outcomes of all patients in the same order
-#'   as `alloc` (including outcomes of patients in **currently inactive**
+#' @param ys numeric vector, outcomes of all participants in the same order
+#'   as `alloc` (including outcomes of participants in **currently inactive**
 #'   `arms`).
 #' @param control unused argument in the built-in functions for
 #'   [setup_trial_binom()] and [setup_trial_norm], but required as this
@@ -126,11 +126,12 @@ get_ys_norm <- function(arms, means, sds) {
 #' posteriors directly correspond to normal distributions with each groups' mean
 #' as the mean and each groups' standard error as the standard deviation.
 #' As it is necessary to always return valid draws, in cases where `< 2`
-#' patients have been randomised to an `arm`, posterior draws will come from an
-#' extremely wide normal distribution with mean corresponding to the mean of all
-#' included patients with outcome data and a standard deviation corresponding to
-#' the difference between the highest and lowest recorded outcomes for all
-#' patients with available outcome data multiplied by `1000`.
+#' participants have been randomised to an `arm`, posterior draws will come from
+#' an extremely wide normal distribution with mean corresponding to the mean of
+#' all included participants with outcome data and a standard deviation
+#' corresponding to the difference between the highest and lowest recorded
+#' outcomes for all participants with available outcome data multiplied by
+#' `1000`.
 #'
 #' @inheritParams get_draws_generic
 #'
@@ -145,9 +146,9 @@ get_draws_norm <- function(arms, allocs, ys, control, n_draws) {
   for (a in arms) {
     ii <- which(allocs == a)
     n <- length(ii)
-    if (n > 1){ # Necessary to avoid errors if too few patients have been randomised to this arm yet
+    if (n > 1){ # Necessary to avoid errors if too few participants have been randomised to this arm yet
       draws[[a]] <- rnorm(n_draws, mean = mean(ys[ii]), sd = sd(ys[ii]) / sqrt(n - 1))
-    } else { # Too few patients randomised - extreme uncertainty
+    } else { # Too few participants randomised - extreme uncertainty
       draws[[a]] <- rnorm(n_draws, mean = mean(ys), sd = 1000 * (max(ys) - min(ys)))
     }
   }

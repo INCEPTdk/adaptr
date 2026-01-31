@@ -124,8 +124,8 @@ setup_trial_binom(
   # Specify adaptive analysis looks using max_n and look_after_every
   # max_n does not need to be a multiple of look_after_every - a final look
   # will be conducted at max_n regardless
-  max_n = 1250, # Maximum 1250 patients
-  look_after_every = 100, # Look after every 100 patients
+  max_n = 1250, # Maximum 1250 participants
+  look_after_every = 100, # Look after every 100 participants
   
   # Assess equivalence between all arms: stop if >90 % probability that the
   # absolute difference between the best and worst arms is < 5 %-points
@@ -295,10 +295,10 @@ setup_trial_binom(
 This example uses the `randomised_at_looks` argument to specify follow-up and/or
 data collection lag. In real use cases, this should usually be considered, as
 this may affect the relative performance of different trial designs and the
-extent to which the 'final' results after all patients have reached follow-up
-and are analysed may differ from the results from the adaptive analyses with
-some randomised patients not included due to outcome data not being available
-yet for these patients.
+extent to which the 'final' results after all participants have reached
+follow-up and are analysed may differ from the results from the adaptive
+analyses with some randomised participants not included due to outcome data not
+being available yet for these participants.
 
 ```{r}
 setup_trial_binom(
@@ -306,10 +306,10 @@ setup_trial_binom(
   control = "A",
   true_ys = c(0.2, 0.22, 0.24, 0.18), 
   
-  # Analyses conducted every time 100 patients have follow-up data available
+  # Analyses conducted every time 100 participants have follow-up data available
   data_looks = seq(from = 100, to = 1000, by = 100),
-  # Specify the number of patients randomised at each look - in this case, 200
-  # more patients are randomised than the number of patients that
+  # Specify the number of participants randomised at each look - in this case,
+  # 200 more participants are randomised than the number of participants that
   # have follow-up data available at each look
   randomised_at_looks = seq(from = 300, to = 1200, by = 100)
 )
@@ -333,7 +333,7 @@ setup_trial_binom(
   control = "A",
   true_ys = c(0.2, 0.22, 0.24, 0.18), 
   
-  # Analyses conducted every time 100 patients have follow-up data available
+  # Analyses conducted every time 100 participants have follow-up data available
   data_looks = seq(from = 100, to = 1000, by = 100),
 
   # Specify varying inferiority/superiority thresholds

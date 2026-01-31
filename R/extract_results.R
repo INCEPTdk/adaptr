@@ -190,18 +190,19 @@ extract_results_batch <- function(trial_results,
 #'   (`raw_ests` or `raw_ests_all`, see [setup_trial()] and [run_trial()]) will
 #'   be used instead of the posterior estimates.
 #' @param final_ests single logical. If `TRUE` (recommended) the final estimates
-#'   calculated using outcome data from all patients randomised when trials are
-#'   stopped are used (`post_ests_all` or `raw_ests_all`, see [setup_trial()]
-#'   and [run_trial()]); if `FALSE`, the estimates calculated for each arm when
-#'   an arm is stopped (or at the last adaptive analysis if not before) using
-#'   data from patients having reach followed up at this time point and not all
-#'   patients randomised are used (`post_ests` or `raw_ests`, see
-#'   [setup_trial()] and [run_trial()]). If `NULL` (the default), this argument
-#'   will be set to `FALSE` if outcome data are available immediate after
-#'   randomisation for all patients (for backwards compatibility, as final
-#'   posterior estimates may vary slightly in this situation, even if using the
-#'   same data); otherwise it will be said to `TRUE`. See [setup_trial()] for
-#'   more details on how these estimates are calculated.
+#'   calculated using outcome data from all participants randomised when trials
+#'   are stopped are used (`post_ests_all` or `raw_ests_all`, see
+#'   [setup_trial()] and [run_trial()]); if `FALSE`, the estimates calculated
+#'   for each arm when an arm is stopped (or at the last adaptive analysis if
+#'   not before) using data from participants having reach followed up at this
+#'   time point and not all participants randomised are used (`post_ests` or
+#'   `raw_ests`, see [setup_trial()] and [run_trial()]). If `NULL` (the
+#'   default), this argument will be set to `FALSE` if outcome data are
+#'   available immediate after randomisation for all participants (for backwards
+#'   compatibility, as final posterior estimates may vary slightly in this
+#'   situation, even if using the same data); otherwise it will be said to
+#'   `TRUE`. See [setup_trial()] for more details on how these estimates are
+#'   calculated.
 #' @param cores `NULL` or single integer. If `NULL`, a default value set by
 #'   [setup_cluster()] will be used to control whether extractions of simulation
 #'   results are done in parallel on a default cluster or sequentially in the
@@ -223,9 +224,9 @@ extract_results_batch <- function(trial_results,
 #'       number of events in trials with a binary outcome
 #'       ([setup_trial_binom()]) or the sum of the arm totals in trials with a
 #'       continuous outcome ([setup_trial_norm()]). Always uses all outcome data
-#'       from all randomised patients regardless of whether or not all patients
-#'       had outcome data available at the time of trial stopping (corresponding
-#'       to `sum_ys_all` in results from [run_trial()]).
+#'       from all randomised participants regardless of whether or not all
+#'       participants had outcome data available at the time of trial stopping
+#'       (corresponding to `sum_ys_all` in results from [run_trial()]).
 #'     \item `ratio_ys`: calculated as `sum_ys/final_n` (as described above).
 #'     \item `final_status`: the final trial status for each simulation, either
 #'       `"superiority"`, `"equivalence"`, `"futility"`, or `"max"`, as

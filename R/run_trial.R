@@ -3,7 +3,7 @@
 #' This function conducts a single trial simulation using a trial specification
 #' as specified by [setup_trial()], [setup_trial_binom()] or
 #' [setup_trial_norm()].\cr
-#' During simulation, the function randomises "patients", randomly generates
+#' During simulation, the function randomises "participants", randomly generates
 #' outcomes, calculates the probabilities that each `arm` is the best (and
 #' better than the control, if any). This is followed by checking inferiority,
 #' superiority, equivalence and/or futility as desired; dropping arms, and
@@ -25,15 +25,15 @@
 #' when the final arms are all equivalent, or after the final specified adaptive
 #' analysis.\cr
 #' After stopping (regardless of reason), a final analysis including outcome
-#' data from all patients randomised to all arms will be conducted (with the
+#' data from all participants randomised to all arms will be conducted (with the
 #' final `control` arm, if any, used as the `control` in this analysis).
 #' Results from this analysis will be saved, but not used with regards to the
-#' adaptive stopping rules. This is particularly relevant if less patients have
-#' available outcome data at the last adaptive analyses than the total number of
-#' patients randomised (as specified in [setup_trial()], [setup_trial_binom()],
-#' or [setup_trial_norm()]), as the final analysis will then include all
-#' patients randomised, which may be more than in the last adaptive analysis
-#' conducted.
+#' adaptive stopping rules. This is particularly relevant if less participants
+#' have available outcome data at the last adaptive analyses than the total
+#' number of participants randomised (as specified in [setup_trial()],
+#' [setup_trial_binom()], or [setup_trial_norm()]), as the final analysis will
+#' then include all participants randomised, which may be more than in the last
+#' adaptive analysis conducted.
 #'
 #' @param trial_spec `trial_spec` object, generated and validated by the
 #'   [setup_trial()], [setup_trial_binom()] or [setup_trial_norm()] function.
@@ -56,21 +56,21 @@
 #'     \item `final_status`: either `"superiority"`, `"equivalence"`,
 #'       `"futility"`, or `"max"` (stopped at the last possible adaptive
 #'       analysis), as calculated during the adaptive analyses.
-#'     \item `final_n`: the total number of patients randomised.
-#'     \item `followed_n`: the total number of patients with available outcome
-#'       data at the last adaptive analysis conducted.
-#'     \item `max_n`: the pre-specified maximum number of patients with outcome
-#'       data available at the last possible adaptive analysis.
-#'     \item `max_randomised`: the pre-specified maximum number of patients
+#'     \item `final_n`: the total number of participants randomised.
+#'     \item `followed_n`: the total number of participants with available
+#'       outcome data at the last adaptive analysis conducted.
+#'     \item `max_n`: the pre-specified maximum number of participants with
+#'       outcome data available at the last possible adaptive analysis.
+#'     \item `max_randomised`: the pre-specified maximum number of participants
 #'       randomised at the last possible adaptive analysis.
-#'     \item `looks`: numeric vector, the total number of patients with outcome
-#'       data available at each conducted adaptive analysis.
-#'     \item `planned_looks`: numeric vector, the cumulated number of patients
-#'       planned to have outcome data available at each adaptive analysis, even
-#'       those not conducted if the simulation is stopped before the final
-#'       possible analysis.
+#'     \item `looks`: numeric vector, the total number of participants with
+#'       outcome data available at each conducted adaptive analysis.
+#'     \item `planned_looks`: numeric vector, the cumulated number of
+#'       participants planned to have outcome data available at each adaptive
+#'       analysis, even those not conducted if the simulation is stopped before
+#'       the final possible analysis.
 #'     \item `randomised_at_looks`: numeric vector, the cumulated number of
-#'       patients  randomised at each conducted adaptive analysis (only
+#'       participants randomised at each conducted adaptive analysis (only
 #'       including the relevant numbers for the analyses actually conducted).
 #'     \item `start_control`: character, initial common `control` arm (if
 #'       specified).
@@ -88,17 +88,17 @@
 #'       outcomes as specified in [setup_trial()]) and for each arm the sum of
 #'       the outcomes (`sum_ys`/`sum_ys_all`; i.e., the total number of events
 #'       for binary outcomes or the totals of continuous outcomes) and sum of
-#'       patients (`ns`/`ns_all`), summary statistics for the raw outcome data
-#'       (`raw_ests`/`raw_ests_all`, calculated as specified in [setup_trial()],
-#'       defaults to mean values, i.e., event rates for binary outcomes or means
-#'       for continuous outcomes) and posterior estimates
+#'       participants (`ns`/`ns_all`), summary statistics for the raw outcome
+#'       data (`raw_ests`/`raw_ests_all`, calculated as specified in
+#'       [setup_trial()], defaults to mean values, i.e., event rates for binary
+#'       outcomes or means for continuous outcomes) and posterior estimates
 #'       (`post_ests`/`post_ests_all`, `post_errs`/`post_errs_all`,
 #'       `lo_cri`/`lo_cri_all`, and `hi_cri`/`hi_cri_all`, calculated as
 #'       specified in [setup_trial()]), `final_status` of each arm
 #'       (`"inferior"`, `"superior"`, `"equivalence"`, `"futile"`, `"active"`,
 #'       or `"control"` (currently active control arm, including if the current
 #'       control when stopped for equivalence)), `status_look` (specifying the
-#'       cumulated number of patients with outcome data available when an
+#'       cumulated number of participents with outcome data available when an
 #'       adaptive analysis changed the `final_status` to `"superior"`,
 #'       `"inferior"`, `"equivalence"`, or `"futile"`), `status_probs`, the
 #'       probability (in the last adaptive analysis for each arm) that each
@@ -107,18 +107,18 @@
 #'       the control arm was stopped due to the last remaining other arm(s)
 #'       being stopped for equivalence)/futile if stopped for futility at the
 #'       last analysis it was included in, `final_alloc`, the final allocation
-#'       probability for each arm the last time patients were randomised to it,
-#'       including for arms stopped at the maximum sample size, and
+#'       probability for each arm the last time participants were randomised to
+#'       it, including for arms stopped at the maximum sample size, and
 #'       `probs_best_last`, the probabilities of each remaining arm being the
 #'       overall best in the last conducted adaptive analysis (`NA` for
 #'       previously dropped arms).\cr
 #'       **Note:** for the variables in the `data.frame` where a version
 #'       including the `_all`-suffix is included, the versions WITHOUT this
-#'       suffix are calculated using patients with available outcome data at the
-#'       time of analysis, while the versions WITH the `_all`-suffixes are
-#'       calculated using outcome data for all patients randomised at the time
-#'       of analysis, even if they have not reached the time of follow-up yet
-#'       (see [setup_trial()]).
+#'       suffix are calculated using participants with available outcome data at
+#'       the time of analysis, while the versions WITH the `_all`-suffixes are
+#'       calculated using outcome data for all participants randomised at the
+#'       time of analysis, even if they have not reached the time of follow-up
+#'       yet (see [setup_trial()]).
 #'     \item `all_looks`: a list of lists containing one list per conducted
 #'       trial look (adaptive analysis). These lists contain the variables
 #'       `arms`, `old_status` (status before the analysis of the current round
@@ -139,9 +139,9 @@
 #'       `NA` if the arm was not active in the applicable adaptive analysis or
 #'       if they would not be included during the next adaptive analysis.
 #'     \item `allocs`: a character vector containing the allocations of all
-#'       patients in the order of randomization.
-#'     \item `ys`: a numeric vector containing the outcomes of all patients in
-#'       the order of randomization (`0` or `1` for binary outcomes).
+#'       participants in the order of randomization.
+#'     \item `ys`: a numeric vector containing the outcomes of all participants
+#'       in the order of randomization (`0` or `1` for binary outcomes).
 #'     \item `seed`: the random seed used, if specified.
 #'     \item `description`, `add_info`, `cri_width`, `n_draws`, `robust`: as
 #'       specified in [setup_trial()], [setup_trial_binom()] or
@@ -268,19 +268,19 @@ run_trial <- function(trial_spec, seed = NULL, sparse = FALSE) {
   # Loop through each look (adaptive analysis) - break loop when relevant
   for (look in 1:n_data_looks) {
 
-    # Randomise new patients and get outcomes after setting up indices and saving "old" allocation ratios (including starting ratios)
+    # Randomise new participants and get outcomes after setting up indices and saving "old" allocation ratios (including starting ratios)
     cur_status$old_status <- cur_status$new_status
     cur_status$old_alloc <- cur_status$new_alloc
     cur_status$new_alloc <- rep(NA, n_arms) # Delete old values
     aai <- which(cur_status$new_status %in% c("active", "control"))
     n_new <- randomised_at_looks[look] - total_n
-    if (n_new > 0) { # If no more patients are randomised at this analysis (but more have reached follow-up)
-      new_patients <- sample(arms[aai], size = n_new, prob = cur_status$old_alloc[aai], replace = TRUE)
-      allocs[(total_n+1):(total_n+n_new)] <- new_patients
-      ys[(total_n+1):(total_n+n_new)] <- fun_y_gen(new_patients)
+    if (n_new > 0) { # If no more participants are randomised at this analysis (but more have reached follow-up)
+      new_participants <- sample(arms[aai], size = n_new, prob = cur_status$old_alloc[aai], replace = TRUE)
+      allocs[(total_n+1):(total_n+n_new)] <- new_participants
+      ys[(total_n+1):(total_n+n_new)] <- fun_y_gen(new_participants)
     }
-    followed_n <- data_looks[look] # Number of patients with outcome data
-    total_n <- randomised_at_looks[look] # Number of patients randomised
+    followed_n <- data_looks[look] # Number of participants with outcome data
+    total_n <- randomised_at_looks[look] # Number of participants randomised
     cur_status$ns[aai] <- ns[aai] <- vapply_int(arms[aai], function(a) sum(allocs[1:followed_n] == a))
     cur_status$ns_all <- ns_all <- vapply_int(arms, function(a) sum(allocs[1:total_n] == a))
     # which() required to avoid summing over NA's (which yields an NA sum)
@@ -655,7 +655,7 @@ run_trial <- function(trial_spec, seed = NULL, sparse = FALSE) {
     }
   }
 
-  # Conduct final analysis including all patients from all arms
+  # Conduct final analysis including all participants from all arms
   draws_final <- fun_draws(arms = arms, allocs = allocs[1:total_n],
                            ys = ys[1:total_n], control = control, n_draws = n_draws)
   post_final <- matrix(rep(NA, 4*n_arms), ncol = 4)

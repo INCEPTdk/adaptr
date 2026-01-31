@@ -13,6 +13,10 @@
 *   The `plot_metrics_ecdf()` function now adds padding to eCDFs (lines start at
     0% on the vertical axis).
     
+*   Semantic change: replaced 'patient(s)' with the more general and appropriate
+    'participant(s)' throughout the package documentation. Note that this
+    affects output of some `print()` methods and plotting functions.
+    
 *   Minor updates to package documentation and tests.
 
 # adaptr 1.4.0

@@ -31,21 +31,21 @@ A \code{trial_result} object containing everything listed below if
 \item \code{final_status}: either \code{"superiority"}, \code{"equivalence"},
 \code{"futility"}, or \code{"max"} (stopped at the last possible adaptive
 analysis), as calculated during the adaptive analyses.
-\item \code{final_n}: the total number of patients randomised.
-\item \code{followed_n}: the total number of patients with available outcome
-data at the last adaptive analysis conducted.
-\item \code{max_n}: the pre-specified maximum number of patients with outcome
-data available at the last possible adaptive analysis.
-\item \code{max_randomised}: the pre-specified maximum number of patients
+\item \code{final_n}: the total number of participants randomised.
+\item \code{followed_n}: the total number of participants with available
+outcome data at the last adaptive analysis conducted.
+\item \code{max_n}: the pre-specified maximum number of participants with
+outcome data available at the last possible adaptive analysis.
+\item \code{max_randomised}: the pre-specified maximum number of participants
 randomised at the last possible adaptive analysis.
-\item \code{looks}: numeric vector, the total number of patients with outcome
-data available at each conducted adaptive analysis.
-\item \code{planned_looks}: numeric vector, the cumulated number of patients
-planned to have outcome data available at each adaptive analysis, even
-those not conducted if the simulation is stopped before the final
-possible analysis.
+\item \code{looks}: numeric vector, the total number of participants with
+outcome data available at each conducted adaptive analysis.
+\item \code{planned_looks}: numeric vector, the cumulated number of
+participants planned to have outcome data available at each adaptive
+analysis, even those not conducted if the simulation is stopped before
+the final possible analysis.
 \item \code{randomised_at_looks}: numeric vector, the cumulated number of
-patients  randomised at each conducted adaptive analysis (only
+participants randomised at each conducted adaptive analysis (only
 including the relevant numbers for the analyses actually conducted).
 \item \code{start_control}: character, initial common \code{control} arm (if
 specified).
@@ -63,17 +63,17 @@ specified for each arm in \code{\link[=setup_trial]{setup_trial()}} including \c
 outcomes as specified in \code{\link[=setup_trial]{setup_trial()}}) and for each arm the sum of
 the outcomes (\code{sum_ys}/\code{sum_ys_all}; i.e., the total number of events
 for binary outcomes or the totals of continuous outcomes) and sum of
-patients (\code{ns}/\code{ns_all}), summary statistics for the raw outcome data
-(\code{raw_ests}/\code{raw_ests_all}, calculated as specified in \code{\link[=setup_trial]{setup_trial()}},
-defaults to mean values, i.e., event rates for binary outcomes or means
-for continuous outcomes) and posterior estimates
+participants (\code{ns}/\code{ns_all}), summary statistics for the raw outcome
+data (\code{raw_ests}/\code{raw_ests_all}, calculated as specified in
+\code{\link[=setup_trial]{setup_trial()}}, defaults to mean values, i.e., event rates for binary
+outcomes or means for continuous outcomes) and posterior estimates
 (\code{post_ests}/\code{post_ests_all}, \code{post_errs}/\code{post_errs_all},
 \code{lo_cri}/\code{lo_cri_all}, and \code{hi_cri}/\code{hi_cri_all}, calculated as
 specified in \code{\link[=setup_trial]{setup_trial()}}), \code{final_status} of each arm
 (\code{"inferior"}, \code{"superior"}, \code{"equivalence"}, \code{"futile"}, \code{"active"},
 or \code{"control"} (currently active control arm, including if the current
 control when stopped for equivalence)), \code{status_look} (specifying the
-cumulated number of patients with outcome data available when an
+cumulated number of participents with outcome data available when an
 adaptive analysis changed the \code{final_status} to \code{"superior"},
 \code{"inferior"}, \code{"equivalence"}, or \code{"futile"}), \code{status_probs}, the
 probability (in the last adaptive analysis for each arm) that each
@@ -82,18 +82,18 @@ to the common control arm (if any and stopped for equivalence; \code{NA} if
 the control arm was stopped due to the last remaining other arm(s)
 being stopped for equivalence)/futile if stopped for futility at the
 last analysis it was included in, \code{final_alloc}, the final allocation
-probability for each arm the last time patients were randomised to it,
-including for arms stopped at the maximum sample size, and
+probability for each arm the last time participants were randomised to
+it, including for arms stopped at the maximum sample size, and
 \code{probs_best_last}, the probabilities of each remaining arm being the
 overall best in the last conducted adaptive analysis (\code{NA} for
 previously dropped arms).\cr
 \strong{Note:} for the variables in the \code{data.frame} where a version
 including the \verb{_all}-suffix is included, the versions WITHOUT this
-suffix are calculated using patients with available outcome data at the
-time of analysis, while the versions WITH the \verb{_all}-suffixes are
-calculated using outcome data for all patients randomised at the time
-of analysis, even if they have not reached the time of follow-up yet
-(see \code{\link[=setup_trial]{setup_trial()}}).
+suffix are calculated using participants with available outcome data at
+the time of analysis, while the versions WITH the \verb{_all}-suffixes are
+calculated using outcome data for all participants randomised at the
+time of analysis, even if they have not reached the time of follow-up
+yet (see \code{\link[=setup_trial]{setup_trial()}}).
 \item \code{all_looks}: a list of lists containing one list per conducted
 trial look (adaptive analysis). These lists contain the variables
 \code{arms}, \code{old_status} (status before the analysis of the current round
@@ -114,9 +114,9 @@ for equivalence if equivalence is assessed). The last variables are
 \code{NA} if the arm was not active in the applicable adaptive analysis or
 if they would not be included during the next adaptive analysis.
 \item \code{allocs}: a character vector containing the allocations of all
-patients in the order of randomization.
-\item \code{ys}: a numeric vector containing the outcomes of all patients in
-the order of randomization (\code{0} or \code{1} for binary outcomes).
+participants in the order of randomization.
+\item \code{ys}: a numeric vector containing the outcomes of all participants
+in the order of randomization (\code{0} or \code{1} for binary outcomes).
 \item \code{seed}: the random seed used, if specified.
 \item \code{description}, \code{add_info}, \code{cri_width}, \code{n_draws}, \code{robust}: as
 specified in \code{\link[=setup_trial]{setup_trial()}}, \code{\link[=setup_trial_binom]{setup_trial_binom()}} or
@@ -128,7 +128,7 @@ specified in \code{\link[=setup_trial]{setup_trial()}}, \code{\link[=setup_trial
 This function conducts a single trial simulation using a trial specification
 as specified by \code{\link[=setup_trial]{setup_trial()}}, \code{\link[=setup_trial_binom]{setup_trial_binom()}} or
 \code{\link[=setup_trial_norm]{setup_trial_norm()}}.\cr
-During simulation, the function randomises "patients", randomly generates
+During simulation, the function randomises "participants", randomly generates
 outcomes, calculates the probabilities that each \code{arm} is the best (and
 better than the control, if any). This is followed by checking inferiority,
 superiority, equivalence and/or futility as desired; dropping arms, and
@@ -150,15 +150,15 @@ stopped if all remaining arms are equivalent in designs without a common
 when the final arms are all equivalent, or after the final specified adaptive
 analysis.\cr
 After stopping (regardless of reason), a final analysis including outcome
-data from all patients randomised to all arms will be conducted (with the
+data from all participants randomised to all arms will be conducted (with the
 final \code{control} arm, if any, used as the \code{control} in this analysis).
 Results from this analysis will be saved, but not used with regards to the
-adaptive stopping rules. This is particularly relevant if less patients have
-available outcome data at the last adaptive analyses than the total number of
-patients randomised (as specified in \code{\link[=setup_trial]{setup_trial()}}, \code{\link[=setup_trial_binom]{setup_trial_binom()}},
-or \code{\link[=setup_trial_norm]{setup_trial_norm()}}), as the final analysis will then include all
-patients randomised, which may be more than in the last adaptive analysis
-conducted.
+adaptive stopping rules. This is particularly relevant if less participants
+have available outcome data at the last adaptive analyses than the total
+number of participants randomised (as specified in \code{\link[=setup_trial]{setup_trial()}},
+\code{\link[=setup_trial_binom]{setup_trial_binom()}}, or \code{\link[=setup_trial_norm]{setup_trial_norm()}}), as the final analysis will
+then include all participants randomised, which may be more than in the last
+adaptive analysis conducted.
 }
 \examples{
 # Setup a trial specification
