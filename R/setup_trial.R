@@ -795,10 +795,10 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' relevant `fixed_probs` to be `NULL` (or `NA` for the control arm).\cr
 #' If one of the `"sqrt-based"/"sqrt-based start"/"sqrt-based fixed"` options
 #' are used, the function will set *square-root-transformation-based* starting
-#' allocation probabilities. These are defined as:\cr
-#' `square root of number of non-control arms to 1-ratio for other arms`\cr
-#' scaled to sum to 1, which will generally increase power for comparisons
-#' against the common `control`, as discussed in, e.g., *Park et al, 2020*
+#' allocation probabilities. These are as `1` for all non-control arms and
+#' `sqrt(<number of non-control arms>)` for the common `control` arm, scaled to
+#' sum to 1. This will generally increase power for comparisons against the
+#' common `control`, as discussed in, e.g., *Park et al, 2020*
 #' \doi{10.1016/j.jclinepi.2020.04.025}.\cr
 #' If `"sqrt-based"` or `"sqrt-based fixed"`, square-root-transformation-based
 #' allocation probabilities will be used initially and also for new controls
@@ -814,7 +814,7 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' the `rescale` argument).\cr
 #' If `"match"` is specified, the control group allocation probability will
 #' always be *matched* to be similar to the highest non-control arm allocation
-#' probability.
+#' probability, followed by scaling to sum allocation probabilities to 1.
 #'
 #' \strong{Superiority and inferiority}
 #'

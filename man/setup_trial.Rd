@@ -80,7 +80,7 @@ using fixed allocation probabilities.}
 or \code{"both"}. Rescales \code{fixed_probs} (if \code{"fixed"} or \code{"both"}) and
 \code{min_probs/max_probs} (if \code{"limits"} or \code{"both"}) after arm dropping in
 trial specifications with \verb{>2 arms} using a \code{rescale_factor} defined as
-\verb{initial number of arms/number of active arms}. \verb{"fixed_probs} and
+\verb{initial number of arms/number of active arms}. \code{fixed_probs} and
 \code{min_probs} are rescaled as \verb{initial value * rescale factor}, except for
 \code{fixed_probs} controlled by the \code{control_prob_fixed} argument, which are
 never rescaled. \code{max_probs} are rescaled as
@@ -402,10 +402,10 @@ one of those, case sensitive). This requires \code{start_probs} to be \code{NULL
 relevant \code{fixed_probs} to be \code{NULL} (or \code{NA} for the control arm).\cr
 If one of the \code{"sqrt-based"/"sqrt-based start"/"sqrt-based fixed"} options
 are used, the function will set \emph{square-root-transformation-based} starting
-allocation probabilities. These are defined as:\cr
-\verb{square root of number of non-control arms to 1-ratio for other arms}\cr
-scaled to sum to 1, which will generally increase power for comparisons
-against the common \code{control}, as discussed in, e.g., \emph{Park et al, 2020}
+allocation probabilities. These are as \code{1} for all non-control arms and
+\verb{sqrt(<number of non-control arms>)} for the common \code{control} arm, scaled to
+sum to 1. This will generally increase power for comparisons against the
+common \code{control}, as discussed in, e.g., \emph{Park et al, 2020}
 \doi{10.1016/j.jclinepi.2020.04.025}.\cr
 If \code{"sqrt-based"} or \code{"sqrt-based fixed"}, square-root-transformation-based
 allocation probabilities will be used initially and also for new controls
@@ -417,10 +417,11 @@ probabilities always calculated based on the number of active non-control
 arms). If \code{"sqrt-based start"}, the control arm allocation probability will
 be fixed to a square-root based probability at all times calculated according
 to the initial number of arms (with this probability also being used for new
-control(s) when the original control is dropped).\cr
+control(s) when the original control is dropped; this may be rescaled using
+the \code{rescale} argument).\cr
 If \code{"match"} is specified, the control group allocation probability will
 always be \emph{matched} to be similar to the highest non-control arm allocation
-probability.
+probability, followed by scaling to sum allocation probabilities to 1.
 }
 
 \strong{Superiority and inferiority}
