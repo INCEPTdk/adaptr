@@ -74,6 +74,8 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
         }
         if (is.null(fixed_probs)) {
           fixed_probs <- rep(NA, n_arms)
+        } else if (length(fixed_probs) != n_arms) {
+          stop0("fixed_probs must be either NULL or the same length as arms.")
         }
         fixed_probs[arms == control] <- start_probs[arms == control]
       }
@@ -521,7 +523,7 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #'   or `"both"`. Rescales `fixed_probs` (if `"fixed"` or `"both"`) and
 #'   `min_probs/max_probs` (if `"limits"` or `"both"`) after arm dropping in
 #'   trial specifications with `>2 arms` using a `rescale_factor` defined as
-#'   `initial number of arms/number of active arms`. `"fixed_probs` and
+#'   `initial number of arms/number of active arms`. `fixed_probs` and
 #'   `min_probs` are rescaled as `initial value * rescale factor`, except for
 #'   `fixed_probs` controlled by the `control_prob_fixed` argument, which are
 #'   never rescaled. `max_probs` are rescaled as
@@ -808,7 +810,8 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #' arms). If `"sqrt-based start"`, the control arm allocation probability will
 #' be fixed to a square-root based probability at all times calculated according
 #' to the initial number of arms (with this probability also being used for new
-#' control(s) when the original control is dropped).\cr
+#' control(s) when the original control is dropped; this may be rescaled using
+#' the `rescale` argument).\cr
 #' If `"match"` is specified, the control group allocation probability will
 #' always be *matched* to be similar to the highest non-control arm allocation
 #' probability.

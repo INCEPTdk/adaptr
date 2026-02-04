@@ -277,4 +277,8 @@ test_that("setup/validate_trial functions errors on invalid inputs", {
   expect_error(setup_trial(arms = 1:3, true_ys = 1:3, data_looks = 1:3 * 100,
                            fun_y_gen = function(x) rnorm(length(x)),
                            fun_draws = function(...) matrix(1:9, ncol = 3)))
+
+  expect_error(setup_trial_binom(arms = 1:4, true_ys = rep(0.3, 4), fixed_probs = c(NA, 1 / (3 + sqrt(3))),
+                                 control = 4, control_prob_fixed = "sqrt-based", data_looks = 1:10 * 250))
+
 })

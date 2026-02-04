@@ -17,6 +17,10 @@
     'participant(s)' throughout the package documentation. Note that this
     affects output of some `print()` methods and plotting functions.
     
+*   The `setup_trial()` family of functions now errors if `control_prob_fixed`
+    is set to `"sqrt-based"` or `"sqrt-based start"` and `fixed_probs` is not
+    `NULL` or of similar length as the number of arms.
+    
 *   Minor updates to package documentation and tests.
 
 # adaptr 1.4.0
