@@ -80,11 +80,11 @@ using fixed allocation probabilities.}
 or \code{"both"}. Rescales \code{fixed_probs} (if \code{"fixed"} or \code{"both"}) and
 \code{min_probs/max_probs} (if \code{"limits"} or \code{"both"}) after arm dropping in
 trial specifications with \verb{>2 arms} using a \code{rescale_factor} defined as
-\verb{initial number of arms/number of active arms}. \code{fixed_probs} and
-\code{min_probs} are rescaled as \verb{initial value * rescale factor}, except for
-\code{fixed_probs} controlled by the \code{control_prob_fixed} argument, which are
-never rescaled. \code{max_probs} are rescaled as
-\verb{1 - ( (1 - initial value) * rescale_factor)}.\cr
+\verb{initial number of arms/number of active arms}.
+\code{fixed_probs} and \code{min_probs} are rescaled as
+\verb{initial value * rescale factor}, except for \code{fixed_probs} controlled by
+the \code{control_prob_fixed} argument, which are never rescaled. \code{max_probs}
+are rescaled as \verb{1 - ( (1 - initial value) * rescale_factor)}.\cr
 Must be \code{NULL} if there are only \verb{2 arms} or if \code{control_prob_fixed} is
 \code{"sqrt-based fixed"}. If not \code{NULL}, one or more valid non-\code{NA} values must
 be specified for either \code{min_probs/max_probs} or \code{fixed_probs} (not

@@ -523,11 +523,11 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #'   or `"both"`. Rescales `fixed_probs` (if `"fixed"` or `"both"`) and
 #'   `min_probs/max_probs` (if `"limits"` or `"both"`) after arm dropping in
 #'   trial specifications with `>2 arms` using a `rescale_factor` defined as
-#'   `initial number of arms/number of active arms`. `fixed_probs` and
-#'   `min_probs` are rescaled as `initial value * rescale factor`, except for
-#'   `fixed_probs` controlled by the `control_prob_fixed` argument, which are
-#'   never rescaled. `max_probs` are rescaled as
-#'   `1 - ( (1 - initial value) * rescale_factor)`.\cr
+#'   `initial number of arms/number of active arms`.
+#'   `fixed_probs` and `min_probs` are rescaled as
+#'   `initial value * rescale factor`, except for `fixed_probs` controlled by
+#'   the `control_prob_fixed` argument, which are never rescaled. `max_probs`
+#'   are rescaled as `1 - ( (1 - initial value) * rescale_factor)`.\cr
 #'   Must be `NULL` if there are only `2 arms` or if `control_prob_fixed` is
 #'   `"sqrt-based fixed"`. If not `NULL`, one or more valid non-`NA` values must
 #'   be specified for either `min_probs/max_probs` or `fixed_probs` (not
