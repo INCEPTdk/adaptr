@@ -78,7 +78,7 @@ print.trial_spec <- function(x, prob_digits = 3, ...) {
 
   cat0(paste0("\n\nArms, true outcomes, starting allocation probabilities \n",
        "and allocation probability limits",
-       ifelse(is.null(x$rescale_probs), "", c(
+       ifelse(is.null(x$rescale_probs), " (fixed/min/max_probs not rescaled)", c(
          fixed = " (fixed_probs rescaled)",
          limits = " (min/max_probs rescaled)",
          both = " (fixed/min/max_probs rescaled)"
@@ -144,6 +144,18 @@ print.trial_spec <- function(x, prob_digits = 3, ...) {
     }
 
     cat("Absolute futility difference (in beneficial direction):", x$futility_diff, "\n")
+  }
+
+  # Adaptation probability threshold rescaled
+  if (is.null(x$rescale_adapt_probs)) {
+    cat0("Adaptation rule probability thresholds not rescaled when arms are dropped",
+        ifelse(!is.null(x$control), " (not relevant - common control used)",
+               ifelse(nrow(x$trial_arms) == 2, " (not relevant - only 2 arms)", "")),
+        "\n")
+  } else {
+    cat0("Adaptation rule probability thresholds for ",
+        ifelse(x$rescale_adapt_probs == "both", "superiority and inferiority", x$rescale_adapt_probs),
+        " rescaled when arms are dropped\n")
   }
 
   # Softening specifications
@@ -230,7 +242,7 @@ print.trial_result <- function(x, prob_digits = 3, ...) {
 
   cat0("Trial results overview:\n")
   print(x$trial_res[cols_general], digits = prob_digits, row.names = FALSE)
-  cat0("\nEsimates from final analysis (all participants):\n")
+  cat0("\nEstimates from final analysis (all participants):\n")
   print(x$trial_res[cols_ests_all], digits = prob_digits, row.names = FALSE)
   cat0("\nEstimates from last adaptive analysis including each arm:\n")
   print(x$trial_res[cols_ests], digits = prob_digits, row.names = FALSE)

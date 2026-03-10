@@ -57,6 +57,7 @@ specified; see \code{\link[=setup_trial]{setup_trial()}}).
 \code{equivalence_diff}, \code{equivalence_only_first}, \code{futility_prob},
 \code{futility_diff}, \code{futility_only_first}, \code{highest_is_best}, and
 \code{soften_power}: as specified in \code{\link[=setup_trial]{setup_trial()}}.
+\item \code{rescale_adapt_probs}: as specified in \code{\link[=setup_trial]{setup_trial()}}.
 \item \code{best_arm}: the best \code{arm}(s), as described in \code{\link[=setup_trial]{setup_trial()}}.
 \item \code{trial_res}: a \code{data.frame} containing most of the information
 specified for each arm in \code{\link[=setup_trial]{setup_trial()}} including \code{true_ys} (true
@@ -94,6 +95,7 @@ the time of analysis, while the versions WITH the \verb{_all}-suffixes are
 calculated using outcome data for all participants randomised at the
 time of analysis, even if they have not reached the time of follow-up
 yet (see \code{\link[=setup_trial]{setup_trial()}}).
+\item \code{rescale_probs}: as specified in \code{\link[=setup_trial]{setup_trial()}}.
 \item \code{all_looks}: a list of lists containing one list per conducted
 trial look (adaptive analysis). These lists contain the variables
 \code{arms}, \code{old_status} (status before the analysis of the current round

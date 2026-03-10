@@ -2,9 +2,8 @@
 
 *   References to new tutorial article using the package
     (<https://doi.org/10.1002/pst.70042>) added to the package documentation
-    where relevant.
-
-*   References to the `INCEPT` and `EMPRESS` trials added to the README.
+    where relevant; references to the `INCEPT` and `EMPRESS` trials (examples of
+    trials using the package) added to the README.
 
 *   Fixed a typo in the code in the 'Advanced example' vignette that led to the
     example generating incorrect allocations, which in turn got incorrect
@@ -20,6 +19,20 @@
 *   The `setup_trial()` family of functions now errors if `control_prob_fixed`
     is set to `"sqrt-based"` or `"sqrt-based start"` and `fixed_probs` is not
     `NULL` or of similar length as the number of arms.
+
+*   Added `rescale_adapt_probs` argument to the `setup_trial()` family of
+    functions, allowing automatic rescaling of adaptation rule probability
+    thresholds for superiority and/or inferiority when arms are dropped in
+    simulations of trial designs with `>2 arms` and no common `control` arm.
+
+*   Updated `update_saved_trials()` and `update_saved_calibration()` functions
+    according to addition of the `rescale_adapt_probs` argument in the
+    `setup_trial()` family of functions.
+    
+*   Non-sparse trial simulation results now also include the `rescale_probs` and
+    `rescale_adapt_probs` values.
+    
+*   Minor updates to `print()` output of trial design specifications.
     
 *   Minor updates to package documentation and tests.
 

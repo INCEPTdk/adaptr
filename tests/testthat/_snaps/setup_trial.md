@@ -10,7 +10,7 @@
       * Best arm: New A
       
       Arms, true outcomes, starting allocation probabilities 
-      and allocation probability limits:
+      and allocation probability limits (fixed/min/max_probs not rescaled):
           arms true_ys start_probs fixed_probs min_probs max_probs
        Control      15       0.366       0.366        NA        NA
          New A      20       0.211       0.211        NA        NA
@@ -27,6 +27,7 @@
       Inferiority threshold: 0.01 (all analyses)
       No equivalence threshold
       No futility threshold
+      Adaptation rule probability thresholds not rescaled when arms are dropped (not relevant - common control used)
       Soften power for all analyses: 0.5
       
       Additional info: Arm SDs - Control: 2; New A: 2.5; New B: 1.9; New C: 1.8.
@@ -42,7 +43,7 @@
       * Best arm: Arm B
       
       Arms, true outcomes, starting allocation probabilities 
-      and allocation probability limits:
+      and allocation probability limits (fixed/min/max_probs not rescaled):
         arms true_ys start_probs fixed_probs min_probs max_probs
        Arm A    0.25       0.333          NA      0.15        NA
        Arm B    0.20       0.333          NA      0.15        NA
@@ -58,6 +59,7 @@
       Equivalence threshold: 0.9 (all analyses) (no common control)
       Absolute equivalence difference: 0.05
       No futility threshold (not relevant - no common control)
+      Adaptation rule probability thresholds not rescaled when arms are dropped
       Soften power for all analyses: 0.5
 
 ---
@@ -71,7 +73,7 @@
       * Best arm: Arm B
       
       Arms, true outcomes, starting allocation probabilities 
-      and allocation probability limits:
+      and allocation probability limits (fixed/min/max_probs not rescaled):
         arms true_ys start_probs fixed_probs min_probs max_probs
        Arm A    0.25         0.2         0.2        NA        NA
        Arm B    0.20         0.4          NA       0.2        NA
@@ -87,6 +89,7 @@
       Equivalence threshold: 0.9 (all analyses) (no common control)
       Absolute equivalence difference: 0.05
       No futility threshold (not relevant - no common control)
+      Adaptation rule probability thresholds not rescaled when arms are dropped
       Soften power for all analyses: 0.5
 
 # Custom trial with log-normally distributed outcome is set up correctly
@@ -101,7 +104,7 @@
       * Best arm: Experimental A
       
       Arms, true outcomes, starting allocation probabilities 
-      and allocation probability limits:
+      and allocation probability limits (fixed/min/max_probs not rescaled):
                  arms true_ys start_probs fixed_probs min_probs max_probs
               Control    9.03       0.414       0.414        NA        NA
        Experimental A    8.17       0.293          NA        NA        NA
@@ -118,6 +121,7 @@
       Equivalence threshold: 0.9 (all analyses) (only checked for first control)
       Absolute equivalence difference: 0.5
       No futility threshold
+      Adaptation rule probability thresholds not rescaled when arms are dropped (not relevant - common control used)
       Soften power for all analyses: 1 (no softening)
       
       Additional info: SD on the log scale for all arms: 1.5

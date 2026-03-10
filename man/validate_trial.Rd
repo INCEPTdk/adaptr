@@ -26,6 +26,7 @@ validate_trial(
   futility_prob = NULL,
   futility_diff = NULL,
   futility_only_first = NULL,
+  rescale_adapt_probs = NULL,
   highest_is_best = FALSE,
   soften_power = 1,
   cri_width = 0.95,
@@ -218,6 +219,24 @@ where \code{futility_prob} and \code{futility_diff} are specified, otherwise \co
 Specifies whether futility will only be assessed against the first
 \code{control} (if \code{TRUE}) or also for subsequent control arms (if \code{FALSE}) if
 one arm is superior to the first control and becomes the new control.}
+
+\item{rescale_adapt_probs}{\code{NULL} (default), or a single character string,
+either \code{"both"}, \code{"superiority"}, or \code{"inferiority"}. Specifies
+whether/which adaptation rule probability thresholds will be rescaled
+proportionally if arms are dropped before a simulated trial is stopped.
+\code{NULL} is no rescaling, and \code{"both"} is rescaling of adaptation
+probabilities for both \code{"superiority"} and \code{"inferiority"}. Rescaling of
+adaptation rule probability thresholds can only be applied for trial
+designs with >2 arms \emph{without} a common \code{control} arm. This is because
+stopping/arm dropping for superiority and inferiority is based on
+probabilities of each arm being best, and these probabilities have to sum
+to \code{1} across all arms. Thus, thresholds can become 'easier' to cross when
+fewer arms are active.\cr
+Probabilities are rescaled using a \code{rescale_factor} defined as
+\verb{initial number of arms/number of active arms}. Probability thresholds for
+\code{superiority} are rescaled as \verb{1 - (1 - initial value) / rescale_factor}
+(increasing these values), while probability thresholds for \code{inferiority}
+are rescaled as \verb{initial value / rescale_factor} (decreasing these values).}
 
 \item{highest_is_best}{single logical, specifies whether larger estimates of
 the outcome are favourable or not; defaults to \code{FALSE}, corresponding to,

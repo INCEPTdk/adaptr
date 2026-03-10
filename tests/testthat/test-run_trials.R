@@ -57,6 +57,35 @@ test_that("single trial simulation works", {
   )
   expect_snapshot(run_trial(setup_rescale_probs, seed = 12345))
 
+  # Check that rescaling adaptation probability thresholds leads to different results
+  setup_no_rescale_adapt <- setup_trial_binom(
+    arms = LETTERS[1:10],
+    true_ys = c(0.1, 0.05, 0.15, 0.3, 0.35, 0.4, 0.4, 0.5, 0.5, 0.4),
+    highest_is_best = TRUE,
+    data_looks = seq(from = 100, to = 5000, by = 100),
+    superiority = 1 - 0.001 * 1:50,
+    inferiority = 0.001 * 1:50
+  )
+  res_no_rescale_adapt <- run_trial(setup_no_rescale_adapt, seed = 12345)
+
+  setup_rescale_adapt <- setup_trial_binom(
+    arms = LETTERS[1:10],
+    true_ys = c(0.1, 0.05, 0.15, 0.3, 0.35, 0.4, 0.4, 0.5, 0.5, 0.4),
+    highest_is_best = TRUE,
+    data_looks = seq(from = 100, to = 5000, by = 100),
+    superiority = 1 - 0.001 * 1:50,
+    inferiority = 0.001 * 1:50,
+    rescale_adapt_probs = "both"
+  )
+  res_rescale_adapt <- run_trial(setup_rescale_adapt, seed = 12345)
+
+  expect_snapshot(res_no_rescale_adapt)
+  expect_snapshot(res_rescale_adapt)
+  expect_false(identical(
+    res_no_rescale_adapt$trial_res[, c("final_status", "status_look")],
+    res_rescale_adapt$trial_res[, c("final_status", "status_look")]))
+
+
   # Check that seed is unchanged
   expect_identical(oldseed, get(".Random.seed", envir = globalenv()))
 })
@@ -158,7 +187,9 @@ test_that("Multiple trials simulation works on multiple cores", {
                  extract_results(res_mc))
 
 
-    # Only test íf most updated version installed
+    # Only test if most updated version installed
+    # NOTE: While working in a development version errors may occur if the most recent
+    # development version is not installed using devtools::install()
     if (check_cluster_version(cl)) {
       # Harmonise items know to be problematic (run-time and functions)
       for (x in c("res", "res_mc")) {

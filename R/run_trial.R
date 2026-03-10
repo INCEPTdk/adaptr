@@ -82,6 +82,7 @@
 #'       `equivalence_diff`, `equivalence_only_first`, `futility_prob`,
 #'       `futility_diff`, `futility_only_first`, `highest_is_best`, and
 #'       `soften_power`: as specified in [setup_trial()].
+#'     \item `rescale_adapt_probs`: as specified in [setup_trial()].
 #'     \item `best_arm`: the best `arm`(s), as described in [setup_trial()].
 #'     \item `trial_res`: a `data.frame` containing most of the information
 #'       specified for each arm in [setup_trial()] including `true_ys` (true
@@ -119,6 +120,7 @@
 #'       calculated using outcome data for all participants randomised at the
 #'       time of analysis, even if they have not reached the time of follow-up
 #'       yet (see [setup_trial()]).
+#'     \item `rescale_probs`: as specified in [setup_trial()].
 #'     \item `all_looks`: a list of lists containing one list per conducted
 #'       trial look (adaptive analysis). These lists contain the variables
 #'       `arms`, `old_status` (status before the analysis of the current round
@@ -229,6 +231,10 @@ run_trial <- function(trial_spec, seed = NULL, sparse = FALSE) {
     futility_prob <- rep(futility_prob, n_data_looks)
   }
   futility_stop <- FALSE
+  rescale_superiority <- !is.null(trial_spec$rescale_adapt_probs) &&
+    (trial_spec$rescale_adapt_probs == "superiority" || trial_spec$rescale_adapt_probs == "both")
+  rescale_inferiority <- !is.null(trial_spec$rescale_adapt_probs) &&
+    (trial_spec$rescale_adapt_probs == "inferiority" || trial_spec$rescale_adapt_probs == "both")
   highest_is_best <- trial_spec$highest_is_best
   cri_width <- trial_spec$cri_width
   n_draws <- trial_spec$n_draws
@@ -328,9 +334,14 @@ run_trial <- function(trial_spec, seed = NULL, sparse = FALSE) {
       # Keep removing inferior arms until they are all dropped
       # - for every inferior arm dropped, draws/probabilities are updated
       check_equivalence <- !is.null(equivalence_prob)
-      while(any(probs_best < inferiority[look])) {
-        inferior_probs <- probs_best[probs_best < inferiority[look]]
-        inferior_arms <- names(probs_best)[probs_best < inferiority[look]]
+      while(any(probs_best < cond_rescale_prob(rescale_inferiority, inferiority[look],
+                                               up = FALSE, rescale_factor = n_arms/length(aai)))) {
+        inferior_probs <- probs_best[probs_best < cond_rescale_prob(rescale_inferiority,
+                                                                    inferiority[look], up = FALSE,
+                                                                    rescale_factor = n_arms/length(aai))]
+        inferior_arms <- names(probs_best)[probs_best < cond_rescale_prob(rescale_inferiority,
+                                                                          inferiority[look], up = FALSE,
+                                                                          rescale_factor = n_arms/length(aai))]
 
         for (i in seq_along(inferior_arms)) {
           cur_index <- which(cur_status$arms == inferior_arms[i])
@@ -351,7 +362,8 @@ run_trial <- function(trial_spec, seed = NULL, sparse = FALSE) {
 
       # Check if an arm is superior
       superior_prob <- max(probs_best)
-      if (superior_prob > superiority[look]) {
+      if (superior_prob > cond_rescale_prob(rescale_superiority, superiority[look],
+                                            up = TRUE, rescale_factor = n_arms/length(aai))) {
         superior_arm <- names(probs_best)[which.max(probs_best)]
         cur_index <- which(cur_status$arms == superior_arm)
         cur_status$new_status[cur_index] <- "superior"
@@ -715,10 +727,12 @@ run_trial <- function(trial_spec, seed = NULL, sparse = FALSE) {
                    futility_prob = trial_spec$futility_prob,
                    futility_diff = futility_diff,
                    futility_only_first = futility_only_first,
+                   rescale_adapt_probs = trial_spec$rescale_adapt_probs,
                    highest_is_best = highest_is_best,
                    soften_power = soften_power,
                    best_arm = trial_spec$best_arm,
                    trial_res = trial_arms,
+                   rescale_probs = trial_spec$rescale_probs,
                    all_looks = looks_status,
                    allocs = allocs[1:total_n],
                    ys = ys[1:total_n],

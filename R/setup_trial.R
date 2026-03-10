@@ -23,6 +23,7 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
                            equivalence_prob = NULL, equivalence_diff = NULL,
                            equivalence_only_first = NULL, futility_prob = NULL,
                            futility_diff = NULL, futility_only_first = NULL,
+                           rescale_adapt_probs = NULL,
                            highest_is_best = FALSE, soften_power = 1,
                            cri_width = 0.95, n_draws = 5000, robust = FALSE,
                            description = NULL, add_info = NULL,
@@ -348,6 +349,20 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
     }
   }
 
+  # Check rescale_adapt_probs
+  if(!is.null(rescale_adapt_probs)) {
+    if (n_arms == 2) {
+      stop0("rescale_adapt_probs must be NULL for trial specifications with 2 arms.")
+    }
+    if (!is.null(control)) {
+      stop0("rescale_adapt_probs must be NULL for trial specifications with a common control.")
+    }
+    if (any(!is.character(rescale_adapt_probs), length(rescale_adapt_probs) != 1,
+            !(rescale_adapt_probs %in% c("both", "superiority", "inferiority")))) {
+      stop0("rescale_adapt_probs must be either NULL, 'both', 'superiority', or 'inferiority'.")
+    }
+  }
+
   # Check softening
   if (length(soften_power) == 1) {
     soften_power <- rep(soften_power, n_data_looks)
@@ -459,6 +474,7 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
                  futility_prob = futility_prob,
                  futility_diff = futility_diff,
                  futility_only_first = futility_only_first,
+                 rescale_adapt_probs = rescale_adapt_probs,
                  highest_is_best = highest_is_best,
                  soften_power = soften_power,
                  best_arm = best_arm,
@@ -657,6 +673,23 @@ validate_trial <- function(arms, true_ys, start_probs = NULL,
 #'   Specifies whether futility will only be assessed against the first
 #'   `control` (if `TRUE`) or also for subsequent control arms (if `FALSE`) if
 #'   one arm is superior to the first control and becomes the new control.
+#' @param rescale_adapt_probs `NULL` (default), or a single character string,
+#'   either `"both"`, `"superiority"`, or `"inferiority"`. Specifies
+#'   whether/which adaptation rule probability thresholds will be rescaled
+#'   proportionally if arms are dropped before a simulated trial is stopped.
+#'   `NULL` is no rescaling, and `"both"` is rescaling of adaptation
+#'   probabilities for both `"superiority"` and `"inferiority"`. Rescaling of
+#'   adaptation rule probability thresholds can only be applied for trial
+#'   designs with >2 arms *without* a common `control` arm. This is because
+#'   stopping/arm dropping for superiority and inferiority is based on
+#'   probabilities of each arm being best, and these probabilities have to sum
+#'   to `1` across all arms. Thus, thresholds can become 'easier' to cross when
+#'   fewer arms are active.\cr
+#'   Probabilities are rescaled using a `rescale_factor` defined as
+#'   `initial number of arms/number of active arms`. Probability thresholds for
+#'   `superiority` are rescaled as `1 - (1 - initial value) / rescale_factor`
+#'   (increasing these values), while probability thresholds for `inferiority`
+#'   are rescaled as `initial value / rescale_factor` (decreasing these values).
 #' @param highest_is_best single logical, specifies whether larger estimates of
 #'   the outcome are favourable or not; defaults to `FALSE`, corresponding to,
 #'   e.g., an undesirable binary outcomes (e.g., mortality) or a continuous
@@ -967,6 +1000,7 @@ setup_trial <- function(arms, true_ys, fun_y_gen = NULL, fun_draws = NULL,
                         equivalence_diff = NULL, equivalence_only_first = NULL,
                         futility_prob = NULL, futility_diff = NULL,
                         futility_only_first = NULL, highest_is_best = FALSE,
+                        rescale_adapt_probs = NULL,
                         soften_power = 1, fun_raw_est = mean, cri_width = 0.95,
                         n_draws = 5000, robust = TRUE, description = NULL,
                         add_info = NULL) {
@@ -979,6 +1013,7 @@ setup_trial <- function(arms, true_ys, fun_y_gen = NULL, fun_draws = NULL,
                  superiority = superiority, equivalence_prob = equivalence_prob,
                  equivalence_diff = equivalence_diff, equivalence_only_first = equivalence_only_first,
                  futility_prob = futility_prob, futility_diff = futility_diff, futility_only_first = futility_only_first,
+                 rescale_adapt_probs = rescale_adapt_probs,
                  highest_is_best = highest_is_best, soften_power = soften_power,
                  cri_width = cri_width, n_draws = n_draws, robust = robust,
                  description = description, add_info = add_info,
@@ -1052,6 +1087,7 @@ setup_trial_binom <- function(arms, true_ys, start_probs = NULL,
                               equivalence_only_first = NULL,
                               futility_prob = NULL, futility_diff = NULL,
                               futility_only_first = NULL,
+                              rescale_adapt_probs = NULL,
                               highest_is_best = FALSE, soften_power = 1,
                               cri_width = 0.95, n_draws = 5000, robust = TRUE,
                               description = "generic binomially distributed outcome trial") {
@@ -1072,6 +1108,7 @@ setup_trial_binom <- function(arms, true_ys, start_probs = NULL,
                           superiority = superiority, equivalence_prob = equivalence_prob,
                           equivalence_diff = equivalence_diff, equivalence_only_first = equivalence_only_first,
                           futility_prob = futility_prob, futility_diff = futility_diff, futility_only_first = futility_only_first,
+                          rescale_adapt_probs = rescale_adapt_probs,
                           highest_is_best = highest_is_best, soften_power = soften_power,
                           cri_width = cri_width, n_draws = n_draws, robust = robust,
                           description = description, add_info = NULL,
@@ -1172,6 +1209,7 @@ setup_trial_norm <- function(arms, true_ys, sds, start_probs = NULL,
                              equivalence_only_first = NULL,
                              futility_prob = NULL, futility_diff = NULL,
                              futility_only_first = NULL,
+                             rescale_adapt_probs = NULL,
                              highest_is_best = FALSE, soften_power = 1,
                              cri_width = 0.95, n_draws = 5000, robust = FALSE,
                              description = "generic normally distributed outcome trial") {
@@ -1193,6 +1231,7 @@ setup_trial_norm <- function(arms, true_ys, sds, start_probs = NULL,
                  superiority = superiority, equivalence_prob = equivalence_prob,
                  equivalence_diff = equivalence_diff, equivalence_only_first = equivalence_only_first,
                  futility_prob = futility_prob, futility_diff = futility_diff, futility_only_first = futility_only_first,
+                 rescale_adapt_probs = rescale_adapt_probs,
                  highest_is_best = highest_is_best, soften_power = soften_power,
                  cri_width = cri_width, n_draws = n_draws, robust = robust,
                  description = description, add_info = paste0("Arm SDs - ", paste0(paste0(arms, ": ", sds), collapse = "; "), "."),

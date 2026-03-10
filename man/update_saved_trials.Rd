@@ -48,14 +48,18 @@ version of the package.
 The following changes are made according to the version of \code{adaptr} used to
 generate the original \code{"trial_results"} object:
 \itemize{
-\item \verb{v1.2.0+}: updates version number and the \code{reallocate_probs}
+\item \verb{v1.4.0+}: updates version number and the \code{rescale_adapt_probs}
 argument in the embedded trial specification.
+\item \verb{v1.2.0 to 1.3.2}: updates version number and the \code{rescale_probs}
+and \code{rescale_adapt_probs} arguments in the embedded trial
+specification.
 \item \verb{v1.1.1 or earlier}: updates version number and everything related
 to follow-up and data collection lag (in these versions, the
 \code{randomised_at_looks} argument in the \code{\link[=setup_trial]{setup_trial()}} functions did not
 exist, but for practical purposes was identical to the number of
 participants with available data at each look) and the
-\code{reallocate_probs} argument in the embedded trial specification.
+\code{rescale_probs} and \code{rescale_adapt_probs} arguments in the embedded
+trial specification.
 }
 }
 \seealso{

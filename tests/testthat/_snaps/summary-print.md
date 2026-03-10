@@ -17,7 +17,7 @@
           B    0.20     inferior         900       0.0012        0.15
           C    0.30      control         900           NA        0.70
       
-      Esimates from final analysis (all participants):
+      Estimates from final analysis (all participants):
        arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
           A         48    244        0.197         0.198        0.0258      0.151
           B         41    223        0.184         0.186        0.0257      0.138
@@ -56,7 +56,7 @@
           B    0.20       active          NA           NA       0.656
           C    0.30     inferior        2000        0.007       0.150
       
-      Esimates from final analysis (all participants):
+      Estimates from final analysis (all participants):
        arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
           A        180    742        0.243         0.243        0.0161      0.213
           B        178    841        0.212         0.212        0.0141      0.185
@@ -94,7 +94,7 @@
           B    0.25      control          NA           NA       0.333
           C    0.30       active          NA           NA       0.333
       
-      Esimates from final analysis (all participants):
+      Estimates from final analysis (all participants):
        arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
           A       81.8    355        0.230         0.229        0.0550      0.120
           B       69.9    328        0.213         0.213        0.0560      0.105
@@ -146,7 +146,7 @@
       * Ideal design percentage: 100.0%
       
       Simulation details:
-      * Simulation time: 1.24 secs
+      * Simulation time: 0.726 secs
       * Base random seed: 12345
       * Credible interval width: 95%
       * Number of posterior draws: 5000
@@ -180,7 +180,7 @@
       * Ideal design percentage: 100.0%
       
       Simulation details:
-      * Simulation time: 1.24 secs
+      * Simulation time: 0.726 secs
       * Base random seed: 12345
       * Credible interval width: 95%
       * Number of posterior draws: 5000
@@ -203,7 +203,7 @@
           B    0.20       active          NA           NA       0.656
           C    0.30     inferior        2000        0.007       0.150
       
-      Esimates from final analysis (all participants):
+      Estimates from final analysis (all participants):
        arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
           A        180    742        0.243         0.243        0.0161      0.213
           B        178    841        0.212         0.212        0.0141      0.185
@@ -247,7 +247,7 @@
       * Best arm: C
       
       Arms, true outcomes, starting allocation probabilities 
-      and allocation probability limits:
+      and allocation probability limits (fixed/min/max_probs not rescaled):
        arms true_ys start_probs fixed_probs min_probs max_probs
           A    0.25       0.333          NA      0.15        NA
           B    0.20       0.333          NA      0.15        NA
@@ -266,6 +266,7 @@
       Futility threshold: 0.95 (all analyses) 
       (checked for first and eventual new controls)
       Absolute futility difference (in beneficial direction): 0.05 
+      Adaptation rule probability thresholds not rescaled when arms are dropped (not relevant - common control used)
       Soften power for all analyses: 0.5
 
 ---
@@ -280,7 +281,7 @@
       * Best arms: A and B
       
       Arms, true outcomes, starting allocation probabilities 
-      and allocation probability limits:
+      and allocation probability limits (fixed/min/max_probs not rescaled):
        arms true_ys start_probs fixed_probs min_probs max_probs
           A    0.25       0.333          NA        NA        NA
           B    0.25       0.333          NA        NA        NA
@@ -299,6 +300,7 @@
       Futility thresholds: 0.99, 0.98, 0.97, 0.96, 0.95 
       (only checked for first control)
       Absolute futility difference (in beneficial direction): 0.05 
+      Adaptation rule probability thresholds not rescaled when arms are dropped (not relevant - common control used)
       Soften power for all analyses: 1 (no softening)
       
       Additional info: Arm SDs - A: 1; B: 1; C: 1.
@@ -315,7 +317,7 @@
       * Best arms: A and B
       
       Arms, true outcomes, starting allocation probabilities 
-      and allocation probability limits:
+      and allocation probability limits (fixed/min/max_probs not rescaled):
        arms true_ys start_probs fixed_probs min_probs max_probs
           A    0.25       0.333       0.333        NA        NA
           B    0.25       0.333       0.333        NA        NA
@@ -330,6 +332,7 @@
       Inferiority threshold: 0.01 (all analyses)
       No equivalence threshold
       No futility threshold
+      Adaptation rule probability thresholds not rescaled when arms are dropped (not relevant - common control used)
       Soften power for all analyses: 1 (no softening - all arms fixed)
       
       Additional info: Arm SDs - A: 1; B: 1; C: 1.
@@ -346,7 +349,7 @@
       * Best arms: A and B
       
       Arms, true outcomes, starting allocation probabilities 
-      and allocation probability limits:
+      and allocation probability limits (fixed/min/max_probs not rescaled):
        arms true_ys start_probs fixed_probs min_probs max_probs
           A    0.25       0.333          NA        NA        NA
           B    0.25       0.333          NA        NA        NA
@@ -365,6 +368,7 @@
       Futility thresholds: 0.99, 0.98, 0.97, 0.96, 0.95 
       (only checked for first control)
       Absolute futility difference (in beneficial direction): 0.05 
+      Adaptation rule probability thresholds not rescaled when arms are dropped (not relevant - common control used)
       Soften power for all analyses: 1 (no softening)
       
       Additional info: Arm SDs - A: 1; B: 1; C: 1.

@@ -36,14 +36,18 @@
 #' The following changes are made according to the version of `adaptr` used to
 #' generate the original `"trial_results"` object:
 #'   \itemize{
-#'     \item `v1.2.0+`: updates version number and the `reallocate_probs`
+#'     \item `v1.4.0+`: updates version number and the `rescale_adapt_probs`
 #'       argument in the embedded trial specification.
+#'     \item `v1.2.0 to 1.3.2`: updates version number and the `rescale_probs`
+#'       and `rescale_adapt_probs` arguments in the embedded trial
+#'       specification.
 #'     \item `v1.1.1 or earlier`: updates version number and everything related
 #'       to follow-up and data collection lag (in these versions, the
 #'       `randomised_at_looks` argument in the [setup_trial()] functions did not
 #'       exist, but for practical purposes was identical to the number of
 #'       participants with available data at each look) and the
-#'       `reallocate_probs` argument in the embedded trial specification.
+#'       `rescale_probs` and `rescale_adapt_probs` arguments in the embedded
+#'       trial specification.
 #'    }
 #'
 #' @return Invisibly returns the updated `"trial_results"`-object.
@@ -62,6 +66,22 @@ update_saved_trials <- function(path, version = NULL, compress = TRUE) {
   }
   prev_version <- object$adaptr_version
   save_object <- TRUE
+
+  list_order <- c("trial_arms", "rescale_probs", "data_looks", "max_n", "look_after_every",
+                  "n_data_looks", "randomised_at_looks", "control", "control_prob_fixed",
+                  "inferiority", "superiority", "equivalence_prob", "equivalence_diff",
+                  "equivalence_only_first", "futility_prob", "futility_diff", "futility_only_first",
+                  "rescale_adapt_probs", "highest_is_best", "soften_power", "best_arm",
+                  "cri_width", "n_draws", "robust", "description", "add_info",
+                  "fun_y_gen", "fun_draws", "fun_raw_est")
+
+  list_order_non_sparse_result <- c(
+    "final_status", "final_n", "followed_n", "max_n", "max_randomised", "looks", "planned_looks", "randomised_at_looks",
+    "start_control", "final_control", "control_prob_fixed", "inferiority", "superiority", "equivalence_prob",
+    "equivalence_diff", "equivalence_only_first", "futility_prob", "futility_diff", "futility_only_first",
+    "rescale_adapt_probs", "highest_is_best", "soften_power", "best_arm", "trial_res", "rescale_probs",
+    "all_looks", "allocs", "ys", "seed", "description", "add_info", "cri_width", "n_draws", "robust", "sparse")
+
   if (isTRUE(!is.null(prev_version) & prev_version == .adaptr_version)) { # Already up-to-date
     save_object <- FALSE
     warning0("path leads to a trial_results-object that is already up to date; object not updated.")
@@ -71,13 +91,8 @@ update_saved_trials <- function(path, version = NULL, compress = TRUE) {
 
     # Update the trial_spec-part of the object, re-arrange order of objects, set class
     object$trial_spec$randomised_at_looks <- object$trial_spec$data_looks
-    object$trial_spec <- c(object$trial_spec, list(rescale_probs = NULL))
-    object$trial_spec <- object$trial_spec[c("trial_arms", "rescale_probs", "data_looks", "max_n", "look_after_every",
-                                             "n_data_looks", "randomised_at_looks", "control", "control_prob_fixed",
-                                             "inferiority", "superiority", "equivalence_prob", "equivalence_diff",
-                                             "equivalence_only_first", "futility_prob", "futility_diff", "futility_only_first",
-                                             "highest_is_best", "soften_power", "best_arm", "cri_width", "n_draws", "robust",
-                                             "description", "add_info", "fun_y_gen", "fun_draws", "fun_raw_est")]
+    object$trial_spec <- c(object$trial_spec, list(rescale_probs = NULL, rescale_adapt_probs = NULL))
+    object$trial_spec <- object$trial_spec[list_order]
     class(object$trial_spec) <- c("trial_spec", "list")
 
     # Update the trial_results-part of the object
@@ -107,33 +122,58 @@ update_saved_trials <- function(path, version = NULL, compress = TRUE) {
           tmp$all_looks[[l]] <- tmp$all_looks[[l]][c("arms", "old_status", "new_status", "sum_ys", "sum_ys_all", "ns", "ns_all",
                                                      "old_alloc", "probs_best", "new_alloc")]
         }
+        # Add rescale_probs and rescale_adapt_probs (without changing class)
+        tmp["rescale_probs"] <- list(NULL)
+        tmp["rescale_adapt_probs"] <- list(NULL)
       }
-
 
       object$trial_results[[i]] <- if (sparse) {
         tmp[c("final_status", "final_n", "followed_n", "trial_res", "seed", "sparse")]
       } else {
-        tmp[c("final_status", "final_n", "followed_n", "max_n", "max_randomised", "looks", "planned_looks", "randomised_at_looks",
-              "start_control", "final_control", "control_prob_fixed", "inferiority", "superiority", "equivalence_prob",
-              "equivalence_diff", "equivalence_only_first", "futility_prob", "futility_diff", "futility_only_first",
-              "highest_is_best", "soften_power", "best_arm", "trial_res", "all_looks", "allocs", "ys", "seed", "description",
-              "add_info", "cri_width", "n_draws", "robust", "sparse")]
+        tmp[list_order_non_sparse_result]
       }
       class(object$trial_results[[i]]) <- c("trial_result", "list")
     }
-  } else if (.adaptr_version >= "1.2.0") {
+  } else if (prev_version == "1.4.0") {
     # Update the trial_spec-part of the object, re-arrange order of objects, set class
-    object$trial_spec <- c(object$trial_spec, list(rescale_probs = NULL))
-    object$trial_spec <- object$trial_spec[c("trial_arms", "rescale_probs", "data_looks", "max_n", "look_after_every",
-                                             "n_data_looks", "randomised_at_looks", "control", "control_prob_fixed",
-                                             "inferiority", "superiority", "equivalence_prob", "equivalence_diff",
-                                             "equivalence_only_first", "futility_prob", "futility_diff", "futility_only_first",
-                                             "highest_is_best", "soften_power", "best_arm", "cri_width", "n_draws", "robust",
-                                             "description", "add_info", "fun_y_gen", "fun_draws", "fun_raw_est")]
+    object$trial_spec <- c(object$trial_spec, list(rescale_adapt_probs = NULL))
+    object$trial_spec <- object$trial_spec[list_order]
     class(object$trial_spec) <- c("trial_spec", "list")
 
-    # Updated the version number
+    # Update non-sparse (rescale_probs also added as not done previously)
+    if (!object$sparse) {
+      for (i in 1:object$n_rep) {
+        tmp <- object$trial_results[[i]]
+        tmp["rescale_probs"] <- list(NULL)
+        tmp["rescale_adapt_probs"] <- list(NULL)
+        object$trial_results[[i]] <- tmp[list_order_non_sparse_result]
+        class(object$trial_results[[i]]) <- c("trial_result", "list")
+      }
+    }
+
+    # Update the version number
     object$adaptr_version <- .adaptr_version
+  } else if (prev_version >= "1.2.0" & prev_version < "1.4.0") {
+    # Update the trial_spec-part of the object, re-arrange order of objects, set class
+    object$trial_spec <- c(object$trial_spec, list(rescale_probs = NULL, rescale_adapt_probs = NULL))
+    object$trial_spec <- object$trial_spec[list_order]
+    class(object$trial_spec) <- c("trial_spec", "list")
+
+    # Update non-sparse
+    if (!object$sparse) {
+      for (i in 1:object$n_rep) {
+        tmp <- object$trial_results[[i]]
+        tmp["rescale_probs"] <- list(NULL)
+        tmp["rescale_adapt_probs"] <- list(NULL)
+        object$trial_results[[i]] <- tmp[list_order_non_sparse_result]
+        class(object$trial_results[[i]]) <- c("trial_result", "list")
+      }
+    }
+
+    # Update the version number
+    object$adaptr_version <- .adaptr_version
+  } else  {
+    stop0("Updating not yet added for this version.")
   }
   # Save and return invisibly
   if (save_object) {
@@ -154,7 +194,7 @@ update_saved_trials <- function(path, version = NULL, compress = TRUE) {
 #' the best simulations results from the calibration process, to be used without
 #' errors by this version of the package. The function should be run only once
 #' per saved simulation object and will issue a warning if the object is already
-#' up to date. And overview of the changes made according to the `adaptr` package
+#' up to date. An overview of the changes made according to the `adaptr` package
 #' version used to generate the original object is provided in **Details**.\cr
 #'
 #' @param path single character; the path to the saved
@@ -194,6 +234,14 @@ update_saved_calibration <- function(path, version = NULL, compress = TRUE) {
   }
   prev_version <- object$adaptr_version
   save_object <- TRUE
+
+  list_order <- c("trial_arms", "rescale_probs", "data_looks", "max_n", "look_after_every",
+                  "n_data_looks", "randomised_at_looks", "control", "control_prob_fixed",
+                  "inferiority", "superiority", "equivalence_prob", "equivalence_diff",
+                  "equivalence_only_first", "futility_prob", "futility_diff", "futility_only_first",
+                  "rescale_adapt_probs", "highest_is_best", "soften_power", "best_arm", "cri_width", "n_draws",
+                  "robust", "description", "add_info", "fun_y_gen", "fun_draws", "fun_raw_est")
+
   if (isTRUE(!is.null(prev_version) & prev_version == .adaptr_version)) { # Already up-to-date
     save_object <- FALSE
     warning0("path leads to a trial_calibration-object that is already up to date; object not updated.")
@@ -204,15 +252,19 @@ update_saved_calibration <- function(path, version = NULL, compress = TRUE) {
 
     # Update the input and updated trial specifications
     # Only contents changed after calibration introduced updated
+    update_specs <- FALSE
     if (!"rescale_probs" %in% names(object$input_trial_spec)) { # if rescale_probs is missing, add to both
       object$input_trial_spec <- c(object$input_trial_spec, list(rescale_probs = NULL))
       object$best_trial_spec <- c(object$best_trial_spec, list(rescale_probs = NULL))
-      list_order <- c("trial_arms", "rescale_probs", "data_looks", "max_n", "look_after_every",
-                      "n_data_looks", "randomised_at_looks", "control", "control_prob_fixed",
-                      "inferiority", "superiority", "equivalence_prob", "equivalence_diff",
-                      "equivalence_only_first", "futility_prob", "futility_diff", "futility_only_first",
-                      "highest_is_best", "soften_power", "best_arm", "cri_width", "n_draws", "robust",
-                      "description", "add_info", "fun_y_gen", "fun_draws", "fun_raw_est")
+      update_specs <- TRUE
+
+    }
+    if (!"rescale_adapt_probs" %in% names(object$input_trial_spec)) { # if rescale_adapt_probs is missing, add to both
+      object$input_trial_spec <- c(object$input_trial_spec, list(rescale_adapt_probs = NULL))
+      object$best_trial_spec <- c(object$best_trial_spec, list(rescale_adapt_probs = NULL))
+      update_specs <- TRUE
+    }
+    if (update_specs) {
       object$input_trial_spec <- object$input_trial_spec[list_order]
       class(object$input_trial_spec) <- c("trial_spec", "list")
       object$best_trial_spec <- object$best_trial_spec[list_order]
