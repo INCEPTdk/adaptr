@@ -369,3 +369,24 @@ setup_trial_binom(
 )
 ```
 
+### Example 10: adaptation rule probability thresholds rescaled when arms are dropped
+
+In this example, a trial design with four arms, no common control arm, and
+restricted RAR (minimum allocation limits) is specified. Adaptation rule
+probability thresholds for adaptive stopping/arm dropping for superiority and
+inferiority are specified, and it is specified that these are rescaled
+proportionally when arms are dropped:
+
+```{r}
+setup_trial_binom(
+  arms = c("A", "B", "C", "D"),
+  true_ys = c(0.2, 0.2, 0.2, 0.2),
+  min_probs = rep(0.15, 4), # Specify initial minimum allocation probabilities
+  data_looks = seq(from = 100, to = 1000, by = 100), # Specify data looks
+  
+  # Specify superiority/inferiority thresholds and rescaling
+  superiority = 0.99,
+  inferiority = 0.01,
+  rescale_adapt_probs = "both"
+)
+```

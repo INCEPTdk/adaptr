@@ -1,5 +1,21 @@
 # adaptr (development version)
 
+This is a minor release implementing new functionality, and including bug fixes,
+minor changes, and documentation updates.
+
+### New features and major changes:
+
+*   Added `rescale_adapt_probs` argument to the `setup_trial()` family of
+    functions, allowing automatic rescaling of adaptation rule probability
+    thresholds for superiority and/or inferiority when arms are dropped in
+    simulations of trial designs with `>2 arms` and no common `control` arm.
+
+*   Updated `update_saved_trials()` and `update_saved_calibration()` functions
+    according to addition of the `rescale_adapt_probs` argument in the
+    `setup_trial()` family of functions.
+
+### Minor changes, bug fixes, and documentation:
+
 *   References to new tutorial article using the package
     (<https://doi.org/10.1002/pst.70042>) added to the package documentation
     where relevant; references to the `INCEPT` and `EMPRESS` trials (examples of
@@ -19,15 +35,6 @@
 *   The `setup_trial()` family of functions now errors if `control_prob_fixed`
     is set to `"sqrt-based"` or `"sqrt-based start"` and `fixed_probs` is not
     `NULL` or of similar length as the number of arms.
-
-*   Added `rescale_adapt_probs` argument to the `setup_trial()` family of
-    functions, allowing automatic rescaling of adaptation rule probability
-    thresholds for superiority and/or inferiority when arms are dropped in
-    simulations of trial designs with `>2 arms` and no common `control` arm.
-
-*   Updated `update_saved_trials()` and `update_saved_calibration()` functions
-    according to addition of the `rescale_adapt_probs` argument in the
-    `setup_trial()` family of functions.
     
 *   Non-sparse trial simulation results now also include the `rescale_probs` and
     `rescale_adapt_probs` values.
