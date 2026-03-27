@@ -57,7 +57,7 @@ article in Pharmaceutical Statistics describing a simulation study (with code)
 using `adaptr` to assess the performance of adaptive clinical trials according to different
 sceptical priors.
 * For examples of actual trials designed end evaluated using `adaptr`, see
-[INCEPT](https://www.incept.dk) and [EMPRESS](https://www.cric.nu/empress).
+[INCEPT](https://incept.dk) and [EMPRESS](https://www.cric.nu/empress/).
 
 ## Installation
 

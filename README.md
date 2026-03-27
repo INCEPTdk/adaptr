@@ -56,8 +56,8 @@ grant from [Sygeforsikringen “danmark”](https://www.sygeforsikring.dk/).
   (with code) using `adaptr` to assess the performance of adaptive
   clinical trials according to different sceptical priors.
 - For examples of actual trials designed end evaluated using `adaptr`,
-  see [INCEPT](https://www.incept.dk) and
-  [EMPRESS](https://www.cric.nu/empress).
+  see [INCEPT](https://incept.dk) and
+  [EMPRESS](https://www.cric.nu/empress/).
 
 ## Installation
 
@@ -206,7 +206,7 @@ calibrated_binom_trial
 #> Calibration/simulation details:
 #> * Total evaluations: 7 (previous + grid + iterations)
 #> * Repetitions: 1000
-#> * Calibration time: 3.55 mins
+#> * Calibration time: 3.67 mins
 #> * Base random seed: 4131
 #> 
 #> See 'help("calibrate_trial")' for details.
@@ -328,7 +328,7 @@ print(binom_trial_summary)
 #> * Ideal design percentage: not estimable
 #> 
 #> Simulation details:
-#> * Simulation time: 33.1 secs
+#> * Simulation time: 35.7 secs
 #> * Base random seed: 4131
 #> * Credible interval width: 95%
 #> * Number of posterior draws: 5000
