@@ -74,7 +74,7 @@ specified in \code{\link[=setup_trial]{setup_trial()}}), \code{final_status} of 
 (\code{"inferior"}, \code{"superior"}, \code{"equivalence"}, \code{"futile"}, \code{"active"},
 or \code{"control"} (currently active control arm, including if the current
 control when stopped for equivalence)), \code{status_look} (specifying the
-cumulated number of participents with outcome data available when an
+cumulated number of participants with outcome data available when an
 adaptive analysis changed the \code{final_status} to \code{"superior"},
 \code{"inferior"}, \code{"equivalence"}, or \code{"futile"}), \code{status_probs}, the
 probability (in the last adaptive analysis for each arm) that each

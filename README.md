@@ -90,7 +90,7 @@ computing:
 
 ``` r
 library(adaptr)
-#> Loading 'adaptr' package v1.4.0.9000.
+#> Loading 'adaptr' package v1.5.0.
 #> For instructions, type 'help("adaptr")'
 #> or see https://inceptdk.github.io/adaptr/.
 
@@ -132,7 +132,7 @@ print(binom_trial, prob_digits = 3)
 #> * Best arms: Arm A and Arm B and Arm C
 #> 
 #> Arms, true outcomes, starting allocation probabilities 
-#> and allocation probability limits:
+#> and allocation probability limits (fixed/min/max_probs not rescaled):
 #>   arms true_ys start_probs fixed_probs min_probs max_probs
 #>  Arm A    0.25       0.333          NA       0.2        NA
 #>  Arm B    0.25       0.333          NA       0.2        NA
@@ -148,6 +148,7 @@ print(binom_trial, prob_digits = 3)
 #> Equivalence threshold: 0.9 (all analyses) (no common control)
 #> Absolute equivalence difference: 0.05
 #> No futility threshold (not relevant - no common control)
+#> Adaptation rule probability thresholds not rescaled when arms are dropped
 #> Soften power for all analyses: 1 (no softening)
 ```
 
@@ -205,7 +206,7 @@ calibrated_binom_trial
 #> Calibration/simulation details:
 #> * Total evaluations: 7 (previous + grid + iterations)
 #> * Repetitions: 1000
-#> * Calibration time: 4.06 mins
+#> * Calibration time: 3.55 mins
 #> * Base random seed: 4131
 #> 
 #> See 'help("calibrate_trial")' for details.
@@ -327,7 +328,7 @@ print(binom_trial_summary)
 #> * Ideal design percentage: not estimable
 #> 
 #> Simulation details:
-#> * Simulation time: 38.2 secs
+#> * Simulation time: 33.1 secs
 #> * Base random seed: 4131
 #> * Credible interval width: 95%
 #> * Number of posterior draws: 5000
@@ -522,6 +523,7 @@ If you use the package, please consider citing it:
 
 ``` r
 citation(package = "adaptr")
+#> 
 #> To cite package 'adaptr' in publications use:
 #> 
 #>   Granholm A, Jensen AKG, Lange T, Kaas-Hansen BS (2022). adaptr: an R

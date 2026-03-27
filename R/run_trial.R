@@ -99,7 +99,7 @@
 #'       (`"inferior"`, `"superior"`, `"equivalence"`, `"futile"`, `"active"`,
 #'       or `"control"` (currently active control arm, including if the current
 #'       control when stopped for equivalence)), `status_look` (specifying the
-#'       cumulated number of participents with outcome data available when an
+#'       cumulated number of participants with outcome data available when an
 #'       adaptive analysis changed the `final_status` to `"superior"`,
 #'       `"inferior"`, `"equivalence"`, or `"futile"`), `status_probs`, the
 #'       probability (in the last adaptive analysis for each arm) that each
