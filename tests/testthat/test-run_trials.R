@@ -57,6 +57,35 @@ test_that("single trial simulation works", {
   )
   expect_snapshot(run_trial(setup_rescale_probs, seed = 12345))
 
+  # Check that rescaling adaptation probability thresholds leads to different results
+  setup_no_rescale_adapt <- setup_trial_binom(
+    arms = LETTERS[1:10],
+    true_ys = c(0.1, 0.05, 0.15, 0.3, 0.35, 0.4, 0.4, 0.5, 0.5, 0.4),
+    highest_is_best = TRUE,
+    data_looks = seq(from = 100, to = 5000, by = 100),
+    superiority = 1 - 0.001 * 1:50,
+    inferiority = 0.001 * 1:50
+  )
+  res_no_rescale_adapt <- run_trial(setup_no_rescale_adapt, seed = 12345)
+
+  setup_rescale_adapt <- setup_trial_binom(
+    arms = LETTERS[1:10],
+    true_ys = c(0.1, 0.05, 0.15, 0.3, 0.35, 0.4, 0.4, 0.5, 0.5, 0.4),
+    highest_is_best = TRUE,
+    data_looks = seq(from = 100, to = 5000, by = 100),
+    superiority = 1 - 0.001 * 1:50,
+    inferiority = 0.001 * 1:50,
+    rescale_adapt_probs = "both"
+  )
+  res_rescale_adapt <- run_trial(setup_rescale_adapt, seed = 12345)
+
+  expect_snapshot(res_no_rescale_adapt)
+  expect_snapshot(res_rescale_adapt)
+  expect_false(identical(
+    res_no_rescale_adapt$trial_res[, c("final_status", "status_look")],
+    res_rescale_adapt$trial_res[, c("final_status", "status_look")]))
+
+
   # Check that seed is unchanged
   expect_identical(oldseed, get(".Random.seed", envir = globalenv()))
 })
@@ -89,8 +118,8 @@ test_that("dispatch_trial_runs works", {
      # Parallel run
      # Test only run conditionally, see check_cluster_version() function for
      # explanation.
-     cl <- parallel::makeCluster(2)
-     on.exit(parallel::stopCluster(cl))
+     cl <- parallel::makePSOCKcluster(2)
+     on.exit(parallel::stopCluster(cl), add = TRUE, after = FALSE)
      parallel::clusterEvalQ(cl, RNGkind("L'Ecuyer-CMRG", "default", "default"))
      if (check_cluster_version(cl)) {
        expect_snapshot(
@@ -146,8 +175,8 @@ test_that("Multiple trials simulation works on multiple cores", {
 
   # Tests only run conditionally, see check_cluster_version() function for
   # explanation. This cluster is only used to check version of adaptr on the cluster
-  cl <- parallel::makeCluster(2)
-  on.exit(parallel::stopCluster(cl))
+  cl <- parallel::makePSOCKcluster(2)
+  on.exit(parallel::stopCluster(cl), add = TRUE, after = FALSE)
 
   if (check_cluster_version(cl, "1.0.0")) { # Any released version of adaptr installed
     # Run trials on multiple cores
@@ -158,7 +187,9 @@ test_that("Multiple trials simulation works on multiple cores", {
                  extract_results(res_mc))
 
 
-    # Only test íf most updated version installed
+    # Only test if most updated version installed
+    # NOTE: While working in a development version errors may occur if the most recent
+    # development version is not installed using devtools::install()
     if (check_cluster_version(cl)) {
       # Harmonise items know to be problematic (run-time and functions)
       for (x in c("res", "res_mc")) {
@@ -181,7 +212,7 @@ test_that("run_trials errors on invalid input", {
 
   res <- run_trials(setup, n_rep = 10, base_seed = 4131)
   temp_res_file <- tempfile()
-  on.exit(try(rm(temp_res_file), silent = TRUE), add = TRUE, after = FALSE)
+  on.exit(try(file.remove(temp_res_file), silent = TRUE), add = TRUE, after = FALSE)
 
   # Error growing object from pseudo-previous version
   res_err <- res
@@ -238,7 +269,7 @@ test_that("Growing trial objects works", {
 
   # Run in two "batches", saving results in a file
   temp_res_file <- tempfile()
-  on.exit(try(rm(temp_res_file), silent = TRUE), add = TRUE, after = FALSE)
+  on.exit(try(file.remove(temp_res_file), silent = TRUE), add = TRUE, after = FALSE)
   res2 <- run_trials(setup, n_rep = 10, base_seed = 12345, path = temp_res_file)
   # Grow with progress bar to test
   sink_file <- tempfile() # diverts progress bar to not distort test output

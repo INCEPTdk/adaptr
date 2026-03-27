@@ -35,6 +35,10 @@ supported by a grant from [Sygeforsikringen "danmark"](https://www.sygeforsikrin
 
 * [Website](https://inceptdk.github.io/adaptr/) - stand-alone website with full
 package documentation
+* [Designing and Evaluating Bayesian Advanced Adaptive Randomised Clinical Trials: A Practical Guide](https://doi.org/10.1002/pst.70042) -
+tutorial article in Pharmaceutical Statistical providing an extensive
+introduction to the package and the workflow of using it to design and evaluate
+Bayesian advanced adaptive trials
 * [adaptr: an R package for simulating and comparing adaptive clinical trials](https://doi.org/10.21105/joss.04284) -
 article in the Journal of Open Source Software describing the package
 * [An overview of methodological considerations regarding adaptive stopping, arm dropping and randomisation in clinical trials](https://doi.org/10.1016/j.jclinepi.2022.11.002) - article in Journal of
@@ -52,6 +56,8 @@ follow-up/data collection lags.
 article in Pharmaceutical Statistics describing a simulation study (with code)
 using `adaptr` to assess the performance of adaptive clinical trials according to different
 sceptical priors.
+* For examples of actual trials designed end evaluated using `adaptr`, see
+[INCEPT](https://incept.dk) and [EMPRESS](https://www.cric.nu/empress/).
 
 ## Installation
 
@@ -103,9 +109,9 @@ binom_trial <- setup_trial_binom(
   true_ys = c(0.25, 0.25, 0.25),
   # Response-adaptive randomisation with minimum 20% allocation in all arms
   min_probs = rep(0.20, 3),
-  # Number of patients with data available at each analysis
+  # Number of participants with data available at each analysis
   data_looks = seq(from = 300, to = 2000, by = 100),
-  # Number of patients randomised at each analysis (higher than the numbers
+  # Number of participants randomised at each analysis (higher than the numbers
   # with data, except at last look, due to follow-up/data collection lag)
   randomised_at_looks = c(seq(from = 400, to = 2000, by = 100), 2000),
   # Stopping rules for inferiority/superiority not explicitly defined
@@ -246,7 +252,7 @@ to trial progress can be visualised using the `plot_status()` function:
 # Overall trial status probabilities
 plot_status(
   calibrated_binom_trial$best_sims,
-  x_value = "total n" # Total number of randomised patients at X-axis
+  x_value = "total n" # Total number of randomised participants at X-axis
 )
 ```
 
@@ -340,4 +346,9 @@ If you use the package, please consider citing it:
 
 ```{r}
 citation(package = "adaptr")
+```
+
+```{r include=FALSE}
+# Remove cluster to avoid R CMD check note
+setup_cluster(NULL)
 ```

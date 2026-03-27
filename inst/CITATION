@@ -20,3 +20,28 @@ bibentry(
     "Journal of Open Source Software, 7(72), 4284.",
     "URL https://doi.org/10.21105/joss.04284.")
 )
+
+bibentry(
+  bibtype = "article",
+  title = "Designing and Evaluating Bayesian Advanced Adaptive Randomised Clinical Trials: A Practical Guide",
+  author = c(
+    person("Anders", "Granholm"),
+    person("Aksel Karl Georg", "Jensen"),
+    person("Theis", "Lange"),
+    person("Anders", "Perner"),
+    person("Morten Hylander", "Møller"),
+    person("Benjamin Skov", "Kaas-Hansen")
+  ),
+  journal = "Pharmaceutical Statistics",
+  year = 2025,
+  volume = 24,
+  number = 6,
+  pages = "e70042",
+  url = "https://doi.org/10.1002/pst.70042",
+  doi = "10.1002/pst.70042",
+  textVersion = paste(
+    "Granholm A, Jensen AKG, Lange T,  Perner A, Møller MH, Kaas-Hansen BS (2025).",
+    "Designing and Evaluating Bayesian Advanced Adaptive Randomised Clinical Trials:",
+    "A Practical Guide. Pharmaceutical Statistics, 24(6), e70042.",
+    "URL https://doi.org/10.1002/pst.70042.")
+)

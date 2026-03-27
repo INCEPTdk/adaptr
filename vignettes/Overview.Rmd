@@ -24,6 +24,12 @@ The package has been developed as part of the
 [INCEPT (Intensive Care Platform Trial) project](https://incept.dk/), primarily
 supported by a grant from [Sygeforsikringen "danmark"](https://www.sygeforsikring.dk/).
 
+In addition to the package vignettes, a detailed tutorial on how to design and
+evaluate Bayesian advanced adaptive clinical trials can be found in the open
+access article
+*"[Designing and Evaluating Bayesian Advanced Adaptive Randomised Clinical Trials: A Practical Guide](https://doi.org/10.1002/pst.70042)"*
+available in Pharmaceutical Statistics.
+
 Additional guidance on the key methodological considerations when planning and
 comparing adaptive clinical trials can be found in the open access article
 *"[An overview of methodological considerations regarding adaptive stopping, arm dropping and randomisation in clinical trials](https://doi.org/10.1016/j.jclinepi.2022.11.002)"*
@@ -36,20 +42,27 @@ here.
 
 ### Setup
 
-First, the package is loaded and a cluster of parallel workers is initiated by
-the `setup_cluster()` function to facilitate parallel computing:
+First, the package is loaded:
 
 ```{r}
 library(adaptr)
+```
 
-setup_cluster(2)
+Following this, a cluster of parallel workers can be initiated by the
+`setup_cluster()` function to facilitate parallel computing:
+
+```{r}
+setup_cluster(1) # Replace '1' with number of parallel workers wanted
 ```
 
 Parallelisation is supported in many `adaptr` functions, and a cluster of
 parallel workers can be setup for the entire session using `setup_cluster()`
-early in the script as in this example. Alternatively, parallelisation
-can be controlled by the global `"mc.cores"` option (set by calling
-`options(mc.cores = <number>)`) or the `cores` argument of many functions.
+early in the script. Alternatively, parallelisation can be controlled by the
+global `"mc.cores"` option (set by calling `options(mc.cores = <number>)`) or
+the `cores` argument of many functions.
+
+This vignette does not use parallelisation, but this is generally recommended
+when using `adaptr`.
 
 ### Specify trial design
 
@@ -64,8 +77,8 @@ The example trial specification has the following characteristics:
 - A binary, binomially distributed, undesirable (default) outcome
 - Three arms with no designated common control
 - Identical underlying outcome probabilities of 25% in each arm
-- Analyses conducted when specific number of patients have outcome data
-available, with more patients randomised at all but the last look (lag due to
+- Analyses conducted when specific number of participants have outcome data
+available, with more participants randomised at all but the last look (lag due to
 follow-up and data collection/verification)
 - No explicitly defined stopping thresholds for `inferiority` or `superiority`
 (default thresholds of < 1% and > 99%, respectively, apply)
@@ -113,8 +126,8 @@ and stopping rules for inferiority and superiority are not explicitly defined.
 This is intentional, as these stopping rules will be calibrated to obtain a
 desired probability of stopping for superiority in the scenario with no
 between-arm differences (corresponding to the Bayesian type 1 error rate). Trial
-specifications do not necessarily have to be calibrated. Instead,simulations can
-be run directly using the `run_trials()` function covered below (or
+specifications do not necessarily have to be calibrated. Instead, simulations
+can be run directly using the `run_trials()` function covered below (or
 `run_trial()` for a single simulation). This can be followed by assessment of
 performance metrics, and manually changing the specification (including the
 stopping rules) until performance metrics are considered acceptable. In this
@@ -271,7 +284,7 @@ be visualised using the `plot_status()` function:
 ```{r}
 plot_status(
   calibrated_binom_trial$best_sims,
-  x_value = "total n" # Total number of randomised patients at X-axis
+  x_value = "total n" # Total number of randomised participants at X-axis
 )
 ```
 
@@ -374,8 +387,8 @@ plot_history(
 )
 ```
 
-Similarly, the median (interquartile range) number of patients allocated to each
-arm as the trial progresses can be visualised:
+Similarly, the median (interquartile range) number of participants allocated to
+each arm as the trial progresses can be visualised:
 
 ```{r}
 plot_history(

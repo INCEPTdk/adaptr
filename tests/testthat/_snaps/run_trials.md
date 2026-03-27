@@ -17,7 +17,7 @@
           B    0.21      control         500           NA       0.333
           C    0.70     inferior         500            0       0.333
       
-      Esimates from final analysis (all patients):
+      Estimates from final analysis (all participants):
        arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
           A         39    195        0.200         0.202        0.0286      0.151
           B         25    152        0.164         0.168        0.0294      0.115
@@ -58,7 +58,7 @@
           B    0.21      control         500           NA       0.333
           C    0.70     inferior         500            0       0.333
       
-      Esimates from final analysis (all patients):
+      Estimates from final analysis (all participants):
        arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
           A         39    195        0.200         0.202        0.0286      0.151
           B         25    152        0.164         0.168        0.0294      0.115
@@ -99,7 +99,7 @@
           B    0.15     superior        1500       0.9954        0.40
           C    0.30     inferior        1000       0.0010        0.15
       
-      Esimates from final analysis (all patients):
+      Estimates from final analysis (all participants):
        arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
           A        143    701        0.204         0.205        0.0152      0.176
           B         88    593        0.148         0.149        0.0151      0.122
@@ -114,6 +114,144 @@
           A    143 701    0.204     0.205    0.0151  0.176  0.235
           B     88 593    0.148     0.149    0.0144  0.122  0.180
           C     56 206    0.272     0.274    0.0303  0.216  0.334
+      
+      Simulation details:
+      * Random seed: 12345
+      * Credible interval width: 95%
+      * Number of posterior draws: 5000
+      * Posterior estimation method: medians with MAD-SDs
+
+---
+
+    Code
+      res_no_rescale_adapt
+    Output
+      Single simulation result: generic binomially distributed outcome trial
+      * Desirable outcome
+      * No common control arm
+      
+      Final status: conclusive, stopped for superiority
+      Final/maximum allowed sample sizes: 1200/5000 (24.0%)
+      Available outcome data at last adaptive analysis: 1200/1200 (100.0%)
+      
+      Trial results overview:
+       arms true_ys final_status status_look status_probs final_alloc
+          A    0.10     inferior         100       0.0004      0.1000
+          B    0.05     inferior         100       0.0000      0.1000
+          C    0.15     inferior         500       0.0022      0.0056
+          D    0.30     inferior         700       0.0066      0.0114
+          E    0.35     inferior        1000       0.0086      0.0148
+          F    0.40     inferior        1100       0.0106      0.0142
+          G    0.40     inferior        1200       0.0100      0.0368
+          H    0.50     inferior         900       0.0090      0.0134
+          I    0.50     superior        1200       1.0000      0.9632
+          J    0.40     inferior        1100       0.0052      0.0194
+      
+      Estimates from final analysis (all participants):
+       arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
+          A          2     12       0.1667         0.199        0.1046     0.0522
+          B          1     13       0.0769         0.116        0.0798     0.0176
+          C          1     11       0.0909         0.133        0.0915     0.0205
+          D         13     42       0.3095         0.316        0.0693     0.1913
+          E         17     51       0.3333         0.338        0.0658     0.2173
+          F         35     89       0.3933         0.395        0.0509     0.2984
+          G         81    185       0.4378         0.440        0.0364     0.3674
+          H         47    119       0.3950         0.396        0.0446     0.3131
+          I        304    566       0.5371         0.537        0.0212     0.4950
+          J         44    112       0.3929         0.394        0.0444     0.3065
+       hi_cri_all
+            0.451
+            0.333
+            0.396
+            0.458
+            0.466
+            0.499
+            0.508
+            0.483
+            0.579
+            0.490
+      
+      Estimates from last adaptive analysis including each arm:
+       arms sum_ys  ns raw_ests post_ests post_errs lo_cri hi_cri
+          A      2  12   0.1667     0.203    0.1064 0.0517  0.457
+          B      1  13   0.0769     0.119    0.0805 0.0176  0.351
+          C      1  11   0.0909     0.131    0.0886 0.0213  0.385
+          D     13  42   0.3095     0.316    0.0723 0.1920  0.458
+          E     17  51   0.3333     0.336    0.0647 0.2186  0.473
+          F     35  89   0.3933     0.396    0.0511 0.3003  0.495
+          G     81 185   0.4378     0.437    0.0367 0.3689  0.509
+          H     47 119   0.3950     0.395    0.0427 0.3118  0.483
+          I    304 566   0.5371     0.537    0.0205 0.4968  0.579
+          J     44 112   0.3929     0.394    0.0471 0.3066  0.485
+      
+      Simulation details:
+      * Random seed: 12345
+      * Credible interval width: 95%
+      * Number of posterior draws: 5000
+      * Posterior estimation method: medians with MAD-SDs
+
+---
+
+    Code
+      res_rescale_adapt
+    Output
+      Single simulation result: generic binomially distributed outcome trial
+      * Desirable outcome
+      * No common control arm
+      
+      Final status: inconclusive, stopped at final allowed adaptive analysis
+      Final/maximum allowed sample sizes: 5000/5000 (100.0%)
+      Available outcome data at last adaptive analysis: 5000/5000 (100.0%)
+      
+      Trial results overview:
+       arms true_ys final_status status_look status_probs final_alloc
+          A    0.10     inferior         100       0.0004      0.1000
+          B    0.05     inferior         100       0.0000      0.1000
+          C    0.15     inferior         500       0.0022      0.0056
+          D    0.30     inferior         800       0.0030      0.0066
+          E    0.35     inferior         800       0.0036      0.0142
+          F    0.40     inferior        1100       0.0044      0.0062
+          G    0.40     inferior        4100       0.0082      0.0188
+          H    0.50       active          NA           NA      0.0658
+          I    0.50       active          NA           NA      0.9342
+          J    0.40     inferior        1500       0.0056      0.0094
+      
+      Estimates from final analysis (all participants):
+       arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
+          A          2     12       0.1667         0.201        0.1068     0.0503
+          B          1     13       0.0769         0.120        0.0815     0.0180
+          C          1     11       0.0909         0.137        0.0923     0.0215
+          D         13     43       0.3023         0.308        0.0683     0.1863
+          E         15     47       0.3191         0.324        0.0669     0.2065
+          F         32     87       0.3678         0.369        0.0528     0.2753
+          G        129    301       0.4286         0.428        0.0284     0.3724
+          H        317    677       0.4682         0.468        0.0191     0.4314
+          I       1853   3696       0.5014         0.501        0.0085     0.4854
+          J         44    113       0.3894         0.391        0.0457     0.3016
+       hi_cri_all
+            0.450
+            0.349
+            0.379
+            0.452
+            0.464
+            0.474
+            0.483
+            0.506
+            0.517
+            0.480
+      
+      Estimates from last adaptive analysis including each arm:
+       arms sum_ys   ns raw_ests post_ests post_errs lo_cri hi_cri
+          A      2   12   0.1667     0.203   0.10643 0.0517  0.457
+          B      1   13   0.0769     0.119   0.08046 0.0176  0.351
+          C      1   11   0.0909     0.131   0.08858 0.0213  0.385
+          D     13   43   0.3023     0.309   0.06997 0.1884  0.451
+          E     15   47   0.3191     0.324   0.06500 0.2057  0.458
+          F     32   87   0.3678     0.370   0.05362 0.2725  0.474
+          G    129  301   0.4286     0.430   0.02834 0.3736  0.485
+          H    317  677   0.4682     0.468   0.01955 0.4313  0.507
+          I   1853 3696   0.5014     0.501   0.00848 0.4846  0.518
+          J     44  113   0.3894     0.391   0.04571 0.3045  0.482
       
       Simulation details:
       * Random seed: 12345
@@ -141,7 +279,7 @@
           B    0.20     inferior         500        0.006       0.150
           C    0.30      control         500           NA       0.384
       
-      Esimates from final analysis (all patients):
+      Estimates from final analysis (all participants):
        arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
           A         44    182        0.242         0.243        0.0309     0.1855
           B         18    123        0.146         0.151        0.0321     0.0962
@@ -178,7 +316,7 @@
           B    0.20     inferior         500       0.0092       0.150
           C    0.30     superior         500       0.9908       0.850
       
-      Esimates from final analysis (all patients):
+      Estimates from final analysis (all participants):
        arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
           A         20    116        0.172         0.176        0.0351      0.115
           B         26    119        0.218         0.221        0.0384      0.151
@@ -215,7 +353,7 @@
           B    0.20     inferior         700       0.0094       0.150
           C    0.30      control         700           NA       0.537
       
-      Esimates from final analysis (all patients):
+      Estimates from final analysis (all participants):
        arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
           A         59    253        0.233         0.234        0.0266      0.185
           B         27    152        0.178         0.180        0.0312      0.124
@@ -252,7 +390,7 @@
           B    0.20     inferior         900        0.008       0.150
           C    0.30      control         900           NA       0.522
       
-      Esimates from final analysis (all patients):
+      Estimates from final analysis (all participants):
        arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
           A         83    318        0.261         0.262        0.0246      0.216
           B         38    191        0.199         0.201        0.0288      0.150
@@ -289,7 +427,7 @@
           B    0.20     inferior        1200       0.0096       0.150
           C    0.30     superior        1200       0.9904       0.850
       
-      Esimates from final analysis (all patients):
+      Estimates from final analysis (all participants):
        arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
           A         16     88        0.182         0.186        0.0398      0.114
           B         70    292        0.240         0.241        0.0251      0.194
@@ -330,7 +468,7 @@
           B    0.20     inferior         500        0.006       0.150
           C    0.30      control         500           NA       0.384
       
-      Esimates from final analysis (all patients):
+      Estimates from final analysis (all participants):
        arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
           A         44    182        0.242         0.243        0.0309     0.1855
           B         18    123        0.146         0.151        0.0321     0.0962
@@ -362,7 +500,7 @@
           B    0.20     inferior         500       0.0092       0.150
           C    0.30     superior         500       0.9908       0.850
       
-      Esimates from final analysis (all patients):
+      Estimates from final analysis (all participants):
        arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
           A         20    116        0.172         0.176        0.0351      0.115
           B         26    119        0.218         0.221        0.0384      0.151
@@ -394,7 +532,7 @@
           B    0.20     inferior         700       0.0094       0.150
           C    0.30      control         700           NA       0.537
       
-      Esimates from final analysis (all patients):
+      Estimates from final analysis (all participants):
        arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
           A         59    253        0.233         0.234        0.0266      0.185
           B         27    152        0.178         0.180        0.0312      0.124
@@ -426,7 +564,7 @@
           B    0.20     inferior         900        0.008       0.150
           C    0.30      control         900           NA       0.522
       
-      Esimates from final analysis (all patients):
+      Estimates from final analysis (all participants):
        arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
           A         83    318        0.261         0.262        0.0246      0.216
           B         38    191        0.199         0.201        0.0288      0.150
@@ -458,7 +596,7 @@
           B    0.20     inferior        1200       0.0096       0.150
           C    0.30     superior        1200       0.9904       0.850
       
-      Esimates from final analysis (all patients):
+      Estimates from final analysis (all participants):
        arms sum_ys_all ns_all raw_ests_all post_ests_all post_errs_all lo_cri_all
           A         16     88        0.182         0.186        0.0398      0.114
           B         70    292        0.240         0.241        0.0251      0.194

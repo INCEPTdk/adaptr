@@ -84,18 +84,19 @@ arm, as described for \code{te_comp} and below). If \code{TRUE}, the raw estimat
 be used instead of the posterior estimates.}
 
 \item{final_ests}{single logical. If \code{TRUE} (recommended) the final estimates
-calculated using outcome data from all patients randomised when trials are
-stopped are used (\code{post_ests_all} or \code{raw_ests_all}, see \code{\link[=setup_trial]{setup_trial()}}
-and \code{\link[=run_trial]{run_trial()}}); if \code{FALSE}, the estimates calculated for each arm when
-an arm is stopped (or at the last adaptive analysis if not before) using
-data from patients having reach followed up at this time point and not all
-patients randomised are used (\code{post_ests} or \code{raw_ests}, see
-\code{\link[=setup_trial]{setup_trial()}} and \code{\link[=run_trial]{run_trial()}}). If \code{NULL} (the default), this argument
-will be set to \code{FALSE} if outcome data are available immediate after
-randomisation for all patients (for backwards compatibility, as final
-posterior estimates may vary slightly in this situation, even if using the
-same data); otherwise it will be said to \code{TRUE}. See \code{\link[=setup_trial]{setup_trial()}} for
-more details on how these estimates are calculated.}
+calculated using outcome data from all participants randomised when trials
+are stopped are used (\code{post_ests_all} or \code{raw_ests_all}, see
+\code{\link[=setup_trial]{setup_trial()}} and \code{\link[=run_trial]{run_trial()}}); if \code{FALSE}, the estimates calculated
+for each arm when an arm is stopped (or at the last adaptive analysis if
+not before) using data from participants having reach followed up at this
+time point and not all participants randomised are used (\code{post_ests} or
+\code{raw_ests}, see \code{\link[=setup_trial]{setup_trial()}} and \code{\link[=run_trial]{run_trial()}}). If \code{NULL} (the
+default), this argument will be set to \code{FALSE} if outcome data are
+available immediate after randomisation for all participants (for backwards
+compatibility, as final posterior estimates may vary slightly in this
+situation, even if using the same data); otherwise it will be said to
+\code{TRUE}. See \code{\link[=setup_trial]{setup_trial()}} for more details on how these estimates are
+calculated.}
 
 \item{cores}{\code{NULL} or single integer. If \code{NULL}, a default value set by
 \code{\link[=setup_cluster]{setup_cluster()}} will be used to control whether extractions of simulation
@@ -119,9 +120,9 @@ simulations).
 number of events in trials with a binary outcome
 (\code{\link[=setup_trial_binom]{setup_trial_binom()}}) or the sum of the arm totals in trials with a
 continuous outcome (\code{\link[=setup_trial_norm]{setup_trial_norm()}}). Always uses all outcome data
-from all randomised patients regardless of whether or not all patients
-had outcome data available at the time of trial stopping (corresponding
-to \code{sum_ys_all} in results from \code{\link[=run_trial]{run_trial()}}).
+from all randomised participants regardless of whether or not all
+participants had outcome data available at the time of trial stopping
+(corresponding to \code{sum_ys_all} in results from \code{\link[=run_trial]{run_trial()}}).
 \item \code{ratio_ys}: calculated as \code{sum_ys/final_n} (as described above).
 \item \code{final_status}: the final trial status for each simulation, either
 \code{"superiority"}, \code{"equivalence"}, \code{"futility"}, or \code{"max"}, as

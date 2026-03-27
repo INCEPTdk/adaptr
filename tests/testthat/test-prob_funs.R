@@ -148,3 +148,15 @@ test_that("reallocate_probs works", {
     c(A = 0.4, B = 0.2, C = 0.4)
   )
 })
+
+test_that("cond_rescale_prob works", {
+  expect_equal(tolerance = 10^-6,
+               cond_rescale_prob(cond = FALSE, prob = 0.95, up = TRUE,
+                                 rescale_factor = 4/3), 0.95)
+  expect_equal(tolerance = 10^-6,
+               cond_rescale_prob(cond = TRUE, prob = 0.95, up = TRUE,
+                                 rescale_factor = 4/3), 0.9625)
+  expect_equal(tolerance = 10^-6,
+               cond_rescale_prob(cond = TRUE, prob = 0.05, up = FALSE,
+                                 rescale_factor = 4/3), 0.0375)
+})

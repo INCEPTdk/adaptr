@@ -224,3 +224,39 @@ reallocate_probs <- function(probs_best, fixed_probs, min_probs, max_probs,
   # Return
   final_probs
 }
+
+
+
+#' Conditionally rescale probabilities
+#'
+#' Used internally. This function conditionally rescales probabilities, used in
+#' [run_trial()] based on the information specified in [setup_trial()],
+#' [setup_trial_binom()] or [setup_trial_norm()]. Used to rescale adaptation
+#' rule probability thresholds for superiority and/or inferiority in trials
+#' without a common `control` arm.
+#'
+#' @param cond single logical, whether to rescale the probability or not. If
+#'   `FALSE` the input probability is returned without rescaling (ignoring all
+#'   other arguments), if `TRUE` the input probability is rescaled.
+#' @param prob probability to be rescaled (as a proportion, i.e., in `[0-1]`).
+#' @param up single logical, if `FALSE` (default), the probability provided will
+#'   be rescaled downwards (i.e., closer to `0`, as `prob / rescale_factor`), if
+#'   `TRUE`, the probability provided will be rescaled upwards (i.e., closer to
+#'   `1`, as `1 - (1 - prob) / rescale_factor`).
+#' @param rescale_factor single numerical value, the factor to rescale by as
+#'   described above. The [run_trial()] function defines this as initial number
+#'   of trial arms divided by currently active number of trial arms.
+#'
+#' @return numerical, `prob` rescaled or not depending on inputs values.
+#'
+#' @keywords internal
+#'
+cond_rescale_prob <- function(cond, prob, up = FALSE, rescale_factor) {
+  if (!cond) {
+    prob
+  } else if (up) {
+    1 - (1 - prob) / rescale_factor
+  } else {
+    prob / rescale_factor
+  }
+}

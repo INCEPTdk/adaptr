@@ -20,7 +20,7 @@ fmt_dig <- function(x, dig) {
 #' Used internally.
 #'
 #' @param e integer, the numerator (e.g., the number of events).
-#' @param n integer, the denominator (e.g., the total number of patients).
+#' @param n integer, the denominator (e.g., the total number of participants).
 #' @param dec integer, the number of decimals for the percentage.
 #'
 #' @return Formatted character string.

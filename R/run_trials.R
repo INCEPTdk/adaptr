@@ -14,7 +14,7 @@
 #'   `n_rep` as supplied to [run_trials()] minus the number of previously run
 #'   simulations if `grow` is used in [run_trials()]).
 #'
-#' @return List containing `breaks` (the number of patients at each break),
+#' @return List containing `breaks` (the number of participants at each break),
 #'   `start_mess` and `prog_mess` (the basis of the first and subsequent
 #'   progress messages), and `batches` (a list with each entry corresponding to
 #'   the simulation numbers in each batch).

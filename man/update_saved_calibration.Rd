@@ -30,7 +30,7 @@ use of calibration results, including the calibrated trial specification and
 the best simulations results from the calibration process, to be used without
 errors by this version of the package. The function should be run only once
 per saved simulation object and will issue a warning if the object is already
-up to date. And overview of the changes made according to the \code{adaptr} package
+up to date. An overview of the changes made according to the \code{adaptr} package
 version used to generate the original object is provided in \strong{Details}.\cr
 }
 \details{

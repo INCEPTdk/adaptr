@@ -1,6 +1,7 @@
 url: https://inceptdk.github.io/adaptr/
 template:
   bootstrap: 5
+  light-switch: true
 
 articles:
 - title: Vignettes

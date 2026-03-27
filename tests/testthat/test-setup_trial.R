@@ -111,6 +111,7 @@ test_that("validate setup trial specifications", {
     fun_draws = adaptr:::get_draws_binom,
     fun_raw_est = mean,
     min_probs = rep(0.15, 3),
+    rescale_probs = "limits",
     data_looks = seq(from = 300, to = 2000, by = 100),
     equivalence_prob = 0.9,
     equivalence_diff = 0.05,
@@ -129,6 +130,7 @@ test_that("validate setup trial specifications", {
     control = "B",
     true_ys = c(0.25, 0.20, 0.30),
     min_probs = rep(0.15, 3),
+    rescale_probs = "limits",
     data_looks = seq(from = 300, to = 2000, by = 100),
     equivalence_prob = 0.9,
     equivalence_diff = 0.05,
@@ -232,6 +234,15 @@ test_that("setup/validate_trial functions errors on invalid inputs", {
   expect_error(validate_trial(arms = 1:3, control = 1, data_looks = 1:3 * 100,
                               futility_prob = 0.9, futility_diff = 0.1, futility_only_first = NA))
 
+  expect_error(validate_trial(arms = 1:2, data_looks = 1:3 * 100,
+                              rescale_adapt_probs = "both"))
+  expect_error(validate_trial(arms = 1:3, control = 1, data_looks = 1:3 * 100,
+                              rescale_adapt_probs = "both"))
+  expect_error(validate_trial(arms = 1:3, data_looks = 1:3 * 100,
+                              rescale_adapt_probs = "invalid"))
+  expect_error(validate_trial(arms = 1:3, data_looks = 1:3 * 100,
+                              rescale_adapt_probs = c("superiority", "inferiority")))
+
   expect_error(validate_trial(arms = 1:3, data_looks = 1:3 * 100, soften_power = 1 - 0.01 * 1:2))
   expect_error(validate_trial(arms = 1:3, data_looks = 1:3 * 100, soften_power = 1.01))
 
@@ -277,4 +288,8 @@ test_that("setup/validate_trial functions errors on invalid inputs", {
   expect_error(setup_trial(arms = 1:3, true_ys = 1:3, data_looks = 1:3 * 100,
                            fun_y_gen = function(x) rnorm(length(x)),
                            fun_draws = function(...) matrix(1:9, ncol = 3)))
+
+  expect_error(setup_trial_binom(arms = 1:4, true_ys = rep(0.3, 4), fixed_probs = c(NA, 1 / (3 + sqrt(3))),
+                                 control = 4, control_prob_fixed = "sqrt-based", data_looks = 1:10 * 250))
+
 })

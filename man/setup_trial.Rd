@@ -29,6 +29,7 @@ setup_trial(
   futility_diff = NULL,
   futility_only_first = NULL,
   highest_is_best = FALSE,
+  rescale_adapt_probs = NULL,
   soften_power = 1,
   fun_raw_est = mean,
   cri_width = 0.95,
@@ -80,11 +81,11 @@ using fixed allocation probabilities.}
 or \code{"both"}. Rescales \code{fixed_probs} (if \code{"fixed"} or \code{"both"}) and
 \code{min_probs/max_probs} (if \code{"limits"} or \code{"both"}) after arm dropping in
 trial specifications with \verb{>2 arms} using a \code{rescale_factor} defined as
-\verb{initial number of arms/number of active arms}. \verb{"fixed_probs} and
-\code{min_probs} are rescaled as \verb{initial value * rescale factor}, except for
-\code{fixed_probs} controlled by the \code{control_prob_fixed} argument, which are
-never rescaled. \code{max_probs} are rescaled as
-\verb{1 - ( (1 - initial value) * rescale_factor)}.\cr
+\verb{initial number of arms/number of active arms}.
+\code{fixed_probs} and \code{min_probs} are rescaled as
+\verb{initial value * rescale factor}, except for \code{fixed_probs} controlled by
+the \code{control_prob_fixed} argument, which are never rescaled. \code{max_probs}
+are rescaled as \verb{1 - ( (1 - initial value) * rescale_factor)}.\cr
 Must be \code{NULL} if there are only \verb{2 arms} or if \code{control_prob_fixed} is
 \code{"sqrt-based fixed"}. If not \code{NULL}, one or more valid non-\code{NA} values must
 be specified for either \code{min_probs/max_probs} or \code{fixed_probs} (not
@@ -101,38 +102,38 @@ Finally, any initial values that are overwritten by the
 \code{control_prob_fixed} argument after arm dropping will not be rescaled.}
 
 \item{data_looks}{vector of increasing integers, specifies when to conduct
-adaptive analyses (= the total number of patients with available outcome
-data at each adaptive analysis). The last number in the vector represents
-the final adaptive analysis, i.e., the final analysis where superiority,
-inferiority, practical equivalence, or futility can be claimed.
-Instead of specifying \code{data_looks}, the \code{max_n} and \code{look_after_every}
-arguments can be used in combination (in which case \code{data_looks} must be
-\code{NULL}, the default value).}
+adaptive analyses (= the total number of participants with available
+outcome data at each adaptive analysis). The last number in the vector
+represents the final adaptive analysis, i.e., the final analysis where
+superiority, inferiority, practical equivalence, or futility can be
+claimed. Instead of specifying \code{data_looks}, the \code{max_n} and
+\code{look_after_every} arguments can be used in combination (in which case
+\code{data_looks} must be \code{NULL}, the default value).}
 
-\item{max_n}{single integer, number of patients with available outcome data
-at the last possible adaptive analysis (defaults to \code{NULL}).
+\item{max_n}{single integer, number of participants with available outcome
+data at the last possible adaptive analysis (defaults to \code{NULL}).
 Must only be specified if \code{data_looks} is \code{NULL}. Requires specification of
 the \code{look_after_every} argument.}
 
 \item{look_after_every}{single integer, specified together with \code{max_n}.
 Adaptive analyses will be conducted after every \code{look_after_every}
-patients have available outcome data, and at the total sample size as
+participants have available outcome data, and at the total sample size as
 specified by \code{max_n} (\code{max_n} does not need to be a multiple of
 \code{look_after_every}). If specified, \code{data_looks} must be \code{NULL} (default).}
 
 \item{randomised_at_looks}{vector of increasing integers or \code{NULL},
-specifying the number of patients randomised at the time of each adaptive
-analysis, with new patients randomised using the current allocation
-probabilities at said analysis.
-If \code{NULL} (the default), the number of patients randomised at each analysis
-will match the number of patients with available outcome data at said
-analysis, as specified by \code{data_looks} or \code{max_n} and \code{look_after_every},
-i.e., outcome data will be available immediately after randomisation for
-all patients.\cr
+specifying the number of participants randomised at the time of each
+adaptive analysis, with new participants randomised using the current
+allocation probabilities at said analysis.
+If \code{NULL} (the default), the number of participants randomised at each
+analysis will match the number of participants with available outcome data
+at said analysis, as specified by \code{data_looks} or \code{max_n} and
+\code{look_after_every}, i.e., outcome data will be available immediately after
+randomisation for all participants.\cr
 If not \code{NULL}, the vector must be of the same length as the number of
 adaptive analyses specified by \code{data_looks} or \code{max_n} and
 \code{look_after_every}, and all values must be larger than or equal to the
-number of patients with available outcome data at each analysis.}
+number of participants with available outcome data at each analysis.}
 
 \item{control}{single character string, name of one of the \code{arms} or \code{NULL}
 (default). If specified, this arm will serve as a common control arm, to
@@ -234,6 +235,24 @@ the outcome are favourable or not; defaults to \code{FALSE}, corresponding to,
 e.g., an undesirable binary outcomes (e.g., mortality) or a continuous
 outcome where lower numbers are preferred (e.g., hospital length of stay).}
 
+\item{rescale_adapt_probs}{\code{NULL} (default), or a single character string,
+either \code{"both"}, \code{"superiority"}, or \code{"inferiority"}. Specifies
+whether/which adaptation rule probability thresholds will be rescaled
+proportionally if arms are dropped before a simulated trial is stopped.
+\code{NULL} is no rescaling, and \code{"both"} is rescaling of adaptation
+probabilities for both \code{"superiority"} and \code{"inferiority"}. Rescaling of
+adaptation rule probability thresholds can only be applied for trial
+designs with >2 arms \emph{without} a common \code{control} arm. This is because
+stopping/arm dropping for superiority and inferiority is based on
+probabilities of each arm being best, and these probabilities have to sum
+to \code{1} across all arms. Thus, thresholds can become 'easier' to cross when
+fewer arms are active.\cr
+Probabilities are rescaled using a \code{rescale_factor} defined as
+\verb{initial number of arms/number of active arms}. Probability thresholds for
+\code{superiority} are rescaled as \verb{1 - (1 - initial value) / rescale_factor}
+(increasing these values), while probability thresholds for \code{inferiority}
+are rescaled as \verb{initial value / rescale_factor} (decreasing these values).}
+
 \item{soften_power}{either a single numeric value or a numeric vector of
 exactly the same length as the maximum number of looks/adaptive analyses.
 Values must be between \code{0} and \code{1} (default); if \verb{< 1}, then re-allocated
@@ -302,13 +321,13 @@ examples, see the the \strong{Basic examples} vignette
 
 The function must take the following arguments:
 \itemize{
-\item \code{allocs}: character vector, the trial \code{arms} that new patients allocated
-since the last adaptive analysis are randomised to.
+\item \code{allocs}: character vector, the trial \code{arms} that new participants
+allocated since the last adaptive analysis are randomised to.
 }
 
 The function must return a single numeric vector, corresponding to the
-outcomes for all patients allocated since the last adaptive analysis, in the
-same order as \code{allocs}.\cr
+outcomes for all participants allocated since the last adaptive analysis, in
+the same order as \code{allocs}.\cr
 See the \strong{Advanced example} vignette
 (\code{vignette("Advanced-example", package = "adaptr")}) for an example with
 further details.
@@ -320,11 +339,11 @@ The function must take the following arguments:
 \item \code{arms}: character vector, the unique trial \code{arms}, in the same order as
 above, but only the \strong{currently active} arms are included when the function
 is called.
-\item \code{allocs}: a vector of allocations for all patients, corresponding to the
-trial \code{arms}, including patients allocated to both
+\item \code{allocs}: a vector of allocations for all participants, corresponding to
+the trial \code{arms}, including participants allocated to both
 \strong{currently active AND inactive} \code{arms} when called.
-\item \code{ys}: a vector of outcomes for all patients in the same order as \code{allocs},
-including outcomes for patients allocated to both
+\item \code{ys}: a vector of outcomes for all participants in the same order as
+\code{allocs}, including outcomes for participants allocated to both
 \strong{currently active AND inactive} \code{arms} when called.
 \item \code{control}: single character, the current \code{control} arm, will be \code{NULL} for
 designs without a common control arm, but required regardless as the argument
@@ -338,9 +357,9 @@ named columns and \code{n_draws} rows. The \code{matrix} must have columns
 single posterior draw for each arm on the original outcome
 scale: if they are estimated as, e.g., the \emph{log(odds)}, these estimates must
 be transformed to probabilities and similarly for other measures.\cr
-Important: the \code{matrix} cannot contain \code{NA}s, even if no patients have been
-randomised to an arm yet. See the provided example for one way to alleviate
-this.\cr
+Important: the \code{matrix} cannot contain \code{NA}s, even if no participants have
+been randomised to an arm yet. See the provided example for one way to
+alleviate this.\cr
 See the \strong{Advanced examples} vignette
 (\code{vignette("Advanced-example", package = "adaptr")}) for an example with
 further details.
@@ -402,10 +421,10 @@ one of those, case sensitive). This requires \code{start_probs} to be \code{NULL
 relevant \code{fixed_probs} to be \code{NULL} (or \code{NA} for the control arm).\cr
 If one of the \code{"sqrt-based"/"sqrt-based start"/"sqrt-based fixed"} options
 are used, the function will set \emph{square-root-transformation-based} starting
-allocation probabilities. These are defined as:\cr
-\verb{square root of number of non-control arms to 1-ratio for other arms}\cr
-scaled to sum to 1, which will generally increase power for comparisons
-against the common \code{control}, as discussed in, e.g., \emph{Park et al, 2020}
+allocation probabilities. These are as \code{1} for all non-control arms and
+\verb{sqrt(<number of non-control arms>)} for the common \code{control} arm, scaled to
+sum to 1. This will generally increase power for comparisons against the
+common \code{control}, as discussed in, e.g., \emph{Park et al, 2020}
 \doi{10.1016/j.jclinepi.2020.04.025}.\cr
 If \code{"sqrt-based"} or \code{"sqrt-based fixed"}, square-root-transformation-based
 allocation probabilities will be used initially and also for new controls
@@ -417,10 +436,11 @@ probabilities always calculated based on the number of active non-control
 arms). If \code{"sqrt-based start"}, the control arm allocation probability will
 be fixed to a square-root based probability at all times calculated according
 to the initial number of arms (with this probability also being used for new
-control(s) when the original control is dropped).\cr
+control(s) when the original control is dropped; this may be rescaled using
+the \code{rescale} argument).\cr
 If \code{"match"} is specified, the control group allocation probability will
 always be \emph{matched} to be similar to the highest non-control arm allocation
-probability.
+probability, followed by scaling to sum allocation probabilities to 1.
 }
 
 \strong{Superiority and inferiority}
@@ -446,9 +466,9 @@ not be influenced similarly by previously dropped arms (and previously
 dropped arms may be included in the analyses, even if posterior distributions
 are not returned for those).
 Similarly, in actual clinical trials and when \code{randomised_at_looks} is
-specified with numbers higher than the number of patients with available
+specified with numbers higher than the number of participants with available
 outcome data at each analysis, final probabilities may change somewhat when
-the all patients are have completed follow-up and are included in a final
+all participants have completed follow-up and are included in a final
 analysis.
 
 \strong{Equivalence}
@@ -507,10 +527,10 @@ get_draws_lognorm <- function(arms, allocs, ys, control, n_draws) {
     ii <- which(allocs == arm)
     n <- length(ii)
     if (n > 1) {
-      # Necessary to avoid errors if too few patients randomised to this arm
+      # Necessary to avoid errors if too few participants randomised to this arm
       draws[[arm]] <- exp(rnorm(n_draws, mean = mean(logys[ii]), sd = sd(logys[ii])/sqrt(n - 1)))
     } else {
-      # Too few patients randomised to this arm - extreme uncertainty
+      # Too few participants randomised to this arm - extreme uncertainty
       draws[[arm]] <- exp(rnorm(n_draws, mean = mean(logys), sd = 1000 * (max(logys) - min(logys))))
     }
   }

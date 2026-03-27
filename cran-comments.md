@@ -1,7 +1,7 @@
 ## Release summary
 
 This is a minor release implementing new functionality, and including bug fixes,
-updates to documentation, argument checking and test coverage.
+minor changes, and documentation updates.
 
 ## R CMD check results
 

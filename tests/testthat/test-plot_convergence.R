@@ -8,7 +8,9 @@ test_that("convergence plot of multiple binom trials works", {
   p <- plot_convergence(res, n_split = 2)
   vdiffr::expect_doppelganger("convergence plot, binomial, 2 splits", p)
 
-  p <- plot_convergence(res, metrics = c("prob_conclusive", "prob_superior", "idp"), nrow = 3)
+  p <- plot_convergence(res, metrics = c("prob_conclusive", "prob_superior", "idp"),
+                        # select_strategy to avoid NA due to few simulationss
+                        select_strategy = "best", nrow = 3)
   vdiffr::expect_doppelganger("convergence plot, binomial, prob concl, prob sup, idp", p)
 
   p <- plot_convergence(res, metrics = "prob_select_arm_A")

@@ -1,7 +1,7 @@
 Package: adaptr
 Title: Adaptive Trial Simulator
-Version: 1.4.0
-Date: 2024-05-03
+Version: 1.5.0
+Date: 2026-03-27
 Authors@R: 
     c(person("Anders", "Granholm",
              email = "andersgran@gmail.com",
@@ -37,7 +37,7 @@ URL: https://inceptdk.github.io/adaptr/,
     https://github.com/INCEPTdk/adaptr/,
     https://incept.dk/
 BugReports: https://github.com/INCEPTdk/adaptr/issues/
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.3
 Suggests:
     ggplot2,
     covr,

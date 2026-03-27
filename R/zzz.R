@@ -27,7 +27,7 @@
 #'
 #' Handles "Undefined global functions or variables" after R CMD check in
 #' functions using non-standard evaluation.
-#' See [https://stackoverflow.com/a/12429344].
+#' See [this post](https://stackoverflow.com/a/12429344) for details.
 #'
 #' @param libname not used.
 #' @param pkgname not used.

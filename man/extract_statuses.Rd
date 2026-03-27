@@ -11,9 +11,9 @@ extract_statuses(object, x_value, arm = NULL)
 
 \item{x_value}{single character string, determining whether the number of
 adaptive analysis looks (\code{"look"}, default), the total cumulated number of
-patients randomised (\code{"total n"}) or the total cumulated number of patients
-with outcome data available at each adaptive analysis (\code{"followed n"}) are
-plotted on the x-axis.}
+participants randomised (\code{"total n"}) or the total cumulated number of
+participants with outcome data available at each adaptive analysis
+(\code{"followed n"}) are plotted on the x-axis.}
 
 \item{arm}{character vector containing one or more unique, valid \code{arm} names,
 \code{NA}, or \code{NULL} (default). If \code{NULL}, the overall trial statuses are plotted,
@@ -23,13 +23,13 @@ otherwise the specified arms or all arms (if \code{NA} is specified) are plotted
 A tidy \code{data.frame} (one row possible status per look) containing the
 following columns:
 \itemize{
-\item \code{x}: the look numbers or total number of patients at each look,
+\item \code{x}: the look numbers or total number of participants at each look,
 as specified in \code{x_value}.
 \item \code{status}: each possible status (\code{"Recruiting"}, \code{"Inferiority"}
 (only relevant for individual arms), \code{"Futility"}, \code{"Equivalence"}, and
 \code{"Superiority"}, as relevant).
-\item \code{p}: the proportion (\code{0-1}) of patients with each \code{status} at each
-value of \code{x}.
+\item \code{p}: the proportion (\code{0-1}) of participants with each \code{status} at
+each value of \code{x}.
 \item \code{value}: as described under \code{metric}.
 }
 }

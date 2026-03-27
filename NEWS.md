@@ -1,3 +1,48 @@
+# adaptr 1.5.0
+
+This is a minor release implementing new functionality, and including bug fixes,
+minor changes, and documentation updates.
+
+### New features and major changes:
+
+*   Added `rescale_adapt_probs` argument to the `setup_trial()` family of
+    functions, allowing automatic rescaling of adaptation rule probability
+    thresholds for superiority and/or inferiority when arms are dropped in
+    simulations of trial designs with `>2 arms` and no common `control` arm.
+
+*   Updated `update_saved_trials()` and `update_saved_calibration()` functions
+    according to the addition of the `rescale_adapt_probs` argument in the
+    `setup_trial()` family of functions.
+
+### Minor changes and bug fixes:
+
+*   References to new tutorial article using the package
+    (<https://doi.org/10.1002/pst.70042>) added to the package documentation
+    where relevant; references to the `INCEPT` and `EMPRESS` trials (examples of
+    trials using the package) added to the README.
+
+*   Fixed a typo in the code in the `Advanced example` vignette that led to the
+    example generating incorrect allocations, which in turn led to incorrect
+    simulated outcomes (#14, thanks @brockk).
+    
+*   The `plot_metrics_ecdf()` function now adds padding to eCDFs (lines start at
+    0% on the vertical axis).
+    
+*   Semantic change: replaced 'patient(s)' with the more general
+    'participant(s)' throughout the package documentation. Note that this
+    affects output of some `print()` methods and plotting functions.
+    
+*   The `setup_trial()` family of functions now errors if `control_prob_fixed`
+    is set to `"sqrt-based"` or `"sqrt-based start"` and `fixed_probs` is not
+    `NULL` or of similar length as the number of arms.
+    
+*   Non-sparse trial simulation results now also include the `rescale_probs` and
+    `rescale_adapt_probs` values.
+    
+*   Minor updates to `print()` output of trial design specifications.
+    
+*   Minor updates to package documentation and tests.
+
 # adaptr 1.4.0
 
 This is a minor release implementing new functionality, and including bug fixes,
