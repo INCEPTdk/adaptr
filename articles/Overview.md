@@ -237,7 +237,7 @@ calibrated_binom_trial
 #> Calibration/simulation details:
 #> * Total evaluations: 4 (previous + grid + iterations)
 #> * Repetitions: 1000
-#> * Calibration time: 1.77 mins
+#> * Calibration time: 1.76 mins
 #> * Base random seed: 4131
 #> 
 #> See 'help("calibrate_trial")' for details.
@@ -369,7 +369,7 @@ print(binom_trial_summary, digits = 2)
 #> * Ideal design percentage: not estimable
 #> 
 #> Simulation details:
-#> * Simulation time: 40.2 secs
+#> * Simulation time: 40.1 secs
 #> * Base random seed: 4131
 #> * Credible interval width: 95%
 #> * Number of posterior draws: 5000
