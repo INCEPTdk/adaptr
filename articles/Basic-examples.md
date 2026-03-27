@@ -1,0 +1,649 @@
+# Basic examples
+
+This vignette provides examples of various trial specifications using
+different combinations of settings, including various randomisation
+strategies including fixed randomisation, response-adaptive
+randomisation (RAR), and combinations.
+
+The general-purpose function for specifying a trial is
+[`setup_trial()`](https://inceptdk.github.io/adaptr/reference/setup_trial.md),
+but because trials with binary, binomially distributed and continuous,
+normally distributed outcomes are so common, the package comes with two
+convenience functions for specifying such trial designs (using default
+priors only):
+[`setup_trial_binom()`](https://inceptdk.github.io/adaptr/reference/setup_trial_binom.md)
+and
+[`setup_trial_norm()`](https://inceptdk.github.io/adaptr/reference/setup_trial_norm.md).
+
+To keep things simple, this vignette uses only the
+[`setup_trial_binom()`](https://inceptdk.github.io/adaptr/reference/setup_trial_binom.md)
+function and focuses on settings that apply to trial designs regardless
+of outcome type. The code is heavily annotated, but comments focus on
+settings not touched on earlier in the vignette (e.g. we do not keep
+annotating the `arm` and `true_ys` arguments).
+
+Keep in mind that the
+[`calibrate_trial()`](https://inceptdk.github.io/adaptr/reference/calibrate_trial.md)
+function can be used to calibrate a trial specification to obtain a
+specific value for a certain performance metric (e.g., the Bayesian type
+1 error rate for trial specifications with no between-arm differences).
+
+For a general overview of how to use the `adaptr` package, please see
+[`vignette("Overview", "adaptr")`](https://inceptdk.github.io/adaptr/articles/Overview.md).
+
+An **advanced** example on how to specify a trial design with
+[`setup_trial()`](https://inceptdk.github.io/adaptr/reference/setup_trial.md),
+including the use of custom functions for generating outcomes and
+yielding posterior draws, is provided in
+[`vignette("Advanced-example", "adaptr")`](https://inceptdk.github.io/adaptr/articles/Advanced-example.md).
+
+First, the package is loaded:
+
+``` r
+library(adaptr)
+#> Loading 'adaptr' package v1.5.0.
+#> For instructions, type 'help("adaptr")'
+#> or see https://inceptdk.github.io/adaptr/.
+```
+
+## Trial designs without a common control arm
+
+In this section, several examples for trials *without* a common control
+arm are provided. General settings applicable for all trial designs
+(including both trial specifications with and without a common control
+arm) are covered in this section.
+
+### Example 1: general settings
+
+``` r
+setup_trial_binom(
+  # Four arms
+  arms = c("A", "B", "C", "D"),
+  # Set true outcomes (in this example event probabilities) for all arms
+  true_ys = c(0.3, 0.35, 0.31, 0.27), # 30%, 34%, 31% and 27%, respectively
+  
+  # Set starting allocation probabilities
+  # Defaults to equal allocation if not specified
+  start_probs = c(0.3, 0.3, 0.2, 0.2),
+  # Set fixed allocation probability for first arm
+  # NA corresponds to no limits for specific arms
+  # Default (NULL) corresponds to no limits for all arms
+  fixed_probs = c(0.3, NA, NA, NA),
+  # Set minimum and maximum probability limits for some arms
+  # NA corresponds to no limits for specific arms
+  # Default (NULL) corresponds to no limits for all arms
+  # Must be NA for arms with fixed_probs (first arm in this example)
+  # sum(fixed_probs) + sum(min_probs) must not exceed 1
+  # sum(fixed_probs) + sum(max_probs) may be greater than 1, and must be at least
+  # 1 if specified for all arms
+  min_probs = c(NA, 0.2, NA, NA),
+  max_probs = c(NA, 0.7, NA, NA),
+  
+  # Set looks - alternatively, specify both max_n AND look_after_every
+  data_looks = seq(from = 300, to = 1000, by = 100),
+  
+  # No common control arm (as default, but explicitly specified in this example)
+  control = NULL,
+  
+  # Set inferiority/superiority thresholds (different values than the defaults)
+  # (see also the calibrate_trial() function)
+  inferiority = 0.025,
+  superiority = 0.975,
+  
+  # Define that the outcome is desirable (as opposed to the default setting)
+  highest_is_best = TRUE,
+  
+  # No softening (the default setting, but made explicit here)
+  soften_power = 1,
+  
+  # Use different simulation/summary settings than default
+  cri_width = 0.89, # 89% credible intervals
+  n_draws = 1000, # Only 1000 posterior draws in each arm
+  robust = TRUE, # Summarise posteriors using medians/MAD-SDs (as default)
+  
+  # Trial description (used by print methods)
+  description = "example trial specification 1"
+)
+#> Trial specification: example trial specification 1
+#> * Desirable outcome
+#> * No common control arm
+#> * Best arm: B
+#> 
+#> Arms, true outcomes, starting allocation probabilities 
+#> and allocation probability limits (fixed/min/max_probs not rescaled):
+#>  arms true_ys start_probs fixed_probs min_probs max_probs
+#>     A    0.30         0.3         0.3        NA        NA
+#>     B    0.35         0.3          NA       0.2       0.7
+#>     C    0.31         0.2          NA        NA        NA
+#>     D    0.27         0.2          NA        NA        NA
+#> 
+#> Maximum sample size: 1000 
+#> Maximum number of data looks: 8
+#> Planned data looks after:  300, 400, 500, 600, 700, 800, 900, 1000 participants have reached follow-up
+#> Number of participants randomised at each look:  300, 400, 500, 600, 700, 800, 900, 1000
+#> 
+#> Superiority threshold: 0.975 (all analyses)
+#> Inferiority threshold: 0.025 (all analyses)
+#> No equivalence threshold
+#> No futility threshold (not relevant - no common control)
+#> Adaptation rule probability thresholds not rescaled when arms are dropped
+#> Soften power for all analyses: 1 (no softening)
+```
+
+### Example 2: equivalence testing, decreasing softening
+
+- No common control arm
+- Equivalence testing
+- Different softening powers (decreasing softening as the trial
+  progresses)
+- Default settings for many unspecified arguments
+
+``` r
+setup_trial_binom(
+  # Specify arms and true outcome probabilities (undesirable outcome as default)
+  arms = c("A", "B", "C", "D"),
+  true_ys = c(0.2, 0.22, 0.24, 0.18),
+  
+  # Specify adaptive analysis looks using max_n and look_after_every
+  # max_n does not need to be a multiple of look_after_every - a final look
+  # will be conducted at max_n regardless
+  max_n = 1250, # Maximum 1250 participants
+  look_after_every = 100, # Look after every 100 participants
+  
+  # Assess equivalence between all arms: stop if >90 % probability that the
+  # absolute difference between the best and worst arms is < 5 %-points
+  # Note: equivalence_only_first must be NULL (default) in designs without a
+  # common control arm (such as this trial)
+  equivalence_prob = 0.9,
+  equivalence_diff = 0.05,
+  
+  # Different softening powers at each look (13 possible looks in total)
+  # Starts at 0 (softens all allocation probabilities to be equal) and ends at
+  # 1 (no softening) for the final possible look in the trial
+  soften_power = seq(from = 0, to = 1, length.out = 13)
+)
+#> Trial specification: generic binomially distributed outcome trial
+#> * Undesirable outcome
+#> * No common control arm
+#> * Best arm: D
+#> 
+#> Arms, true outcomes, starting allocation probabilities 
+#> and allocation probability limits (fixed/min/max_probs not rescaled):
+#>  arms true_ys start_probs fixed_probs min_probs max_probs
+#>     A    0.20        0.25          NA        NA        NA
+#>     B    0.22        0.25          NA        NA        NA
+#>     C    0.24        0.25          NA        NA        NA
+#>     D    0.18        0.25          NA        NA        NA
+#> 
+#> Maximum sample size: 1250 
+#> Maximum number of data looks: 13
+#> Planned looks after every 100
+#>  participants have reached follow-up until final look after 1250 participants
+#> Number of participants randomised at each look:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1250
+#> 
+#> Superiority threshold: 0.99 (all analyses)
+#> Inferiority threshold: 0.01 (all analyses)
+#> Equivalence threshold: 0.9 (all analyses) (no common control)
+#> Absolute equivalence difference: 0.05
+#> No futility threshold (not relevant - no common control)
+#> Adaptation rule probability thresholds not rescaled when arms are dropped
+#> Soften power for each consequtive analysis: 0, 0.083, 0.167, 0.25, 0.333, 0.417, 0.5, 0.583, 0.667, 0.75, 0.833, 0.917, 1
+```
+
+## Trial designs with a common control arm
+
+In this section, several examples for trials *with* a common control arm
+are provided and focus mostly on options specific to trial designs with
+a common control arm.
+
+### Example 3: common control and sqrt-based fixed allocation
+
+- A common control arm
+- *square-root-transformation-based* fixed allocation probabilities (see
+  description in
+  [`setup_trial()`](https://inceptdk.github.io/adaptr/reference/setup_trial.md))
+- Assessment of both equivalence and futility compared to the initial
+  control only (not assessed for superior arms that become subsequent
+  controls)
+
+``` r
+setup_trial_binom(
+  arms = c("A", "B", "C", "D"),
+  # Specify control arm
+  control = "A",
+  
+  true_ys = c(0.2, 0.22, 0.24, 0.18), 
+  
+  data_looks = seq(from = 100, to = 1000, by = 100),
+  
+  # Fixed, square-root-transformation-based allocation throughout
+  control_prob_fixed = "sqrt-based fixed",
+  
+  # Assess equivalence: drop non-control arms if > 90% probability that they
+  # are equivalent to the common control, defined as an absolute difference of
+  # < 3 %-points
+  equivalence_prob = 0.9,
+  equivalence_diff = 0.03,
+  # Only assess against the initial control (i.e., not assessed if an arm is
+  # declared superior to the initial control and becomes the new control)
+  equivalence_only_first = TRUE,
+  
+  # Assess futility: drop non-control arms if > 80% probability that they are
+  # < 10 %-points better (in this case lower because outcome is undesirable in
+  # this example) compared to the common control
+  futility_prob = 0.8,
+  futility_diff = 0.1,
+  # Only assessed for the initial control, as described above
+  futility_only_first = TRUE
+)
+#> Trial specification: generic binomially distributed outcome trial
+#> * Undesirable outcome
+#> * Common control arm: A 
+#> * Control arm probability fixed at 0.366 (for 4 arms), 0.414 (for 3 arms), 0.5 (for 2 arms)
+#> * Best arm: D
+#> 
+#> Arms, true outcomes, starting allocation probabilities 
+#> and allocation probability limits (fixed/min/max_probs not rescaled):
+#>  arms true_ys start_probs fixed_probs min_probs max_probs
+#>     A    0.20       0.366       0.366        NA        NA
+#>     B    0.22       0.211       0.211        NA        NA
+#>     C    0.24       0.211       0.211        NA        NA
+#>     D    0.18       0.211       0.211        NA        NA
+#> 
+#> Maximum sample size: 1000 
+#> Maximum number of data looks: 10
+#> Planned data looks after:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 participants have reached follow-up
+#> Number of participants randomised at each look:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000
+#> 
+#> Superiority threshold: 0.99 (all analyses)
+#> Inferiority threshold: 0.01 (all analyses)
+#> Equivalence threshold: 0.9 (all analyses) (only checked for first control)
+#> Absolute equivalence difference: 0.03
+#> Futility threshold: 0.8 (all analyses) (only checked for first control)
+#> Absolute futility difference (in beneficial direction): 0.1 
+#> Adaptation rule probability thresholds not rescaled when arms are dropped (not relevant - common control used)
+#> Soften power for all analyses: 1 (no softening - all arms fixed)
+```
+
+### Example 4: sqrt-based initial allocation and restricted RAR
+
+- *Square-root-transformation-based* initial allocation probabilities
+- *Square-root-transformation-based* allocation to the control arm
+  (including subsequent controls, if a non-control arm is declared
+  superior to the initial control)
+- Restricted response-adaptive randomisation to the non-control arms
+
+``` r
+setup_trial_binom(
+  arms = c("A", "B", "C", "D"),
+  control = "A",
+  
+  true_ys = c(0.2, 0.22, 0.24, 0.18), 
+  
+  data_looks = seq(from = 100, to = 1000, by = 100),
+  
+  # Square-root-transformation-based control arm allocation including for
+  # subsequent controls and initial equal allocation to the non-control arms,
+  # followed by response-adaptive randomisation
+  control_prob_fixed = "sqrt-based",
+  
+  # Restricted response-adaptive randomisation
+  # Minimum probabilities of 20% for non-control arms, must be NA for the
+  # control arm with fixed allocation probability
+  # Limits are ignored for arms that become subsequent controls
+  # Limits are rescaled (i.e., increased proportionally) when arms are dropped
+  min_probs = c(NA, 0.2, 0.2, 0.2),
+  rescale_probs = "limits",
+  
+  # Constant softening of 0.5 (= square-root transformation)
+  soften_power = 0.5
+)
+#> Trial specification: generic binomially distributed outcome trial
+#> * Undesirable outcome
+#> * Common control arm: A 
+#> * Control arm probability fixed at 0.366 (for 4 arms), 0.414 (for 3 arms), 0.5 (for 2 arms)
+#> * Best arm: D
+#> 
+#> Arms, true outcomes, starting allocation probabilities 
+#> and allocation probability limits (min/max_probs rescaled):
+#>  arms true_ys start_probs fixed_probs min_probs max_probs
+#>     A    0.20       0.366       0.366        NA        NA
+#>     B    0.22       0.211          NA       0.2        NA
+#>     C    0.24       0.211          NA       0.2        NA
+#>     D    0.18       0.211          NA       0.2        NA
+#> 
+#> Maximum sample size: 1000 
+#> Maximum number of data looks: 10
+#> Planned data looks after:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 participants have reached follow-up
+#> Number of participants randomised at each look:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000
+#> 
+#> Superiority threshold: 0.99 (all analyses)
+#> Inferiority threshold: 0.01 (all analyses)
+#> No equivalence threshold
+#> No futility threshold
+#> Adaptation rule probability thresholds not rescaled when arms are dropped (not relevant - common control used)
+#> Soften power for all analyses: 0.5
+```
+
+### Example 5: sqrt-based allocation only to initial control arm
+
+This example is similar to that above (with different restriction
+settings), but only use *square-root-transformation-based* allocation
+probabilities to the *initial* control arm. Hence, this will not apply
+if another arm is declared superior and becomes the new control.
+
+``` r
+setup_trial_binom(
+  arms = c("A", "B", "C", "D"),
+  control = "A",
+  
+  true_ys = c(0.2, 0.22, 0.24, 0.18), 
+  
+  data_looks = seq(from = 100, to = 1000, by = 100),
+  
+  # Square-root-transformation-based control arm allocation for the initial
+  # control only and initial equal allocation to the non-control arms, followed
+  # by response-adaptive randomisation
+  control_prob_fixed = "sqrt-based start",
+  
+  # Restrict response-adaptive randomisation
+  # Minimum probabilities of 20% for all non-control arms
+  # - must be NA for the initial control arm with fixed allocation probability
+  min_probs = c(NA, 0.2, 0.2, 0.2),
+  # Maximum probabilities of 65% for all non-control arms
+  # - must be NA for the initial control arm with fixed allocation probability
+  max_probs = c(NA, 0.65, 0.65, 0.65),
+  
+  soften_power = 0.75
+)
+#> Trial specification: generic binomially distributed outcome trial
+#> * Undesirable outcome
+#> * Common control arm: A 
+#> * Control arm probability fixed at 0.366
+#> * Best arm: D
+#> 
+#> Arms, true outcomes, starting allocation probabilities 
+#> and allocation probability limits (fixed/min/max_probs not rescaled):
+#>  arms true_ys start_probs fixed_probs min_probs max_probs
+#>     A    0.20       0.366       0.366        NA        NA
+#>     B    0.22       0.211          NA       0.2      0.65
+#>     C    0.24       0.211          NA       0.2      0.65
+#>     D    0.18       0.211          NA       0.2      0.65
+#> 
+#> Maximum sample size: 1000 
+#> Maximum number of data looks: 10
+#> Planned data looks after:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 participants have reached follow-up
+#> Number of participants randomised at each look:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000
+#> 
+#> Superiority threshold: 0.99 (all analyses)
+#> Inferiority threshold: 0.01 (all analyses)
+#> No equivalence threshold
+#> No futility threshold
+#> Adaptation rule probability thresholds not rescaled when arms are dropped (not relevant - common control used)
+#> Soften power for all analyses: 0.75
+```
+
+### Example 6: restricted RAR, matched control-arm allocation
+
+- Restricted response-adaptive randomisation
+- Control-arm allocation probability *matched* to that of the highest
+  non-control arm (with re-scaling as necessary)
+- Applies to both the initial and subsequent control arms
+
+``` r
+setup_trial_binom(
+  arms = c("A", "B", "C", "D"),
+  control = "A",
+  
+  true_ys = c(0.2, 0.22, 0.24, 0.18), 
+  
+  data_looks = seq(from = 100, to = 1000, by = 100),
+  
+  # Specify starting probabilities
+  # When "match" is specified below in control_prob_fixed, the initial control
+  # arm's initial allocation probability must match the highest initial
+  # non-control arm allocation probability
+  start_probs = c(0.3, 0.3, 0.2, 0.2),
+  
+  control_prob_fixed = "match",
+  
+  # Restrict response-adaptive randomisation 
+  # - these are applied AFTER "matching" when calculating new allocation
+  #   probabilities 
+  # - min_probs must be NA for the initial control arm when using matching
+  min_probs = c(NA, 0.2, 0.2, 0.2),
+  
+  soften_power = 0.7
+)
+#> Trial specification: generic binomially distributed outcome trial
+#> * Undesirable outcome
+#> * Common control arm: A 
+#> * Control arm probability matched to best non-control arm
+#> * Best arm: D
+#> 
+#> Arms, true outcomes, starting allocation probabilities 
+#> and allocation probability limits (fixed/min/max_probs not rescaled):
+#>  arms true_ys start_probs fixed_probs min_probs max_probs
+#>     A    0.20         0.3          NA        NA        NA
+#>     B    0.22         0.3          NA       0.2        NA
+#>     C    0.24         0.2          NA       0.2        NA
+#>     D    0.18         0.2          NA       0.2        NA
+#> 
+#> Maximum sample size: 1000 
+#> Maximum number of data looks: 10
+#> Planned data looks after:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 participants have reached follow-up
+#> Number of participants randomised at each look:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000
+#> 
+#> Superiority threshold: 0.99 (all analyses)
+#> Inferiority threshold: 0.01 (all analyses)
+#> No equivalence threshold
+#> No futility threshold
+#> Adaptation rule probability thresholds not rescaled when arms are dropped (not relevant - common control used)
+#> Soften power for all analyses: 0.7
+```
+
+### Example 7: follow-up and data collection lag
+
+This example uses the `randomised_at_looks` argument to specify
+follow-up and/or data collection lag. In real use cases, this should
+usually be considered, as this may affect the relative performance of
+different trial designs and the extent to which the ‘final’ results
+after all participants have reached follow-up and are analysed may
+differ from the results from the adaptive analyses with some randomised
+participants not included due to outcome data not being available yet
+for these participants.
+
+``` r
+setup_trial_binom(
+  arms = c("A", "B", "C", "D"),
+  control = "A",
+  true_ys = c(0.2, 0.22, 0.24, 0.18), 
+  
+  # Analyses conducted every time 100 participants have follow-up data available
+  data_looks = seq(from = 100, to = 1000, by = 100),
+  # Specify the number of participants randomised at each look - in this case,
+  # 200 more participants are randomised than the number of participants that
+  # have follow-up data available at each look
+  randomised_at_looks = seq(from = 300, to = 1200, by = 100)
+)
+#> Trial specification: generic binomially distributed outcome trial
+#> * Undesirable outcome
+#> * Common control arm: A 
+#> 
+#> * Best arm: D
+#> 
+#> Arms, true outcomes, starting allocation probabilities 
+#> and allocation probability limits (fixed/min/max_probs not rescaled):
+#>  arms true_ys start_probs fixed_probs min_probs max_probs
+#>     A    0.20        0.25          NA        NA        NA
+#>     B    0.22        0.25          NA        NA        NA
+#>     C    0.24        0.25          NA        NA        NA
+#>     D    0.18        0.25          NA        NA        NA
+#> 
+#> Maximum sample size: 1200 
+#> Maximum number of data looks: 10
+#> Planned data looks after:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 participants have reached follow-up
+#> Number of participants randomised at each look:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200
+#> 
+#> Superiority threshold: 0.99 (all analyses)
+#> Inferiority threshold: 0.01 (all analyses)
+#> No equivalence threshold
+#> No futility threshold
+#> Adaptation rule probability thresholds not rescaled when arms are dropped (not relevant - common control used)
+#> Soften power for all analyses: 1 (no softening)
+```
+
+### Example 8: different probability thresholds over time
+
+In this example, we specify different probability thresholds for
+superiority and inferiority stopping rules at different adaptive
+analyses. Varying probability thresholds may similarly be specified for
+stopping rules for equivalence and futility. Importantly, all
+probability thresholds must be specified such that each subsequent
+threshold is never stricter than the previous threshold. Varying
+thresholds may also be used to make some stopping rules first function
+at later analyses (e.g., as long as the stopping threshold for
+`superiority` is `1` and the stopping threshold for `inferiority` is
+`0`, trials will not be stopped and arms will not be dropped due to
+these rules).
+
+``` r
+setup_trial_binom(
+  arms = c("A", "B", "C", "D"),
+  control = "A",
+  true_ys = c(0.2, 0.22, 0.24, 0.18), 
+  
+  # Analyses conducted every time 100 participants have follow-up data available
+  data_looks = seq(from = 100, to = 1000, by = 100),
+
+  # Specify varying inferiority/superiority thresholds
+  # When specifying varying thresholds, the number of thresholds must match
+  # the number of analyses, and thresholds may never be stricter than the
+  # threshold used in the previous analysis
+  # Superiority threshold decreasing from 0.99 to 0.95 during the first five
+  # analyses, and remains stationary at 0.95 after that
+  superiority = c(seq(from = 0.99, to = 0.95, by = -0.01), rep(0.95, 5)),
+  # Similarly for inferiority thresholds, but in the opposite direction
+  inferiority = c(seq(from = 0.01, to = 0.05, by = 0.01), rep(0.05, 5)),
+)
+#> Trial specification: generic binomially distributed outcome trial
+#> * Undesirable outcome
+#> * Common control arm: A 
+#> 
+#> * Best arm: D
+#> 
+#> Arms, true outcomes, starting allocation probabilities 
+#> and allocation probability limits (fixed/min/max_probs not rescaled):
+#>  arms true_ys start_probs fixed_probs min_probs max_probs
+#>     A    0.20        0.25          NA        NA        NA
+#>     B    0.22        0.25          NA        NA        NA
+#>     C    0.24        0.25          NA        NA        NA
+#>     D    0.18        0.25          NA        NA        NA
+#> 
+#> Maximum sample size: 1000 
+#> Maximum number of data looks: 10
+#> Planned data looks after:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 participants have reached follow-up
+#> Number of participants randomised at each look:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000
+#> 
+#> Superiority thresholds: 
+#> 0.99, 0.98, 0.97, 0.96, 0.95, 0.95, 0.95, 0.95, 0.95, 0.95
+#> Inferiority thresholds: 
+#> 0.01, 0.02, 0.03, 0.04, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05
+#> No equivalence threshold
+#> No futility threshold
+#> Adaptation rule probability thresholds not rescaled when arms are dropped (not relevant - common control used)
+#> Soften power for all analyses: 1 (no softening)
+```
+
+### Example 9: minimum allocation probabilities rescaled when arms are dropped
+
+In this example, a trial design with four arms and restricted RAR
+(minimum allocation limits) is specified, with additional specification
+that the minimum allocation limits should be rescaled proportionally
+when arms are dropped (rescaling can similarly be applied to fixed
+allocation probabilities):
+
+``` r
+setup_trial_binom(
+  arms = c("A", "B", "C", "D"),
+  control = "A",
+  true_ys = c(0.2, 0.2, 0.2, 0.2),
+  
+  min_probs = rep(0.15, 4), # Specify initial minimum allocation probabilities
+  # Rescale allocation probability limits as arms are dropped
+  rescale_probs = "limits", 
+  
+  data_looks = seq(from = 100, to = 1000, by = 100)
+)
+#> Trial specification: generic binomially distributed outcome trial
+#> * Undesirable outcome
+#> * Common control arm: A 
+#> 
+#> * Best arms: A and B and C and D
+#> 
+#> Arms, true outcomes, starting allocation probabilities 
+#> and allocation probability limits (min/max_probs rescaled):
+#>  arms true_ys start_probs fixed_probs min_probs max_probs
+#>     A     0.2        0.25          NA      0.15        NA
+#>     B     0.2        0.25          NA      0.15        NA
+#>     C     0.2        0.25          NA      0.15        NA
+#>     D     0.2        0.25          NA      0.15        NA
+#> 
+#> Maximum sample size: 1000 
+#> Maximum number of data looks: 10
+#> Planned data looks after:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 participants have reached follow-up
+#> Number of participants randomised at each look:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000
+#> 
+#> Superiority threshold: 0.99 (all analyses)
+#> Inferiority threshold: 0.01 (all analyses)
+#> No equivalence threshold
+#> No futility threshold
+#> Adaptation rule probability thresholds not rescaled when arms are dropped (not relevant - common control used)
+#> Soften power for all analyses: 1 (no softening)
+```
+
+### Example 10: adaptation rule probability thresholds rescaled when arms are dropped
+
+In this example, a trial design with four arms, no common control arm,
+and restricted RAR (minimum allocation limits) is specified. Adaptation
+rule probability thresholds for adaptive stopping/arm dropping for
+superiority and inferiority are specified, and it is specified that
+these are rescaled proportionally when arms are dropped:
+
+``` r
+setup_trial_binom(
+  arms = c("A", "B", "C", "D"),
+  true_ys = c(0.2, 0.2, 0.2, 0.2),
+  min_probs = rep(0.15, 4), # Specify initial minimum allocation probabilities
+  data_looks = seq(from = 100, to = 1000, by = 100), # Specify data looks
+  
+  # Specify superiority/inferiority thresholds and rescaling
+  superiority = 0.99,
+  inferiority = 0.01,
+  rescale_adapt_probs = "both"
+)
+#> Trial specification: generic binomially distributed outcome trial
+#> * Undesirable outcome
+#> * No common control arm
+#> * Best arms: A and B and C and D
+#> 
+#> Arms, true outcomes, starting allocation probabilities 
+#> and allocation probability limits (fixed/min/max_probs not rescaled):
+#>  arms true_ys start_probs fixed_probs min_probs max_probs
+#>     A     0.2        0.25          NA      0.15        NA
+#>     B     0.2        0.25          NA      0.15        NA
+#>     C     0.2        0.25          NA      0.15        NA
+#>     D     0.2        0.25          NA      0.15        NA
+#> 
+#> Maximum sample size: 1000 
+#> Maximum number of data looks: 10
+#> Planned data looks after:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 participants have reached follow-up
+#> Number of participants randomised at each look:  100, 200, 300, 400, 500, 600, 700, 800, 900, 1000
+#> 
+#> Superiority threshold: 0.99 (all analyses)
+#> Inferiority threshold: 0.01 (all analyses)
+#> No equivalence threshold
+#> No futility threshold (not relevant - no common control)
+#> Adaptation rule probability thresholds for superiority and inferiority rescaled when arms are dropped
+#> Soften power for all analyses: 1 (no softening)
+```
