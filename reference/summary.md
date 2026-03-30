@@ -281,7 +281,7 @@ print(res_sum, digits = 1)
 #> * Ideal design percentage: 70.4%
 #> 
 #> Simulation details:
-#> * Simulation time: 0.705 secs
+#> * Simulation time: 0.693 secs
 #> * Base random seed: 12345
 #> * Credible interval width: 95%
 #> * Number of posterior draws: 5000
