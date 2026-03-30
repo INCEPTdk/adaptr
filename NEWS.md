@@ -41,7 +41,8 @@ minor changes, and documentation updates.
     
 *   Minor updates to `print()` output of trial design specifications.
     
-*   Minor updates to package documentation and tests.
+*   Minor updates to package tests and documentation (including the use of
+    pre-computed results in vignettes for acceptable build times on CRAN).
 
 # adaptr 1.4.0
 

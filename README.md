@@ -206,7 +206,7 @@ calibrated_binom_trial
 #> Calibration/simulation details:
 #> * Total evaluations: 7 (previous + grid + iterations)
 #> * Repetitions: 1000
-#> * Calibration time: 3.67 mins
+#> * Calibration time: 3.87 mins
 #> * Base random seed: 4131
 #> 
 #> See 'help("calibrate_trial")' for details.
@@ -328,7 +328,7 @@ print(binom_trial_summary)
 #> * Ideal design percentage: not estimable
 #> 
 #> Simulation details:
-#> * Simulation time: 35.7 secs
+#> * Simulation time: 35.5 secs
 #> * Base random seed: 4131
 #> * Credible interval width: 95%
 #> * Number of posterior draws: 5000
@@ -523,7 +523,6 @@ If you use the package, please consider citing it:
 
 ``` r
 citation(package = "adaptr")
-#> 
 #> To cite package 'adaptr' in publications use:
 #> 
 #>   Granholm A, Jensen AKG, Lange T, Kaas-Hansen BS (2022). adaptr: an R
