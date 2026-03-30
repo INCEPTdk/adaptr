@@ -9,6 +9,7 @@ vignette: >
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
+  error = FALSE, # Stop vignette building on errors
   collapse = TRUE,
   comment = "#>",
   fig.align = "center",
@@ -94,7 +95,9 @@ settings, and `vignette("Advanced-example", "adaptr")` for an **advanced**
 example including details on how to specify user-written functions for
 generating outcomes and posterior draws.
 
-Below, the trial specification is setup and a human-readable overview printed:
+Below, the trial specification is setup and a human-readable overview printed
+(the number of printed decimals for most probabilities defaults to 3, but this
+can be changed using the `prob_digits` argument):
 
 ```{r}
 binom_trial <- setup_trial_binom(
@@ -109,14 +112,6 @@ binom_trial <- setup_trial_binom(
 )
 
 print(binom_trial, prob_digits = 3)
-```
-
-By default, (most) probabilities are shown with 3 decimals. This can be changed
-by explicitly `print()`ing the specification with the `prob_digits` arguments,
-for example:
-
-```{r}
-print(binom_trial, prob_digits = 2)
 ```
 
 ### Calibration
@@ -143,11 +138,9 @@ function (`fun`) is specified.
 To perform the calibration, a `target` value, a `search_range`, a tolerance
 value (`tol`), and the allowed direction of the tolerance value (`dir`) must be
 specified (or alternatively, the defaults can be used). Of note, the number of
-simulations in each calibration step here is lower than generally recommended
-(to reduce the time required to build this vignette):
+simulations in each calibration step here is lower than generally recommended:
 
-```{r}
-# Calibrate the trial specification
+```{r echo=TRUE, eval=FALSE}
 calibrated_binom_trial <- calibrate_trial(
   trial_spec = binom_trial,
   n_rep = 1000, # 1000 simulations for each step (more generally recommended)
@@ -157,12 +150,51 @@ calibrated_binom_trial <- calibrate_trial(
   tol = 0.01, # Tolerance range
   dir = -1 # Tolerance range only applies below target
 )
+```
 
-# Print result (to check if calibration is successful)
+```{r echo=FALSE}
+# This block is not shown, but evaluated, whereas the block above is shown but
+# not evaluated - vignette reloads saved results to ensure acceptable building
+# time for CRAN - only done for the calibration to avoid the package size
+# becoming too big
+
+if (FALSE) {
+  # Run this code interactively to save the file (and overwrite previous file)
+  calibrated_binom_trial <- calibrate_trial(
+    trial_spec = binom_trial,
+    n_rep = 1000, # 1000 simulations for each step (more generally recommended)
+    base_seed = 4131, # Base random seed (for reproducible results)
+    target = 0.05, # Target value for calibrated metric (default value)
+    search_range = c(0.9, 1), # Search range for superiority stopping threshold
+    tol = 0.01, # Tolerance range
+    dir = -1, # Tolerance range only applies below target,
+    # Added path, overwrite, and version (only difference compared to code below)
+    path = file.path("inst", "extdata", "Overview-vignette-calibration.RDS"),
+    overwrite = TRUE,
+    version = 2 # To avoid adding dependency to package description
+  )
+}
+
+calibrated_binom_trial <- calibrate_trial(
+  trial_spec = binom_trial,
+  n_rep = 1000, # 1000 simulations for each step (more generally recommended)
+  base_seed = 4131, # Base random seed (for reproducible results)
+  target = 0.05, # Target value for calibrated metric (default value)
+  search_range = c(0.9, 1), # Search range for superiority stopping threshold
+  tol = 0.01, # Tolerance range
+  dir = -1, # Tolerance range only applies below target,
+  # Added path (only difference compared to code below)
+  path = system.file("extdata", "Overview-vignette-calibration.RDS", package = "adaptr")
+)
+```
+
+Results can be printed to check if the calibration procedure succeeded:
+
+```{r}
 calibrated_binom_trial
 ```
 
-The calibration is successful (if not, results should not be used, and the
+The calibration was successful (if not, results should not be used, and the
 calibration settings should be changed and the calibration repeated).
 The calibrated, constant stopping threshold for superiority is printed with the
 results (`r calibrated_binom_trial$best_x`) and can be extracted using
@@ -175,7 +207,6 @@ will also include the calibrated stopping thresholds.
 
 Calibration results may be saved and reloaded by using the `path` argument, to
 avoid unnecessary repeated simulations.
-
 
 ### Summarising results
 
