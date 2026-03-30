@@ -60,7 +60,8 @@ bug fixes, minor changes, and documentation updates.
   [`print()`](https://inceptdk.github.io/adaptr/reference/print.md)
   output of trial design specifications.
 
-- Minor updates to package documentation and tests.
+- Minor updates to package tests and documentation (including the use of
+  pre-computed results in vignettes for acceptable build times on CRAN).
 
 ## adaptr 1.4.0
 

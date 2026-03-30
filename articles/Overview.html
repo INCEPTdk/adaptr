@@ -69,7 +69,7 @@
       <h1>Overview</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/INCEPTdk/adaptr/blob/v1.5.0/vignettes/Overview.Rmd" class="external-link"><code>vignettes/Overview.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/INCEPTdk/adaptr/blob/main/vignettes/Overview.Rmd" class="external-link"><code>vignettes/Overview.Rmd</code></a></small>
       <div class="d-none name"><code>Overview.Rmd</code></div>
     </div>
 
@@ -156,7 +156,9 @@ review of the general trial specification settings, and
 <strong>advanced</strong> example including details on how to specify
 user-written functions for generating outcomes and posterior draws.</p>
 <p>Below, the trial specification is setup and a human-readable overview
-printed:</p>
+printed (the number of printed decimals for most probabilities defaults
+to 3, but this can be changed using the <code>prob_digits</code>
+argument):</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">binom_trial</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/setup_trial_binom.html">setup_trial_binom</a></span><span class="op">(</span></span>
 <span>  arms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Arm A"</span>, <span class="st">"Arm B"</span>, <span class="st">"Arm C"</span><span class="op">)</span>,</span>
@@ -181,35 +183,6 @@ printed:</p>
 <span><span class="co">#&gt;  Arm A    0.25       0.333          NA       0.2        NA</span></span>
 <span><span class="co">#&gt;  Arm B    0.25       0.333          NA       0.2        NA</span></span>
 <span><span class="co">#&gt;  Arm C    0.25       0.333          NA       0.2        NA</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Maximum sample size: 2000 </span></span>
-<span><span class="co">#&gt; Maximum number of data looks: 18</span></span>
-<span><span class="co">#&gt; Planned data looks after:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000 participants have reached follow-up</span></span>
-<span><span class="co">#&gt; Number of participants randomised at each look:  400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000, 2000</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Superiority threshold: 0.99 (all analyses)</span></span>
-<span><span class="co">#&gt; Inferiority threshold: 0.01 (all analyses)</span></span>
-<span><span class="co">#&gt; Equivalence threshold: 0.9 (all analyses) (no common control)</span></span>
-<span><span class="co">#&gt; Absolute equivalence difference: 0.05</span></span>
-<span><span class="co">#&gt; No futility threshold (not relevant - no common control)</span></span>
-<span><span class="co">#&gt; Adaptation rule probability thresholds not rescaled when arms are dropped</span></span>
-<span><span class="co">#&gt; Soften power for all analyses: 0.5</span></span></code></pre></div>
-<p>By default, (most) probabilities are shown with 3 decimals. This can
-be changed by explicitly <code><a href="../reference/print.html">print()</a></code>ing the specification with
-the <code>prob_digits</code> arguments, for example:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/print.html">print</a></span><span class="op">(</span><span class="va">binom_trial</span>, prob_digits <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Trial specification: generic binomially distributed outcome trial</span></span>
-<span><span class="co">#&gt; * Undesirable outcome</span></span>
-<span><span class="co">#&gt; * No common control arm</span></span>
-<span><span class="co">#&gt; * Best arms: Arm A and Arm B and Arm C</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Arms, true outcomes, starting allocation probabilities </span></span>
-<span><span class="co">#&gt; and allocation probability limits (fixed/min/max_probs not rescaled):</span></span>
-<span><span class="co">#&gt;   arms true_ys start_probs fixed_probs min_probs max_probs</span></span>
-<span><span class="co">#&gt;  Arm A    0.25        0.33          NA       0.2        NA</span></span>
-<span><span class="co">#&gt;  Arm B    0.25        0.33          NA       0.2        NA</span></span>
-<span><span class="co">#&gt;  Arm C    0.25        0.33          NA       0.2        NA</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Maximum sample size: 2000 </span></span>
 <span><span class="co">#&gt; Maximum number of data looks: 18</span></span>
@@ -252,11 +225,9 @@ towards any performance metric if a user-defined calibration function
 allowed direction of the tolerance value (<code>dir</code>) must be
 specified (or alternatively, the defaults can be used). Of note, the
 number of simulations in each calibration step here is lower than
-generally recommended (to reduce the time required to build this
-vignette):</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Calibrate the trial specification</span></span>
-<span><span class="va">calibrated_binom_trial</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calibrate_trial.html">calibrate_trial</a></span><span class="op">(</span></span>
+generally recommended:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">calibrated_binom_trial</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calibrate_trial.html">calibrate_trial</a></span><span class="op">(</span></span>
 <span>  trial_spec <span class="op">=</span> <span class="va">binom_trial</span>,</span>
 <span>  n_rep <span class="op">=</span> <span class="fl">1000</span>, <span class="co"># 1000 simulations for each step (more generally recommended)</span></span>
 <span>  base_seed <span class="op">=</span> <span class="fl">4131</span>, <span class="co"># Base random seed (for reproducible results)</span></span>
@@ -264,10 +235,11 @@ vignette):</p>
 <span>  search_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.9</span>, <span class="fl">1</span><span class="op">)</span>, <span class="co"># Search range for superiority stopping threshold</span></span>
 <span>  tol <span class="op">=</span> <span class="fl">0.01</span>, <span class="co"># Tolerance range</span></span>
 <span>  dir <span class="op">=</span> <span class="op">-</span><span class="fl">1</span> <span class="co"># Tolerance range only applies below target</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Print result (to check if calibration is successful)</span></span>
-<span><span class="va">calibrated_binom_trial</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>Results can be printed to check if the calibration procedure
+succeeded:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">calibrated_binom_trial</span></span>
 <span><span class="co">#&gt; Trial calibration:</span></span>
 <span><span class="co">#&gt; * Result: calibration successful</span></span>
 <span><span class="co">#&gt; * Best x: 0.9830921</span></span>
@@ -289,11 +261,11 @@ vignette):</p>
 <span><span class="co">#&gt; Calibration/simulation details:</span></span>
 <span><span class="co">#&gt; * Total evaluations: 4 (previous + grid + iterations)</span></span>
 <span><span class="co">#&gt; * Repetitions: 1000</span></span>
-<span><span class="co">#&gt; * Calibration time: 1.76 mins</span></span>
+<span><span class="co">#&gt; * Calibration time: 3.08 mins</span></span>
 <span><span class="co">#&gt; * Base random seed: 4131</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; See 'help("calibrate_trial")' for details.</span></span></code></pre></div>
-<p>The calibration is successful (if not, results should not be used,
+<p>The calibration was successful (if not, results should not be used,
 and the calibration settings should be changed and the calibration
 repeated). The calibrated, constant stopping threshold for superiority
 is printed with the results (0.9830921) and can be extracted using
@@ -412,7 +384,7 @@ also be directly supplied to the <code><a href="../reference/print.html">print()
 <span><span class="co">#&gt; * Ideal design percentage: not estimable</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Simulation details:</span></span>
-<span><span class="co">#&gt; * Simulation time: 40.1 secs</span></span>
+<span><span class="co">#&gt; * Simulation time: 1.15 mins</span></span>
 <span><span class="co">#&gt; * Base random seed: 4131</span></span>
 <span><span class="co">#&gt; * Credible interval width: 95%</span></span>
 <span><span class="co">#&gt; * Number of posterior draws: 5000</span></span>
@@ -484,7 +456,7 @@ visually assessed using <code><a href="../reference/plot_convergence.html">plot_
 <span>  metrics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"size mean"</span>, <span class="st">"prob_superior"</span>, <span class="st">"prob_equivalence"</span><span class="op">)</span>,</span>
 <span>  <span class="co"># select_strategy can be specified, but does not affect the chosen metrics</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="Overview_files/figure-html/unnamed-chunk-11-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;"></p>
+<p><img src="Overview_files/figure-html/unnamed-chunk-12-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;"></p>
 <p>Plotting other metrics is possible; see the
 <code><a href="../reference/plot_convergence.html">plot_convergence()</a></code> documentation. The simulation results
 may also be split into separate, consecutive batches when assessing
@@ -495,7 +467,7 @@ convergence, to further assess the stability:</p>
 <span>  metrics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"size mean"</span>, <span class="st">"prob_superior"</span>, <span class="st">"prob_equivalence"</span><span class="op">)</span>,</span>
 <span>  n_split <span class="op">=</span> <span class="fl">4</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="Overview_files/figure-html/unnamed-chunk-12-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;"></p>
+<p><img src="Overview_files/figure-html/unnamed-chunk-13-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;"></p>
 <p>The status probabilities for the overall trial according to trial
 progress can be visualised using the <code><a href="../reference/plot_status.html">plot_status()</a></code>
 function:</p>
@@ -504,7 +476,7 @@ function:</p>
 <span>  <span class="va">calibrated_binom_trial</span><span class="op">$</span><span class="va">best_sims</span>,</span>
 <span>  x_value <span class="op">=</span> <span class="st">"total n"</span> <span class="co"># Total number of randomised participants at X-axis</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="Overview_files/figure-html/unnamed-chunk-13-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;"></p>
+<p><img src="Overview_files/figure-html/unnamed-chunk-14-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;"></p>
 <p>Similarly, the status probabilities for one or more specific trial
 arms can be visualised:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
@@ -513,7 +485,7 @@ arms can be visualised:</p>
 <span>  x_value <span class="op">=</span> <span class="st">"total n"</span>,</span>
 <span>  arm <span class="op">=</span> <span class="cn">NA</span> <span class="co"># NA for all arms or character vector for specific arms</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="Overview_files/figure-html/unnamed-chunk-14-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;"></p>
+<p><img src="Overview_files/figure-html/unnamed-chunk-15-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;"></p>
 <p>Finally, various metrics may be summarised over the progress of one
 or multiple trial simulations using the <code><a href="../reference/plot_history.html">plot_history()</a></code>
 function, which requires non-sparse results (the <code>sparse</code>
@@ -613,11 +585,11 @@ function).</p>
 are visualised:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_status.html">plot_status</a></span><span class="op">(</span><span class="va">binom_trial_diff_sims</span>, x_value <span class="op">=</span> <span class="st">"total n"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Overview_files/figure-html/unnamed-chunk-18-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;"></p>
+<p><img src="Overview_files/figure-html/unnamed-chunk-19-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;"></p>
 <p>Statuses for each arm in this scenario are also visualised:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_status.html">plot_status</a></span><span class="op">(</span><span class="va">binom_trial_diff_sims</span>, x_value <span class="op">=</span> <span class="st">"total n"</span>, arm <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Overview_files/figure-html/unnamed-chunk-19-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;"></p>
+<p><img src="Overview_files/figure-html/unnamed-chunk-20-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;"></p>
 <p>We can plot the median and interquartile ranges of allocation
 probabilities in each arm over time using the
 <code><a href="../reference/plot_history.html">plot_history()</a></code> function (requiring non-sparse results,
@@ -628,7 +600,7 @@ leading to substantially larger objects and files if saved):</p>
 <span>  x_value <span class="op">=</span> <span class="st">"total n"</span>,</span>
 <span>  y_value <span class="op">=</span> <span class="st">"prob"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="Overview_files/figure-html/unnamed-chunk-20-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;"></p>
+<p><img src="Overview_files/figure-html/unnamed-chunk-21-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;"></p>
 <p>Similarly, the median (interquartile range) number of participants
 allocated to each arm as the trial progresses can be visualised:</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
@@ -637,7 +609,7 @@ allocated to each arm as the trial progresses can be visualised:</p>
 <span>  x_value <span class="op">=</span> <span class="st">"total n"</span>,</span>
 <span>  y_value <span class="op">=</span> <span class="st">"n all"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="Overview_files/figure-html/unnamed-chunk-21-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;"></p>
+<p><img src="Overview_files/figure-html/unnamed-chunk-22-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;"></p>
 <p>Plotting other metrics is possible; see the
 <code><a href="../reference/plot_history.html">plot_history()</a></code> documentation.</p>
 </div>

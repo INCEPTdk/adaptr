@@ -17,7 +17,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/INCEPTdk/adaptr/blob/v1.5.0/inst/CITATION)
+[`inst/CITATION`](https://github.com/INCEPTdk/adaptr/blob/main/inst/CITATION)
 
 Granholm A, Jensen AKG, Lange T, Kaas-Hansen BS (2022). adaptr: an R
 package for simulating and comparing adaptive clinical trials. Journal

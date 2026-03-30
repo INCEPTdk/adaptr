@@ -95,7 +95,8 @@ for an **advanced** example including details on how to specify
 user-written functions for generating outcomes and posterior draws.
 
 Below, the trial specification is setup and a human-readable overview
-printed:
+printed (the number of printed decimals for most probabilities defaults
+to 3, but this can be changed using the `prob_digits` argument):
 
 ``` r
 binom_trial <- setup_trial_binom(
@@ -121,39 +122,6 @@ print(binom_trial, prob_digits = 3)
 #>  Arm A    0.25       0.333          NA       0.2        NA
 #>  Arm B    0.25       0.333          NA       0.2        NA
 #>  Arm C    0.25       0.333          NA       0.2        NA
-#> 
-#> Maximum sample size: 2000 
-#> Maximum number of data looks: 18
-#> Planned data looks after:  300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000 participants have reached follow-up
-#> Number of participants randomised at each look:  400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000, 2000
-#> 
-#> Superiority threshold: 0.99 (all analyses)
-#> Inferiority threshold: 0.01 (all analyses)
-#> Equivalence threshold: 0.9 (all analyses) (no common control)
-#> Absolute equivalence difference: 0.05
-#> No futility threshold (not relevant - no common control)
-#> Adaptation rule probability thresholds not rescaled when arms are dropped
-#> Soften power for all analyses: 0.5
-```
-
-By default, (most) probabilities are shown with 3 decimals. This can be
-changed by explicitly
-[`print()`](https://inceptdk.github.io/adaptr/reference/print.md)ing the
-specification with the `prob_digits` arguments, for example:
-
-``` r
-print(binom_trial, prob_digits = 2)
-#> Trial specification: generic binomially distributed outcome trial
-#> * Undesirable outcome
-#> * No common control arm
-#> * Best arms: Arm A and Arm B and Arm C
-#> 
-#> Arms, true outcomes, starting allocation probabilities 
-#> and allocation probability limits (fixed/min/max_probs not rescaled):
-#>   arms true_ys start_probs fixed_probs min_probs max_probs
-#>  Arm A    0.25        0.33          NA       0.2        NA
-#>  Arm B    0.25        0.33          NA       0.2        NA
-#>  Arm C    0.25        0.33          NA       0.2        NA
 #> 
 #> Maximum sample size: 2000 
 #> Maximum number of data looks: 18
@@ -199,11 +167,9 @@ To perform the calibration, a `target` value, a `search_range`, a
 tolerance value (`tol`), and the allowed direction of the tolerance
 value (`dir`) must be specified (or alternatively, the defaults can be
 used). Of note, the number of simulations in each calibration step here
-is lower than generally recommended (to reduce the time required to
-build this vignette):
+is lower than generally recommended:
 
 ``` r
-# Calibrate the trial specification
 calibrated_binom_trial <- calibrate_trial(
   trial_spec = binom_trial,
   n_rep = 1000, # 1000 simulations for each step (more generally recommended)
@@ -213,8 +179,11 @@ calibrated_binom_trial <- calibrate_trial(
   tol = 0.01, # Tolerance range
   dir = -1 # Tolerance range only applies below target
 )
+```
 
-# Print result (to check if calibration is successful)
+Results can be printed to check if the calibration procedure succeeded:
+
+``` r
 calibrated_binom_trial
 #> Trial calibration:
 #> * Result: calibration successful
@@ -237,13 +206,13 @@ calibrated_binom_trial
 #> Calibration/simulation details:
 #> * Total evaluations: 4 (previous + grid + iterations)
 #> * Repetitions: 1000
-#> * Calibration time: 1.76 mins
+#> * Calibration time: 3.08 mins
 #> * Base random seed: 4131
 #> 
 #> See 'help("calibrate_trial")' for details.
 ```
 
-The calibration is successful (if not, results should not be used, and
+The calibration was successful (if not, results should not be used, and
 the calibration settings should be changed and the calibration
 repeated). The calibrated, constant stopping threshold for superiority
 is printed with the results (0.9830921) and can be extracted using
@@ -369,7 +338,7 @@ print(binom_trial_summary, digits = 2)
 #> * Ideal design percentage: not estimable
 #> 
 #> Simulation details:
-#> * Simulation time: 40.1 secs
+#> * Simulation time: 1.15 mins
 #> * Base random seed: 4131
 #> * Credible interval width: 95%
 #> * Number of posterior draws: 5000
@@ -455,7 +424,7 @@ plot_convergence(
 )
 ```
 
-![](Overview_files/figure-html/unnamed-chunk-11-1.png)
+![](Overview_files/figure-html/unnamed-chunk-12-1.png)
 
 Plotting other metrics is possible; see the
 [`plot_convergence()`](https://inceptdk.github.io/adaptr/reference/plot_convergence.md)
@@ -471,7 +440,7 @@ plot_convergence(
 )
 ```
 
-![](Overview_files/figure-html/unnamed-chunk-12-1.png)
+![](Overview_files/figure-html/unnamed-chunk-13-1.png)
 
 The status probabilities for the overall trial according to trial
 progress can be visualised using the
@@ -485,7 +454,7 @@ plot_status(
 )
 ```
 
-![](Overview_files/figure-html/unnamed-chunk-13-1.png)
+![](Overview_files/figure-html/unnamed-chunk-14-1.png)
 
 Similarly, the status probabilities for one or more specific trial arms
 can be visualised:
@@ -498,7 +467,7 @@ plot_status(
 )
 ```
 
-![](Overview_files/figure-html/unnamed-chunk-14-1.png)
+![](Overview_files/figure-html/unnamed-chunk-15-1.png)
 
 Finally, various metrics may be summarised over the progress of one or
 multiple trial simulations using the
@@ -616,7 +585,7 @@ visualised:
 plot_status(binom_trial_diff_sims, x_value = "total n")
 ```
 
-![](Overview_files/figure-html/unnamed-chunk-18-1.png)
+![](Overview_files/figure-html/unnamed-chunk-19-1.png)
 
 Statuses for each arm in this scenario are also visualised:
 
@@ -624,7 +593,7 @@ Statuses for each arm in this scenario are also visualised:
 plot_status(binom_trial_diff_sims, x_value = "total n", arm = NA)
 ```
 
-![](Overview_files/figure-html/unnamed-chunk-19-1.png)
+![](Overview_files/figure-html/unnamed-chunk-20-1.png)
 
 We can plot the median and interquartile ranges of allocation
 probabilities in each arm over time using the
@@ -640,7 +609,7 @@ plot_history(
 )
 ```
 
-![](Overview_files/figure-html/unnamed-chunk-20-1.png)
+![](Overview_files/figure-html/unnamed-chunk-21-1.png)
 
 Similarly, the median (interquartile range) number of participants
 allocated to each arm as the trial progresses can be visualised:
@@ -653,7 +622,7 @@ plot_history(
 )
 ```
 
-![](Overview_files/figure-html/unnamed-chunk-21-1.png)
+![](Overview_files/figure-html/unnamed-chunk-22-1.png)
 
 Plotting other metrics is possible; see the
 [`plot_history()`](https://inceptdk.github.io/adaptr/reference/plot_history.md)
