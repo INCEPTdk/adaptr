@@ -1,3 +1,8 @@
+# adaptr (development version)
+
+No changes yet (except `update_saved_trials()` and `update_saved_calibration()`
+updated to work with new version number).
+
 # adaptr 1.5.0
 
 This is a minor release implementing new functionality, and including bug fixes,

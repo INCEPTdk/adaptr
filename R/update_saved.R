@@ -172,7 +172,9 @@ update_saved_trials <- function(path, version = NULL, compress = TRUE) {
 
     # Update the version number
     object$adaptr_version <- .adaptr_version
-  } else  {
+  } else if (prev_version > "1.4.0") {
+    object$adaptr_version <- .adaptr_version
+  } else {
     stop0("Updating not yet added for this version.")
   }
   # Save and return invisibly
